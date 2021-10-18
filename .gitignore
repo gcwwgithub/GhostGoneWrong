@@ -3,7 +3,8 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
-!/CProcessing/lib/
+!/CProcessing/lib/x64
+!/CProcessing/lib/x86
 
 # User-specific files
 *.rsuser
