@@ -3,6 +3,7 @@
 
 void draw_grid(void);
 void color_square(int rectRow, int rectCol, CP_Color squareColor);
+void click_on_square(void);
 
 void game_init(void)
 {
@@ -22,6 +23,8 @@ void game_init(void)
 
 void game_update(void)
 {
+	click_on_square();
+
 	draw_grid();
 	int currentRow = 1;
 	color_square(0, (Grid_Cols - 1) / 2, COLOR_RED);
