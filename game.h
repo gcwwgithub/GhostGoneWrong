@@ -31,6 +31,10 @@ enum GameState
 };
 
 //Level
+#define GRID_COLOR_WHITE 0
+#define GRID_COLOR_GREY 1
+#define GRID_COLOR_RED 2
+#define GRID_COLOR_BLUE 3
 typedef struct LevelData {
 	int spawnRow;
 	int spawnCol;

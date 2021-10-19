@@ -1,9 +1,11 @@
 #include "cprocessing.h"
 #include"game.h"
 
+void square_color(LevelData* Level);
 void draw_grid(void);
 void color_grid(LevelData Level);
 void click_on_square(void);
+
 
 void game_init(void)
 {
@@ -23,10 +25,10 @@ void game_init(void)
 	Tutorial.spawnCol = (GRID_COLS - 1) / 2;
 	Tutorial.exitRow = GRID_ROWS - 1;
 	Tutorial.exitCol = (GRID_COLS - 1) / 2;
-	Level1.spawnRow = 3;
-	Level1.spawnCol = 2;
-	Level1.exitRow = 0;
-	Level1.exitCol = 0;
+	Level1.spawnRow = 0;
+	Level1.spawnCol = 0;
+	Level1.exitRow = 6;
+	Level1.exitCol = 2;
 }
 
 void game_update(void)
@@ -34,7 +36,8 @@ void game_update(void)
 	click_on_square();
 
 	draw_grid();
-	color_grid(Level1);
+	square_color(&Tutorial);
+	color_grid(Tutorial);
 
 }
 void game_exit(void)

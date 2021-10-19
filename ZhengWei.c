@@ -23,17 +23,38 @@ void color_square(int rectRow, int rectCol, CP_Color squareColor)
 }
 
 void color_grid(const LevelData Level) {
-	color_square(Level.spawnRow, Level.spawnCol, COLOR_RED);
-	color_square(Level.exitRow, Level.exitCol, COLOR_BLUE);
+	for (int i = 0; i < GRID_ROWS; i++) {
+		for (int j = 0; j < GRID_COLS; j++) {
+			if (Level.gridColor[i][j] == GRID_COLOR_GREY)
+				color_square(i, j, COLOR_GREY);
+			else if (Level.gridColor[i][j] == GRID_COLOR_RED)
+				color_square(i, j, COLOR_RED);
+			else if (Level.gridColor[i][j] == GRID_COLOR_BLUE)
+				color_square(i, j, COLOR_BLUE);
+			else {}
+		}
+	}
+}
+
+void square_color(LevelData* Level) {
+	for (int i = 0; i < GRID_ROWS; i++) {
+		for (int j = 0; j < GRID_COLS; j++) {
+			Level->gridColor[i][j] = GRID_COLOR_WHITE;
+		}
+	}
+	Level->gridColor[Level->spawnRow][Level->spawnCol] = GRID_COLOR_RED;
+	Level->gridColor[Level->exitRow][Level->exitCol] = GRID_COLOR_BLUE;
 	int colApart, rowApart, counter = 1;
-	colApart = Level.exitCol - Level.spawnCol;
-	rowApart = Level.exitRow - Level.spawnRow;
+	colApart = Level->exitCol - Level->spawnCol;
+	rowApart = Level->exitRow - Level->spawnRow;
 	if (rowApart < 0) {
 		counter = rowApart;
 		rowApart = -1;
 	}
 	while (counter <= rowApart) {
-		color_square(Level.spawnRow + counter, Level.spawnCol, COLOR_GREY);
+		if (Level->spawnCol != Level->exitCol || Level->spawnRow + counter != Level->exitRow) {
+			Level->gridColor[Level->spawnRow + counter][Level->spawnCol] = GRID_COLOR_GREY;
+		}
 		counter++;
 	}
 	if (colApart < 0) {
@@ -43,8 +64,8 @@ void color_grid(const LevelData Level) {
 	else
 		counter = 1;
 	while (counter <= colApart) {
-		if (Level.spawnCol + counter != Level.exitCol) {
-			color_square(Level.exitRow, Level.spawnCol + counter, COLOR_GREY);
+		if (Level->spawnCol + counter != Level->exitCol) {
+			Level->gridColor[Level->exitRow][Level->spawnCol + counter] = GRID_COLOR_GREY;
 		}
 		counter++;
 	}
