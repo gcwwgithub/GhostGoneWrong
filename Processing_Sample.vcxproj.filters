@@ -28,4 +28,9 @@
       <UniqueIdentifier>{b9638392-7648-40c1-8bf7-04afad9263fe}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="game.h">
+      <Filter>C Source Files</Filter>
+    </ClInclude>
+  </ItemGroup>
 </Project>

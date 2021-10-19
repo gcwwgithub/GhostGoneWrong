@@ -12,12 +12,13 @@ void grid(void);
 void game_init(void)
 {
 	CP_System_Fullscreen();
-	gridRowsLength = CP_System_GetDisplayWidth() / grid_Rows;
-	gridColsLength = CP_System_GetDisplayHeight() / grid_Cols;
+	gridRowsLength = (float)CP_System_GetDisplayWidth() / grid_Rows;
+	gridColsLength = (float)CP_System_GetDisplayHeight() / grid_Cols;
 }
 
 void game_update(void)
 {
+	void grid(void);
 }
 
 
