@@ -22,11 +22,22 @@
     <ClCompile Include="Samuel.c">
       <Filter>C Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="vector.c">
+      <Filter>Vector</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="C Source Files">
       <UniqueIdentifier>{b9638392-7648-40c1-8bf7-04afad9263fe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Vector">
+      <UniqueIdentifier>{23ccaa5a-934d-4374-a3ee-e931cb34dcea}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="vector.h">
+      <Filter>Vector</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h">
