@@ -38,25 +38,52 @@ void click_on_square(void)
 		float clickedCol = distFromXOriginToMouseX / gridWidth;
 		float clickedRow = distFromYOriginToMouseY / gridHeight;
 
-		if ( clickedCol >= 0 && clickedRow >= 0)
+		// Only able to account for straight paths
+		if (clickedCol >= 0 && clickedRow >= 0)
 		{
-			if ((int)clickedCol == Level1.exitCol && (int)clickedRow == Level1.exitRow)
-			{
-				blueSquareClicked = 1;
-			}
-			else if ((int)clickedCol == Level1.spawnCol && (int)clickedRow == Level1.spawnRow)
-			{
-				redSquareClicked = 1;
-			}
-			else if (((int)clickedRow < Level1.spawnRow && (int)clickedRow > Level1.exitRow) && ((int)clickedCol <= Level1.spawnCol && (int)clickedCol >= Level1.exitCol))
-			{
-				greySquareClicked = 1;
-			}
-			else if (withinBoundaries(X_ORIGIN, Y_ORIGIN, X_ORIGIN + gridWidth * Grid_Cols, Y_ORIGIN + gridHeight * Grid_Rows))
+			//if ((int)clickedCol == Level1.exitCol && (int)clickedRow == Level1.exitRow)
+			//{
+			//	blueSquareClicked = 1;
+			//}
+			//else if ((int)clickedCol == Level1.spawnCol && (int)clickedRow == Level1.spawnRow)
+			//{
+			//	redSquareClicked = 1;
+			//}
+			//// bug : these 3 lines do not account for bent enemy paths
+			//else if (((int)clickedRow >= Level1.exitRow && (int)clickedRow <= Level1.spawnRow) && ((int)clickedCol >= Level1.exitCol && (int)clickedCol <= Level1.spawnCol))
+			//{
+			//	greySquareClicked = 1;
+			//}
+			//else if (withinBoundaries(X_ORIGIN, Y_ORIGIN, X_ORIGIN + gridWidth * GRID_COLS, Y_ORIGIN + gridHeight * GRID_ROWS))
 
+			//{
+			//	whiteSquareClicked = 1;
+			//}
+			int color = Tutorial.gridColor[(int)clickedRow][(int)clickedCol];
+			switch (color)
+			{
+			case (GRID_COLOR_WHITE):
 			{
 				whiteSquareClicked = 1;
+				break;
 			}
+			case (GRID_COLOR_GREY):
+			{
+				greySquareClicked = 1;
+				break;
+			}			
+			case (GRID_COLOR_RED):
+			{
+				redSquareClicked = 1;
+				break;
+			}			
+			case (GRID_COLOR_BLUE):
+			{
+				blueSquareClicked = 1;
+				break;
+			}
+			}
+
 		}
 
 
@@ -89,19 +116,19 @@ void click_on_square(void)
 	CP_Settings_TextSize(32.0f);
 	if (redSquareClicked)
 	{
-		CP_Font_DrawText("Clicked a red square", 100.0f, 100.0f);
+		CP_Font_DrawText("Red square", 100.0f, 100.0f);
 	}
 	if (blueSquareClicked)
 	{
-		CP_Font_DrawText("Clicked a blue square", 100.0f, 100.0f);
+		CP_Font_DrawText("Blue square", 100.0f, 100.0f);
 	}
 	if (whiteSquareClicked)
 	{
-		CP_Font_DrawText("Clicked a white square", 100.0f, 100.0f);
+		CP_Font_DrawText("White square", 100.0f, 100.0f);
 	}
 	if (greySquareClicked)
 	{
-		CP_Font_DrawText("Clicked a grey square", 100.0f, 100.0f);
+		CP_Font_DrawText("Grey square", 100.0f, 100.0f);
 	}
 }
 
@@ -116,3 +143,6 @@ void click_on_pause(CP_Image pauseButton, float imagePosX, float imagePosY)
 		}
 	}
 }
+
+
+
