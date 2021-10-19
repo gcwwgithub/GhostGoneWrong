@@ -15,3 +15,15 @@
 #define game_Font CP_Font_Load("Assets/VT323-Regular.ttf")
 
 float  gridWidth, gridHeight, gameWidth, gameHeight;
+
+enum GameState
+{
+	MainMenu,
+	Pause,
+	Building,
+	Wave,
+	Win,
+	Lose,
+	LevelSelect,
+	Credits,
+};
