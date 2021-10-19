@@ -27,10 +27,10 @@ void click_on_square(void)
 {
 	if (CP_Input_MouseTriggered(MOUSE_BUTTON_1))
 	{
-		blueSquareClicked = 0;
-		redSquareClicked = 0;
-		greySquareClicked = 0;
 		whiteSquareClicked = 0;
+		greySquareClicked = 0;
+		redSquareClicked = 0;
+		blueSquareClicked = 0;
 
 		float distFromXOriginToMouseX = CP_Input_GetMouseX() - X_ORIGIN;
 		float distFromYOriginToMouseY = CP_Input_GetMouseY() - Y_ORIGIN;
@@ -39,26 +39,8 @@ void click_on_square(void)
 		float clickedRow = distFromYOriginToMouseY / gridHeight;
 
 		// Only able to account for straight paths
-		if (clickedCol >= 0 && clickedRow >= 0)
+		if ((clickedCol >= 0 && clickedCol < GRID_COLS) && (clickedRow >= 0 && clickedRow < GRID_ROWS))
 		{
-			//if ((int)clickedCol == Level1.exitCol && (int)clickedRow == Level1.exitRow)
-			//{
-			//	blueSquareClicked = 1;
-			//}
-			//else if ((int)clickedCol == Level1.spawnCol && (int)clickedRow == Level1.spawnRow)
-			//{
-			//	redSquareClicked = 1;
-			//}
-			//// bug : these 3 lines do not account for bent enemy paths
-			//else if (((int)clickedRow >= Level1.exitRow && (int)clickedRow <= Level1.spawnRow) && ((int)clickedCol >= Level1.exitCol && (int)clickedCol <= Level1.spawnCol))
-			//{
-			//	greySquareClicked = 1;
-			//}
-			//else if (withinBoundaries(X_ORIGIN, Y_ORIGIN, X_ORIGIN + gridWidth * GRID_COLS, Y_ORIGIN + gridHeight * GRID_ROWS))
-
-			//{
-			//	whiteSquareClicked = 1;
-			//}
 			int color = Tutorial.gridColor[(int)clickedRow][(int)clickedCol];
 			switch (color)
 			{
@@ -71,12 +53,12 @@ void click_on_square(void)
 			{
 				greySquareClicked = 1;
 				break;
-			}			
+			}
 			case (GRID_COLOR_RED):
 			{
 				redSquareClicked = 1;
 				break;
-			}			
+			}
 			case (GRID_COLOR_BLUE):
 			{
 				blueSquareClicked = 1;
@@ -143,6 +125,3 @@ void click_on_pause(CP_Image pauseButton, float imagePosX, float imagePosY)
 		}
 	}
 }
-
-
-
