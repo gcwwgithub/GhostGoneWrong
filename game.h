@@ -30,6 +30,16 @@ enum GameState
 	Credits
 };
 
+//Level
+typedef struct LevelData {
+	int spawnRow;
+	int spawnCol;
+	int exitRow;
+	int exitCol;
+}LevelData;
+
 //Common Variable
 float  gridWidth, gridHeight, gameWidth, gameHeight, X_ORIGIN;
 enum GameState currentGameState;
+LevelData Tutorial;
+LevelData Level1;

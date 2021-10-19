@@ -21,3 +21,43 @@ void color_square(int rectRow, int rectCol, CP_Color squareColor)
 	CP_Settings_Fill(squareColor);
 	CP_Graphics_DrawRect((X_ORIGIN + gridWidth * rectCol), (Y_ORIGIN + gridHeight * rectRow), (gridWidth), (gridHeight));
 }
+
+void color_grid(const LevelData Level) {
+	color_square(Level.spawnRow, Level.spawnCol, COLOR_RED);
+	color_square(Level.exitRow, Level.exitCol, COLOR_BLUE);
+	int gridsApart, counter;
+	if (Level.spawnRow == Level.exitRow) {
+		gridsApart = Level.exitCol - Level.spawnCol;
+		if (gridsApart < 0) {
+			counter = -1;
+			while (counter > gridsApart) {
+				color_square(Level.spawnRow, Level.spawnCol + counter, COLOR_GREY);
+				counter--;
+			}
+		}
+		else {
+			counter = 1;
+			while (counter < gridsApart) {
+				color_square(Level.spawnRow, Level.spawnCol + counter, COLOR_GREY);
+				counter++;
+			}
+		}
+	}
+	else if (Level.spawnCol == Level.exitCol) {
+		gridsApart = Level.exitRow - Level.spawnRow;
+		if (gridsApart < 0) {
+			counter = -1;
+			while (counter > gridsApart) {
+				color_square(Level.spawnRow + counter, Level.spawnCol, COLOR_GREY);
+				counter--;
+			}
+		}
+		else {
+			counter = 1;
+			while (counter < gridsApart) {
+				color_square(Level.spawnRow + counter, Level.spawnCol, COLOR_GREY);
+				counter++;
+			}
+		}
+	}
+}

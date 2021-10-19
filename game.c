@@ -2,7 +2,7 @@
 #include"game.h"
 
 void draw_grid(void);
-void color_square(int rectRow, int rectCol, CP_Color squareColor);
+void color_grid(LevelData Level);
 
 void game_init(void)
 {
@@ -18,18 +18,20 @@ void game_init(void)
 	gameWidth = gridWidth * Grid_Cols;
 	X_ORIGIN = ((float)CP_System_GetWindowWidth() - gameWidth) / 2; //To centralise the Grid
 	currentGameState = MainMenu;
+	Tutorial.spawnRow = 0;
+	Tutorial.spawnCol = (Grid_Cols - 1) / 2;
+	Tutorial.exitRow = Grid_Rows - 1;
+	Tutorial.exitCol = (Grid_Cols - 1) / 2;
+	Level1.spawnRow = 5;
+	Level1.spawnCol = 0;
+	Level1.exitRow = 0;
+	Level1.exitCol = 0;
 }
 
 void game_update(void)
 {
 	draw_grid();
-	int currentRow = 1;
-	color_square(0, (Grid_Cols - 1) / 2, COLOR_RED);
-	color_square(Grid_Rows - 1, (Grid_Cols - 1) / 2, COLOR_BLUE);
-	while (currentRow < (Grid_Rows - 1)) {
-		color_square(currentRow, (Grid_Cols - 1) / 2, COLOR_GREY);
-		currentRow++;
-	}
+	color_grid(Level1);
 
 }
 void game_exit(void)
