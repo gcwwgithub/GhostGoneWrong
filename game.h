@@ -4,6 +4,7 @@
 //Game Grid
 #define GAME_GRID_COLS 3
 #define GAME_GRID_ROWS 7
+float  Game_Grid_Width, Game_Grid_Height, Game_Width, Game_Height, GAME_X_ORIGIN, GAME_Y_ORIGIN;
 
 //Color
 #define COLOR_BLACK  CP_Color_Create(0, 0, 0, 255)
@@ -16,7 +17,7 @@
 #define GAME_FONT CP_Font_Load("Assets/VT323-Regular.ttf")
 
 //Game State
-enum GameState
+typedef enum GameState
 {
 	MainMenu,
 	Pause,
@@ -26,14 +27,16 @@ enum GameState
 	Lose,
 	LevelSelect,
 	Credits
-};
+}GameState;
+
+GameState currentGameState;
 
 //Level
 typedef enum GridState {
-	Grid_Color_White = 0,
-	Grid_Color_Grey = 1,
-	Grid_Color_Red = 2,
-	Grid_Color_Blue = 3
+	Grid_Color_White,
+	Grid_Color_Grey,
+	Grid_Color_Red,
+	Grid_Color_Blue
 }GridState;
 
 typedef struct LevelData {
@@ -44,7 +47,21 @@ typedef struct LevelData {
 	GridState gridColor[GAME_GRID_ROWS][GAME_GRID_COLS];
 }LevelData;
 
-//Common Variable
-float  Game_Grid_Width, Game_Grid_Height, Game_Width, Game_Height, GAME_X_ORIGIN, GAME_Y_ORIGIN;
-enum GameState currentGameState;
 LevelData Tutorial;
+
+//Common Tools
+typedef enum ObjectShape {
+	objectCircle,
+	objectRectangle
+}ObjectShape;
+
+typedef struct ObjectData {
+	float objectPositionX;
+	float objectPositionY;
+	float rectLengthX;
+	float rectLengthY;
+	float circleRadius;
+	ObjectShape objectType;
+}ObjectData;
+
+ObjectData MouseInput;
