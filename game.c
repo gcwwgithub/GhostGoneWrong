@@ -23,8 +23,8 @@ void game_init(void)
 	Tutorial.spawnCol = (Grid_Cols - 1) / 2;
 	Tutorial.exitRow = Grid_Rows - 1;
 	Tutorial.exitCol = (Grid_Cols - 1) / 2;
-	Level1.spawnRow = 5;
-	Level1.spawnCol = 0;
+	Level1.spawnRow = 3;
+	Level1.spawnCol = 2;
 	Level1.exitRow = 0;
 	Level1.exitCol = 0;
 }

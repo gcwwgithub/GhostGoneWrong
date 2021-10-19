@@ -25,39 +25,27 @@ void color_square(int rectRow, int rectCol, CP_Color squareColor)
 void color_grid(const LevelData Level) {
 	color_square(Level.spawnRow, Level.spawnCol, COLOR_RED);
 	color_square(Level.exitRow, Level.exitCol, COLOR_BLUE);
-	int gridsApart, counter;
-	if (Level.spawnRow == Level.exitRow) {
-		gridsApart = Level.exitCol - Level.spawnCol;
-		if (gridsApart < 0) {
-			counter = -1;
-			while (counter > gridsApart) {
-				color_square(Level.spawnRow, Level.spawnCol + counter, COLOR_GREY);
-				counter--;
-			}
-		}
-		else {
-			counter = 1;
-			while (counter < gridsApart) {
-				color_square(Level.spawnRow, Level.spawnCol + counter, COLOR_GREY);
-				counter++;
-			}
-		}
+	int colApart, rowApart, counter = 1;
+	colApart = Level.exitCol - Level.spawnCol;
+	rowApart = Level.exitRow - Level.spawnRow;
+	if (rowApart < 0) {
+		counter = rowApart;
+		rowApart = -1;
 	}
-	else if (Level.spawnCol == Level.exitCol) {
-		gridsApart = Level.exitRow - Level.spawnRow;
-		if (gridsApart < 0) {
-			counter = -1;
-			while (counter > gridsApart) {
-				color_square(Level.spawnRow + counter, Level.spawnCol, COLOR_GREY);
-				counter--;
-			}
+	while (counter <= rowApart) {
+		color_square(Level.spawnRow + counter, Level.spawnCol, COLOR_GREY);
+		counter++;
+	}
+	if (colApart < 0) {
+		counter = colApart;
+		colApart = 0;
+	}
+	else
+		counter = 1;
+	while (counter <= colApart) {
+		if (Level.spawnCol + counter != Level.exitCol) {
+			color_square(Level.exitRow, Level.spawnCol + counter, COLOR_GREY);
 		}
-		else {
-			counter = 1;
-			while (counter < gridsApart) {
-				color_square(Level.spawnRow + counter, Level.spawnCol, COLOR_GREY);
-				counter++;
-			}
-		}
+		counter++;
 	}
 }
