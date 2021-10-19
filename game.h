@@ -1,14 +1,12 @@
 #include "cprocessing.h"
 #pragma once
 
-//Grid
-#define GRID_COLS 3
-#define GRID_ROWS 7
-//#define X_ORIGIN 480.0f
-#define Y_ORIGIN 270.0f
+//Game Grid
+#define GAME_GRID_COLS 3
+#define GAME_GRID_ROWS 7
 
 //Color
-#define color_Black  CP_Color_Create(0, 0, 0, 255)
+#define COLOR_BLACK  CP_Color_Create(0, 0, 0, 255)
 #define COLOR_WHITE CP_Color_Create(255, 255, 255, 255)
 #define COLOR_RED CP_Color_Create(255, 0, 0, 255)
 #define COLOR_BLUE CP_Color_Create(0, 0, 255, 255)
@@ -31,20 +29,22 @@ enum GameState
 };
 
 //Level
-#define GRID_COLOR_WHITE 0
-#define GRID_COLOR_GREY 1
-#define GRID_COLOR_RED 2
-#define GRID_COLOR_BLUE 3
+typedef enum GridState {
+	Grid_Color_White = 0,
+	Grid_Color_Grey = 1,
+	Grid_Color_Red = 2,
+	Grid_Color_Blue = 3
+}GridState;
+
 typedef struct LevelData {
 	int spawnRow;
 	int spawnCol;
 	int exitRow;
 	int exitCol;
-	int gridColor[GRID_ROWS][GRID_COLS];
+	GridState gridColor[GAME_GRID_ROWS][GAME_GRID_COLS];
 }LevelData;
 
 //Common Variable
-float  gridWidth, gridHeight, gameWidth, gameHeight, X_ORIGIN;
+float  Game_Grid_Width, Game_Grid_Height, Game_Width, Game_Height, GAME_X_ORIGIN, GAME_Y_ORIGIN;
 enum GameState currentGameState;
 LevelData Tutorial;
-LevelData Level1;

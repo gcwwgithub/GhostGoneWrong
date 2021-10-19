@@ -32,34 +32,34 @@ void click_on_square(void)
 		redSquareClicked = 0;
 		blueSquareClicked = 0;
 
-		float distFromXOriginToMouseX = CP_Input_GetMouseX() - X_ORIGIN;
-		float distFromYOriginToMouseY = CP_Input_GetMouseY() - Y_ORIGIN;
+		float distFromXOriginToMouseX = CP_Input_GetMouseX() - GAME_X_ORIGIN;
+		float distFromYOriginToMouseY = CP_Input_GetMouseY() - GAME_Y_ORIGIN;
 
-		float clickedCol = distFromXOriginToMouseX / gridWidth;
-		float clickedRow = distFromYOriginToMouseY / gridHeight;
+		float clickedCol = distFromXOriginToMouseX / Game_Grid_Width;
+		float clickedRow = distFromYOriginToMouseY / Game_Grid_Height;
 
 		// Only able to account for straight paths
-		if ((clickedCol >= 0 && clickedCol < GRID_COLS) && (clickedRow >= 0 && clickedRow < GRID_ROWS))
+		if ((clickedCol >= 0 && clickedCol < GAME_GRID_COLS) && (clickedRow >= 0 && clickedRow < GAME_GRID_ROWS))
 		{
 			int color = Tutorial.gridColor[(int)clickedRow][(int)clickedCol];
 			switch (color)
 			{
-			case (GRID_COLOR_WHITE):
+			case (Grid_Color_White):
 			{
 				whiteSquareClicked = 1;
 				break;
 			}
-			case (GRID_COLOR_GREY):
+			case (Grid_Color_Grey):
 			{
 				greySquareClicked = 1;
 				break;
 			}
-			case (GRID_COLOR_RED):
+			case (Grid_Color_Red):
 			{
 				redSquareClicked = 1;
 				break;
 			}
-			case (GRID_COLOR_BLUE):
+			case (Grid_Color_Blue):
 			{
 				blueSquareClicked = 1;
 				break;
@@ -71,23 +71,23 @@ void click_on_square(void)
 
 		// Tutorial level
 		// If click was within red square's two corners ...
-		//if (withinBoundaries(X_ORIGIN + gridWidth, Y_ORIGIN, X_ORIGIN + gridWidth * 2, Y_ORIGIN + gridHeight))
+		//if (withinBoundaries(GAME_X_ORIGIN + Game_Grid_Width, GAME_Y_ORIGIN, GAME_X_ORIGIN + Game_Grid_Width * 2, GAME_Y_ORIGIN + Game_Grid_Height))
 		//{
 		//	redSquareClicked = 1;
 		//}
 		// ... or the blue square's ...
-		//if (withinBoundaries(X_ORIGIN + gridWidth, Y_ORIGIN + gridHeight * (Grid_Rows - 1), X_ORIGIN + gridWidth * 2, Y_ORIGIN + gridHeight * Grid_Rows))
+		//if (withinBoundaries(GAME_X_ORIGIN + Game_Grid_Width, GAME_Y_ORIGIN + Game_Grid_Height * (Grid_Rows - 1), GAME_X_ORIGIN + Game_Grid_Width * 2, GAME_Y_ORIGIN + Game_Grid_Height * Grid_Rows))
 		//{
 		//	blueSquareClicked = 1;
 		//}
 
 		//  White area boundaries
-		//if (withinBoundaries(X_ORIGIN, Y_ORIGIN, X_ORIGIN + gridWidth, Y_ORIGIN + gridHeight * Grid_Rows) ||
-		//	withinBoundaries(X_ORIGIN + gridWidth * 2, Y_ORIGIN, X_ORIGIN + gridWidth * 3, Y_ORIGIN + gridHeight * Grid_Rows))
+		//if (withinBoundaries(GAME_X_ORIGIN, GAME_Y_ORIGIN, GAME_X_ORIGIN + Game_Grid_Width, GAME_Y_ORIGIN + Game_Grid_Height * Grid_Rows) ||
+		//	withinBoundaries(GAME_X_ORIGIN + Game_Grid_Width * 2, GAME_Y_ORIGIN, GAME_X_ORIGIN + Game_Grid_Width * 3, GAME_Y_ORIGIN + Game_Grid_Height * Grid_Rows))
 		//{
 		//	whiteSquareClicked = 1;
 		//}
-		//if (withinBoundaries(X_ORIGIN + gridWidth, Y_ORIGIN + gridHeight, X_ORIGIN + gridWidth * (Grid_Cols - 1), Y_ORIGIN + gridHeight * (Grid_Rows - 1)))
+		//if (withinBoundaries(GAME_X_ORIGIN + Game_Grid_Width, GAME_Y_ORIGIN + Game_Grid_Height, GAME_X_ORIGIN + Game_Grid_Width * (Grid_Cols - 1), GAME_Y_ORIGIN + Game_Grid_Height * (Grid_Rows - 1)))
 		//{
 		//	greySquareClicked = 1;
 		//}

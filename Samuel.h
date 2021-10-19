@@ -15,13 +15,13 @@ typedef enum TurretType
 } TurretType;
 
 //enum of projectile types
-typedef enum TurretType
+typedef enum ProjectileType
 {
 	BASIC,
 	AOE,
 	PIERCE,
 	PERCENT,
-} TurretType;
+} ProjectileType;
 
 typedef struct Turret
 {

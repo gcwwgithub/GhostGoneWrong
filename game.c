@@ -10,25 +10,23 @@ void click_on_square(void);
 void game_init(void)
 {
 	CP_System_Fullscreen();
-	float unusableScreenHeight/*Height not used for game, example menu*//*, unusableScreenWidth*//*Width not used for game, example menu*/;
-	//unusableScreenWidth = 960.0f;
-	unusableScreenHeight = 540.0f;
-	//gameWidth = (float)CP_System_GetWindowWidth() - unusableScreenWidth;
-	gameHeight = (float)CP_System_GetWindowHeight() - unusableScreenHeight;
-	//gridWidth = gameWidth / Grid_Cols;
-	gridWidth = gameHeight / GRID_ROWS;
-	gridHeight = gameHeight / GRID_ROWS;
-	gameWidth = gridWidth * GRID_COLS;
-	X_ORIGIN = ((float)CP_System_GetWindowWidth() - gameWidth) / 2; //To centralise the Grid
 	currentGameState = MainMenu;
+
+	float unusableScreenHeight, unusableScreenWidth;/*Height and Width not used for game, example menu*/
+	unusableScreenHeight = (float)CP_System_GetWindowHeight() / 2; //Half the screeen is used for the game
+	Game_Height = (float)CP_System_GetWindowHeight() - unusableScreenHeight;
+	Game_Grid_Height = Game_Height / GAME_GRID_ROWS;
+	Game_Grid_Width = Game_Height / GAME_GRID_ROWS; //Grid is a Square
+	Game_Width = Game_Grid_Width * GAME_GRID_COLS;
+	unusableScreenWidth = (float)CP_System_GetWindowWidth() - Game_Width;
+	GAME_X_ORIGIN = unusableScreenWidth / 2; //To centralise the Grid
+	GAME_Y_ORIGIN = unusableScreenHeight / 2; //Centre the game
+
 	Tutorial.spawnRow = 0;
-	Tutorial.spawnCol = (GRID_COLS - 1) / 2;
-	Tutorial.exitRow = GRID_ROWS - 1;
-	Tutorial.exitCol = (GRID_COLS - 1) / 2;
-	Level1.spawnRow = 0;
-	Level1.spawnCol = 0;
-	Level1.exitRow = 6;
-	Level1.exitCol = 2;
+	Tutorial.spawnCol = (GAME_GRID_COLS - 1) / 2;
+	Tutorial.exitRow = GAME_GRID_ROWS - 1;
+	Tutorial.exitCol = (GAME_GRID_COLS - 1) / 2;
+
 	square_color(&Tutorial);
 }
 
