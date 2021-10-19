@@ -15,6 +15,7 @@ void game_init(void)
 	gameHeight = (float)CP_System_GetWindowHeight() - unusableScreenHeight;
 	gridWidth = gameWidth / grid_Cols;
 	gridHeight = gameHeight / grid_Rows;
+	currentGameState = MainMenu;
 }
 
 void game_update(void)

@@ -25,5 +25,7 @@ enum GameState
 	Win,
 	Lose,
 	LevelSelect,
-	Credits,
+	Credits
 };
+
+enum GameState currentGameState;
