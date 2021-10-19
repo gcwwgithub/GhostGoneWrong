@@ -10,13 +10,24 @@ typedef enum TurretType
 {
 	TRIANGLE,
 	CIRCLE,
-	STAR
+	STAR,
+	PRECENTAGE
+} TurretType;
+
+//enum of projectile types
+typedef enum TurretType
+{
+	BASIC,
+	AOE,
+	PIERCE,
+	PERCENT,
 } TurretType;
 
 typedef struct Turret
 {
-	Vector2 dir, n_dir /*base dir*/;
-	float pos_x, pos_y, size, angle, range, cooldown;
+	Vector2 dir;
+	float pos_x, pos_y, size, angle, 
+		range, cooldown, damage;
 	TurretType type;
 } Turret;
 

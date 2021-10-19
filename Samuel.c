@@ -15,12 +15,9 @@ void turret_init(void)
 	v.pos_x = -3;
 	v.pos_y = 1;
 	test.dir = v;
-	v.pos_x = 0;
-	v.pos_y = -1;
-	test.n_dir = v;
 	test.angle = 0;
 	test.type = TRIANGLE;
-	test.cooldown = 2.0;
+	test.cooldown = 0.f;
 	turret_img = CP_Image_Load("./Assets/Turret.png");
 	for (int i = 0; i < MAX_PROJECTILE; ++i)
 	{
@@ -41,8 +38,13 @@ void render_turret(Turret* t)
 			t.pos_x, t.pos_y + t.size, t.angle);*/
 		break;
 	case CIRCLE:
+		//CP_Image_DrawAdvanced(turret_img, t->pos_x, t->pos_y, t->size, t->size, 255, t->angle);
 		break;
 	case STAR:
+		//CP_Image_DrawAdvanced(turret_img, t->pos_x, t->pos_y, t->size, t->size, 255, t->angle);
+		break;
+	case PRECENTAGE:
+		//CP_Image_DrawAdvanced(turret_img, t->pos_x, t->pos_y, t->size, t->size, 255, t->angle);
 		break;
 	default:
 		break;
@@ -98,10 +100,13 @@ void update_turret(Turret* t) //take in enemy array or some stuff
 	//printf("%f\n", t->angle);
  
 	//shooting here is placeholder
-	if(CP_Input_MouseTriggered(MOUSE_BUTTON_1)) //for now click to shoot
+	//if(CP_Input_MouseTriggered(MOUSE_BUTTON_1)) //for now click to shoot
+	t->cooldown -= 1.f * CP_System_GetDt();
+	if (t->cooldown <= 0)
+	{
 		shoot(t->pos_x, t->pos_y, t->dir);
-	//t->cooldown -= 10.f * CP_System_GetDt();
-	//if(t->cooldown <= 0)
+		t->cooldown = 2.f;
+	}
 }
 
 //void update_turret(void)
@@ -142,14 +147,18 @@ void projectile_update()
 {
 	for (int i = 0; i < MAX_PROJECTILE; ++i)
 	{
-		//bounds check / collision check?? 
-		//if (proj[i].isActive && (proj[i].x < 0 || proj[i].x >  X_ORIGIN))
-		//{
-		//	proj[i].isActive = 0;
-		//}
+		//bounds check
+		if (proj[i].isActive && 
+			(proj[i].x < 0 || proj[i].x > (float)CP_System_GetDisplayWidth() 
+				|| proj[i].y < 0 || proj[i].y >(float)CP_System_GetDisplayHeight()))
+		{
+			//set to inactive
+			proj[i].isActive = 0;
+			continue;
+		}
 		if (!proj[i].isActive)
 			continue;
-	
+
 		//proj movement dir * speed * deltatime
 		proj[i].x += proj[i].dir.pos_x * 100.f * CP_System_GetDt();
 		proj[i].y += proj[i].dir.pos_y * 100.f * CP_System_GetDt();
