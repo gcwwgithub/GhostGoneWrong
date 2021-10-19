@@ -16,7 +16,7 @@ typedef enum TurretType
 typedef struct Turret
 {
 	Vector2 dir, n_dir /*base dir*/;
-	float pos_x, pos_y, size, angle, range;
+	float pos_x, pos_y, size, angle, range, cooldown;
 	TurretType type;
 } Turret;
 
@@ -26,6 +26,8 @@ typedef struct Projectile
 	float x, y;
 	Vector2 dir;
 } Projectile;
+
+void turret_init(void);
 
 void render_turret(Turret* t);
 //void render_turret(void);

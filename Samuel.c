@@ -4,6 +4,32 @@
 #include <stdio.h>
 #include "game.h"
 
+
+void turret_init(void)
+{
+	//hard code test values
+	test.pos_x = X_ORIGIN - 10;
+	test.pos_y = Y_ORIGIN - 10;
+	test.size = gridHeight;
+	Vector2 v;
+	v.pos_x = -3;
+	v.pos_y = 1;
+	test.dir = v;
+	v.pos_x = 0;
+	v.pos_y = -1;
+	test.n_dir = v;
+	test.angle = 0;
+	test.type = TRIANGLE;
+	test.cooldown = 2.0;
+	turret_img = CP_Image_Load("./Assets/Turret.png");
+	for (int i = 0; i < MAX_PROJECTILE; ++i)
+	{
+		proj[i].isActive = 0;
+		proj[i].x = 0;
+		proj[i].y = 0;
+	}
+}
+
 void render_turret(Turret* t)
 {
 	//draw type of turrets
@@ -70,10 +96,12 @@ void update_turret(Turret* t) //take in enemy array or some stuff
 	t->angle = acosf(angle) * 180.f / (float)PI;*/
 
 	//printf("%f\n", t->angle);
-
+ 
 	//shooting here is placeholder
 	if(CP_Input_MouseTriggered(MOUSE_BUTTON_1)) //for now click to shoot
 		shoot(t->pos_x, t->pos_y, t->dir);
+	//t->cooldown -= 10.f * CP_System_GetDt();
+	//if(t->cooldown <= 0)
 }
 
 //void update_turret(void)
