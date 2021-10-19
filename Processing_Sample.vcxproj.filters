@@ -38,5 +38,6 @@
     <ClInclude Include="game.h">
       <Filter>C Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="Samuel.h" />
   </ItemGroup>
 </Project>
