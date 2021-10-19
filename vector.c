@@ -1,10 +1,30 @@
 #include "Vector.h"
 #include <Math.h>
 
+Vector2 addition(Vector2 v1, Vector2 v2)
+{
+	v1.pos_x += v2.pos_x;
+	v1.pos_y += v2.pos_y;
+	return v1;
+}
+
+Vector2 subtraction(Vector2 v1, Vector2 v2)
+{
+	v1.pos_x -= v2.pos_x;
+	v1.pos_y -= v2.pos_y;
+	return v1;
+}
+
 float magnitude(Vector2 v)
 {
 	return sqrtf(v.pos_x * v.pos_x + v.pos_y * v.pos_y);
 }
+
+float magnitude_sq(Vector2 v)
+{
+	return v.pos_x * v.pos_x + v.pos_y * v.pos_y;
+}
+
 Vector2 normalise(Vector2 v)
 {
 	Vector2 u;
@@ -37,3 +57,4 @@ Vector2 projection(Vector2 flr, Vector2 v)
 	tmp.pos_y = (dot(flr, v) / dot(flr, flr)) * flr.pos_y;
 	return tmp;
 }
+

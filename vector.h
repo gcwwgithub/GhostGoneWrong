@@ -11,7 +11,13 @@ typedef struct Vector2
 	float pos_y;
 } Vector2;
 
+Vector2 addition(Vector2 v1, Vector2 v2);
+
+Vector2 subtraction(Vector2 v1, Vector2 v2);
+
 float magnitude(Vector2 v1);
+
+float magnitude_sq(Vector2 v1);
 
 Vector2 normalise(Vector2 v1);
 
@@ -20,5 +26,6 @@ float dot(Vector2 v1, Vector2 v2);
 Vector2 rotation(Vector2 v1, double angle);
 
 Vector2 projection(Vector2 flr, Vector2 v);
+
 
 #endif
