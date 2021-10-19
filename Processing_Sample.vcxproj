@@ -194,13 +194,13 @@ xcopy "$(ProjectDir)Assets\*" "$(OutDir)Assets\" /s /r /y /q</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Anderson.c" />
+    <ClCompile Include="Gabriel.c" />
     <ClCompile Include="game.c" />
+    <ClCompile Include="John.c" />
+    <ClCompile Include="Samuel.c" />
     <ClCompile Include="ZhengWei.c" />
-    <ClCompile Include="game3.c" />
-    <ClCompile Include="game4.c" />
-    <ClCompile Include="game5.c" />
     <ClCompile Include="main.c" />
-    <ClCompile Include="game2.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

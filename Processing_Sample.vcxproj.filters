@@ -10,16 +10,16 @@
     <ClCompile Include="ZhengWei.c">
       <Filter>C Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="game2.c">
+    <ClCompile Include="Anderson.c">
       <Filter>C Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="game3.c">
+    <ClCompile Include="Gabriel.c">
       <Filter>C Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="game4.c">
+    <ClCompile Include="John.c">
       <Filter>C Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="game5.c">
+    <ClCompile Include="Samuel.c">
       <Filter>C Source Files</Filter>
     </ClCompile>
   </ItemGroup>
