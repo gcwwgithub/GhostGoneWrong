@@ -2,12 +2,8 @@
 #include"game.h"
 
 void draw_grid(void);
-<<<<<<< HEAD
 void color_grid(LevelData Level);
-=======
-void color_square(int rectRow, int rectCol, CP_Color squareColor);
 void click_on_square(void);
->>>>>>> 36cd720fc61bc865324a4d9aad9d3b027fbef5fb
 
 void game_init(void)
 {
