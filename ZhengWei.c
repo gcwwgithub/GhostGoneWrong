@@ -5,5 +5,5 @@ void grid(void)
 	
 	CP_Graphics_ClearBackground(color_Grey);
 	CP_Settings_Fill(color_Black);
-	CP_Graphics_DrawLine(0, 0, 400, 400);
+	CP_Graphics_DrawLine(gridColsLength, 0, gridColsLength, (float)CP_System_GetDisplayHeight());
 }
