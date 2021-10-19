@@ -4,7 +4,7 @@
 //Grid
 #define Grid_Cols 3
 #define Grid_Rows 7
-#define X_ORIGIN 480.0f
+//#define X_ORIGIN 480.0f
 #define Y_ORIGIN 270.0f
 
 //Color
@@ -31,5 +31,5 @@ enum GameState
 };
 
 //Common Variable
-float  gridWidth, gridHeight, gameWidth, gameHeight;
+float  gridWidth, gridHeight, gameWidth, gameHeight, X_ORIGIN;
 enum GameState currentGameState;

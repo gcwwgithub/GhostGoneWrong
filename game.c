@@ -7,13 +7,16 @@ void color_square(int rectRow, int rectCol, CP_Color squareColor);
 void game_init(void)
 {
 	CP_System_Fullscreen();
-	float unusableScreenHeight/*Height not used for game, example menu*/, unusableScreenWidth/*Width not used for game, example menu*/;
-	unusableScreenWidth = 960.0f;
+	float unusableScreenHeight/*Height not used for game, example menu*//*, unusableScreenWidth*//*Width not used for game, example menu*/;
+	//unusableScreenWidth = 960.0f;
 	unusableScreenHeight = 540.0f;
-	gameWidth = (float)CP_System_GetWindowWidth() - unusableScreenWidth;
+	//gameWidth = (float)CP_System_GetWindowWidth() - unusableScreenWidth;
 	gameHeight = (float)CP_System_GetWindowHeight() - unusableScreenHeight;
-	gridWidth = gameWidth / Grid_Cols;
+	//gridWidth = gameWidth / Grid_Cols;
+	gridWidth = gameHeight / Grid_Rows;
 	gridHeight = gameHeight / Grid_Rows;
+	gameWidth = gridWidth * Grid_Cols;
+	X_ORIGIN = ((float)CP_System_GetWindowWidth() - gameWidth) / 2; //To centralise the Grid
 	currentGameState = MainMenu;
 }
 
