@@ -2,8 +2,8 @@
 #pragma once
 
 //Grid
-#define Grid_Cols 3
-#define Grid_Rows 7
+#define GRID_COLS 3
+#define GRID_ROWS 7
 //#define X_ORIGIN 480.0f
 #define Y_ORIGIN 270.0f
 
@@ -36,6 +36,7 @@ typedef struct LevelData {
 	int spawnCol;
 	int exitRow;
 	int exitCol;
+	int gridColor[GRID_ROWS][GRID_COLS];
 }LevelData;
 
 //Common Variable

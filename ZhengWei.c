@@ -6,11 +6,11 @@ void draw_grid(void)
 	int currentGridRow = 0, currentGridCol = 0;
 	CP_Graphics_ClearBackground(COLOR_WHITE);
 	CP_Settings_Fill(color_Black);
-	while (currentGridRow <= Grid_Rows) {
+	while (currentGridRow <= GRID_ROWS) {
 		CP_Graphics_DrawLine((X_ORIGIN), (Y_ORIGIN + gridHeight * currentGridRow), (X_ORIGIN + gameWidth), (Y_ORIGIN + gridHeight * currentGridRow));
 		currentGridRow++;
 	}
-	while (currentGridCol <= Grid_Cols) {
+	while (currentGridCol <= GRID_COLS) {
 		CP_Graphics_DrawLine((X_ORIGIN + gridWidth * currentGridCol), (Y_ORIGIN), (X_ORIGIN + gridWidth * currentGridCol), (Y_ORIGIN + gameHeight));
 		currentGridCol++;
 	}

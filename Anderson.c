@@ -38,17 +38,17 @@ void click_on_square(void)
 			redSquareClicked = 1;
 		}
 		// ... or the blue square's ...
-		if (withinBoundaries(X_ORIGIN + gridWidth, Y_ORIGIN + gridHeight * (Grid_Rows - 1), X_ORIGIN + gridWidth * 2, Y_ORIGIN + gridHeight * Grid_Rows))
+		if (withinBoundaries(X_ORIGIN + gridWidth, Y_ORIGIN + gridHeight * (GRID_ROWS - 1), X_ORIGIN + gridWidth * 2, Y_ORIGIN + gridHeight * GRID_ROWS))
 		{
 			blueSquareClicked = 1;
 		}
 		// ... or the left and right white areas' ...
-		if (withinBoundaries(X_ORIGIN, Y_ORIGIN, X_ORIGIN + gridWidth, Y_ORIGIN + gridHeight * Grid_Rows) ||
-			withinBoundaries(X_ORIGIN + gridWidth * 2, Y_ORIGIN, X_ORIGIN + gridWidth * 3, Y_ORIGIN + gridHeight * Grid_Rows))
+		if (withinBoundaries(X_ORIGIN, Y_ORIGIN, X_ORIGIN + gridWidth, Y_ORIGIN + gridHeight * GRID_ROWS) ||
+			withinBoundaries(X_ORIGIN + gridWidth * 2, Y_ORIGIN, X_ORIGIN + gridWidth * 3, Y_ORIGIN + gridHeight * GRID_ROWS))
 		{
 			whiteSquareClicked = 1;
 		}
-		if (withinBoundaries(X_ORIGIN + gridWidth, Y_ORIGIN + gridHeight, X_ORIGIN + gridWidth * (Grid_Cols - 1), Y_ORIGIN + gridHeight * (Grid_Rows - 1)))
+		if (withinBoundaries(X_ORIGIN + gridWidth, Y_ORIGIN + gridHeight, X_ORIGIN + gridWidth * (GRID_COLS - 1), Y_ORIGIN + gridHeight * (GRID_ROWS - 1)))
 		{
 			greySquareClicked = 1;
 		}
