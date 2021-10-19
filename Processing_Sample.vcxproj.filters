@@ -7,7 +7,7 @@
     <ClCompile Include="main.c">
       <Filter>C Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="game1.c">
+    <ClCompile Include="ZhengWei.c">
       <Filter>C Source Files</Filter>
     </ClCompile>
     <ClCompile Include="game2.c">
