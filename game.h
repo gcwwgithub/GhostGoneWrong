@@ -12,4 +12,6 @@
 #define color_Blue CP_Color_Create(0, 0, 255, 255)
 #define color_Grey CP_Color_Create(128, 128, 128, 255)
 
+#define game_Font CP_Font_Load("Assets/VT323-Regular.ttf")
+
 float  gridWidth, gridHeight, gameWidth, gameHeight;

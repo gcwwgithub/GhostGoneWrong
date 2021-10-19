@@ -4,7 +4,6 @@
 float  gridWidth, gridHeight, gameWidth, gameHeight;
 void draw_grid(void);
 void color_square(int rectRow, int rectCol, CP_Color squareColor);
-CP_Font testFont;
 
 void game_init(void)
 {
@@ -16,7 +15,6 @@ void game_init(void)
 	gameHeight = (float)CP_System_GetWindowHeight() - unusableScreenHeight;
 	gridWidth = gameWidth / grid_Cols;
 	gridHeight = gameHeight / grid_Rows;
-	testFont = CP_Font_Load("Assets/VT323-Regular.ttf");
 }
 
 void game_update(void)
@@ -29,6 +27,7 @@ void game_update(void)
 		color_square(currentRow, (grid_Cols - 1) / 2, color_Grey);
 		currentRow++;
 	}
+
 }
 void game_exit(void)
 {
