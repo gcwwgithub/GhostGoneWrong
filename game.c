@@ -2,7 +2,8 @@
 #include"game.h"
 
 float  gridWidth, gridHeight, gameWidth, gameHeight;
-void grid(void);
+void draw_grid(void);
+void color_square(int rectRow, int rectCol, CP_Color squareColor);
 
 void game_init(void)
 {
@@ -14,14 +15,20 @@ void game_init(void)
 	gameHeight = (float)CP_System_GetWindowHeight() - unusableScreenHeight;
 	gridWidth = gameWidth / grid_Cols;
 	gridHeight = gameHeight / grid_Rows;
+	CP_Font_Load("Assets/VT-323-Regular.ttf");
 }
 
 void game_update(void)
 {
-	grid();
+	draw_grid();
+	int currentRow = 1;
+	color_square(0, (grid_Cols - 1) / 2, color_Red);
+	color_square(grid_Rows - 1, (grid_Cols - 1) / 2, color_Blue);
+	while (currentRow < (grid_Rows - 1)) {
+		color_square(currentRow, (grid_Cols - 1) / 2, color_Grey);
+		currentRow++;
+	}
 }
-
-
 void game_exit(void)
 {
 
