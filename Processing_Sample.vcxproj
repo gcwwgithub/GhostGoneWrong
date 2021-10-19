@@ -203,13 +203,6 @@ xcopy "$(ProjectDir)Assets\*" "$(OutDir)Assets\" /s /r /y /q</Command>
     <ClCompile Include="ZhengWei.c" />
     <ClCompile Include="main.c" />
   </ItemGroup>
-  <ItemGroup>
-<<<<<<< HEAD
-    <ClInclude Include="game.h" />
-=======
-    <ClInclude Include="vector.h" />
->>>>>>> 19b4c650822a5d2933d37454a9dbc0c3955da8cb
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
