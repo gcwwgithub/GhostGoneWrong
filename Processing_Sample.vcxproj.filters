@@ -35,11 +35,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="vector.h">
-      <Filter>Vector</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="game.h">
       <Filter>C Source Files</Filter>
     </ClInclude>
