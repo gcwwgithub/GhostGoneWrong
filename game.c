@@ -29,6 +29,7 @@ void game_init(void)
 	Level1.spawnCol = 0;
 	Level1.exitRow = 6;
 	Level1.exitCol = 2;
+	square_color(&Tutorial);
 }
 
 void game_update(void)
@@ -36,7 +37,6 @@ void game_update(void)
 	click_on_square();
 
 	draw_grid();
-	square_color(&Tutorial);
 	color_grid(Tutorial);
 
 }
