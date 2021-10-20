@@ -25,13 +25,13 @@ void turret_init(void)
 		v.pos_x = 0;
 		v.pos_y = 1;
 		turret[i].dir = v;
-		turret[i].size = Game_Grid_Height;
+		turret[i].size = Game.gridHeight;
 		turret[i].damage = 1.f;
 	}
 
-	turret[0].data.objectPositionX = GAME_X_ORIGIN - 10;
-	turret[0].data.objectPositionY = GAME_Y_ORIGIN - 10;
-	turret[0].size = Game_Grid_Height;
+	turret[0].data.objectPositionX = Game.xOrigin - 10;
+	turret[0].data.objectPositionY = Game.yOrigin - 10;
+	turret[0].size = Game.gridHeight;
 	turret[0].dir = v;
 	turret[0].angle = 0;
 	turret[0].type = T_TRIANGLE;
