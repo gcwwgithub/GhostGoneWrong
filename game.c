@@ -1,5 +1,6 @@
 #include "cprocessing.h"
 #include"game.h"
+#include "Samuel.h"
 
 void game_grid_init(void);
 void game_grid_color_init(LevelData* Level);
@@ -16,7 +17,7 @@ void render_turret_button(Coordinates TurretButtonX, ObjectData ObjectTurretButt
 
 void game_init(void)
 {
-	CP_System_Fullscreen();
+	//CP_System_Fullscreen();
 	currentGameState = MainMenu;
 	
 	//game grid 
@@ -33,6 +34,7 @@ void game_init(void)
 
 	//Initialize Objects
 	object_init();
+	turret_init();
 
 	//Level Data
 	Tutorial.spawnRow = 0;
@@ -50,6 +52,9 @@ void game_update(void)
 		MouseInput.objectPositionY = CP_Input_GetMouseY();
 	}
 
+	update_turret();
+	update_projectile();
+
 	render_game_grid();
 	render_game_grid_color(Tutorial);
 	render_turret_menu();
@@ -58,6 +63,9 @@ void game_update(void)
 	render_turret_button(TurretButton1, ObjectTurretButton1);
 	render_turret_button(TurretButton2, ObjectTurretButton2);
 	render_turret_button(TurretButton3, ObjectTurretButton3);
+
+	render_turret();
+	render_projectile();
 
 }
 void game_exit(void)

@@ -2,7 +2,10 @@
 #include "Samuel.h"
 #include <math.h>
 
-
+#if _DEBUG
+#include <stdio.h>
+#include "John.h"
+#endif
 
 void turret_init(void)
 {
@@ -30,16 +33,21 @@ void turret_init(void)
 		turret[i].damage = 1.f;
 	}
 								
-	turret[0].data.objectPositionX = Game.xOrigin + (Game.gridWidth * 0.5f);
-	turret[0].data.objectPositionY = Game.yOrigin + (Game.gridHeight * 0.5f);
+	turret[0].data.objectPositionX = Game.xOrigin + (Game.gridWidth * (2 + 0.5f));
+	turret[0].data.objectPositionY = Game.yOrigin + (Game.gridHeight * (1 + 0.5f));
 	turret[0].size = Game.gridHeight;
 	turret[0].dir = v;
 	turret[0].angle = 0;
 	turret[0].type = T_TRIANGLE;
 	turret[0].cooldown = 0.f;
 	turret[0].isActive = 1;
+	turret[0].range = Game.gridWidth * 2;
+
+	//test stuff with john's code
+	enemy_test_init();
 }
 
+//call this function to palce turret (pass in the grid index)
 void place_turret(TurretType type, int index_x, int index_y)
 {
 	for (int i = 0; i < MAX_TURRET; ++i)
@@ -56,19 +64,19 @@ void place_turret(TurretType type, int index_x, int index_y)
 		switch (turret[i].type)
 		{
 		case T_TRIANGLE:
-			turret[i].range = 5;
+			turret[i].range = Game.gridWidth * 2;
 			turret[i].damage = 1;
 			break;
 		case T_CIRCLE: //placeholder
-			turret[i].range = 5;
+			turret[i].range = Game.gridWidth * 2;
 			turret[i].damage = 1;
 			break;
 		case T_STAR:
-			turret[i].range = 5;
+			turret[i].range = Game.gridWidth * 2;
 			turret[i].damage = 1;
 			break;
 		case T_PRECENTAGE:
-			turret[i].range = 5;
+			turret[i].range = Game.gridWidth * 2;
 			turret[i].damage = 1;
 			break;
 		default:
@@ -127,6 +135,8 @@ void render_turret(void)
 			break;
 		}
 	}
+	//test stuff with john's code
+	Draw_enemy(&test);
 }
 
 /*
@@ -189,8 +199,28 @@ void update_turret(void)
 		//	break;
 		//}
 
-		//if in range of enemy update
 
+#if _DEBUG
+		//Debug test code with enemy
+		Vector2 v1;
+		v1.pos_x = test.posX - turret[i].data.objectPositionX;
+		v1.pos_y = test.posY - turret[i].data.objectPositionY;
+		if (magnitude_sq(v1) <= turret[i].range * turret[i].range)
+		{
+			turret[i].dir = v1;;
+			turret[i].dir = normalise(turret[i].dir);
+			turret[i].angle = atan2f(turret[i].dir.pos_y, turret[i].dir.pos_x) * 180.f / (float)PI;
+			turret[i].cooldown -= 1.f * CP_System_GetDt();
+
+			if (turret[i].cooldown <= 0)
+			{
+				shoot(turret[i].data.objectPositionX, turret[i].data.objectPositionY, turret[i].dir);
+				turret[i].cooldown = 2.f;
+			}
+		}
+#endif
+		/*
+		//if in range of enemy update
 		turret[i].dir.pos_x = CP_Input_GetMouseX() - turret[i].data.objectPositionX;
 		turret[i].dir.pos_y = CP_Input_GetMouseY() - turret[i].data.objectPositionY;
 		//normalise the vector
@@ -204,6 +234,7 @@ void update_turret(void)
 			shoot(turret[i].data.objectPositionX, turret[i].data.objectPositionY, turret[i].dir);
 			turret[i].cooldown = 2.f;
 		}
+		*/
 	}
 }
 
