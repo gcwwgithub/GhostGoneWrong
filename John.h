@@ -24,7 +24,7 @@ typedef struct Enemy {
 
 void enemy_init(void);
 void Draw_enemy(enemy* r);
-void enemy_move(enemy* r, float enemy_pathX[], float enemy_pathY[]);
+void enemy_move(enemy* r, float Enemy_PathpointsX[], float Enemy_PathY[], int number_of_points);
 int direction_to_next_point(float enemy_pathpointsX[], float enemy_pathpointsY[], int enemy_path_point_num);
 int update_point_num(float enemy_pathpointsX[], float enemy_pathpointsY[], float enemy_posX, float enemy_posY, int enemy_path_point_num);
 int Collision(enemy* r, float x, float y);

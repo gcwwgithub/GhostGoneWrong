@@ -1,6 +1,6 @@
-#include "cprocessing.h"#include "cprocessing.h"
-#include "John.h"
+#include "cprocessing.h"
 #include <math.h>
+#include "John.h"
 
 void enemy_init(void)
 {
@@ -31,7 +31,7 @@ void enemy_move(enemy* r, float Enemy_PathpointsX[], float Enemy_PathY[],int num
 	float Speed = (r->speed) * CP_System_GetDt();
 	if (update_point_num(Enemy_PathpointsX, Enemy_PathY, r->posX, r->posY, r->CurrentWaypoint) == 1) {
 		if (r->CurrentWaypoint == number_of_points) {
-			
+			r->state = Death;
 		}
 		r->CurrentWaypoint++;
 	}
@@ -101,9 +101,9 @@ int Collision(enemy* r, float x, float y) {   //returns 1 if collide with enemy 
 }
 
 
-void EnemyDeath(enemy* r) {
+/* void EnemyDeath(enemy* r) {
 	if (r->health == 0) {
 		r->state = Death;
 	}
 	return 0;
-}
+} */
