@@ -6,7 +6,7 @@ void enemy_init(void)
 {
 	test.health = 10;
 	test.speed = 100;
-	test.pos_num = 0;
+	test.CurrentWaypoint = 0;
 	test.posX = 200;
 	test.posY = 0;
 	test.enemy_width = 20;
@@ -27,23 +27,27 @@ void Draw_enemy(enemy* r) {
 	}
 }
 
-void enemy_move(enemy* r, float enemy_pathX[], float enemy_pathY[]) {
+void enemy_move(enemy* r, float enemy_pathX[], float enemy_pathY[],int number_of_points) {
 	float Speed = (r->speed) * CP_System_GetDt();
-	if (update_point_num(enemy_pathX, enemy_pathY, r->posX, r->posY, r->pos_num) == 1) {
-		r->pos_num++;
+	if (update_point_num(enemy_pathX, enemy_pathY, r->posX, r->posY, r->CurrentWaypoint) == 1) {
+		if (r->CurrentWaypoint == number_of_points) {
+			
+		}
+		r->CurrentWaypoint++;
 	}
-	int direction = direction_to_next_point(enemy_pathX, enemy_pathY, r->pos_num);
-	switch (direction) {
-	case 1:
+
+    Direction direction_now = direction_to_next_point(enemy_pathX, enemy_pathY, r->CurrentWaypoint);
+	switch (direction_now) {
+	case Up:
 		r->posY -= Speed;
 		break;
-	case 2:
+	case Down:
 		r->posY += Speed;
 		break;
-	case 3:
+	case Left:
 		r->posX -= Speed;
 		break;
-	case 4:
+	case Right:
 		r->posX += Speed;
 		break;
 	}
@@ -52,23 +56,23 @@ void enemy_move(enemy* r, float enemy_pathX[], float enemy_pathY[]) {
 
 //	void enemy_death();
 
-int direction_to_next_point(float enemy_pathpointsX[], float enemy_pathpointsY[], int enemy_path_point_num) {   //Which direction to move depending on points
-	float Xdistance_between_points = (enemy_pathpointsX[enemy_path_point_num + 1] - enemy_pathpointsX[enemy_path_point_num]);
-	float Ydistance_between_points = (enemy_pathpointsY[enemy_path_point_num + 1] - enemy_pathpointsY[enemy_path_point_num]);
+Direction direction_to_next_point(float enemy_pathpointsX[], float enemy_pathpointsY[], int EnemyCurentWaypoint) {   //Which direction to move depending on points
+	float Xdistance_between_points = (enemy_pathpointsX[EnemyCurentWaypoint + 1] - enemy_pathpointsX[EnemyCurentWaypoint]);
+	float Ydistance_between_points = (enemy_pathpointsY[EnemyCurentWaypoint + 1] - enemy_pathpointsY[EnemyCurentWaypoint]);
 	if (Xdistance_between_points == 0) {
 		if (Ydistance_between_points < 0) {
-			return 1; //Upwards movement
+			return Up; //Upwards movement
 		}
 		else {
-			return 2; //Downwards movement
+			return Down; //Downwards movement
 		}
 	}
 	else if (Ydistance_between_points == 0) {
 		if (Xdistance_between_points < 0) {
-			return 3; //Left movement
+			return Left; //Left movement
 		}
 		else {
-			return 4; //Right movement
+			return Right; //Right movement
 		}
 	}
 	return 0;

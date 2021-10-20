@@ -1,3 +1,9 @@
+typedef enum Direction {
+	Up,
+	Down,
+	Left,
+	Right
+}Direction;
 
 typedef enum EnemyTypes {
 	Red,
@@ -7,11 +13,12 @@ typedef enum EnemyTypes {
 typedef enum EnemyState {
 	Moving,
 	Death
-}enemystate;
+}EnemyState;
+
 typedef struct Enemy {
-	int health, pos_num;
+	int health, CurrentWaypoint;
 	float posX, posY,enemy_width,enemy_height, angle, speed;
-	enemystate state;
+	EnemyState state;
 	EnemyTypes type;
 }enemy;
 
