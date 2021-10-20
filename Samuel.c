@@ -16,6 +16,7 @@ void turret_init(void)
 		proj[i].data.objectPositionX = 0;
 		proj[i].data.objectPositionY = 0;
 		proj[i].damage = 1.f;
+		proj[i].speed = 100.f;
 	}
 	for (int i = 0; i < MAX_TURRET; ++i)
 	{
@@ -226,8 +227,8 @@ void update_projectile(void)
 			continue;
 
 		//proj movement dir * speed * deltatime
-		proj[i].data.objectPositionX += proj[i].dir.pos_x * 100.f * CP_System_GetDt();
-		proj[i].data.objectPositionY += proj[i].dir.pos_y * 100.f * CP_System_GetDt();
+		proj[i].data.objectPositionX += proj[i].dir.pos_x * proj[i].speed * CP_System_GetDt();
+		proj[i].data.objectPositionY += proj[i].dir.pos_y * proj[i].speed * CP_System_GetDt();
 
 		//collision check here with enemy or enemy can be done in enemy update
 

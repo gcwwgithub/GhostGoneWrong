@@ -36,7 +36,7 @@ typedef struct Turret
 typedef struct Projectile
 {
 	int isActive;
-	float damage;
+	float damage, speed;
 	ObjectData data;
 	Vector2 dir;
 } Projectile;
