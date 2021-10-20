@@ -1,7 +1,6 @@
 #include "cprocessing.h"
 #include "game.h"
 #include "vector.h"
-#include <math.h>
 
 //Tools
 int Collision_Detection(ObjectData object1, ObjectData object2) {
@@ -78,6 +77,10 @@ void color_game_square(int rectRow, int rectCol, CP_Color squareColor)
 	CP_Graphics_DrawRect((Game.xOrigin + Game.gridWidth * rectCol), (Game.yOrigin + Game.gridHeight * rectRow), (Game.gridWidth), (Game.gridHeight));
 }
 
+int btn_is_pressed(ObjectData objectButtonX) {
+	return ((objectButtonX.objectPositionX - 0.5 * objectButtonX.rectLengthX) <= MouseInput.objectPositionX && MouseInput.objectPositionX <= (objectButtonX.objectPositionX + 0.5 * objectButtonX.rectLengthX)) && ((objectButtonX.objectPositionY - 0.5 * objectButtonX.rectLengthY) <= MouseInput.objectPositionY && MouseInput.objectPositionY <= (objectButtonX.objectPositionY + 0.5 * objectButtonX.rectLengthY)) ? 1 : 0;
+}
+
 //Graphics
 void game_grid_init(void) {
 	float unusableScreenHeight, unusableScreenWidth;/*Height and Width not used for game, example menu*/
@@ -151,7 +154,8 @@ void render_turret_menu(void) {
 
 void render_turret_button(Coordinates TurretButtonX, ObjectData ObjectTurretButtonX) {
 	CP_Settings_RectMode(CP_POSITION_CORNER);
-	if (Collision_Detection(MouseInput, ObjectTurretButtonX)) {
+	if (btn_is_pressed(ObjectTurretButtonX)){
+	//if (Collision_Detection(MouseInput, ObjectTurretButtonX)) {
 		CP_Settings_Fill(COLOR_GREEN);
 	}
 	else {
