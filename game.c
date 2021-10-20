@@ -12,7 +12,7 @@ void turret3_button_init(void);
 void render_game_grid(void);
 void render_game_grid_color(LevelData Level);
 void render_turret_menu(void);
-void render_turret_button(Coordinates TurretButtonX);
+void render_turret_button(Coordinates TurretButtonX, ObjectData ObjectTurretButtonX);
 
 
 void click_on_square(void);
@@ -21,7 +21,7 @@ void click_on_square(void);
 
 void game_init(void)
 {
-	CP_System_Fullscreen();
+	//CP_System_Fullscreen();
 	currentGameState = MainMenu;
 	
 	//game grid 
@@ -60,11 +60,11 @@ void game_update(void)
 	render_game_grid();
 	render_game_grid_color(Tutorial);
 	render_turret_menu();
-	render_turret_button(TurretButton0);
-	render_turret_button(TurretButton1);
-	render_turret_button(TurretButton2);
-	render_turret_button(TurretButton3);
 
+	render_turret_button(TurretButton0, ObjectTurretButton0);
+	render_turret_button(TurretButton1, ObjectTurretButton1);
+	render_turret_button(TurretButton2, ObjectTurretButton2);
+	render_turret_button(TurretButton3, ObjectTurretButton3);
 }
 void game_exit(void)
 {

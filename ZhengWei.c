@@ -1,5 +1,7 @@
 #include "cprocessing.h"
-#include"game.h"
+#include "game.h"
+#include "vector.h"
+#include <math.h>
 
 //Tools
 int Collision_Detection(ObjectData object1, ObjectData object2) {
@@ -11,26 +13,57 @@ int Collision_Detection(ObjectData object1, ObjectData object2) {
 			return 0;
 	}
 	else {
-		float rectLengthSquared;
+		float collisionDistanceSquared;
+		Vector2 RectVectorX, RectVectorY, DistanceFromPoint;
 		if (object1.objectType == objectCircle) {
-			rectLengthSquared = (0.25f * object2.rectLengthX * object2.rectLengthX) + (0.25f * object2.rectLengthY * object2.rectLengthY);
-			if (objectDistanceSquared <= (rectLengthSquared)+(object1.circleRadius * object1.circleRadius))
+			RectVectorX.pos_x = 0.5f * object2.rectLengthX;
+			RectVectorX.pos_y = 0.0f;
+			RectVectorY.pos_x = 0.0f;
+			RectVectorY.pos_y = 0.5f * object2.rectLengthY;
+			DistanceFromPoint.pos_x = object1.objectPositionX - object2.objectPositionX;
+			DistanceFromPoint.pos_y = object1.objectPositionY - object2.objectPositionY;
+			collisionDistanceSquared = (dot(RectVectorX, DistanceFromPoint) + dot(RectVectorY, DistanceFromPoint)) / magnitude(DistanceFromPoint) + (object1.circleRadius);
+			collisionDistanceSquared = collisionDistanceSquared * collisionDistanceSquared;
+			
+			if (objectDistanceSquared <= collisionDistanceSquared)
 				return 1;
 			else
 				return 0;
 		}
 		else if (object2.objectType == objectCircle) {
-			rectLengthSquared = (0.25f * object1.rectLengthX * object1.rectLengthX) + (0.25f * object1.rectLengthY * object1.rectLengthY);
-			if (objectDistanceSquared <= (rectLengthSquared)+(object2.circleRadius * object2.circleRadius))
+			
+			RectVectorX.pos_x = 0.5f * object1.rectLengthX;
+			RectVectorX.pos_y = 0.0f;
+			RectVectorY.pos_x = 0.0f;
+			RectVectorY.pos_y = 0.5f * object1.rectLengthY;
+			DistanceFromPoint.pos_x = object2.objectPositionX - object1.objectPositionX;
+			DistanceFromPoint.pos_y = object2.objectPositionY - object1.objectPositionY;
+			collisionDistanceSquared = (dot(RectVectorX, DistanceFromPoint) + dot(RectVectorY, DistanceFromPoint)) / magnitude(DistanceFromPoint) + (object1.circleRadius);
+			collisionDistanceSquared = collisionDistanceSquared * collisionDistanceSquared;
+			if (objectDistanceSquared <= collisionDistanceSquared)
 				return 1;
 			else
 				return 0;
 		}
 		else {
-			float rectLengthSquared2;
-			rectLengthSquared = (0.25f * object1.rectLengthX * object1.rectLengthX) + (0.25f * object1.rectLengthY * object1.rectLengthY);
-			rectLengthSquared2 = (0.25f * object2.rectLengthX * object2.rectLengthX) + (0.25f * object2.rectLengthY * object2.rectLengthY);
-			if (objectDistanceSquared <= (rectLengthSquared)+(rectLengthSquared2))
+			
+			Vector2 Rect2VectorX, Rect2VectorY;
+			RectVectorX.pos_x = 0.5f * object1.rectLengthX;
+			RectVectorX.pos_y = 0.0f;
+			RectVectorY.pos_x = 0.0f;
+			RectVectorY.pos_y = 0.5f * object1.rectLengthY;
+			DistanceFromPoint.pos_x = object2.objectPositionX - object1.objectPositionX;
+			DistanceFromPoint.pos_y = object2.objectPositionY - object1.objectPositionY;
+
+			Rect2VectorX.pos_x = -0.5f * object2.rectLengthX;
+			Rect2VectorX.pos_y = 0.0f;
+			Rect2VectorY.pos_x = 0.0f;
+			Rect2VectorY.pos_y = -0.5f * object2.rectLengthY;
+
+			collisionDistanceSquared = (dot(RectVectorX, DistanceFromPoint) + dot(RectVectorY, DistanceFromPoint)) / magnitude(DistanceFromPoint) + (object1.circleRadius);
+			collisionDistanceSquared = collisionDistanceSquared * collisionDistanceSquared;
+
+			if (objectDistanceSquared <= collisionDistanceSquared)
 				return 1;
 			else
 				return 0;
@@ -116,9 +149,14 @@ void render_turret_menu(void) {
 	CP_Graphics_DrawRect(TurretMenu.xOrigin, TurretMenu.yOrigin, TurretMenu.width, TurretMenu.height);
 }
 
-void render_turret_button(Coordinates TurretButtonX) {
+void render_turret_button(Coordinates TurretButtonX, ObjectData ObjectTurretButtonX) {
 	CP_Settings_RectMode(CP_POSITION_CORNER);
-	CP_Settings_Fill(COLOR_WHITE);
+	if (Collision_Detection(MouseInput, ObjectTurretButtonX)) {
+		CP_Settings_Fill(COLOR_GREEN);
+	}
+	else {
+		CP_Settings_Fill(COLOR_WHITE);
+	}
 	CP_Graphics_DrawRect(TurretButtonX.xOrigin, TurretButtonX.yOrigin, TurretButtonX.width, TurretButtonX.height);
 }
 
@@ -175,11 +213,31 @@ void render_game_grid_color(LevelData Level) {
 void object_init(void) {
 	MouseInput.circleRadius = 0.0f;
 	MouseInput.objectType = objectCircle;
-	MouseInput.objectPositionX = 0.0f;
-	MouseInput.objectPositionY = 0.0f;
-	objectGameGrid.objectType = objectRectangle;
-	objectGameGrid.objectPositionX = Game.xOrigin + (((GAME_GRID_COLS - 1) / 2.0f + 0.5f) * Game.gridWidth);
-	objectGameGrid.objectPositionY = Game.yOrigin + (((GAME_GRID_ROWS - 1) / 2.0f + 0.5f) * Game.gridHeight);
-	objectGameGrid.rectLengthX = Game.width;
-	objectGameGrid.rectLengthY = Game.height;
+	MouseInput.objectPositionX = (float)CP_System_GetWindowWidth() / 2;
+	MouseInput.objectPositionY = (float)CP_System_GetWindowHeight() / 2;
+	
+	ObjectTurretButton0.objectPositionX = TurretButton0.xOrigin + 0.5f * TurretButton0.width;
+	ObjectTurretButton0.objectPositionY = TurretButton0.yOrigin + 0.5f * TurretButton0.height;
+	ObjectTurretButton0.rectLengthX = TurretButton0.width;
+	ObjectTurretButton0.rectLengthY = TurretButton0.height;
+	ObjectTurretButton0.objectType = objectRectangle;
+	
+	ObjectTurretButton1.objectPositionX = TurretButton1.xOrigin + 0.5f * TurretButton1.width;
+	ObjectTurretButton1.objectPositionY = TurretButton1.yOrigin + 0.5f * TurretButton1.height;
+	ObjectTurretButton1.rectLengthX = TurretButton1.width;
+	ObjectTurretButton1.rectLengthY = TurretButton1.height;
+	ObjectTurretButton1.objectType = objectRectangle;
+
+	ObjectTurretButton2.objectPositionX = TurretButton2.xOrigin + 0.5f * TurretButton2.width;
+	ObjectTurretButton2.objectPositionY = TurretButton2.yOrigin + 0.5f * TurretButton2.height;
+	ObjectTurretButton2.rectLengthX = TurretButton2.width;
+	ObjectTurretButton2.rectLengthY = TurretButton2.height;
+	ObjectTurretButton2.objectType = objectRectangle;
+
+	ObjectTurretButton3.objectPositionX = TurretButton3.xOrigin + 0.5f * TurretButton3.width;
+	ObjectTurretButton3.objectPositionY = TurretButton3.yOrigin + 0.5f * TurretButton3.height;
+	ObjectTurretButton3.rectLengthX = TurretButton3.width;
+	ObjectTurretButton3.rectLengthY = TurretButton3.height;
+	ObjectTurretButton3.objectType = objectRectangle;
+
 }

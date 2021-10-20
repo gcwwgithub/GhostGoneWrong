@@ -20,6 +20,7 @@ GameCoordinates Game;;
 #define COLOR_RED CP_Color_Create(255, 0, 0, 255)
 #define COLOR_BLUE CP_Color_Create(0, 0, 255, 255)
 #define COLOR_GREY CP_Color_Create(128, 128, 128, 255)
+#define COLOR_GREEN CP_Color_Create(0, 255, 0, 255)
 
 //Font
 #define GAME_FONT CP_Font_Load("Assets/VT323-Regular.ttf")
@@ -73,7 +74,6 @@ typedef struct ObjectData {
 }ObjectData;
 
 ObjectData MouseInput;
-ObjectData objectGameGrid;
 
 void object_init(void);
 int Collision_Detection(ObjectData object1, ObjectData object2);
@@ -87,7 +87,11 @@ typedef struct Coordinates {
 }Coordinates;
 
 Coordinates TurretMenu;
+ObjectData ObjectTurretButton0;
 Coordinates TurretButton0;
+ObjectData ObjectTurretButton1;
 Coordinates TurretButton1;
+ObjectData ObjectTurretButton2;
 Coordinates TurretButton2;
+ObjectData ObjectTurretButton3;
 Coordinates TurretButton3;
