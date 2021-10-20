@@ -36,6 +36,7 @@ typedef struct Turret
 typedef struct Projectile
 {
 	int isActive;
+	float damage;
 	ObjectData data;
 	Vector2 dir;
 } Projectile;
@@ -46,21 +47,20 @@ void turret_init(void);
 //use this to place turret/spawn turret (pass in type and the position)
 void place_turret(TurretType type, float x, float y);
 
-void render_turret(Turret* t);
-//void render_turret(void);
+//void render_turret(Turret* t);
+void render_turret(void);
 
-void update_turret(Turret* t);
-//void update_turret(void);
+//void update_turret(Turret* t);
+void update_turret(void);
 
 void shoot(float x, float y, Vector2 dir);
 
-void projectile_update();
+void update_projectile(void);
 
-//void draw_projectile(Projectile p);
+void render_projectile(void);
 
 Projectile proj[MAX_PROJECTILE];
 Turret turret[MAX_TURRET];
 
 //test variables
-Turret test;
 CP_Image turret_img;
