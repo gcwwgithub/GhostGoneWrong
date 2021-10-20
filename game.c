@@ -5,7 +5,7 @@ void game_square_color(LevelData* Level);
 void draw_game_grid(void);
 void color_game_grid(LevelData Level);
 void click_on_square(void);
-void Initialize_object(void);
+
 
 
 void game_init(void)

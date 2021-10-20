@@ -65,3 +65,6 @@ typedef struct ObjectData {
 }ObjectData;
 
 ObjectData MouseInput;
+
+void Initialize_object(void);
+int Collision_Detection(ObjectData object1, ObjectData object2);
