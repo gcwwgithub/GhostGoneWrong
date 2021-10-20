@@ -16,7 +16,7 @@ void render_turret_button(Coordinates TurretButtonX, ObjectData ObjectTurretButt
 
 void game_init(void)
 {
-	CP_System_Fullscreen();
+	//CP_System_Fullscreen();
 	currentGameState = MainMenu;
 	
 	//game grid 
@@ -58,7 +58,6 @@ void game_update(void)
 	render_turret_button(TurretButton1, ObjectTurretButton1);
 	render_turret_button(TurretButton2, ObjectTurretButton2);
 	render_turret_button(TurretButton3, ObjectTurretButton3);
-
 }
 void game_exit(void)
 {

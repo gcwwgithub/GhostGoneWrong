@@ -137,11 +137,11 @@ void click_on_square(LevelData level)
 	else if (turretButton1Clicked)
 	{
 		CP_Font_DrawText("Turret button 1", CP_System_GetWindowWidth() * 0.9f, CP_System_GetWindowHeight() * 0.1f);
-	}	
+	}
 	else if (turretButton2Clicked)
 	{
 		CP_Font_DrawText("Turret button 2", CP_System_GetWindowWidth() * 0.9f, CP_System_GetWindowHeight() * 0.1f);
-	}	
+	}
 	else if (turretButton3Clicked)
 	{
 		CP_Font_DrawText("Turret button 3", CP_System_GetWindowWidth() * 0.9f, CP_System_GetWindowHeight() * 0.1f);
@@ -176,3 +176,46 @@ void exit_game(void)
 	CP_Engine_Terminate();
 }
 
+#pragma region UI
+
+void text_button_constructor(float buttonPosX, float buttonPosY, float buttonWidth, float buttonHeight, float textPosX, float textPosY, char string[])
+{
+	CP_Graphics_DrawRect(buttonPosX, buttonPosY, buttonWidth, buttonHeight);
+	CP_Font_DrawText(string, textPosX, textPosY);
+}
+
+void main_menu_buttons(void)
+{
+	// functionalities of the 3 main menu buttons
+}
+
+void render_mmenu_buttons(void)
+{
+	// render the main menu buttons
+
+	//CP_Graphics_DrawRect(CP_System_GetWindowWidth() / 7 * 2, )
+	//text_button_constructor(CP_System_GetWindowWidth() / 7 * 2.0f, CP_System_GetWindowHeight() * 0.75f, 50.0f, 20.0f, CP_System_GetWindowWidth() / 7 * 2 + 25.0f, CP_System_GetWindowHeight() * 0.75f + 10.0f, "Play");
+
+}
+
+void level_select_buttons(void)
+{
+	// functionalities of the 5 level buttons
+}
+
+void render_level_select_buttons(void)
+{
+	// render the 5 level buttons
+}
+
+void credits_screen(void)
+{
+	// just render text and other things here
+}
+
+void main_game_screen(void)
+{
+	// render game screen here
+}
+
+#pragma endregion
