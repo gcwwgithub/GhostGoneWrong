@@ -1,4 +1,5 @@
 typedef enum Direction {
+	NoMove,
 	Up,
 	Down,
 	Left,
@@ -17,7 +18,7 @@ typedef enum EnemyState {
 
 typedef struct Enemy {
 	int health, CurrentWaypoint;
-	float posX, posY,enemy_width,enemy_height, angle, speed;
+	float posX, posY, enemy_width, enemy_height, angle, speed;
 	EnemyState state;
 	EnemyTypes type;
 }enemy;
@@ -25,8 +26,8 @@ typedef struct Enemy {
 void enemy_init(void);
 void Draw_enemy(enemy* r);
 void enemy_move(enemy* r, float Enemy_PathpointsX[], float Enemy_PathY[], int number_of_points);
-int direction_to_next_point(float enemy_pathpointsX[], float enemy_pathpointsY[], int enemy_path_point_num);
-int update_point_num(float enemy_pathpointsX[], float enemy_pathpointsY[], float enemy_posX, float enemy_posY, int enemy_path_point_num);
+int direction_to_next_point(float enemy_pathpointsX[], float enemy_pathpointsY[], enemy* r);
+int update_point_num(float enemy_pathpointsX[], float enemy_pathpointsY[], enemy* r);
 int Collision(enemy* r, float x, float y);
 
 enemy test;
