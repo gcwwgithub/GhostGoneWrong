@@ -1,9 +1,8 @@
 #include "cprocessing.h"
 #include "game.h"
+#include "Anderson.h"
 
 CP_Font debugSquareFont;
-
-Coordinates pauseButton;
 
 int redSquareClicked = 0;
 int blueSquareClicked = 0;
@@ -30,7 +29,7 @@ int withinBoundaries(float minX, float minY, float maxX, float maxY)
 
 // This should output the color of the square that is clicked.
 // This is dependent on the level set input.
-void click_on_square(LevelData level)
+void detect_grid_square_color(LevelData level)
 {
 	int color = 4; // max value of GridState + 1
 	if (CP_Input_MouseTriggered(MOUSE_BUTTON_1))
@@ -91,22 +90,22 @@ void click_on_square(LevelData level)
 			}
 		}
 		// if clicked outside the grid
-		else if (withinBoundaries(TurretButton0.xOrigin, TurretButton0.yOrigin, TurretButton0.xOrigin + TurretButton0.width, TurretButton0.yOrigin + TurretButton0.height))
-		{
-			turretButton0Clicked = 1;
-		}
-		else if (withinBoundaries(TurretButton1.xOrigin, TurretButton1.yOrigin, TurretButton1.xOrigin + TurretButton1.width, TurretButton1.yOrigin + TurretButton1.height))
-		{
-			turretButton1Clicked = 1;
-		}
-		else if (withinBoundaries(TurretButton2.xOrigin, TurretButton2.yOrigin, TurretButton2.xOrigin + TurretButton2.width, TurretButton2.yOrigin + TurretButton2.height))
-		{
-			turretButton2Clicked = 1;
-		}
-		else if (withinBoundaries(TurretButton3.xOrigin, TurretButton3.yOrigin, TurretButton3.xOrigin + TurretButton3.width, TurretButton3.yOrigin + TurretButton3.height))
-		{
-			turretButton3Clicked = 1;
-		}
+		//else if (withinBoundaries(TurretButton0.xOrigin, TurretButton0.yOrigin, TurretButton0.xOrigin + TurretButton0.width, TurretButton0.yOrigin + TurretButton0.height))
+		//{
+		//	turretButton0Clicked = 1;
+		//}
+		//else if (withinBoundaries(TurretButton1.xOrigin, TurretButton1.yOrigin, TurretButton1.xOrigin + TurretButton1.width, TurretButton1.yOrigin + TurretButton1.height))
+		//{
+		//	turretButton1Clicked = 1;
+		//}
+		//else if (withinBoundaries(TurretButton2.xOrigin, TurretButton2.yOrigin, TurretButton2.xOrigin + TurretButton2.width, TurretButton2.yOrigin + TurretButton2.height))
+		//{
+		//	turretButton2Clicked = 1;
+		//}
+		//else if (withinBoundaries(TurretButton3.xOrigin, TurretButton3.yOrigin, TurretButton3.xOrigin + TurretButton3.width, TurretButton3.yOrigin + TurretButton3.height))
+		//{
+		//	turretButton3Clicked = 1;
+		//}
 	}
 
 	debugSquareFont = GAME_FONT;
@@ -159,17 +158,6 @@ void draw_pause_button(float buttonPosX, float buttonPosY)
 }
 */
 
-void click_on_pause(float x, float y)
-{
-	if (CP_Input_MouseTriggered(MOUSE_BUTTON_1))
-	{
-		//if (withinBoundaries(imagePosX, imagePosY, imagePosX + CP_Image_GetWidth(pauseButton), imagePosY + CP_Image_GetHeight(pauseButton)))
-		{
-			// game is paused.
-		}
-	}
-}
-
 // Terminates game.
 void exit_game(void)
 {
@@ -178,24 +166,93 @@ void exit_game(void)
 
 #pragma region UI
 
-void text_button_constructor(float buttonPosX, float buttonPosY, float buttonWidth, float buttonHeight, float textPosX, float textPosY, char string[])
+// Assuming all buttons are rectangles
+void init_text_button(Button button, float buttonPosX, float buttonPosY, float buttonWidth, float buttonHeight, float textPosX, float textPosY, char string[])
 {
+	button.buttonData.xOrigin = buttonPosX;
+	button.buttonData.yOrigin = buttonPosY;
+	button.buttonData.width = buttonWidth;
+	button.buttonData.height = buttonHeight;
+	button.buttonData.objectType = objectRectangle;
+	button.textPositionX = textPosX;
+	button.textPositionY = textPosY;
+	strcpy_s(button.textString, sizeof(string), string);
+}
+
+void render_game_title(void)
+{
+	debugSquareFont = GAME_FONT;
+	CP_Font_Set(debugSquareFont);
+	CP_Settings_Fill(COLOR_BLUE);
+	CP_Settings_TextSize(20.0f); // also affects the two button text sizes
+	CP_Font_DrawText("Vector Defence", CP_System_GetWindowWidth() * 0.35f, CP_System_GetWindowHeight() * 0.25f);
+}
+
+void init_play_button(void)
+{
+	PlayButton.buttonData.xOrigin = CP_System_GetWindowWidth() / 7 * 1.0f;
+	PlayButton.buttonData.yOrigin = CP_System_GetWindowHeight() * 0.5f;
+	PlayButton.buttonData.width = BUTTON_WIDTH;
+	PlayButton.buttonData.height = BUTTON_HEIGHT;
+
+	PlayButton.textPositionX = PlayButton.buttonData.xOrigin + BUTTON_WIDTH / 4;
+	PlayButton.textPositionY = PlayButton.buttonData.yOrigin + BUTTON_HEIGHT * 0.8f;
+	strcpy_s(PlayButton.textString, sizeof("Play"), "Play");
+}
+
+void init_quit_button(void)
+{
+	QuitButton.buttonData.xOrigin = CP_System_GetWindowWidth() / 7 * 5.0f;
+	QuitButton.buttonData.yOrigin = CP_System_GetWindowHeight() * 0.5f;
+	QuitButton.buttonData.width = BUTTON_WIDTH;
+	QuitButton.buttonData.height = BUTTON_HEIGHT;
+
+	QuitButton.textPositionX = QuitButton.buttonData.xOrigin + BUTTON_WIDTH / 4;
+	QuitButton.textPositionY = QuitButton.buttonData.yOrigin + BUTTON_HEIGHT * 0.8f;
+	strcpy_s(QuitButton.textString, sizeof("Quit"), "Quit");
+}
+
+
+/*void text_button_constructor(float buttonPosX, float buttonPosY, float buttonWidth, float buttonHeight, float textPosX, float textPosY, char string[])
+{	// rendering by coordinates
+	CP_Settings_Fill(COLOR_BLACK);
 	CP_Graphics_DrawRect(buttonPosX, buttonPosY, buttonWidth, buttonHeight);
+	CP_Settings_Fill(COLOR_WHITE);
 	CP_Font_DrawText(string, textPosX, textPosY);
+}*/
+
+void render_ui_button(Button button)
+{
+	CP_Settings_Fill(COLOR_BLACK);
+	CP_Graphics_DrawRect(button.buttonData.xOrigin, button.buttonData.yOrigin, button.buttonData.width, button.buttonData.height);
+	CP_Settings_Fill(COLOR_WHITE);
+	CP_Font_DrawText(button.textString, button.textPositionX, button.textPositionY);
+}
+
+// number of levels is hardcoded.
+// LSelect buttons seperated by pure vertical gap that is BUTTON_HEIGHT units long.
+// Resolve tmmrw.
+void init_level_select_buttons(void)
+{
+	// should prob move this next line somewhere else
+	//CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_CENTER, CP_TEXT_ALIGN_V_MIDDLE);
+	for (int i = 0; i < 5; i++)
+	{
+		char levelNumberText[8] = {"Level"};
+		levelButtons[i].buttonData.xOrigin = CP_System_GetWindowWidth() / 2 - BUTTON_WIDTH / 2.0f;
+		levelButtons[i].buttonData.yOrigin = (CP_System_GetWindowHeight() / 3 + i * BUTTON_HEIGHT) + i * 25.0f;
+		levelButtons[i].buttonData.width = BUTTON_WIDTH;
+		levelButtons[i].buttonData.height = BUTTON_HEIGHT;
+
+		levelButtons[i].textPositionX = levelButtons[i].buttonData.xOrigin + BUTTON_WIDTH * 0.1f;
+		levelButtons[i].textPositionY = levelButtons[i].buttonData.yOrigin + BUTTON_HEIGHT / 1.5f;
+		strcpy_s(levelButtons[i].textString, sizeof(levelNumberText), levelNumberText);
+	}
 }
 
 void main_menu_buttons(void)
 {
 	// functionalities of the 3 main menu buttons
-}
-
-void render_mmenu_buttons(void)
-{
-	// render the main menu buttons
-
-	//CP_Graphics_DrawRect(CP_System_GetWindowWidth() / 7 * 2, )
-	//text_button_constructor(CP_System_GetWindowWidth() / 7 * 2.0f, CP_System_GetWindowHeight() * 0.75f, 50.0f, 20.0f, CP_System_GetWindowWidth() / 7 * 2 + 25.0f, CP_System_GetWindowHeight() * 0.75f + 10.0f, "Play");
-
 }
 
 void level_select_buttons(void)
@@ -206,6 +263,10 @@ void level_select_buttons(void)
 void render_level_select_buttons(void)
 {
 	// render the 5 level buttons
+	for (int i = 0; i < 5; i++)
+	{
+		render_ui_button(levelButtons[i]);
+	}
 }
 
 void credits_screen(void)
