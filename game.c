@@ -66,7 +66,6 @@ void game_update(void)
 
 	render_turret();
 	render_projectile();
-
 }
 void game_exit(void)
 {
