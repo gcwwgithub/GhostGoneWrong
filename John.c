@@ -27,16 +27,16 @@ void Draw_enemy(enemy* r) {
 	}
 }
 
-void enemy_move(enemy* r, float enemy_pathX[], float enemy_pathY[],int number_of_points) {
+void enemy_move(enemy* r, float Enemy_PathpointsX[], float Enemy_PathY[],int number_of_points) {
 	float Speed = (r->speed) * CP_System_GetDt();
-	if (update_point_num(enemy_pathX, enemy_pathY, r->posX, r->posY, r->CurrentWaypoint) == 1) {
+	if (update_point_num(Enemy_PathpointsX, Enemy_PathY, r->posX, r->posY, r->CurrentWaypoint) == 1) {
 		if (r->CurrentWaypoint == number_of_points) {
 			
 		}
 		r->CurrentWaypoint++;
 	}
 
-    Direction direction_now = direction_to_next_point(enemy_pathX, enemy_pathY, r->CurrentWaypoint);
+    Direction direction_now = direction_to_next_point(Enemy_PathpointsX, Enemy_PathY, r->CurrentWaypoint);
 	switch (direction_now) {
 	case Up:
 		r->posY -= Speed;
@@ -56,9 +56,9 @@ void enemy_move(enemy* r, float enemy_pathX[], float enemy_pathY[],int number_of
 
 //	void enemy_death();
 
-Direction direction_to_next_point(float enemy_pathpointsX[], float enemy_pathpointsY[], int EnemyCurentWaypoint) {   //Which direction to move depending on points
-	float Xdistance_between_points = (enemy_pathpointsX[EnemyCurentWaypoint + 1] - enemy_pathpointsX[EnemyCurentWaypoint]);
-	float Ydistance_between_points = (enemy_pathpointsY[EnemyCurentWaypoint + 1] - enemy_pathpointsY[EnemyCurentWaypoint]);
+Direction direction_to_next_point(float Enemy_PathpointsX[], float Enemy_PathpointsY[], int EnemyCurentWaypoint) {   //Which direction to move depending on points
+	float Xdistance_between_points = (Enemy_PathpointsX[EnemyCurentWaypoint + 1] - Enemy_PathpointsX[EnemyCurentWaypoint]);
+	float Ydistance_between_points = (Enemy_PathpointsY[EnemyCurentWaypoint + 1] - Enemy_PathpointsY[EnemyCurentWaypoint]);
 	if (Xdistance_between_points == 0) {
 		if (Ydistance_between_points < 0) {
 			return Up; //Upwards movement
