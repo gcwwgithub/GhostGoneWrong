@@ -1,6 +1,7 @@
 #include "cprocessing.h"
 #include"game.h"
 
+//Graphics
 void draw_game_grid(void)
 {
 	int currentGridRow = 0, currentGridCol = 0;
@@ -36,6 +37,7 @@ void color_game_grid(const LevelData Level) {
 	}
 }
 
+//Level
 void game_square_color(LevelData* Level) {
 	for (int i = 0; i < GAME_GRID_ROWS; i++) {
 		for (int j = 0; j < GAME_GRID_COLS; j++) {
@@ -70,9 +72,18 @@ void game_square_color(LevelData* Level) {
 		counter++;
 	}
 }
+
+//CollisionDetection;
 void Initialize_object(void) {
 	MouseInput.circleRadius = 0.0f;
 	MouseInput.objectType = objectCircle;
+	MouseInput.objectPositionX = 0.0f;
+	MouseInput.objectPositionY = 0.0f;
+	objectGameGrid.objectType = objectRectangle;
+	objectGameGrid.objectPositionX = GAME_X_ORIGIN + (((GAME_GRID_COLS - 1) / 2.0f + 0.5f) * Game_Grid_Width);
+	objectGameGrid.objectPositionY = GAME_Y_ORIGIN + (((GAME_GRID_ROWS - 1) / 2.0f + 0.5f) * Game_Grid_Height);
+	objectGameGrid.rectLengthX = Game_Width;
+	objectGameGrid.rectLengthY = Game_Height;
 }
 
 int Collision_Detection(ObjectData object1, ObjectData object2) {
@@ -84,26 +95,26 @@ int Collision_Detection(ObjectData object1, ObjectData object2) {
 			return 0;
 	}
 	else {
-		float rectLength;
+		float rectLengthSquared;
 		if (object1.objectType == objectCircle) {
-			rectLength = (object2.rectLengthX * object2.rectLengthX) + (object2.rectLengthY * object2.rectLengthY);
-			if (objectDistanceSquared <= (rectLength * rectLength) + (object1.circleRadius * object1.circleRadius))
+			rectLengthSquared = (0.25f * object2.rectLengthX * object2.rectLengthX) + (0.25f * object2.rectLengthY * object2.rectLengthY);
+			if (objectDistanceSquared <= (rectLengthSquared) + (object1.circleRadius * object1.circleRadius))
 				return 1;
 			else
 				return 0;
 		}
 		else if (object2.objectType == objectCircle) {
-			rectLength = (object1.rectLengthX * object1.rectLengthX) + (object1.rectLengthY * object1.rectLengthY);
-			if (objectDistanceSquared <= (rectLength * rectLength) + (object2.circleRadius * object2.circleRadius))
+			rectLengthSquared = (0.25f * object1.rectLengthX * object1.rectLengthX) + (0.25f * object1.rectLengthY * object1.rectLengthY);
+			if (objectDistanceSquared <= (rectLengthSquared) + (object2.circleRadius * object2.circleRadius))
 				return 1;
 			else
 				return 0;
 		}
 		else {
-			float rectLength2;
-			rectLength = (object1.rectLengthX * object1.rectLengthX) + (object1.rectLengthY * object1.rectLengthY);
-			rectLength2 = (object2.rectLengthX * object2.rectLengthX) + (object2.rectLengthY * object2.rectLengthY);
-			if (objectDistanceSquared <= (rectLength * rectLength) + (rectLength2 * rectLength2))
+			float rectLengthSquared2;
+			rectLengthSquared = (0.25f * object1.rectLengthX * object1.rectLengthX) + (0.25f * object1.rectLengthY * object1.rectLengthY);
+			rectLengthSquared2 = (0.25f * object2.rectLengthX * object2.rectLengthX) + (0.25f * object2.rectLengthY * object2.rectLengthY);
+			if (objectDistanceSquared <= (rectLengthSquared) + (rectLengthSquared2))
 				return 1;
 			else
 				return 0;

@@ -10,7 +10,7 @@ void click_on_square(void);
 
 void game_init(void)
 {
-	CP_System_Fullscreen();
+	//CP_System_Fullscreen();
 	currentGameState = MainMenu;
 	
 	//game grid 
@@ -38,9 +38,15 @@ void game_init(void)
 
 void game_update(void)
 {
-	if (CP_Input_MouseTriggered) {
+	if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
 		MouseInput.objectPositionX = CP_Input_GetMouseX();
 		MouseInput.objectPositionY = CP_Input_GetMouseY();
+	}
+	if (Collision_Detection(MouseInput, objectGameGrid)) {
+
+		CP_Settings_RectMode(CP_POSITION_CORNER);
+		CP_Settings_Fill(COLOR_BLACK);
+		CP_Graphics_DrawRect((GAME_X_ORIGIN), (GAME_Y_ORIGIN), (Game_Grid_Width), (Game_Grid_Height));
 	}
 	click_on_square();
 
