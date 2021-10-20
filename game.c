@@ -1,5 +1,6 @@
 #include "cprocessing.h"
 #include"game.h"
+#include "Samuel.h"
 
 void game_grid_init(void);
 void game_grid_color_init(LevelData* Level);
@@ -51,6 +52,9 @@ void game_update(void)
 		MouseInput.yOrigin = CP_Input_GetMouseY();
 	}
 
+	update_turret();
+	update_projectile();
+
 	render_game_grid();
 	render_game_grid_color(Tutorial);
 	render_turret_menu();
@@ -60,6 +64,8 @@ void game_update(void)
 	render_turret_button(TurretButton2);
 	render_turret_button(TurretButton3);
 
+	render_turret();
+	render_projectile();
 }
 void game_exit(void)
 {
