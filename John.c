@@ -8,30 +8,30 @@ void enemy_test_init(void)  //Initialising test enemy
 	test.health = 5;
 	test.speed = 8;
 	test.CurrentWaypoint = 0;
-	test.data.objectPositionX = (float)(Game.xOrigin + Game.gridWidth * 1.5);
-	test.data.objectPositionY = (float)(Game.yOrigin + Game.gridHeight * 0.5);
+	test.data.xOrigin = (float)(Game.xOrigin + Game.gridWidth * 1.5);
+	test.data.yOrigin = (float)(Game.yOrigin + Game.gridHeight * 0.5);
 	test.enemy_width = Game.gridWidth;
 	test.enemy_height = Game.gridHeight;
 	test.angle = 180;
 	test.type = Red;
 	test.alpha = 255;
-	test.data.objectType = objectRectangle;
-	test.data.rectLengthX = test.enemy_width;
-	test.data.rectLengthY = test.enemy_height;
+	test.data.objectType = objectCircle;
+	test.data.width = test.enemy_height;
+	test.data.height = test.enemy_height;
 	test.state = Moving;
 	count = 0;
 	Draw_Red_arrow = CP_Image_Load("./Assets/Enemies_clone.png");
 	//test path
 	for (int i = 0; i < 2; i++) {
-		Xarray[i] = test.data.objectPositionX;
-		Yarray[i] = (test.data.objectPositionY + Game.gridHeight * 6 * i);
+		Xarray[i] = test.data.xOrigin;
+		Yarray[i] = (test.data.yOrigin + Game.gridHeight * 6 * i);
 	}
 }
 
 void Draw_enemy(enemy* r) { //Draws the enemy
 	switch (r->type) {
 	case Red:
-		CP_Image_DrawAdvanced(Draw_Red_arrow, r->data.objectPositionX, r->data.objectPositionY, r->enemy_width, r->enemy_height, r->alpha, r->angle);
+		CP_Image_DrawAdvanced(Draw_Red_arrow, r->data.xOrigin, r->data.yOrigin, r->enemy_width, r->enemy_height, r->alpha, r->angle);
 		break;
 	case Blue:
 		break;
@@ -48,16 +48,16 @@ void enemy_move(enemy* r, float Enemy_PathpointsX[], float Enemy_PathpointsY[], 
 	Direction direction_now = direction_to_next_point(Enemy_PathpointsX, Enemy_PathpointsY, r);
 	switch (direction_now) {
 	case Up:
-		r->data.objectPositionY -= Speed;
+		r->data.yOrigin -= Speed;
 		break;
 	case Down:
-		r->data.objectPositionY += Speed;
+		r->data.yOrigin += Speed;
 		break;
 	case Left:
-		r->data.objectPositionX -= Speed;
+		r->data.xOrigin -= Speed;
 		break;
 	case Right:
-		r->data.objectPositionX += Speed;
+		r->data.xOrigin += Speed;
 		break;
 	case NoMove:
 		break;
@@ -92,9 +92,9 @@ Direction direction_to_next_point(float Enemy_PathpointsX[], float Enemy_Pathpoi
 }
 
 int update_point_num(float Enemy_PathpointsX[], float Enemy_PathpointsY[], enemy* r) { //Update position to move towards next point 
-	float covered_distanceX = (float)fabs((double)r->data.objectPositionX - (Enemy_PathpointsX[r->CurrentWaypoint]));
+	float covered_distanceX = (float)fabs((double)r->data.xOrigin - (Enemy_PathpointsX[r->CurrentWaypoint]));
 	float distance_between_pointsX = (float)fabs((double)Enemy_PathpointsX[r->CurrentWaypoint + 1] - (Enemy_PathpointsX[r->CurrentWaypoint]));
-	float covered_distanceY = (float)fabs((double)r->data.objectPositionY - (Enemy_PathpointsY[r->CurrentWaypoint]));
+	float covered_distanceY = (float)fabs((double)r->data.yOrigin - (Enemy_PathpointsY[r->CurrentWaypoint]));
 	float distance_between_pointsY = (float)fabs((double)Enemy_PathpointsY[r->CurrentWaypoint + 1] - (Enemy_PathpointsY[r->CurrentWaypoint]));
 
 	if (distance_between_pointsX <= covered_distanceX) {

@@ -1,6 +1,7 @@
 #include "cprocessing.h"
 #include"game.h"
 #include "Samuel.h"
+#include "John.h"
 
 void game_grid_init(void);
 void game_grid_color_init(LevelData* Level);
@@ -46,6 +47,7 @@ void game_init(void)
 
 	game_grid_color_init(&Tutorial);
 	turret_init();
+	enemy_test_init();
 }
 
 void game_update(void)
@@ -70,6 +72,12 @@ void game_update(void)
 
 	render_turret();
 	render_projectile();
+
+
+	//test enemy
+	enemy_move(&test, Xarray, Yarray, 2);
+	Draw_enemy(&test);
+	EnemyDeath(&test);
 }
 void game_exit(void)
 {

@@ -21,8 +21,8 @@ typedef enum EnemyState {
 
 typedef struct Enemy {
 	int CurrentWaypoint, alpha;
-	float objectPositionX, objectPositionY, enemy_width, enemy_height, health, angle, speed;
-	ObjectData data;
+	float xOrigin, yOrigin, enemy_width, enemy_height, health, angle, speed;
+	Coordinates data;
 	EnemyState state;
 	EnemyTypes type;
 }enemy;
@@ -32,7 +32,7 @@ void Draw_enemy(enemy* r);
 void enemy_move(enemy* r, float Enemy_PathpointsX[], float Enemy_PathY[], int number_of_points);
 int direction_to_next_point(float enemy_pathpointsX[], float enemy_pathpointsY[], enemy* r);
 int update_point_num(float enemy_pathpointsX[], float enemy_pathpointsY[], enemy* r);
-int Collision(enemy* r, float x, float y);
+
 void EnemyDeath(enemy* r);
 
 enemy test;
