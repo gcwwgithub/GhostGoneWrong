@@ -142,7 +142,7 @@ void turret0_button_init(void) {
 }
 
 void turret1_button_init(void) {
-	TurretButton1.xOrigin = TurretMenu.xOrigin;
+	TurretButton1.xOrigin = TurretMenu.xOrigin + 1;
 	TurretButton1.yOrigin = TurretButton0.yOrigin + TurretButton0.height; //1/4 of the space is for other uses
 	TurretButton1.width = TurretMenu.width;
 	TurretButton1.height = TurretButton0.height;
@@ -150,7 +150,7 @@ void turret1_button_init(void) {
 }
 
 void turret2_button_init(void) {
-	TurretButton2.xOrigin = TurretMenu.xOrigin;
+	TurretButton2.xOrigin = TurretMenu.xOrigin + 1;
 	TurretButton2.yOrigin = TurretButton1.yOrigin + TurretButton1.height; //1/4 of the space is for other uses
 	TurretButton2.width = TurretMenu.width;
 	TurretButton2.height = TurretButton0.height;
@@ -158,7 +158,7 @@ void turret2_button_init(void) {
 }
 
 void turret3_button_init(void) {
-	TurretButton3.xOrigin = TurretMenu.xOrigin;
+	TurretButton3.xOrigin = TurretMenu.xOrigin + 1;
 	TurretButton3.yOrigin = TurretButton2.yOrigin + TurretButton2.height; //1/4 of the space is for other uses
 	TurretButton3.width = TurretMenu.width;
 	TurretButton3.height = TurretButton0.height;
@@ -169,7 +169,7 @@ void pause_button_init(void){
 	PauseButton.xOrigin = 0.0f;
 	PauseButton.yOrigin = 0.0f;
 	PauseButton.width = TurretMenu.width / 2;
-	PauseButton.height = TurretButton0.yOrigin;
+	PauseButton.height = TurretButton0.yOrigin - 1;
 	PauseButton.objectType = objectRectangle;
 }
 
