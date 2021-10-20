@@ -33,8 +33,8 @@ void turret_init(void)
 		turret[i].damage = 1.f;
 	}
 								
-	turret[0].data.objectPositionX = Game.xOrigin + (Game.gridWidth * (2 + 0.5f));
-	turret[0].data.objectPositionY = Game.yOrigin + (Game.gridHeight * (1 + 0.5f));
+	turret[0].data.xOrigin = Game.xOrigin + (Game.gridWidth * (2 + 0.5f));
+	turret[0].data.yOrigin = Game.yOrigin + (Game.gridHeight * (1 + 0.5f));
 	turret[0].size = Game.gridHeight;
 	turret[0].dir = v;
 	turret[0].angle = 0;
@@ -203,12 +203,11 @@ void update_turret(void)
 		//	break;
 		//}
 
-
 #if _DEBUG
 		//Debug test code with enemy
 		Vector2 v1;
-		v1.pos_x = test.posX - turret[i].data.objectPositionX;
-		v1.pos_y = test.posY - turret[i].data.objectPositionY;
+		v1.pos_x = test.posX - turret[i].data.xOrigin;
+		v1.pos_y = test.posY - turret[i].data.yOrigin;
 		if (magnitude_sq(v1) <= turret[i].range * turret[i].range)
 		{
 			turret[i].dir = v1;;
@@ -216,20 +215,15 @@ void update_turret(void)
 			turret[i].angle = atan2f(turret[i].dir.pos_y, turret[i].dir.pos_x) * 180.f / (float)PI;
 			turret[i].cooldown -= 1.f * CP_System_GetDt();
 
-		turret[i].dir.pos_x = CP_Input_GetMouseX() - turret[i].data.objectPositionX;
-		turret[i].dir.pos_y = CP_Input_GetMouseY() - turret[i].data.objectPositionY;
-		//normalise the vector
-		turret[i].dir = normalise(turret[i].dir);
-		//get angle to rotate
-		turret[i].angle = atan2f(turret[i].dir.pos_y, turret[i].dir.pos_x) * 180.f / (float)PI;
-
-		turret[i].cooldown -= 1.f * CP_System_GetDt();
-		if (turret[i].cooldown <= 0)
-		{
-			shoot(turret[i].data.xOrigin, turret[i].data.yOrigin, turret[i].dir);
-			turret[i].cooldown = 2.f;
+			if (turret[i].cooldown <= 0)
+			{
+				shoot(turret[i].data.xOrigin, turret[i].data.yOrigin, turret[i].dir);
+				turret[i].cooldown = 2.f;
+			}
 		}
-		*/
+#endif
+
+		
 	}
 }
 
@@ -247,7 +241,8 @@ void shoot(float x, float y, Vector2 dir)
 		proj[i].data.xOrigin = x;
 		proj[i].data.yOrigin = y;
 		proj[i].dir = dir;
-		proj[i].data.circleRadius = 5.f;
+		proj[i].data.width = 5.f;
+		proj[i].data.height = 5.f;
 		proj[i].data.objectType = objectCircle;
 		break;
 	}
@@ -277,10 +272,11 @@ void update_projectile(void)
 		//collision check here with enemy or enemy can be done in enemy update
 #if _DEBUG
 		//Test with john's ai
-		ObjectData tmp;
-		tmp.circleRadius = Game.gridWidth * 0.25f;
-		tmp.objectPositionX = test.posX;
-		tmp.objectPositionY = test.posY;
+		Coordinates tmp;
+		tmp.width = Game.gridWidth * 0.25f;
+		tmp.height = Game.gridWidth * 0.25f;
+		tmp.xOrigin = test.posX;
+		tmp.yOrigin = test.posY;
 		tmp.objectType = objectCircle;
 		if (Collision_Detection(tmp,proj[i].data))
 		{
