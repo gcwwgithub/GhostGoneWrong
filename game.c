@@ -21,6 +21,7 @@ void render_button(Coordinates TurretButtonX, CP_Color Color);
 void game_init(void)
 {
 	//CP_System_Fullscreen();
+	CP_System_ShowConsole();
 	currentGameState = MainMenu;
 	
 	//game grid 
@@ -78,6 +79,7 @@ void game_update(void)
 	enemy_move(&test, Xarray, Yarray, 2);
 	Draw_enemy(&test);
 	EnemyDeath(&test);
+
 }
 void game_exit(void)
 {
