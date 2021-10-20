@@ -18,7 +18,7 @@ void render_turret_button(Coordinates TurretButtonX);
 
 void game_init(void)
 {
-	CP_System_Fullscreen();
+	//CP_System_Fullscreen();
 	currentGameState = MainMenu;
 	
 	//game grid 
@@ -43,6 +43,7 @@ void game_init(void)
 	Tutorial.exitCol = (GAME_GRID_COLS - 1) / 2;
 
 	game_grid_color_init(&Tutorial);
+	turret_init();
 }
 
 void game_update(void)

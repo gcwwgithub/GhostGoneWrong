@@ -203,7 +203,6 @@ void update_turret(void)
 		//	break;
 		//}
 
-
 #if _DEBUG
 		//Debug test code with enemy
 		Vector2 v1;
@@ -215,21 +214,15 @@ void update_turret(void)
 			turret[i].dir = normalise(turret[i].dir);
 			turret[i].angle = atan2f(turret[i].dir.pos_y, turret[i].dir.pos_x) * 180.f / (float)PI;
 			turret[i].cooldown -= 1.f * CP_System_GetDt();
-
-		turret[i].dir.pos_x = CP_Input_GetMouseX() - turret[i].data.xOrigin;
-		turret[i].dir.pos_y = CP_Input_GetMouseY() - turret[i].data.yOrigin;
-		//normalise the vector
-		turret[i].dir = normalise(turret[i].dir);
-		//get angle to rotate
-		turret[i].angle = atan2f(turret[i].dir.pos_y, turret[i].dir.pos_x) * 180.f / (float)PI;
-
-		turret[i].cooldown -= 1.f * CP_System_GetDt();
-		if (turret[i].cooldown <= 0)
-		{
-			shoot(turret[i].data.xOrigin, turret[i].data.yOrigin, turret[i].dir);
-			turret[i].cooldown = 2.f;
+			if (turret[i].cooldown <= 0)
+			{
+				shoot(turret[i].data.xOrigin, turret[i].data.yOrigin, turret[i].dir);
+				turret[i].cooldown = 2.f;
+			}
 		}
-		*/
+#endif
+
+		
 	}
 }
 
