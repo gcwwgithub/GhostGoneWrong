@@ -1,5 +1,6 @@
 #pragma once
 #include "vector.h"
+#include "game.h"
 
 //change value as need
 #define MAX_PROJECTILE 100
@@ -8,53 +9,58 @@
 //enum of turret types
 typedef enum TurretType
 {
-	TRIANGLE,
-	CIRCLE,
-	STAR,
-	PRECENTAGE
+	T_TRIANGLE,
+	T_CIRCLE,
+	T_STAR,
+	T_PRECENTAGE
 } TurretType;
 
 //enum of projectile types
 typedef enum ProjectileType
 {
-	BASIC,
-	AOE,
-	PIERCE,
-	PERCENT,
+	P_BASIC,
+	P_AOE,
+	P_PIERCE,
+	P_PERCENTAGE,
 } ProjectileType;
 
 typedef struct Turret
 {
+	int isActive;
+	float size, angle, range, cooldown, damage;
 	Vector2 dir;
-	float pos_x, pos_y, size, angle, 
-		range, cooldown, damage;
+	ObjectData data;
 	TurretType type;
 } Turret;
 
 typedef struct Projectile
 {
 	int isActive;
-	float x, y;
+	float damage;
+	ObjectData data;
 	Vector2 dir;
 } Projectile;
 
+//init 
 void turret_init(void);
 
-void render_turret(Turret* t);
-//void render_turret(void);
+//use this to place turret/spawn turret (pass in type and the position)
+void place_turret(TurretType type, float x, float y);
 
-void update_turret(Turret* t);
-//void update_turret(void);
+//void render_turret(Turret* t);
+void render_turret(void);
+
+//void update_turret(Turret* t);
+void update_turret(void);
 
 void shoot(float x, float y, Vector2 dir);
 
-void projectile_update();
+void update_projectile(void);
 
-//void draw_projectile(Projectile p);
+void render_projectile(void);
 
 Projectile proj[MAX_PROJECTILE];
 Turret turret[MAX_TURRET];
 
 //test variables
-Turret test;
 CP_Image turret_img;
