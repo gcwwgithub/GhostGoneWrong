@@ -206,8 +206,8 @@ void update_turret(void)
 #if _DEBUG
 		//Debug test code with enemy
 		Vector2 v1;
-		v1.pos_x = test.posX - turret[i].data.xOrigin;
-		v1.pos_y = test.posY - turret[i].data.yOrigin;
+		v1.pos_x = test.data.xOrigin - turret[i].data.xOrigin;
+		v1.pos_y = test.data.xOrigin - turret[i].data.yOrigin;
 		if (magnitude_sq(v1) <= turret[i].range * turret[i].range)
 		{
 			turret[i].dir = v1;;
@@ -274,8 +274,8 @@ void update_projectile(void)
 		Coordinates tmp;
 		tmp.width = Game.gridWidth * 0.25f;
 		tmp.height = Game.gridWidth * 0.25f;
-		tmp.xOrigin = test.posX;
-		tmp.yOrigin = test.posY;
+		tmp.xOrigin = test.data.xOrigin;
+		tmp.yOrigin = test.data.yOrigin;
 		tmp.objectType = objectCircle;
 		if (Collision_Detection(tmp,proj[i].data))
 		{
