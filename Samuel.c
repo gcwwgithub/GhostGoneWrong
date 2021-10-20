@@ -43,7 +43,7 @@ void turret_init(void)
 	turret[0].isActive = 1;
 	turret[0].range = Game.gridWidth * 2;
 
-#if _DEBUG
+	#if _DEBUG
 	//test stuff with john's code
 	enemy_test_init();
 #endif
