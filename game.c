@@ -14,11 +14,6 @@ void render_game_grid_color(LevelData Level);
 void render_turret_menu(void);
 void render_turret_button(Coordinates TurretButtonX, ObjectData ObjectTurretButtonX);
 
-
-void click_on_square(void);
-
-
-
 void game_init(void)
 {
 	//CP_System_Fullscreen();
@@ -54,8 +49,6 @@ void game_update(void)
 		MouseInput.objectPositionX = CP_Input_GetMouseX();
 		MouseInput.objectPositionY = CP_Input_GetMouseY();
 	}
-
-	click_on_square();
 
 	render_game_grid();
 	render_game_grid_color(Tutorial);
