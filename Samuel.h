@@ -44,8 +44,11 @@ typedef struct Projectile
 //init 
 void turret_init(void);
 
-//use this to place turret/spawn turret (pass in type and the position)
-void place_turret(TurretType type, float x, float y);
+/*
+* use this to place turret/spawn turret (pass in type and the grid index)
+* E.g to place on grid[0][1] pass in type, 0, 1
+*/
+void place_turret(TurretType type, int index_x, int index_y);
 
 //void render_turret(Turret* t);
 void render_turret(void);
