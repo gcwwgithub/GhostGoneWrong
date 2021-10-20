@@ -8,9 +8,9 @@
 void turret_init(void)
 {
 	//hard code test values
-	test.pos_x = GAME_X_ORIGIN - 10;
-	test.pos_y = GAME_Y_ORIGIN - 10;
-	test.size = Game_Grid_Height;
+	test.pos_x = Game.xOrigin - 10;
+	test.pos_y = Game.yOrigin - 10;
+	test.size = Game.gridHeight;
 	Vector2 v;
 	v.pos_x = -3;
 	v.pos_y = 1;

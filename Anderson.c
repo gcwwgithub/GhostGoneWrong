@@ -32,11 +32,11 @@ void click_on_square(void)
 		redSquareClicked = 0;
 		blueSquareClicked = 0;
 
-		float distFromXOriginToMouseX = CP_Input_GetMouseX() - GAME_X_ORIGIN;
-		float distFromYOriginToMouseY = CP_Input_GetMouseY() - GAME_Y_ORIGIN;
+		float distFromXOriginToMouseX = CP_Input_GetMouseX() - Game.xOrigin;
+		float distFromYOriginToMouseY = CP_Input_GetMouseY() - Game.yOrigin;
 
-		float clickedCol = distFromXOriginToMouseX / Game_Grid_Width;
-		float clickedRow = distFromYOriginToMouseY / Game_Grid_Height;
+		float clickedCol = distFromXOriginToMouseX / Game.gridWidth;
+		float clickedRow = distFromYOriginToMouseY / Game.gridHeight;
 
 		// Only able to account for straight paths
 		if ((clickedCol >= 0 && clickedCol < GAME_GRID_COLS) && (clickedRow >= 0 && clickedRow < GAME_GRID_ROWS))
@@ -71,23 +71,23 @@ void click_on_square(void)
 
 		// Tutorial level
 		// If click was within red square's two corners ...
-		//if (withinBoundaries(GAME_X_ORIGIN + Game_Grid_Width, GAME_Y_ORIGIN, GAME_X_ORIGIN + Game_Grid_Width * 2, GAME_Y_ORIGIN + Game_Grid_Height))
+		//if (withinBoundaries(Game.xOrigin + Game.gridWidth, Game.yOrigin, Game.xOrigin + Game.gridWidth * 2, Game.yOrigin + Game.gridHeight))
 		//{
 		//	redSquareClicked = 1;
 		//}
 		// ... or the blue square's ...
-		//if (withinBoundaries(GAME_X_ORIGIN + Game_Grid_Width, GAME_Y_ORIGIN + Game_Grid_Height * (Grid_Rows - 1), GAME_X_ORIGIN + Game_Grid_Width * 2, GAME_Y_ORIGIN + Game_Grid_Height * Grid_Rows))
+		//if (withinBoundaries(Game.xOrigin + Game.gridWidth, Game.yOrigin + Game.gridHeight * (Grid_Rows - 1), Game.xOrigin + Game.gridWidth * 2, Game.yOrigin + Game.gridHeight * Grid_Rows))
 		//{
 		//	blueSquareClicked = 1;
 		//}
 
 		//  White area boundaries
-		//if (withinBoundaries(GAME_X_ORIGIN, GAME_Y_ORIGIN, GAME_X_ORIGIN + Game_Grid_Width, GAME_Y_ORIGIN + Game_Grid_Height * Grid_Rows) ||
-		//	withinBoundaries(GAME_X_ORIGIN + Game_Grid_Width * 2, GAME_Y_ORIGIN, GAME_X_ORIGIN + Game_Grid_Width * 3, GAME_Y_ORIGIN + Game_Grid_Height * Grid_Rows))
+		//if (withinBoundaries(Game.xOrigin, Game.yOrigin, Game.xOrigin + Game.gridWidth, Game.yOrigin + Game.gridHeight * Grid_Rows) ||
+		//	withinBoundaries(Game.xOrigin + Game.gridWidth * 2, Game.yOrigin, Game.xOrigin + Game.gridWidth * 3, Game.yOrigin + Game.gridHeight * Grid_Rows))
 		//{
 		//	whiteSquareClicked = 1;
 		//}
-		//if (withinBoundaries(GAME_X_ORIGIN + Game_Grid_Width, GAME_Y_ORIGIN + Game_Grid_Height, GAME_X_ORIGIN + Game_Grid_Width * (Grid_Cols - 1), GAME_Y_ORIGIN + Game_Grid_Height * (Grid_Rows - 1)))
+		//if (withinBoundaries(Game.xOrigin + Game.gridWidth, Game.yOrigin + Game.gridHeight, Game.xOrigin + Game.gridWidth * (Grid_Cols - 1), Game.yOrigin + Game.gridHeight * (Grid_Rows - 1)))
 		//{
 		//	greySquareClicked = 1;
 		//}

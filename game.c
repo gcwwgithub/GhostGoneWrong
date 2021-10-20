@@ -1,31 +1,43 @@
 #include "cprocessing.h"
 #include"game.h"
 
-void game_square_color(LevelData* Level);
-void draw_game_grid(void);
-void color_game_grid(LevelData Level);
+void game_grid_init(void);
+void game_grid_color_init(LevelData* Level);
+void turret_menu_init(void);
+void turret0_button_init(void);
+void turret1_button_init(void);
+void turret2_button_init(void);
+void turret3_button_init(void);
+
+void render_game_grid(void);
+void render_game_grid_color(LevelData Level);
+void render_turret_menu(void);
+void render_turret_button(Coordinates TurretButtonX);
+
+
 void click_on_square(void);
 
 
 
 void game_init(void)
 {
-	//CP_System_Fullscreen();
+	CP_System_Fullscreen();
 	currentGameState = MainMenu;
 	
 	//game grid 
-	float unusableScreenHeight, unusableScreenWidth;/*Height and Width not used for game, example menu*/
-	unusableScreenHeight = (float)CP_System_GetWindowHeight() / 2; //Half the screeen is used for the game
-	Game_Height = (float)CP_System_GetWindowHeight() - unusableScreenHeight;
-	Game_Grid_Height = Game_Height / GAME_GRID_ROWS;
-	Game_Grid_Width = Game_Height / GAME_GRID_ROWS; //Grid is a Square
-	Game_Width = Game_Grid_Width * GAME_GRID_COLS;
-	unusableScreenWidth = (float)CP_System_GetWindowWidth() - Game_Width;
-	GAME_X_ORIGIN = unusableScreenWidth / 2; //To centralise the Grid
-	GAME_Y_ORIGIN = unusableScreenHeight / 2; //Centre the game
+	game_grid_init();
 	
+	//turret menu
+	turret_menu_init();
+
+	//turret buttons
+	turret0_button_init();
+	turret1_button_init();
+	turret2_button_init();
+	turret3_button_init();
+
 	//Initialize Objects
-	Initialize_object();
+	object_init();
 
 	//Level Data
 	Tutorial.spawnRow = 0;
@@ -33,7 +45,7 @@ void game_init(void)
 	Tutorial.exitRow = GAME_GRID_ROWS - 1;
 	Tutorial.exitCol = (GAME_GRID_COLS - 1) / 2;
 
-	game_square_color(&Tutorial);
+	game_grid_color_init(&Tutorial);
 }
 
 void game_update(void)
@@ -42,16 +54,16 @@ void game_update(void)
 		MouseInput.objectPositionX = CP_Input_GetMouseX();
 		MouseInput.objectPositionY = CP_Input_GetMouseY();
 	}
-	if (Collision_Detection(MouseInput, objectGameGrid)) {
 
-		CP_Settings_RectMode(CP_POSITION_CORNER);
-		CP_Settings_Fill(COLOR_BLACK);
-		CP_Graphics_DrawRect((GAME_X_ORIGIN), (GAME_Y_ORIGIN), (Game_Grid_Width), (Game_Grid_Height));
-	}
 	click_on_square();
 
-	draw_game_grid();
-	color_game_grid(Tutorial);
+	render_game_grid();
+	render_game_grid_color(Tutorial);
+	render_turret_menu();
+	render_turret_button(TurretButton0);
+	render_turret_button(TurretButton1);
+	render_turret_button(TurretButton2);
+	render_turret_button(TurretButton3);
 
 }
 void game_exit(void)

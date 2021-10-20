@@ -4,7 +4,15 @@
 //Game Grid
 #define GAME_GRID_COLS 3
 #define GAME_GRID_ROWS 7
-float  Game_Grid_Width, Game_Grid_Height, Game_Width, Game_Height, GAME_X_ORIGIN, GAME_Y_ORIGIN;
+typedef struct GameCoordinates {
+	float width;
+	float height;
+	float xOrigin;
+	float yOrigin;
+	float gridWidth;
+	float gridHeight;
+}GameCoordinates;
+GameCoordinates Game;;
 
 //Color
 #define COLOR_BLACK  CP_Color_Create(0, 0, 0, 255)
@@ -67,5 +75,19 @@ typedef struct ObjectData {
 ObjectData MouseInput;
 ObjectData objectGameGrid;
 
-void Initialize_object(void);
+void object_init(void);
 int Collision_Detection(ObjectData object1, ObjectData object2);
+
+//Turret Menu
+typedef struct Coordinates {
+	float width;
+	float height;
+	float xOrigin;
+	float yOrigin;
+}Coordinates;
+
+Coordinates TurretMenu;
+Coordinates TurretButton0;
+Coordinates TurretButton1;
+Coordinates TurretButton2;
+Coordinates TurretButton3;
