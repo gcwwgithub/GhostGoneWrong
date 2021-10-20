@@ -8,11 +8,12 @@ void turret0_button_init(void);
 void turret1_button_init(void);
 void turret2_button_init(void);
 void turret3_button_init(void);
+void mouse_init(void);
 
 void render_game_grid(void);
 void render_game_grid_color(LevelData Level);
 void render_turret_menu(void);
-void render_turret_button(Coordinates TurretButtonX, ObjectData ObjectTurretButtonX);
+void render_turret_button(Coordinates TurretButtonX);
 
 void game_init(void)
 {
@@ -32,7 +33,7 @@ void game_init(void)
 	turret3_button_init();
 
 	//Initialize Objects
-	object_init();
+	mouse_init();
 
 	//Level Data
 	Tutorial.spawnRow = 0;
@@ -46,18 +47,18 @@ void game_init(void)
 void game_update(void)
 {
 	if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
-		MouseInput.objectPositionX = CP_Input_GetMouseX();
-		MouseInput.objectPositionY = CP_Input_GetMouseY();
+		MouseInput.xOrigin = CP_Input_GetMouseX();
+		MouseInput.yOrigin = CP_Input_GetMouseY();
 	}
 
 	render_game_grid();
 	render_game_grid_color(Tutorial);
 	render_turret_menu();
 
-	render_turret_button(TurretButton0, ObjectTurretButton0);
-	render_turret_button(TurretButton1, ObjectTurretButton1);
-	render_turret_button(TurretButton2, ObjectTurretButton2);
-	render_turret_button(TurretButton3, ObjectTurretButton3);
+	render_turret_button(TurretButton0);
+	render_turret_button(TurretButton1);
+	render_turret_button(TurretButton2);
+	render_turret_button(TurretButton3);
 
 }
 void game_exit(void)

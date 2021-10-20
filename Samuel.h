@@ -29,7 +29,7 @@ typedef struct Turret
 	int isActive;
 	float size, angle, range, cooldown, damage;
 	Vector2 dir;
-	ObjectData data;
+	Coordinates data;
 	TurretType type;
 } Turret;
 
@@ -37,7 +37,7 @@ typedef struct Projectile
 {
 	int isActive;
 	float damage, speed;
-	ObjectData data;
+	Coordinates data;
 	Vector2 dir;
 } Projectile;
 

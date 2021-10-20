@@ -64,34 +64,20 @@ typedef enum ObjectShape {
 	objectRectangle
 }ObjectShape;
 
-typedef struct ObjectData {
-	float objectPositionX;
-	float objectPositionY;
-	float rectLengthX;
-	float rectLengthY;
-	float circleRadius;
-	ObjectShape objectType;
-}ObjectData;
-
-ObjectData MouseInput;
-
-void object_init(void);
-int Collision_Detection(ObjectData object1, ObjectData object2);
-
-//Turret Menu
 typedef struct Coordinates {
-	float width;
-	float height;
+	float width; //Width and Height are the same for Circles
+	float height; //Width and Height are the same for Circles
 	float xOrigin;
 	float yOrigin;
+	ObjectShape objectType;
 }Coordinates;
 
+void object_init(void);
+int Collision_Detection(Coordinates object1, Coordinates object2);
+
 Coordinates TurretMenu;
-ObjectData ObjectTurretButton0;
 Coordinates TurretButton0;
-ObjectData ObjectTurretButton1;
 Coordinates TurretButton1;
-ObjectData ObjectTurretButton2;
 Coordinates TurretButton2;
-ObjectData ObjectTurretButton3;
 Coordinates TurretButton3;
+Coordinates MouseInput;
