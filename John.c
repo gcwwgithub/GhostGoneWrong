@@ -2,41 +2,44 @@
 #include <math.h>
 #include "John.h"
 
-void enemy_init(void)
+void enemy_test_init(void)  //Initialising test enemy
 {
 	test.health = 10;
 	test.speed = 100;
 	test.CurrentWaypoint = 0;
-	test.posX = 200;
-	test.posY = 0;
-	test.enemy_width = 20;
-	test.enemy_height = 20;
-	test.angle = 0;
+	test.posX = (float)(Game.xOrigin+Game.gridWidth*1.5);
+	test.posY = (float)(Game.yOrigin + Game.gridHeight * 0.5);
+	test.enemy_width = Game.gridWidth;
+	test.enemy_height = Game.gridHeight;
+	test.angle = 180;
 	test.type = Red;
+	test.alpha = 255;
 	Draw_Red_arrow = CP_Image_Load("./Assets/Enemies_clone.png");
-
+	//test path
+	for (int i = 0; i < 2; i++) {
+		Xarray[i] = test.posX;
+		Yarray[i] = (test.posY + Game.gridHeight * 6 * i);
+	}
 }
 
-void Draw_enemy(enemy* r) {
+void Draw_enemy(enemy* r) { //Draws the enemy
 	switch (r->type) {
 	case Red:
-		CP_Image_DrawAdvanced(Draw_Red_arrow, r->posX, r->posY, r->enemy_width, r->enemy_height, 255, r->angle);
+		CP_Image_DrawAdvanced(Draw_Red_arrow, r->posX, r->posY, r->enemy_width, r->enemy_height, r->alpha, r->angle);
 		break;
 	case Blue:
 		break;
 	}
 }
 
-void enemy_move(enemy* r, float Enemy_PathpointsX[], float Enemy_PathY[],int number_of_points) {
+void enemy_move(enemy* r, float Enemy_PathpointsX[], float Enemy_PathpointsY[], int number_of_points) { //Enemy movement
 	float Speed = (r->speed) * CP_System_GetDt();
-	if (update_point_num(Enemy_PathpointsX, Enemy_PathY, r->posX, r->posY, r->CurrentWaypoint) == 1) {
-		if (r->CurrentWaypoint == number_of_points) {
-			r->state = Death;
-		}
-		r->CurrentWaypoint++;
+	update_point_num(Enemy_PathpointsX, Enemy_PathpointsY, r);
+	if (r->CurrentWaypoint + 1 == number_of_points) {
+		r->state = Death;
 	}
 
-    Direction direction_now = direction_to_next_point(Enemy_PathpointsX, Enemy_PathY, r->CurrentWaypoint);
+	Direction direction_now = direction_to_next_point(Enemy_PathpointsX, Enemy_PathpointsY, r);
 	switch (direction_now) {
 	case Up:
 		r->posY -= Speed;
@@ -50,15 +53,19 @@ void enemy_move(enemy* r, float Enemy_PathpointsX[], float Enemy_PathY[],int num
 	case Right:
 		r->posX += Speed;
 		break;
+	case NoMove:
+		break;
 	}
 
 }
 
-//	void enemy_death();
 
-Direction direction_to_next_point(float Enemy_PathpointsX[], float Enemy_PathpointsY[], int EnemyCurentWaypoint) {   //Which direction to move depending on points
-	float Xdistance_between_points = (Enemy_PathpointsX[EnemyCurentWaypoint + 1] - Enemy_PathpointsX[EnemyCurentWaypoint]);
-	float Ydistance_between_points = (Enemy_PathpointsY[EnemyCurentWaypoint + 1] - Enemy_PathpointsY[EnemyCurentWaypoint]);
+Direction direction_to_next_point(float Enemy_PathpointsX[], float Enemy_PathpointsY[], enemy* r) {   //Which direction to move depending on points
+	float Xdistance_between_points = (Enemy_PathpointsX[r->CurrentWaypoint + 1] - Enemy_PathpointsX[r->CurrentWaypoint]);
+	float Ydistance_between_points = (Enemy_PathpointsY[r->CurrentWaypoint + 1] - Enemy_PathpointsY[r->CurrentWaypoint]);
+	if (r->state == Death) {
+		return NoMove;
+	}
 	if (Xdistance_between_points == 0) {
 		if (Ydistance_between_points < 0) {
 			return Up; //Upwards movement
@@ -78,14 +85,16 @@ Direction direction_to_next_point(float Enemy_PathpointsX[], float Enemy_Pathpoi
 	return 0;
 }
 
-int update_point_num(float enemy_pathpointsX[], float enemy_pathpointsY[], float enemy_posX, float enemy_posY, int enemy_current_point) { //return 1 when next point is hit
-	float covered_distanceX = (float)fabs((double)enemy_posX - (enemy_pathpointsX[enemy_current_point]));
-	float distance_between_pointsX = (float)fabs((double)enemy_pathpointsX[enemy_current_point + 1] - (enemy_pathpointsX[enemy_current_point]));
-	float covered_distanceY = (float)fabs((double)enemy_posY - (enemy_pathpointsY[enemy_current_point]));
-	float distance_between_pointsY = (float)fabs((double)enemy_pathpointsY[enemy_current_point + 1] - (enemy_pathpointsY[enemy_current_point]));
-	if (covered_distanceX >= distance_between_pointsX) {
-		if (covered_distanceY >= distance_between_pointsY) {
-			return 1;
+int update_point_num(float Enemy_PathpointsX[], float Enemy_PathpointsY[], enemy* r) { //Update position to move towards next point 
+	float covered_distanceX = (float)fabs((double)r->posX - (Enemy_PathpointsX[r->CurrentWaypoint]));
+	float distance_between_pointsX = (float)fabs((double)Enemy_PathpointsX[r->CurrentWaypoint + 1] - (Enemy_PathpointsX[r->CurrentWaypoint]));
+	float covered_distanceY = (float)fabs((double)r->posY - (Enemy_PathpointsY[r->CurrentWaypoint]));
+	float distance_between_pointsY = (float)fabs((double)Enemy_PathpointsY[r->CurrentWaypoint + 1] - (Enemy_PathpointsY[r->CurrentWaypoint]));
+
+	if (distance_between_pointsX <= covered_distanceX) {
+		if (distance_between_pointsY <= covered_distanceY) {
+
+			r->CurrentWaypoint++;
 		}
 	}
 	return 0;
@@ -100,10 +109,13 @@ int Collision(enemy* r, float x, float y) {   //returns 1 if collide with enemy 
 	return 0;
 }
 
-
-/* void EnemyDeath(enemy* r) {
+void EnemyDeath(enemy* r) {
 	if (r->health == 0) {
 		r->state = Death;
 	}
-	return 0;
-} */
+	if (r->state == Death) {
+		r->alpha -= 10;
+		if (r->alpha <= 0)
+		CP_Image_Free(&Draw_Red_arrow);
+	}
+}
