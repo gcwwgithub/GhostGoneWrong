@@ -16,6 +16,7 @@ void draw_game_grid(void)
 		currentGridCol++;
 	}
 }
+
 void color_square(int rectRow, int rectCol, CP_Color squareColor)
 {
 	CP_Settings_RectMode(CP_POSITION_CORNER);
