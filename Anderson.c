@@ -3,7 +3,7 @@
 
 CP_Font debugSquareFont;
 
-ObjectData pauseButton;
+Coordinates pauseButton;
 
 int redSquareClicked = 0;
 int blueSquareClicked = 0;
