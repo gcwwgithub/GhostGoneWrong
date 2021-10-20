@@ -16,8 +16,8 @@ void enemy_test_init(void)  //Initialising test enemy
 	test.type = Red;
 	test.alpha = 255;
 	test.data.objectType = objectCircle;
-	test.data.width = test.enemy_width*0.5;
-	test.data.height = test.enemy_width*0.5;
+	test.data.width = test.enemy_width*0.5f;
+	test.data.height = test.enemy_width*0.5f;
 	test.state = Moving;
 	count = 0;
 	Draw_Red_arrow = CP_Image_Load("./Assets/Enemies_clone.png");
