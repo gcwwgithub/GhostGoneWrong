@@ -1,5 +1,6 @@
 #pragma once
 #include "vector.h"
+#include "game.h"
 
 //change value as need
 #define MAX_PROJECTILE 100
@@ -8,37 +9,42 @@
 //enum of turret types
 typedef enum TurretType
 {
-	TRIANGLE,
-	CIRCLE,
-	STAR,
-	PRECENTAGE
+	T_TRIANGLE,
+	T_CIRCLE,
+	T_STAR,
+	T_PRECENTAGE
 } TurretType;
 
 //enum of projectile types
 typedef enum ProjectileType
 {
-	BASIC,
-	AOE,
-	PIERCE,
-	PERCENT,
+	P_BASIC,
+	P_AOE,
+	P_PIERCE,
+	P_PERCENTAGE,
 } ProjectileType;
 
 typedef struct Turret
 {
+	int isActive;
+	float size, angle, range, cooldown, damage;
 	Vector2 dir;
-	float pos_x, pos_y, size, angle, 
-		range, cooldown, damage;
+	ObjectData data;
 	TurretType type;
 } Turret;
 
 typedef struct Projectile
 {
 	int isActive;
-	float x, y;
+	ObjectData data;
 	Vector2 dir;
 } Projectile;
 
+//init 
 void turret_init(void);
+
+//use this to place turret/spawn turret (pass in type and the position)
+void place_turret(TurretType type, float x, float y);
 
 void render_turret(Turret* t);
 //void render_turret(void);

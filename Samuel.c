@@ -1,29 +1,50 @@
 #include "cprocessing.h"
 #include "Samuel.h"
 #include <math.h>
-#include <stdio.h>
-#include "game.h"
+
 
 
 void turret_init(void)
 {
 	//hard code test values
-	test.pos_x = GAME_X_ORIGIN - 10;
-	test.pos_y = GAME_Y_ORIGIN - 10;
-	test.size = Game_Grid_Height;
 	Vector2 v;
+	test.data.objectPositionX = GAME_X_ORIGIN - 10;
+	test.data.objectPositionY = GAME_Y_ORIGIN - 10;
+	test.size = Game_Grid_Height;
 	v.pos_x = -3;
 	v.pos_y = 1;
 	test.dir = v;
 	test.angle = 0;
-	test.type = TRIANGLE;
+	test.type = T_TRIANGLE;
 	test.cooldown = 0.f;
 	turret_img = CP_Image_Load("./Assets/Turret.png");
 	for (int i = 0; i < MAX_PROJECTILE; ++i)
 	{
 		proj[i].isActive = 0;
-		proj[i].x = 0;
-		proj[i].y = 0;
+		proj[i].data.objectPositionX = 0;
+		proj[i].data.objectPositionY = 0;
+	}
+	for (int i = 0; i < MAX_TURRET; ++i)
+	{
+		turret[i].isActive = 0;
+		turret[i].cooldown = 0.f;
+		turret[i].angle = 0.f;
+		turret[i].dir = v;
+		turret[i].size = Game_Grid_Height;
+	}
+}
+
+void place_turret(TurretType type, float x, float y)
+{
+	for (int i = 0; i < MAX_TURRET; ++i)
+	{
+		if (turret[i].isActive)
+			continue;
+
+		turret[i].isActive = 1;
+		turret[i].type = type;
+		turret[i].data.objectPositionX = x;
+		turret[i].data.objectPositionY = y;
 	}
 }
 
@@ -32,18 +53,18 @@ void render_turret(Turret* t)
 	//draw type of turrets
 	switch (t->type)
 	{
-	case TRIANGLE:
-		CP_Image_DrawAdvanced(turret_img, t->pos_x, t->pos_y, t->size, t->size, 255, t->angle);
+	case T_TRIANGLE:
+		CP_Image_DrawAdvanced(turret_img, t->data.objectPositionX, t->data.objectPositionY, t->size, t->size, 255, t->angle);
 		/*CP_Graphics_DrawTriangleAdvanced(t.pos_x - t.size, t.pos_y, t.pos_x + t.size, t.pos_y,
 			t.pos_x, t.pos_y + t.size, t.angle);*/
 		break;
-	case CIRCLE:
+	case T_CIRCLE:
 		//CP_Image_DrawAdvanced(turret_img, t->pos_x, t->pos_y, t->size, t->size, 255, t->angle);
 		break;
-	case STAR:
+	case T_STAR:
 		//CP_Image_DrawAdvanced(turret_img, t->pos_x, t->pos_y, t->size, t->size, 255, t->angle);
 		break;
-	case PRECENTAGE:
+	case T_PRECENTAGE:
 		//CP_Image_DrawAdvanced(turret_img, t->pos_x, t->pos_y, t->size, t->size, 255, t->angle);
 		break;
 	default:
@@ -87,8 +108,8 @@ void update_turret(Turret* t) //take in enemy array or some stuff
 
 	//rotate base off mouse for now (switch to base on enemy once in range ltr) 
 	
-	t->dir.pos_x = CP_Input_GetMouseX() - t->pos_x;
-	t->dir.pos_y = CP_Input_GetMouseY() - t->pos_y;
+	t->dir.pos_x = CP_Input_GetMouseX() - t->data.objectPositionX;
+	t->dir.pos_y = CP_Input_GetMouseY() - t->data.objectPositionY;
 	//normalise the vector
 	t->dir = normalise(t->dir);
 	//get angle to rotate
@@ -104,7 +125,7 @@ void update_turret(Turret* t) //take in enemy array or some stuff
 	t->cooldown -= 1.f * CP_System_GetDt();
 	if (t->cooldown <= 0)
 	{
-		shoot(t->pos_x, t->pos_y, t->dir);
+		shoot(t->data.objectPositionX, t->data.objectPositionY, t->dir);
 		t->cooldown = 2.f;
 	}
 }
@@ -135,9 +156,11 @@ void shoot(float x, float y, Vector2 dir)
 
 		//set the projectile as active and other stuff
 		proj[i].isActive = 1;
-		proj[i].x = x;
-		proj[i].y = y;
+		proj[i].data.objectPositionX = x;
+		proj[i].data.objectPositionY = y;
 		proj[i].dir = dir;
+		proj[i].data.circleRadius = 5.f;
+		proj[i].data.objectType = objectCircle;
 		break;
 	}
 
@@ -149,8 +172,8 @@ void projectile_update()
 	{
 		//bounds check
 		if (proj[i].isActive && 
-			(proj[i].x < 0 || proj[i].x > (float)CP_System_GetDisplayWidth() 
-				|| proj[i].y < 0 || proj[i].y >(float)CP_System_GetDisplayHeight()))
+			(proj[i].data.objectPositionX < 0 || proj[i].data.objectPositionX > (float)CP_System_GetDisplayWidth()
+				|| proj[i].data.objectPositionY < 0 || proj[i].data.objectPositionY >(float)CP_System_GetDisplayHeight()))
 		{
 			//set to inactive
 			proj[i].isActive = 0;
@@ -160,12 +183,13 @@ void projectile_update()
 			continue;
 
 		//proj movement dir * speed * deltatime
-		proj[i].x += proj[i].dir.pos_x * 100.f * CP_System_GetDt();
-		proj[i].y += proj[i].dir.pos_y * 100.f * CP_System_GetDt();
+		proj[i].data.objectPositionX += proj[i].dir.pos_x * 100.f * CP_System_GetDt();
+		proj[i].data.objectPositionY += proj[i].dir.pos_y * 100.f * CP_System_GetDt();
+
+		//collision check here with enemy or enemy can be done in enemy update
 
 		//render of the projectile here for now
-		CP_Graphics_DrawCircle(proj[i].x, proj[i].y, 10);
-		//draw_projectile(proj[i]);
+		CP_Graphics_DrawCircle(proj[i].data.objectPositionX, proj[i].data.objectPositionY, 10);
 	}
 }
 
