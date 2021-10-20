@@ -29,9 +29,9 @@ void turret_init(void)
 		turret[i].size = Game.gridHeight;
 		turret[i].damage = 1.f;
 	}
-
-	turret[0].data.objectPositionX = Game.xOrigin - 10;
-	turret[0].data.objectPositionY = Game.yOrigin - 10;
+								
+	turret[0].data.objectPositionX = Game.xOrigin + (Game.gridWidth * 0.5f);
+	turret[0].data.objectPositionY = Game.yOrigin + (Game.gridHeight * 0.5f);
 	turret[0].size = Game.gridHeight;
 	turret[0].dir = v;
 	turret[0].angle = 0;
@@ -40,7 +40,7 @@ void turret_init(void)
 	turret[0].isActive = 1;
 }
 
-void place_turret(TurretType type, float x, float y)
+void place_turret(TurretType type, int index_x, int index_y)
 {
 	for (int i = 0; i < MAX_TURRET; ++i)
 	{
@@ -49,8 +49,10 @@ void place_turret(TurretType type, float x, float y)
 
 		turret[i].isActive = 1;
 		turret[i].type = type;
-		turret[i].data.objectPositionX = x;
-		turret[i].data.objectPositionY = y;
+		//origin + gridwidth * (index + 0.5); (to place the turret on the grid box)
+		turret[i].data.objectPositionX = Game.xOrigin + Game.gridWidth * (index_x + 0.5f);
+		turret[i].data.objectPositionY = Game.xOrigin + Game.gridWidth * (index_y + 0.5f);
+		//edit here for the type range and dmg
 		switch (turret[i].type)
 		{
 		case T_TRIANGLE:
@@ -72,6 +74,8 @@ void place_turret(TurretType type, float x, float y)
 		default:
 			break;
 		}
+		//escape from loop once done
+		break;
 	}
 }
 
@@ -170,6 +174,20 @@ void update_turret(void)
 	{
 		if (!turret[i].isActive)
 			continue;
+
+		//switch (turret[i].type)
+		//{
+		//case T_TRIANGLE:
+		//	break;
+		//case T_CIRCLE:
+		//	break;
+		//case T_STAR:
+		//	break;
+		//case T_PRECENTAGE:
+		//	break;
+		//default:
+		//	break;
+		//}
 
 		//if in range of enemy update
 
