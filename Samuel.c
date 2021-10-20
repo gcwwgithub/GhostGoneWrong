@@ -43,8 +43,10 @@ void turret_init(void)
 	turret[0].isActive = 1;
 	turret[0].range = Game.gridWidth * 2;
 
+#if _DEBUG
 	//test stuff with john's code
 	enemy_test_init();
+#endif
 }
 
 //call this function to palce turret (pass in the grid index)
@@ -135,8 +137,10 @@ void render_turret(void)
 			break;
 		}
 	}
+#if _DEBUG
 	//test stuff with john's code
 	Draw_enemy(&test);
+#endif
 }
 
 /*
@@ -252,7 +256,7 @@ void shoot(float x, float y, Vector2 dir)
 		proj[i].data.objectPositionX = x;
 		proj[i].data.objectPositionY = y;
 		proj[i].dir = dir;
-		proj[i].data.circleRadius = 5.f;
+		proj[i].data.circleRadius = 10;
 		proj[i].data.objectType = objectCircle;
 		break;
 	}
@@ -280,7 +284,19 @@ void update_projectile(void)
 		proj[i].data.objectPositionY += proj[i].dir.pos_y * proj[i].speed * CP_System_GetDt();
 
 		//collision check here with enemy or enemy can be done in enemy update
-
+#if _DEBUG
+		//Test with john's ai
+		ObjectData tmp;
+		tmp.circleRadius = Game.gridWidth * 0.25f;
+		tmp.objectPositionX = test.posX;
+		tmp.objectPositionY = test.posY;
+		tmp.objectType = objectCircle;
+		if (Collision_Detection(tmp,proj[i].data))
+		{
+			//enemy hit do magical stuff here
+			proj[i].isActive = 0;
+		}
+#endif
 	}
 }
 
