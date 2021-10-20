@@ -165,6 +165,15 @@ void turret3_button_init(void) {
 	TurretButton3.objectType = objectRectangle;
 }
 
+void pause_button_init(void){
+	PauseButton.xOrigin = 0.0f;
+	PauseButton.yOrigin = 0.0f;
+	PauseButton.width = TurretMenu.width / 2;
+	PauseButton.height = TurretButton0.yOrigin;
+	PauseButton.objectType = objectRectangle;
+}
+
+
 void render_game_grid(void)
 {
 	int currentGridRow = 0, currentGridCol = 0;
@@ -186,13 +195,13 @@ void render_turret_menu(void) {
 	CP_Graphics_DrawRect(TurretMenu.xOrigin, TurretMenu.yOrigin, TurretMenu.width, TurretMenu.height);
 }
 
-void render_turret_button(Coordinates TurretButtonX) {
+void render_button(Coordinates TurretButtonX, CP_Color Color) {
 	CP_Settings_RectMode(CP_POSITION_CORNER);
 	if (Collision_Detection(MouseInput, TurretButtonX)) {
 		CP_Settings_Fill(COLOR_GREEN);
 	}
 	else {
-		CP_Settings_Fill(COLOR_WHITE);
+		CP_Settings_Fill(Color);
 	}
 	CP_Graphics_DrawRect(TurretButtonX.xOrigin, TurretButtonX.yOrigin, TurretButtonX.width, TurretButtonX.height);
 }
