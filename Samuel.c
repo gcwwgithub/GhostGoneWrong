@@ -214,7 +214,6 @@ void update_turret(void)
 			turret[i].dir = normalise(turret[i].dir);
 			turret[i].angle = atan2f(turret[i].dir.pos_y, turret[i].dir.pos_x) * 180.f / (float)PI;
 			turret[i].cooldown -= 1.f * CP_System_GetDt();
-
 			if (turret[i].cooldown <= 0)
 			{
 				shoot(turret[i].data.xOrigin, turret[i].data.yOrigin, turret[i].dir);
