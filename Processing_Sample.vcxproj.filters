@@ -33,11 +33,17 @@
     <Filter Include="Vector">
       <UniqueIdentifier>{23ccaa5a-934d-4374-a3ee-e931cb34dcea}</UniqueIdentifier>
     </Filter>
+    <Filter Include="C Source Files\Current header files">
+      <UniqueIdentifier>{ef989a06-29c1-4e4e-91a3-ce8ef665281f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h">
       <Filter>C Source Files</Filter>
     </ClInclude>
     <ClInclude Include="Samuel.h" />
+    <ClInclude Include="John.h">
+      <Filter>C Source Files\Current header files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
