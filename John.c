@@ -1,31 +1,37 @@
 #include "cprocessing.h"
 #include <math.h>
 #include "John.h"
+#include "Samuel.h"
 
 void enemy_test_init(void)  //Initialising test enemy
 {
-	test.health = 10;
-	test.speed = 100;
+	test.health = 5;
+	test.speed = 8;
 	test.CurrentWaypoint = 0;
-	test.posX = (float)(Game.xOrigin+Game.gridWidth*1.5);
-	test.posY = (float)(Game.yOrigin + Game.gridHeight * 0.5);
+	test.data.objectPositionX = (float)(Game.xOrigin + Game.gridWidth * 1.5);
+	test.data.objectPositionY = (float)(Game.yOrigin + Game.gridHeight * 0.5);
 	test.enemy_width = Game.gridWidth;
 	test.enemy_height = Game.gridHeight;
 	test.angle = 180;
 	test.type = Red;
 	test.alpha = 255;
+	test.data.objectType = objectRectangle;
+	test.data.rectLengthX = test.enemy_width;
+	test.data.rectLengthY = test.enemy_height;
+	test.state = Moving;
+	count = 0;
 	Draw_Red_arrow = CP_Image_Load("./Assets/Enemies_clone.png");
 	//test path
 	for (int i = 0; i < 2; i++) {
-		Xarray[i] = test.posX;
-		Yarray[i] = (test.posY + Game.gridHeight * 6 * i);
+		Xarray[i] = test.data.objectPositionX;
+		Yarray[i] = (test.data.objectPositionY + Game.gridHeight * 6 * i);
 	}
 }
 
 void Draw_enemy(enemy* r) { //Draws the enemy
 	switch (r->type) {
 	case Red:
-		CP_Image_DrawAdvanced(Draw_Red_arrow, r->posX, r->posY, r->enemy_width, r->enemy_height, r->alpha, r->angle);
+		CP_Image_DrawAdvanced(Draw_Red_arrow, r->data.objectPositionX, r->data.objectPositionY, r->enemy_width, r->enemy_height, r->alpha, r->angle);
 		break;
 	case Blue:
 		break;
@@ -36,22 +42,22 @@ void enemy_move(enemy* r, float Enemy_PathpointsX[], float Enemy_PathpointsY[], 
 	float Speed = (r->speed) * CP_System_GetDt();
 	update_point_num(Enemy_PathpointsX, Enemy_PathpointsY, r);
 	if (r->CurrentWaypoint + 1 == number_of_points) {
-		r->state = Death;
+		r->state = Inactive;
 	}
 
 	Direction direction_now = direction_to_next_point(Enemy_PathpointsX, Enemy_PathpointsY, r);
 	switch (direction_now) {
 	case Up:
-		r->posY -= Speed;
+		r->data.objectPositionY -= Speed;
 		break;
 	case Down:
-		r->posY += Speed;
+		r->data.objectPositionY += Speed;
 		break;
 	case Left:
-		r->posX -= Speed;
+		r->data.objectPositionX -= Speed;
 		break;
 	case Right:
-		r->posX += Speed;
+		r->data.objectPositionX += Speed;
 		break;
 	case NoMove:
 		break;
@@ -63,7 +69,7 @@ void enemy_move(enemy* r, float Enemy_PathpointsX[], float Enemy_PathpointsY[], 
 Direction direction_to_next_point(float Enemy_PathpointsX[], float Enemy_PathpointsY[], enemy* r) {   //Which direction to move depending on points
 	float Xdistance_between_points = (Enemy_PathpointsX[r->CurrentWaypoint + 1] - Enemy_PathpointsX[r->CurrentWaypoint]);
 	float Ydistance_between_points = (Enemy_PathpointsY[r->CurrentWaypoint + 1] - Enemy_PathpointsY[r->CurrentWaypoint]);
-	if (r->state == Death) {
+	if (r->state == Inactive) {
 		return NoMove;
 	}
 	if (Xdistance_between_points == 0) {
@@ -86,9 +92,9 @@ Direction direction_to_next_point(float Enemy_PathpointsX[], float Enemy_Pathpoi
 }
 
 int update_point_num(float Enemy_PathpointsX[], float Enemy_PathpointsY[], enemy* r) { //Update position to move towards next point 
-	float covered_distanceX = (float)fabs((double)r->posX - (Enemy_PathpointsX[r->CurrentWaypoint]));
+	float covered_distanceX = (float)fabs((double)r->data.objectPositionX - (Enemy_PathpointsX[r->CurrentWaypoint]));
 	float distance_between_pointsX = (float)fabs((double)Enemy_PathpointsX[r->CurrentWaypoint + 1] - (Enemy_PathpointsX[r->CurrentWaypoint]));
-	float covered_distanceY = (float)fabs((double)r->posY - (Enemy_PathpointsY[r->CurrentWaypoint]));
+	float covered_distanceY = (float)fabs((double)r->data.objectPositionY - (Enemy_PathpointsY[r->CurrentWaypoint]));
 	float distance_between_pointsY = (float)fabs((double)Enemy_PathpointsY[r->CurrentWaypoint + 1] - (Enemy_PathpointsY[r->CurrentWaypoint]));
 
 	if (distance_between_pointsX <= covered_distanceX) {
@@ -100,22 +106,25 @@ int update_point_num(float Enemy_PathpointsX[], float Enemy_PathpointsY[], enemy
 	return 0;
 }
 
-int Collision(enemy* r, float x, float y) {   //returns 1 if collide with enemy else return 0
-	if (x<(r->posX + r->enemy_width / 2) && x>(r->posX - r->enemy_width / 2)) {
-		if (y<(r->posY + r->posY / 2) && x>(r->posY - r->posY / 2)) {
-			return 1;
-		}
-	}
-	return 0;
-}
+
 
 void EnemyDeath(enemy* r) {
-	if (r->health == 0) {
-		r->state = Death;
+	for (int i = 0; i < MAX_PROJECTILE; ++i) {
+		if (proj[i].isActive) {
+			if (Collision_Detection(r->data, proj[i].data) == 1) {
+
+				proj[i].isActive = 0;
+				r->health -= turret[i].damage;
+			}
+		}
 	}
-	if (r->state == Death) {
+
+	if (r->health == 0) {
+		r->state = Inactive;
+	}
+	if (r->state == Inactive) {
 		r->alpha -= 10;
 		if (r->alpha <= 0)
-		CP_Image_Free(&Draw_Red_arrow);
+			CP_Image_Free(&Draw_Red_arrow);
 	}
 }

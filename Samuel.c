@@ -203,8 +203,8 @@ void update_turret(void)
 #if _DEBUG
 		//Debug test code with enemy
 		Vector2 v1;
-		v1.pos_x = test.posX - turret[i].data.objectPositionX;
-		v1.pos_y = test.posY - turret[i].data.objectPositionY;
+		v1.pos_x = test.data.objectPositionX - turret[i].data.objectPositionX;
+		v1.pos_y = test.data.objectPositionY - turret[i].data.objectPositionY;
 		if (magnitude_sq(v1) <= turret[i].range * turret[i].range)
 		{
 			turret[i].dir = v1;;

@@ -14,13 +14,15 @@ typedef enum EnemyTypes {
 } EnemyTypes;
 
 typedef enum EnemyState {
-	Moving,
-	Death
+	Inactive,
+	Moving
+	
 }EnemyState;
 
 typedef struct Enemy {
-	int health, CurrentWaypoint, alpha;
-	float posX, posY, enemy_width, enemy_height, angle, speed;
+	int CurrentWaypoint, alpha;
+	float objectPositionX, objectPositionY, enemy_width, enemy_height, health, angle, speed;
+	ObjectData data;
 	EnemyState state;
 	EnemyTypes type;
 }enemy;
@@ -41,6 +43,7 @@ float xpoint;
 float ypoint;
 float Xarray[2];
 float Yarray[2];
+int count;
 
 /* //test enemy movement
 enemy_move(&test, Xarray, Yarray, 2);

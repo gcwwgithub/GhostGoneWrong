@@ -1,5 +1,6 @@
 #include "cprocessing.h"
 #pragma once
+#include <stdio.h>
 
 //Game Grid
 #define GAME_GRID_COLS 3
