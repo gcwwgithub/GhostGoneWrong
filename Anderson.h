@@ -1,8 +1,8 @@
 #pragma once
 #include "game.h"
 
-#define BUTTON_WIDTH CP_System_GetWindowWidth() / 400 * 55.0f //120.0f
-#define BUTTON_HEIGHT CP_System_GetWindowHeight() / 400 * 30.0f //40.0f
+#define BUTTON_WIDTH CP_System_GetWindowWidth() / 400 * 55.0f
+#define BUTTON_HEIGHT CP_System_GetWindowHeight() / 400 * 30.0f
 #define FONT_SIZE CP_System_GetWindowWidth() / 400 * 18.0f
 
 
@@ -24,7 +24,7 @@ Button levelButtons[5];
 
 void init_text_button(Button button, float buttonPosX, float buttonPosY, float buttonWidth, float buttonHeight, float textPosX, float textPosY, char string[]);
 
-void render_game_title(void); // also rendered here
+void render_game_title(void);
 void init_play_button(void);
 void init_quit_button(void);
 void init_back_button(void);
