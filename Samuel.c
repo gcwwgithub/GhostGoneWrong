@@ -221,7 +221,7 @@ void update_turret(void)
 		Vector2 v1;
 		v1.pos_x = test.data.xOrigin - turret[i].data.xOrigin;
 		v1.pos_y = test.data.yOrigin - turret[i].data.yOrigin;
-		if (magnitude_sq(v1) <= turret[i].range * turret[i].range)
+		if (magnitude_sq(v1) <= turret[i].range * turret[i].range && test.state != Death)
 		{
 			turret[i].currentAnimState = SHOOTING;
 			if (turret[i].animCounter <= 2)
@@ -238,7 +238,6 @@ void update_turret(void)
 				turret[i].cooldown = 2.f;
 			}
 		}
-
 		else
 		{
 			turret[i].currentAnimState = INACTIVE;
@@ -293,18 +292,18 @@ void update_projectile(void)
 
 		//collision check here with enemy or enemy can be done in enemy update
 #if _DEBUG
-		//Test with john's ai
-		Coordinates tmp;
-		tmp.width = Game.gridWidth * 0.25f;
-		tmp.height = Game.gridWidth * 0.25f;
-		tmp.xOrigin = test.data.xOrigin;
-		tmp.yOrigin = test.data.yOrigin;
-		tmp.objectType = objectCircle;
-		if (Collision_Detection(tmp, proj[i].data))
-		{
-			//enemy hit do magical stuff here
-			proj[i].isActive = 0;
-		}
+		////Test with john's ai
+		//Coordinates tmp;
+		//tmp.width = Game.gridWidth * 0.25f;
+		//tmp.height = Game.gridWidth * 0.25f;
+		//tmp.xOrigin = test.data.xOrigin;
+		//tmp.yOrigin = test.data.yOrigin;
+		//tmp.objectType = objectCircle;
+		//if (Collision_Detection(tmp, proj[i].data))
+		//{
+		//	//enemy hit do magical stuff here
+		//	proj[i].isActive = 0;
+		//}
 #endif
 	}
 }
