@@ -27,6 +27,7 @@ void game_init(void)
 	init_play_button();
 	init_quit_button();
 	init_level_select_buttons();
+	init_back_button();
 
 	//game grid 
 	game_grid_init();
@@ -89,7 +90,7 @@ void game_update(void)
 	{
 		if (btn_is_pressed(PlayButton.buttonData))
 		{
-			currentGameState = Wave;
+			currentGameState = LevelSelect;
 		}
 		else if (btn_is_pressed(QuitButton.buttonData))
 		{
@@ -103,9 +104,20 @@ void game_update(void)
 	}
 	else if (currentGameState == LevelSelect)
 	{
+		// Level 1
+		if (btn_is_pressed(levelButtons[0].buttonData))
+		{
+			currentGameState = Wave;
+		}
+		else if (btn_is_pressed(BackButton.buttonData))
+		{
+			currentGameState = MainMenu;
+		}
+
 		CP_Graphics_ClearBackground(COLOR_GREY);
 		render_game_title();
 		render_level_select_buttons();
+		render_ui_button(BackButton);
 	}
 }
 void game_exit(void)

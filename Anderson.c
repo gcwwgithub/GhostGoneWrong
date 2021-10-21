@@ -176,7 +176,7 @@ void init_text_button(Button button, float buttonPosX, float buttonPosY, float b
 	button.buttonData.objectType = objectRectangle;
 	button.textPositionX = textPosX;
 	button.textPositionY = textPosY;
-	strcpy_s(button.textString, sizeof(string), string);
+	strcpy_s(button.textString, sizeof(button.textString), string);
 }
 
 void render_game_title(void)
@@ -197,7 +197,7 @@ void init_play_button(void)
 
 	PlayButton.textPositionX = PlayButton.buttonData.xOrigin + BUTTON_WIDTH / 4;
 	PlayButton.textPositionY = PlayButton.buttonData.yOrigin + BUTTON_HEIGHT * 0.8f;
-	strcpy_s(PlayButton.textString, sizeof("Play"), "Play");
+	strcpy_s(PlayButton.textString, sizeof(PlayButton.textString), "Play");
 }
 
 void init_quit_button(void)
@@ -209,17 +209,42 @@ void init_quit_button(void)
 
 	QuitButton.textPositionX = QuitButton.buttonData.xOrigin + BUTTON_WIDTH / 4;
 	QuitButton.textPositionY = QuitButton.buttonData.yOrigin + BUTTON_HEIGHT * 0.8f;
-	strcpy_s(QuitButton.textString, sizeof("Quit"), "Quit");
+	strcpy_s(QuitButton.textString, sizeof(QuitButton.textString), "Quit");
 }
 
+void init_back_button(void)
+{
+	BackButton.buttonData.xOrigin = CP_System_GetWindowWidth() / 7 * 3.1f;
+	BackButton.buttonData.yOrigin = CP_System_GetWindowHeight() * 0.9f;
+	BackButton.buttonData.width = BUTTON_WIDTH;
+	BackButton.buttonData.height = BUTTON_HEIGHT;
 
-/*void text_button_constructor(float buttonPosX, float buttonPosY, float buttonWidth, float buttonHeight, float textPosX, float textPosY, char string[])
-{	// rendering by coordinates
-	CP_Settings_Fill(COLOR_BLACK);
-	CP_Graphics_DrawRect(buttonPosX, buttonPosY, buttonWidth, buttonHeight);
-	CP_Settings_Fill(COLOR_WHITE);
-	CP_Font_DrawText(string, textPosX, textPosY);
-}*/
+	BackButton.textPositionX = BackButton.buttonData.xOrigin + BUTTON_WIDTH / 5;
+	BackButton.textPositionY = BackButton.buttonData.yOrigin + BUTTON_HEIGHT * 0.8f;
+	strcpy_s(BackButton.textString, sizeof(BackButton.textString), "Back");
+}
+
+// number of levels is hardcoded.
+// LSelect buttons seperated by pure vertical gap that is BUTTON_HEIGHT units long.
+void init_level_select_buttons(void)
+{
+	// should prob move this next line somewhere else
+	//CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_CENTER, CP_TEXT_ALIGN_V_MIDDLE);
+	int c = 0;
+	for (int i = 0; i < 5; i++)
+	{
+		levelButtons[i].buttonData.xOrigin = CP_System_GetWindowWidth() / 2 - BUTTON_WIDTH / 2.0f;
+		levelButtons[i].buttonData.yOrigin = (CP_System_GetWindowHeight() / 3 + i * BUTTON_HEIGHT) + i * 25.0f;
+		levelButtons[i].buttonData.width = BUTTON_WIDTH + 6.0f;
+		levelButtons[i].buttonData.height = BUTTON_HEIGHT;
+
+		levelButtons[i].textPositionX = levelButtons[i].buttonData.xOrigin + BUTTON_WIDTH * 0.0f;
+		levelButtons[i].textPositionY = levelButtons[i].buttonData.yOrigin + BUTTON_HEIGHT / 1.2f;
+		char levelNumberText[8];
+		c = snprintf(levelNumberText, 8, "Level %d", i + 1); // write text
+		strcpy_s(levelButtons[i].textString, sizeof(levelButtons[i].textString), levelNumberText);
+	}
+}
 
 void render_ui_button(Button button)
 {
@@ -227,37 +252,6 @@ void render_ui_button(Button button)
 	CP_Graphics_DrawRect(button.buttonData.xOrigin, button.buttonData.yOrigin, button.buttonData.width, button.buttonData.height);
 	CP_Settings_Fill(COLOR_WHITE);
 	CP_Font_DrawText(button.textString, button.textPositionX, button.textPositionY);
-}
-
-// number of levels is hardcoded.
-// LSelect buttons seperated by pure vertical gap that is BUTTON_HEIGHT units long.
-// Resolve tmmrw.
-void init_level_select_buttons(void)
-{
-	// should prob move this next line somewhere else
-	//CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_CENTER, CP_TEXT_ALIGN_V_MIDDLE);
-	for (int i = 0; i < 5; i++)
-	{
-		char levelNumberText[8] = {"Level"};
-		levelButtons[i].buttonData.xOrigin = CP_System_GetWindowWidth() / 2 - BUTTON_WIDTH / 2.0f;
-		levelButtons[i].buttonData.yOrigin = (CP_System_GetWindowHeight() / 3 + i * BUTTON_HEIGHT) + i * 25.0f;
-		levelButtons[i].buttonData.width = BUTTON_WIDTH;
-		levelButtons[i].buttonData.height = BUTTON_HEIGHT;
-
-		levelButtons[i].textPositionX = levelButtons[i].buttonData.xOrigin + BUTTON_WIDTH * 0.1f;
-		levelButtons[i].textPositionY = levelButtons[i].buttonData.yOrigin + BUTTON_HEIGHT / 1.5f;
-		strcpy_s(levelButtons[i].textString, sizeof(levelNumberText), levelNumberText);
-	}
-}
-
-void main_menu_buttons(void)
-{
-	// functionalities of the 3 main menu buttons
-}
-
-void level_select_buttons(void)
-{
-	// functionalities of the 5 level buttons
 }
 
 void render_level_select_buttons(void)

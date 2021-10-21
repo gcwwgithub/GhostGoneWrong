@@ -14,6 +14,7 @@ typedef struct Button {
 
 Button PlayButton;
 Button QuitButton;
+Button BackButton;
 Button levelButtons[5];
 
 
@@ -23,6 +24,7 @@ void init_text_button(Button button, float buttonPosX, float buttonPosY, float b
 void render_game_title(void); // also rendered here
 void init_play_button(void);
 void init_quit_button(void);
+void init_back_button(void);
 void init_level_select_buttons(void);
 
 
