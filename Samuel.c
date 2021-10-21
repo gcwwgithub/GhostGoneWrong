@@ -11,7 +11,13 @@ void turret_init(void)
 {
 	//hard code test values
 	Vector2 v;
-	turret_img = CP_Image_Load("./Assets/Turret.png");
+	turretImageArray[0] = CP_Image_Load("./Assets/Triangle1.png");
+	turretImageArray[1] = CP_Image_Load("./Assets/Triangle2.png");
+	turretImageArray[2] = CP_Image_Load("./Assets/Triangle3.png");
+	turretImageArray[3] = CP_Image_Load("./Assets/Triangle4.png");
+	turretImageArray[4] = CP_Image_Load("./Assets/Triangle5.png");
+	turretImageArray[5] = CP_Image_Load("./Assets/Triangle6.png");
+
 
 	for (int i = 0; i < MAX_PROJECTILE; ++i)
 	{
@@ -31,8 +37,12 @@ void turret_init(void)
 		turret[i].dir = v;
 		turret[i].size = Game.gridHeight;
 		turret[i].damage = 1.f;
+		turret[i].turretAnimTimer = 0;
+		turret[i].turret_img = turretImageArray[0];
+		turret[i].currentAnimState = INACTIVE;
+		turret[i].animCounter = 0;
 	}
-								
+
 	turret[0].data.xOrigin = Game.xOrigin + (Game.gridWidth * (2 + 0.5f));
 	turret[0].data.yOrigin = Game.yOrigin + (Game.gridHeight * (1 + 0.5f));
 	turret[0].size = Game.gridHeight;
@@ -43,7 +53,7 @@ void turret_init(void)
 	turret[0].isActive = 1;
 	turret[0].range = Game.gridWidth * 2;
 
-	#if _DEBUG
+#if _DEBUG
 	//test stuff with john's code
 	enemy_test_init();
 #endif
@@ -124,8 +134,11 @@ void render_turret(void)
 		switch (turret[i].type)
 		{
 		case T_TRIANGLE:
-			CP_Image_DrawAdvanced(turret_img, turret[i].data.xOrigin, turret[i].data.yOrigin,
+			turret[i].turretAnimTimer += CP_System_GetDt();
+			update_turretAnimation(&turret[i]);
+			CP_Image_DrawAdvanced(turret[i].turret_img, turret[i].data.xOrigin, turret[i].data.yOrigin,
 				turret[i].size, turret[i].size, 255, turret[i].angle);
+			printf("%d", turret[i].animCounter);
 			break;
 		case T_CIRCLE:
 			break;
@@ -157,8 +170,8 @@ void update_turret(Turret* t) //take in enemy array or some stuff
 	//v.pos_y = CP_Input_GetMouseY() - t.pos_y; //mouse pos y - tri pos y (turr pos - enmy pos)
 	//bullet(t.pos_x, t.pos_y, t.dir);
 
-	//rotate base off mouse for now (switch to base on enemy once in range ltr) 
-	
+	//rotate base off mouse for now (switch to base on enemy once in range ltr)
+
 	t->dir.pos_x = CP_Input_GetMouseX() - t->data.xOrigin;
 	t->dir.pos_y = CP_Input_GetMouseY() - t->data.yOrigin;
 	//normalise the vector
@@ -170,7 +183,7 @@ void update_turret(Turret* t) //take in enemy array or some stuff
 	//t->angle = acosf(angle) * 180.f / (float)PI;
 
 	//printf("%f\n", t->angle);
- 
+
 	//shooting here is placeholder
 	//if(CP_Input_MouseTriggered(MOUSE_BUTTON_1)) //for now click to shoot
 	t->cooldown -= 1.f * CP_System_GetDt();
@@ -210,7 +223,12 @@ void update_turret(void)
 		v1.pos_y = test.data.yOrigin - turret[i].data.yOrigin;
 		if (magnitude_sq(v1) <= turret[i].range * turret[i].range)
 		{
-			turret[i].dir = v1;;
+			turret[i].currentAnimState = SHOOTING;
+			if (turret[i].animCounter <= 2)
+			{
+				turret[i].animCounter = 3;
+			}
+			turret[i].dir = v1;
 			turret[i].dir = normalise(turret[i].dir);
 			turret[i].angle = atan2f(turret[i].dir.pos_y, turret[i].dir.pos_x) * 180.f / (float)PI;
 			turret[i].cooldown -= 1.f * CP_System_GetDt();
@@ -220,9 +238,14 @@ void update_turret(void)
 				turret[i].cooldown = 2.f;
 			}
 		}
+
+		else
+		{
+			turret[i].currentAnimState = INACTIVE;
+		}
 #endif
 
-		
+
 	}
 }
 
@@ -253,8 +276,8 @@ void update_projectile(void)
 	for (int i = 0; i < MAX_PROJECTILE; ++i)
 	{
 		//bounds check
-		if (proj[i].isActive && 
-			(proj[i].data.xOrigin < 0 || proj[i].data.xOrigin > (float)CP_System_GetDisplayWidth()
+		if (proj[i].isActive &&
+			(proj[i].data.xOrigin < 0 || proj[i].data.xOrigin >(float)CP_System_GetDisplayWidth()
 				|| proj[i].data.yOrigin < 0 || proj[i].data.yOrigin >(float)CP_System_GetDisplayHeight()))
 		{
 			//set to inactive
@@ -277,7 +300,7 @@ void update_projectile(void)
 		tmp.xOrigin = test.data.xOrigin;
 		tmp.yOrigin = test.data.yOrigin;
 		tmp.objectType = objectCircle;
-		if (Collision_Detection(tmp,proj[i].data))
+		if (Collision_Detection(tmp, proj[i].data))
 		{
 			//enemy hit do magical stuff here
 			proj[i].isActive = 0;
@@ -296,4 +319,46 @@ void render_projectile(void)
 		//render of the projectile here for now
 		CP_Graphics_DrawCircle(proj[i].data.xOrigin, proj[i].data.yOrigin, 10);
 	}
+}
+
+void update_turretAnimation(Turret *t)
+{
+	switch (t->currentAnimState)
+	{
+	case INACTIVE:
+		if (t->turretAnimTimer >= 0.5)
+		{
+			if (t->animCounter >= 2)
+			{
+				t->animCounter = 0;
+			}
+
+			else
+			{
+				t->animCounter++;
+			}
+			t->turret_img = turretImageArray[t->animCounter];
+			t->turretAnimTimer = 0;
+		}
+		
+		break;
+	case SHOOTING:
+		if (t->turretAnimTimer >= 0.5)
+		{
+			if (t->animCounter >= 5)
+			{
+				t->animCounter = 3;
+			}
+
+			else
+			{
+				t->animCounter++;
+			}
+			t->turret_img = turretImageArray[t->animCounter];
+			t->turretAnimTimer = 0;
+		}
+		
+		break;
+	}
+	
 }

@@ -15,7 +15,9 @@ typedef enum EnemyTypes {
 
 typedef enum EnemyState {
 	Inactive,
-	Moving
+	Moving,
+	Hurt,
+	Death
 	
 }EnemyState;
 
@@ -25,6 +27,8 @@ typedef struct Enemy {
 	Coordinates data;
 	EnemyState state;
 	EnemyTypes type;
+
+	float timer;
 }enemy;
 
 void enemy_test_init(void);
@@ -32,11 +36,13 @@ void Draw_enemy(enemy* r);
 void enemy_move(enemy* r, float Enemy_PathpointsX[], float Enemy_PathY[], int number_of_points);
 int direction_to_next_point(float enemy_pathpointsX[], float enemy_pathpointsY[], enemy* r);
 int update_point_num(float enemy_pathpointsX[], float enemy_pathpointsY[], enemy* r);
+void EnemyAnimationState(enemy* r);
 
 void EnemyDeath(enemy* r);
 
 enemy test;
-CP_Image Draw_Red_arrow;
+CP_Image ImageArray[3];
+CP_Image currentArrowImage;
 
 //test path
 float xpoint;
