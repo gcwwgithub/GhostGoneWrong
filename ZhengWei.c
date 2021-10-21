@@ -107,11 +107,26 @@ void color_game_square(int rectRow, int rectCol, CP_Color squareColor)
 	CP_Graphics_DrawRect((Game.xOrigin + Game.gridWidth * rectCol), (Game.yOrigin + Game.gridHeight * rectRow), (Game.gridWidth), (Game.gridHeight));
 }
 
-int btn_is_pressed(Coordinates objectButtonX) {
-	return ((objectButtonX.xOrigin) <= MouseInput.xOrigin && MouseInput.xOrigin <= (objectButtonX.xOrigin + objectButtonX.width)) && ((objectButtonX.yOrigin) <= MouseInput.yOrigin && MouseInput.yOrigin <= (objectButtonX.yOrigin + objectButtonX.height)) ? 1 : 0;
+ButtonType check_game_button_pressed(void) {
+	for (int i = 0; i < NUMBER_OF_BUTTONS; i++) {
+		if (Collision_Detection(MouseInput, GameButton[i])) {
+			return GameButton[i].name;
+		}
+	}
+	return NoButton;
+
 }
 
+
 //Graphics
+void mouse_init(void) {
+	MouseInput.width = 0.0f;
+	MouseInput.height = 0.0f;
+	MouseInput.objectType = objectCircle;
+	MouseInput.xOrigin = (float)CP_System_GetWindowWidth() / 2;
+	MouseInput.yOrigin = (float)CP_System_GetWindowHeight() / 2;
+}
+
 void game_grid_init(void) {
 	float unusableScreenHeight, unusableScreenWidth;/*Height and Width not used for game, example menu*/
 	unusableScreenHeight = (float)CP_System_GetWindowHeight() / 2; //Half the screeen is used for the game
@@ -134,45 +149,83 @@ void turret_menu_init(void) {
 
 void turret0_button_init(void) {
 	float unusableButtonHeight = TurretMenu.height / 4;
-	TurretButton0.xOrigin = TurretMenu.xOrigin;
-	TurretButton0.yOrigin = TurretMenu.yOrigin + unusableButtonHeight; //1/4 of the space is for other uses
-	TurretButton0.width = TurretMenu.width;
-	TurretButton0.height = (TurretMenu.height - unusableButtonHeight) / 4;
-	TurretButton0.objectType = objectRectangle;
+	GameButton[0].xOrigin = TurretMenu.xOrigin;
+	GameButton[0].yOrigin = TurretMenu.yOrigin + unusableButtonHeight; //1/4 of the space is for other uses
+	GameButton[0].width = TurretMenu.width;
+	GameButton[0].height = (TurretMenu.height - unusableButtonHeight) / 4;
+	GameButton[0].objectType = objectRectangle;
+	GameButton[0].name = TurretButton0;
 }
 
 void turret1_button_init(void) {
-	TurretButton1.xOrigin = TurretMenu.xOrigin + 1;
-	TurretButton1.yOrigin = TurretButton0.yOrigin + TurretButton0.height; //1/4 of the space is for other uses
-	TurretButton1.width = TurretMenu.width;
-	TurretButton1.height = TurretButton0.height;
-	TurretButton1.objectType = objectRectangle;
+	GameButton[1].xOrigin = TurretMenu.xOrigin + 1;
+	GameButton[1].yOrigin = GameButton[0].yOrigin + GameButton[0].height; //1/4 of the space is for other uses
+	GameButton[1].width = TurretMenu.width;
+	GameButton[1].height = GameButton[0].height;
+	GameButton[1].objectType = objectRectangle;
+	GameButton[1].name = TurretButton1;
 }
 
 void turret2_button_init(void) {
-	TurretButton2.xOrigin = TurretMenu.xOrigin + 1;
-	TurretButton2.yOrigin = TurretButton1.yOrigin + TurretButton1.height; //1/4 of the space is for other uses
-	TurretButton2.width = TurretMenu.width;
-	TurretButton2.height = TurretButton0.height;
-	TurretButton2.objectType = objectRectangle;
+	GameButton[2].xOrigin = TurretMenu.xOrigin + 1;
+	GameButton[2].yOrigin = GameButton[1].yOrigin + GameButton[1].height; //1/4 of the space is for other uses
+	GameButton[2].width = TurretMenu.width;
+	GameButton[2].height = GameButton[0].height;
+	GameButton[2].objectType = objectRectangle;
+	GameButton[2].name = TurretButton2;
 }
 
 void turret3_button_init(void) {
-	TurretButton3.xOrigin = TurretMenu.xOrigin + 1;
-	TurretButton3.yOrigin = TurretButton2.yOrigin + TurretButton2.height; //1/4 of the space is for other uses
-	TurretButton3.width = TurretMenu.width;
-	TurretButton3.height = TurretButton0.height;
-	TurretButton3.objectType = objectRectangle;
+	GameButton[3].xOrigin = TurretMenu.xOrigin + 1;
+	GameButton[3].yOrigin = GameButton[2].yOrigin + GameButton[2].height; //1/4 of the space is for other uses
+	GameButton[3].width = TurretMenu.width;
+	GameButton[3].height = GameButton[0].height;
+	GameButton[3].objectType = objectRectangle;
+	GameButton[3].name = TurretButton3;
 }
 
-void pause_button_init(void){
-	PauseButton.xOrigin = 0.0f;
-	PauseButton.yOrigin = 0.0f;
-	PauseButton.width = TurretMenu.width / 2;
-	PauseButton.height = TurretButton0.yOrigin - 1;
-	PauseButton.objectType = objectRectangle;
+void pause_button_init(void) {
+	GameButton[4].xOrigin = 0.0f;
+	GameButton[4].yOrigin = 0.0f;
+	GameButton[4].width = TurretMenu.width / 2;
+	GameButton[4].height = GameButton[0].yOrigin - 1;
+	GameButton[4].objectType = objectRectangle;
+	GameButton[4].name = PauseButton;
 }
 
+void render_button_pressed(void) {
+	if (check_game_button_pressed() == TurretButton0) {
+		CP_Settings_Fill(COLOR_GREEN);
+		CP_Graphics_DrawCircle(CP_Input_GetMouseX(), CP_Input_GetMouseY(), 20.0f);
+	}
+	else if (check_game_button_pressed() == TurretButton1) {
+		CP_Settings_Fill(COLOR_GREEN);
+		CP_Graphics_DrawCircle(CP_Input_GetMouseX(), CP_Input_GetMouseY(), 20.0f);
+	}
+	else if (check_game_button_pressed() == TurretButton2) {
+		CP_Settings_Fill(COLOR_GREEN);
+		CP_Graphics_DrawCircle(CP_Input_GetMouseX(), CP_Input_GetMouseY(), 20.0f);
+	}
+	else if (check_game_button_pressed() == TurretButton3) {
+		CP_Settings_Fill(COLOR_GREEN);
+		CP_Graphics_DrawCircle(CP_Input_GetMouseX(), CP_Input_GetMouseY(), 20.0f);
+	}
+	else if (check_game_button_pressed() == PauseButton) {
+		if (currentGameState == Pause) {
+			currentGameState = Wave;
+			MouseInput.xOrigin = (float)CP_System_GetWindowWidth() / 2;
+			MouseInput.yOrigin = (float)CP_System_GetWindowHeight() / 2;
+		}
+		else {
+			currentGameState = Pause;
+			MouseInput.xOrigin = (float)CP_System_GetWindowWidth() / 2;
+			MouseInput.yOrigin = (float)CP_System_GetWindowHeight() / 2;
+		}
+	}
+	else {
+		;
+	}
+}
 
 void render_game_grid(void)
 {
@@ -197,12 +250,7 @@ void render_turret_menu(void) {
 
 void render_button(Coordinates TurretButtonX, CP_Color Color) {
 	CP_Settings_RectMode(CP_POSITION_CORNER);
-	if (Collision_Detection(MouseInput, TurretButtonX)) {
-		CP_Settings_Fill(COLOR_GREEN);
-	}
-	else {
-		CP_Settings_Fill(Color);
-	}
+	CP_Settings_Fill(Color);
 	CP_Graphics_DrawRect(TurretButtonX.xOrigin, TurretButtonX.yOrigin, TurretButtonX.width, TurretButtonX.height);
 }
 
@@ -256,10 +304,3 @@ void render_game_grid_color(LevelData Level) {
 	}
 }
 
-void mouse_init(void) {
-	MouseInput.width = 0.0f;
-	MouseInput.height = 0.0f;
-	MouseInput.objectType = objectCircle;
-	MouseInput.xOrigin = (float)CP_System_GetWindowWidth() / 2;
-	MouseInput.yOrigin = (float)CP_System_GetWindowHeight() / 2;
-}

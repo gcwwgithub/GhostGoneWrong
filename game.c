@@ -13,15 +13,16 @@ void turret1_button_init(void);
 void turret2_button_init(void);
 void turret3_button_init(void);
 void mouse_init(void);
-int btn_is_pressed(Coordinates objectButtonX);
+
 void render_game_grid(void);
 void render_game_grid_color(LevelData Level);
 void render_turret_menu(void);
 void render_button(Coordinates TurretButtonX, CP_Color Color);
+void render_button_pressed(void);
 
 void game_init(void)
 {
-	//CP_System_Fullscreen();
+	CP_System_Fullscreen();
 	currentGameState = Wave;
 
 	init_play_button();
@@ -58,41 +59,49 @@ void game_init(void)
 
 void game_update(void)
 {
+	//Input
 	if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
 		MouseInput.xOrigin = CP_Input_GetMouseX();
 		MouseInput.yOrigin = CP_Input_GetMouseY();
 	}
+
+
 	if (currentGameState == Wave)
 	{
+
 		update_turret();
 		update_projectile();
+
 
 		render_game_grid();
 		render_game_grid_color(Tutorial);
 		render_turret_menu();
 
-		render_button(PauseButton, COLOR_PURPLE);
-		render_button(TurretButton0, COLOR_WHITE);
-		render_button(TurretButton1, COLOR_WHITE);
-		render_button(TurretButton2, COLOR_WHITE);
-		render_button(TurretButton3, COLOR_WHITE);
+		render_button(GameButton[4], COLOR_PURPLE);
+		render_button(GameButton[0], COLOR_WHITE);
+		render_button(GameButton[1], COLOR_WHITE);
+		render_button(GameButton[2], COLOR_WHITE);
+		render_button(GameButton[3], COLOR_WHITE);
+
 
 		render_turret();
 		render_projectile();
-
+		
+		render_button_pressed();
 
 		//test enemy
 		enemy_move(&test, Xarray, Yarray, 2);
 		Draw_enemy(&test);
 		EnemyDeath(&test);
 	}
+
 	else if (currentGameState == MainMenu)
 	{
-		if (btn_is_pressed(PlayButton.buttonData))
+		if (Collision_Detection(PlayButton.buttonData, MouseInput))
 		{
 			currentGameState = LevelSelect;
 		}
-		else if (btn_is_pressed(QuitButton.buttonData))
+		else if (Collision_Detection(QuitButton.buttonData, MouseInput))
 		{
 			exit_game();
 		}
@@ -105,11 +114,11 @@ void game_update(void)
 	else if (currentGameState == LevelSelect)
 	{
 		// Level 1
-		if (btn_is_pressed(levelButtons[0].buttonData))
+		if (Collision_Detection(levelButtons[0].buttonData, MouseInput))
 		{
 			currentGameState = Wave;
 		}
-		else if (btn_is_pressed(BackButton.buttonData))
+		else if (Collision_Detection(BackButton.buttonData, MouseInput))
 		{
 			currentGameState = MainMenu;
 		}
@@ -118,6 +127,9 @@ void game_update(void)
 		render_game_title();
 		render_level_select_buttons();
 		render_ui_button(BackButton);
+	}
+	else if (currentGameState == Pause) {
+		render_button_pressed();
 	}
 }
 void game_exit(void)

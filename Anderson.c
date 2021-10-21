@@ -90,19 +90,19 @@ void detect_grid_square_color(LevelData level)
 			}
 		}
 		// if clicked outside the grid
-		//else if (withinBoundaries(TurretButton0.xOrigin, TurretButton0.yOrigin, TurretButton0.xOrigin + TurretButton0.width, TurretButton0.yOrigin + TurretButton0.height))
+		//else if (withinBoundaries(GameButton[0].xOrigin, GameButton[0].yOrigin, GameButton[0].xOrigin + GameButton[0].width, GameButton[0].yOrigin + GameButton[0].height))
 		//{
 		//	turretButton0Clicked = 1;
 		//}
-		//else if (withinBoundaries(TurretButton1.xOrigin, TurretButton1.yOrigin, TurretButton1.xOrigin + TurretButton1.width, TurretButton1.yOrigin + TurretButton1.height))
+		//else if (withinBoundaries(GameButton[1].xOrigin, GameButton[1].yOrigin, GameButton[1].xOrigin + GameButton[1].width, GameButton[1].yOrigin + GameButton[1].height))
 		//{
 		//	turretButton1Clicked = 1;
 		//}
-		//else if (withinBoundaries(TurretButton2.xOrigin, TurretButton2.yOrigin, TurretButton2.xOrigin + TurretButton2.width, TurretButton2.yOrigin + TurretButton2.height))
+		//else if (withinBoundaries(GameButton[2].xOrigin, GameButton[2].yOrigin, GameButton[2].xOrigin + GameButton[2].width, GameButton[2].yOrigin + GameButton[2].height))
 		//{
 		//	turretButton2Clicked = 1;
 		//}
-		//else if (withinBoundaries(TurretButton3.xOrigin, TurretButton3.yOrigin, TurretButton3.xOrigin + TurretButton3.width, TurretButton3.yOrigin + TurretButton3.height))
+		//else if (withinBoundaries(GameButton[3].xOrigin, GameButton[3].yOrigin, GameButton[3].xOrigin + GameButton[3].width, GameButton[3].yOrigin + GameButton[3].height))
 		//{
 		//	turretButton3Clicked = 1;
 		//}

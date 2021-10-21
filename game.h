@@ -66,21 +66,30 @@ typedef enum ObjectShape {
 	objectRectangle
 }ObjectShape;
 
+typedef enum ButtonType {
+	NoButton,
+	TurretButton0,
+	TurretButton1,
+	TurretButton2,
+	TurretButton3,
+	PauseButton
+}ButtonType;
+
 typedef struct Coordinates {
+	ButtonType name;
 	float width; //Width and Height are the same for Circles
 	float height; //Width and Height are the same for Circles
 	float xOrigin;
 	float yOrigin;
 	ObjectShape objectType;
 }Coordinates;
-
 void object_init(void);
 int Collision_Detection(Coordinates object1, Coordinates object2);
 
+//TurretMenu
 Coordinates TurretMenu;
-Coordinates TurretButton0;
-Coordinates TurretButton1;
-Coordinates TurretButton2;
-Coordinates TurretButton3;
+
+//Buttons
+#define NUMBER_OF_BUTTONS 5
+Coordinates GameButton[NUMBER_OF_BUTTONS];
 Coordinates MouseInput;
-Coordinates PauseButton;
