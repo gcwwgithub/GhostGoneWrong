@@ -19,10 +19,16 @@ typedef enum TurretType
 typedef enum ProjectileType
 {
 	P_BASIC,
-	P_AOE,
+	P_SLOW,
 	P_PIERCE,
 	P_PERCENTAGE,
 } ProjectileType;
+
+typedef enum TriangleAnimState
+{
+	INACTIVE,
+	SHOOTING,
+} TriangleAnimState;
 
 typedef struct Turret
 {
@@ -31,6 +37,10 @@ typedef struct Turret
 	Vector2 dir;
 	Coordinates data;
 	TurretType type;
+	TriangleAnimState currentAnimState;
+	float turretAnimTimer;
+	CP_Image turret_img;
+	int animCounter;
 } Turret;
 
 typedef struct Projectile
@@ -40,6 +50,7 @@ typedef struct Projectile
 	Coordinates data;
 	Vector2 dir;
 } Projectile;
+
 
 //init 
 void turret_init(void);
@@ -62,8 +73,11 @@ void update_projectile(void);
 
 void render_projectile(void);
 
+void update_turretAnimation(Turret* t);
+
 Projectile proj[MAX_PROJECTILE];
 Turret turret[MAX_TURRET];
 
 //test variables
-CP_Image turret_img;
+
+CP_Image turretImageArray[6];
