@@ -166,6 +166,7 @@ void exit_game(void)
 
 #pragma region UI
 
+
 // Assuming all buttons are rectangles
 void init_text_button(Button button, float buttonPosX, float buttonPosY, float buttonWidth, float buttonHeight, float textPosX, float textPosY, char string[])
 {

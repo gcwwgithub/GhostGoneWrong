@@ -22,7 +22,7 @@ void render_button(Coordinates TurretButtonX, CP_Color Color);
 void game_init(void)
 {
 	//CP_System_Fullscreen();
-	currentGameState = MainMenu;
+	currentGameState = Wave;
 
 	init_play_button();
 	init_quit_button();
