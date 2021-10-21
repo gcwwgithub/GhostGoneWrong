@@ -1,8 +1,11 @@
 #pragma once
 #include "game.h"
 
-#define BUTTON_WIDTH 50.0f
-#define BUTTON_HEIGHT 20.0f
+#define BUTTON_WIDTH CP_System_GetWindowWidth() / 400 * 55.0f //120.0f
+#define BUTTON_HEIGHT CP_System_GetWindowHeight() / 400 * 30.0f //40.0f
+#define FONT_SIZE CP_System_GetWindowWidth() / 400 * 18.0f
+
+
 
 typedef struct Button {
 	Coordinates buttonData;

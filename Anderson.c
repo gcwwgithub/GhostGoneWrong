@@ -2,6 +2,9 @@
 #include "game.h"
 #include "Anderson.h"
 
+// text currently aligned to horizontal_center, vertical_center of text box.
+// init_play_button(...)
+
 CP_Font debugSquareFont;
 
 int redSquareClicked = 0;
@@ -94,24 +97,12 @@ void detect_grid_square_color(LevelData level)
 		//{
 		//	turretButton0Clicked = 1;
 		//}
-		//else if (withinBoundaries(GameButton[1].xOrigin, GameButton[1].yOrigin, GameButton[1].xOrigin + GameButton[1].width, GameButton[1].yOrigin + GameButton[1].height))
-		//{
-		//	turretButton1Clicked = 1;
-		//}
-		//else if (withinBoundaries(GameButton[2].xOrigin, GameButton[2].yOrigin, GameButton[2].xOrigin + GameButton[2].width, GameButton[2].yOrigin + GameButton[2].height))
-		//{
-		//	turretButton2Clicked = 1;
-		//}
-		//else if (withinBoundaries(GameButton[3].xOrigin, GameButton[3].yOrigin, GameButton[3].xOrigin + GameButton[3].width, GameButton[3].yOrigin + GameButton[3].height))
-		//{
-		//	turretButton3Clicked = 1;
-		//}
 	}
 
 	debugSquareFont = GAME_FONT;
 	CP_Font_Set(debugSquareFont);
 	CP_Settings_Fill(COLOR_RED);
-	CP_Settings_TextSize(32.0f);
+	CP_Settings_TextSize(FONT_SIZE);
 	if (redSquareClicked)
 	{
 		CP_Font_DrawText("Red square", CP_System_GetWindowWidth() * 0.9f, CP_System_GetWindowHeight() * 0.1f);
@@ -132,18 +123,6 @@ void detect_grid_square_color(LevelData level)
 	if (turretButton0Clicked)
 	{
 		CP_Font_DrawText("Turret button 0", CP_System_GetWindowWidth() * 0.9f, CP_System_GetWindowHeight() * 0.1f);
-	}
-	else if (turretButton1Clicked)
-	{
-		CP_Font_DrawText("Turret button 1", CP_System_GetWindowWidth() * 0.9f, CP_System_GetWindowHeight() * 0.1f);
-	}
-	else if (turretButton2Clicked)
-	{
-		CP_Font_DrawText("Turret button 2", CP_System_GetWindowWidth() * 0.9f, CP_System_GetWindowHeight() * 0.1f);
-	}
-	else if (turretButton3Clicked)
-	{
-		CP_Font_DrawText("Turret button 3", CP_System_GetWindowWidth() * 0.9f, CP_System_GetWindowHeight() * 0.1f);
 	}
 }
 
@@ -185,43 +164,46 @@ void render_game_title(void)
 	debugSquareFont = GAME_FONT;
 	CP_Font_Set(debugSquareFont);
 	CP_Settings_Fill(COLOR_BLUE);
-	CP_Settings_TextSize(20.0f); // also affects the two button text sizes
-	CP_Font_DrawText("Vector Defence", CP_System_GetWindowWidth() * 0.35f, CP_System_GetWindowHeight() * 0.25f);
+	CP_Settings_TextSize(FONT_SIZE);
+
+	CP_Font_DrawText("Math Gone Wrong", CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.25f);
 }
 
 void init_play_button(void)
 {
-	PlayButton.buttonData.xOrigin = CP_System_GetWindowWidth() / 7 * 1.0f;
+	CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_CENTER, CP_TEXT_ALIGN_V_MIDDLE);
+
+	PlayButton.buttonData.xOrigin = CP_System_GetWindowWidth() / 5 * 1.0f;
 	PlayButton.buttonData.yOrigin = CP_System_GetWindowHeight() * 0.5f;
 	PlayButton.buttonData.width = BUTTON_WIDTH;
 	PlayButton.buttonData.height = BUTTON_HEIGHT;
 
-	PlayButton.textPositionX = PlayButton.buttonData.xOrigin + BUTTON_WIDTH / 4;
-	PlayButton.textPositionY = PlayButton.buttonData.yOrigin + BUTTON_HEIGHT * 0.8f;
+	PlayButton.textPositionX = PlayButton.buttonData.xOrigin + BUTTON_WIDTH / 2;
+	PlayButton.textPositionY = PlayButton.buttonData.yOrigin + BUTTON_HEIGHT / 2;
 	strcpy_s(PlayButton.textString, sizeof(PlayButton.textString), "Play");
 }
 
 void init_quit_button(void)
 {
-	QuitButton.buttonData.xOrigin = CP_System_GetWindowWidth() / 7 * 5.0f;
+	QuitButton.buttonData.xOrigin = CP_System_GetWindowWidth()  / 3 * 2.0f;
 	QuitButton.buttonData.yOrigin = CP_System_GetWindowHeight() * 0.5f;
 	QuitButton.buttonData.width = BUTTON_WIDTH;
 	QuitButton.buttonData.height = BUTTON_HEIGHT;
 
-	QuitButton.textPositionX = QuitButton.buttonData.xOrigin + BUTTON_WIDTH / 4;
-	QuitButton.textPositionY = QuitButton.buttonData.yOrigin + BUTTON_HEIGHT * 0.8f;
+	QuitButton.textPositionX = QuitButton.buttonData.xOrigin + BUTTON_WIDTH / 2;
+	QuitButton.textPositionY = QuitButton.buttonData.yOrigin + BUTTON_HEIGHT / 2;
 	strcpy_s(QuitButton.textString, sizeof(QuitButton.textString), "Quit");
 }
 
 void init_back_button(void)
 {
-	BackButton.buttonData.xOrigin = CP_System_GetWindowWidth() / 7 * 3.1f;
+	BackButton.buttonData.xOrigin = CP_System_GetWindowWidth() / 5 * 3.1f;
 	BackButton.buttonData.yOrigin = CP_System_GetWindowHeight() * 0.9f;
 	BackButton.buttonData.width = BUTTON_WIDTH;
 	BackButton.buttonData.height = BUTTON_HEIGHT;
 
-	BackButton.textPositionX = BackButton.buttonData.xOrigin + BUTTON_WIDTH / 5;
-	BackButton.textPositionY = BackButton.buttonData.yOrigin + BUTTON_HEIGHT * 0.8f;
+	BackButton.textPositionX = BackButton.buttonData.xOrigin + BUTTON_WIDTH / 2;
+	BackButton.textPositionY = BackButton.buttonData.yOrigin + BUTTON_HEIGHT / 2;
 	strcpy_s(BackButton.textString, sizeof(BackButton.textString), "Back");
 }
 
@@ -239,8 +221,8 @@ void init_level_select_buttons(void)
 		levelButtons[i].buttonData.width = BUTTON_WIDTH + 6.0f;
 		levelButtons[i].buttonData.height = BUTTON_HEIGHT;
 
-		levelButtons[i].textPositionX = levelButtons[i].buttonData.xOrigin + BUTTON_WIDTH * 0.0f;
-		levelButtons[i].textPositionY = levelButtons[i].buttonData.yOrigin + BUTTON_HEIGHT / 1.2f;
+		levelButtons[i].textPositionX = levelButtons[i].buttonData.xOrigin + BUTTON_WIDTH / 2.0f;
+		levelButtons[i].textPositionY = levelButtons[i].buttonData.yOrigin + BUTTON_HEIGHT / 2.0f;
 		char levelNumberText[8];
 		c = snprintf(levelNumberText, 8, "Level %d", i + 1); // write text
 		strcpy_s(levelButtons[i].textString, sizeof(levelButtons[i].textString), levelNumberText);

@@ -25,6 +25,7 @@ void game_init(void)
 	CP_System_Fullscreen();
 	currentGameState = Wave;
 
+	//Main menu, level select
 	init_play_button();
 	init_quit_button();
 	init_level_select_buttons();
