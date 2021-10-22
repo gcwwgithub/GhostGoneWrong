@@ -2,101 +2,18 @@
 #include "game.h"
 
 //Tools
-int Collision_Detection(Coordinates object1, Coordinates object2) {
-	if (object1.objectType == objectCircle && object2.objectType == objectCircle) {
-		float objectDistanceSquared = (object1.xOrigin - object2.xOrigin) * (object1.xOrigin - object2.xOrigin) + (object1.yOrigin - object2.yOrigin) * (object1.yOrigin - object2.yOrigin);//Get the squared distance between the two centre points
-		if (objectDistanceSquared <= (object1.width + object2.width) * (object1.width + object2.width))//Compare with squared Radius of both object
-			return 1;
-		else
-			return 0;
+float myabs(float x) {
+	return x < 0 ? x * -1 : x;
+}
+
+
+
+int btn_is_pressed(Coordinates object1) {
+	if (((object1.xOrigin <= MouseInput.xOrigin) && (MouseInput.xOrigin <= object1.xOrigin + object1.width)) && ((object1.yOrigin <= MouseInput.yOrigin) && (MouseInput.yOrigin <= object1.yOrigin + object1.height))) {
+		return 1;
 	}
 	else {
-		if (object1.objectType == objectCircle) {
-			if (((object2.xOrigin <= object1.xOrigin) && (object1.xOrigin <= object2.xOrigin + object2.width)) && ((object2.yOrigin <= object1.yOrigin) && (object1.yOrigin <= object2.yOrigin + object2.height))) {
-				return 1;
-			}
-			else {
-				float distanceFromCornerSquared = 0.0f;
-				if (object1.xOrigin < object2.xOrigin) {
-					distanceFromCornerSquared += (object1.xOrigin - object2.xOrigin) * (object1.xOrigin - object2.xOrigin);
-				}
-				else {
-					distanceFromCornerSquared += (object1.xOrigin - object2.width - object2.xOrigin) * (object1.xOrigin - object2.width - object2.xOrigin);
-				}
-				if (object1.yOrigin < object2.yOrigin) {
-					distanceFromCornerSquared += (object1.yOrigin - object2.yOrigin) * (object1.yOrigin - object2.yOrigin);
-				}
-				else {
-					distanceFromCornerSquared += (object1.yOrigin - object2.height - object2.yOrigin) * (object1.yOrigin - object2.height - object2.yOrigin);
-				}
-				if (distanceFromCornerSquared <= (object1.width * object1.width)) {
-					return 1;
-				}
-				else {
-					return 0;
-				}
-			}
-		}
-		else if (object2.objectType == objectCircle) {
-			if (((object1.xOrigin <= object2.xOrigin) && (object2.xOrigin <= object1.xOrigin + object1.width)) && ((object1.yOrigin <= object2.yOrigin) && (object2.yOrigin <= object1.yOrigin + object1.height))) {
-				return 1;
-			}
-			else {
-				float distanceFromCornerSquared = 0.0f;
-				if (object2.xOrigin < object1.xOrigin) {
-					distanceFromCornerSquared += (object2.xOrigin - object1.xOrigin) * (object2.xOrigin - object1.xOrigin);
-				}
-				else {
-					distanceFromCornerSquared += (object2.xOrigin - object1.width - object1.xOrigin) * (object2.xOrigin - object1.width - object1.xOrigin);
-				}
-				if (object2.yOrigin < object1.yOrigin) {
-					distanceFromCornerSquared += (object2.yOrigin - object1.yOrigin) * (object2.yOrigin - object1.yOrigin);
-				}
-				else {
-					distanceFromCornerSquared += (object2.yOrigin - object1.height - object1.yOrigin) * (object2.yOrigin - object1.height - object1.yOrigin);
-				}
-				if (distanceFromCornerSquared <= (object2.width * object2.width)) {
-					return 1;
-				}
-				else {
-					return 0;
-				}
-			}
-		}
-		else {
-			if (object1.xOrigin < object2.xOrigin && object1.yOrigin < object2.yOrigin) {
-				if ((object1.xOrigin + object1.width) >= object2.xOrigin && (object1.yOrigin + object1.height) >= object2.yOrigin) {
-					return 1;
-				}
-				else {
-					return 0;
-				}
-			}
-			else if (object1.xOrigin < object2.xOrigin && object1.yOrigin > object2.yOrigin) {
-				if ((object1.xOrigin + object1.width) >= object2.xOrigin && (object2.yOrigin + object2.height) >= object1.yOrigin) {
-					return 1;
-				}
-				else {
-					return 0;
-				}
-			}
-			else if (object1.xOrigin > object2.xOrigin && object1.yOrigin < object2.yOrigin) {
-				if ((object2.xOrigin + object2.width) >= object1.xOrigin && (object1.yOrigin + object1.height) >= object2.yOrigin) {
-					return 1;
-				}
-				else {
-					return 0;
-				}
-			}
-			else {
-				if ((object2.xOrigin + object2.width) >= object1.xOrigin && (object2.yOrigin + object2.height) >= object1.yOrigin) {
-					return 1;
-				}
-				else {
-					return 0;
-				}
-			}
-		}
+		return 0;
 	}
 }
 
@@ -107,10 +24,84 @@ void color_game_square(int rectRow, int rectCol, CP_Color squareColor)
 	CP_Graphics_DrawRect((Game.xOrigin + Game.gridWidth * rectCol), (Game.yOrigin + Game.gridHeight * rectRow), (Game.gridWidth), (Game.gridHeight));
 }
 
+int Collision_Detection(Coordinates object1, Coordinates object2) {
+	if (object1.objectType == objectCircle && object2.objectType == objectCircle) {
+		float collisionDistanceSquared, distanceSquared, circle1Radius, circle2Radius;
+		circle1Radius = 0.5f * object1.width;
+		circle2Radius = 0.5f * object2.width;
+		collisionDistanceSquared = (circle1Radius + circle2Radius) * (circle1Radius + circle2Radius);
+		distanceSquared = ((object1.xOrigin - object2.xOrigin) * (object1.xOrigin - object2.xOrigin)) + ((object1.yOrigin - object2.yOrigin) * (object1.yOrigin - object2.yOrigin));
+		if (collisionDistanceSquared >= distanceSquared) {
+			return 1;
+		}
+		else {
+			return 0;
+		}
+	}
+	else if (object1.objectType == objectCircle || object2.objectType == objectCircle) {
+		float  distanceX, distanceY, circleRadius, rectWidthtoCheck, rectHeightToCheck, collisionDistanceX, collisionDistanceY, radiusSquared, distanceToCornerSquaredX, distanceToCornerSquaredY;
+		distanceX = object1.xOrigin - object2.xOrigin;
+		distanceX = myabs(distanceX);
+		distanceY = object1.yOrigin - object2.yOrigin;
+		distanceY = myabs(distanceY);
+		if (object1.objectType == objectCircle) {
+			circleRadius = 0.5f * object1.width;
+			rectWidthtoCheck = 0.5f * object2.width;
+			rectHeightToCheck = 0.5f * object2.height;
+		}
+		else {
+			circleRadius = 0.5f * object2.width;
+			rectWidthtoCheck = 0.5f * object1.width;
+			rectHeightToCheck = 0.5f * object1.height;
+		}
+		collisionDistanceX = circleRadius + rectWidthtoCheck;
+		collisionDistanceY = circleRadius + rectHeightToCheck;
+		radiusSquared = circleRadius * circleRadius;
+		distanceToCornerSquaredX = (distanceX - rectWidthtoCheck) * (distanceX - rectWidthtoCheck);
+		distanceToCornerSquaredY = (distanceY - rectHeightToCheck) * (distanceX - rectHeightToCheck);
+		if (collisionDistanceX >= distanceX && collisionDistanceY >= distanceY) {
+			if (distanceX <= rectWidthtoCheck) {
+				return 1;
+			}
+			else if (distanceY <= rectHeightToCheck) {
+				return 1;
+			}
+			else if ((distanceToCornerSquaredX + distanceToCornerSquaredY) <= radiusSquared) {
+				return 1;
+			}
+			else {
+				return 0;
+			}
+		}
+		else {
+			return 0;
+		}
+	}
+	else {
+		float rect1WidthtoCheck, rect1HeighttoCheck, rect2WidthtoCheck, rect2HeighttoCheck, collisionDistanceX, collisionDistanceY, distanceX, distanceY;
+		rect1WidthtoCheck = 0.5f * object1.width;
+		rect1HeighttoCheck = 0.5f * object1.height;
+		rect2WidthtoCheck = 0.5f * object2.width;
+		rect2HeighttoCheck = 0.5f * object2.height;
+		collisionDistanceX = (rect1WidthtoCheck + rect2WidthtoCheck);
+		collisionDistanceY = (rect1HeighttoCheck + rect2HeighttoCheck);
+		distanceX = (object1.xOrigin - object2.xOrigin);
+		distanceX = myabs(distanceX);
+		distanceY = (object1.yOrigin - object2.yOrigin);
+		distanceY = myabs(distanceY);
+		if (collisionDistanceX >= distanceX && collisionDistanceY >= distanceY) {
+			return 1;
+		}
+		else {
+			return 0;
+		}
+	}
+}
+
 ButtonType check_game_button_pressed(void) {
 	for (int i = 0; i < NUMBER_OF_BUTTONS; i++) {
-		if (Collision_Detection(MouseInput, GameButton[i])) {
-			return GameButton[i].name;
+		if (btn_is_pressed(GameButton[i])) {
+			return GameButton[i].buttonName;
 		}
 	}
 	return NoButton;
@@ -154,7 +145,7 @@ void turret0_button_init(void) {
 	GameButton[0].width = TurretMenu.width;
 	GameButton[0].height = (TurretMenu.height - unusableButtonHeight) / 4;
 	GameButton[0].objectType = objectRectangle;
-	GameButton[0].name = TurretButton0;
+	GameButton[0].buttonName = TurretButton0;
 }
 
 void turret1_button_init(void) {
@@ -163,7 +154,7 @@ void turret1_button_init(void) {
 	GameButton[1].width = TurretMenu.width;
 	GameButton[1].height = GameButton[0].height;
 	GameButton[1].objectType = objectRectangle;
-	GameButton[1].name = TurretButton1;
+	GameButton[1].buttonName = TurretButton1;
 }
 
 void turret2_button_init(void) {
@@ -172,7 +163,7 @@ void turret2_button_init(void) {
 	GameButton[2].width = TurretMenu.width;
 	GameButton[2].height = GameButton[0].height;
 	GameButton[2].objectType = objectRectangle;
-	GameButton[2].name = TurretButton2;
+	GameButton[2].buttonName = TurretButton2;
 }
 
 void turret3_button_init(void) {
@@ -181,7 +172,7 @@ void turret3_button_init(void) {
 	GameButton[3].width = TurretMenu.width;
 	GameButton[3].height = GameButton[0].height;
 	GameButton[3].objectType = objectRectangle;
-	GameButton[3].name = TurretButton3;
+	GameButton[3].buttonName = TurretButton3;
 }
 
 void pause_button_init(void) {
@@ -190,23 +181,27 @@ void pause_button_init(void) {
 	GameButton[4].width = TurretMenu.width / 2;
 	GameButton[4].height = GameButton[0].yOrigin - 1;
 	GameButton[4].objectType = objectRectangle;
-	GameButton[4].name = PauseButton;
+	GameButton[4].buttonName = PauseButton;
 }
 
 void render_button_pressed(void) {
 	if (check_game_button_pressed() == TurretButton0) {
+		isPlacingTurret = TRUE;
 		CP_Settings_Fill(COLOR_GREEN);
 		CP_Graphics_DrawCircle(CP_Input_GetMouseX(), CP_Input_GetMouseY(), 20.0f);
 	}
 	else if (check_game_button_pressed() == TurretButton1) {
+		isPlacingTurret = TRUE;
 		CP_Settings_Fill(COLOR_GREEN);
 		CP_Graphics_DrawCircle(CP_Input_GetMouseX(), CP_Input_GetMouseY(), 20.0f);
 	}
 	else if (check_game_button_pressed() == TurretButton2) {
+		isPlacingTurret = TRUE;
 		CP_Settings_Fill(COLOR_GREEN);
 		CP_Graphics_DrawCircle(CP_Input_GetMouseX(), CP_Input_GetMouseY(), 20.0f);
 	}
 	else if (check_game_button_pressed() == TurretButton3) {
+		isPlacingTurret = TRUE;
 		CP_Settings_Fill(COLOR_GREEN);
 		CP_Graphics_DrawCircle(CP_Input_GetMouseX(), CP_Input_GetMouseY(), 20.0f);
 	}
@@ -248,10 +243,27 @@ void render_turret_menu(void) {
 	CP_Graphics_DrawRect(TurretMenu.xOrigin, TurretMenu.yOrigin, TurretMenu.width, TurretMenu.height);
 }
 
-void render_button(Coordinates TurretButtonX, CP_Color Color) {
+void render_button(Coordinates ButtonX, CP_Color Color) {
 	CP_Settings_RectMode(CP_POSITION_CORNER);
 	CP_Settings_Fill(Color);
-	CP_Graphics_DrawRect(TurretButtonX.xOrigin, TurretButtonX.yOrigin, TurretButtonX.width, TurretButtonX.height);
+	CP_Graphics_DrawRect(ButtonX.xOrigin, ButtonX.yOrigin, ButtonX.width, ButtonX.height);
+}
+
+void render_new_turret(void) {
+	Coordinates GameTemp;
+	GameTemp.xOrigin = Game.xOrigin;
+	GameTemp.yOrigin = Game.yOrigin;
+	GameTemp.width = Game.width;
+	GameTemp.height = Game.height;
+	if (btn_is_pressed(GameTemp)) {
+		if (isPlacingTurret == TRUE) {
+			float drawX,drawY;
+			drawX = ((int)((CP_Input_GetMouseX() - Game.xOrigin) / Game.gridWidth) + 0.5f) * Game.gridWidth + Game.xOrigin;
+			drawY = ((int)((CP_Input_GetMouseY() - Game.yOrigin) / Game.gridHeight) + 0.5f) * Game.gridHeight + Game.yOrigin;
+			CP_Graphics_DrawCircle(drawX, drawY, 20.0f);
+			isPlacingTurret = FALSE;
+		}
+	}
 }
 
 //Level

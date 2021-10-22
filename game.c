@@ -17,13 +17,13 @@ void mouse_init(void);
 void render_game_grid(void);
 void render_game_grid_color(LevelData Level);
 void render_turret_menu(void);
-void render_button(Coordinates TurretButtonX, CP_Color Color);
 void render_button_pressed(void);
+void render_new_turret(void);
 
 void game_init(void)
 {
 	CP_System_Fullscreen();
-	currentGameState = Wave;
+	currentGameState = MainMenu;
 
 	//Main menu, level select
 	init_play_button();
@@ -46,6 +46,7 @@ void game_init(void)
 
 	//Initialize Objects
 	mouse_init();
+	isPlacingTurret = FALSE;
 
 	//Level Data
 	Tutorial.spawnRow = 0;
@@ -88,8 +89,9 @@ void game_update(void)
 
 		render_turret();
 		render_projectile();
-		
+
 		render_button_pressed();
+		render_new_turret();
 
 		//test enemy
 		enemy_move(&test, Xarray, Yarray, 2);
@@ -101,11 +103,11 @@ void game_update(void)
 
 	else if (currentGameState == MainMenu)
 	{
-		if (Collision_Detection(PlayButton.buttonData, MouseInput))
+		if (btn_is_pressed(PlayButton.buttonData))
 		{
 			currentGameState = LevelSelect;
 		}
-		else if (Collision_Detection(QuitButton.buttonData, MouseInput))
+		else if (btn_is_pressed(QuitButton.buttonData))
 		{
 			exit_game();
 		}
@@ -118,11 +120,11 @@ void game_update(void)
 	else if (currentGameState == LevelSelect)
 	{
 		// Level 1
-		if (Collision_Detection(levelButtons[0].buttonData, MouseInput))
+		if (btn_is_pressed(levelButtons[0].buttonData))
 		{
 			currentGameState = Wave;
 		}
-		else if (Collision_Detection(BackButton.buttonData, MouseInput))
+		else if (btn_is_pressed(BackButton.buttonData))
 		{
 			currentGameState = MainMenu;
 		}
@@ -133,7 +135,18 @@ void game_update(void)
 		render_ui_button(BackButton);
 	}
 	else if (currentGameState == Pause) {
-		render_button_pressed();
+		if (check_game_button_pressed() == PauseButton) {
+			if (currentGameState == Pause) {
+				currentGameState = Wave;
+				MouseInput.xOrigin = (float)CP_System_GetWindowWidth() / 2;
+				MouseInput.yOrigin = (float)CP_System_GetWindowHeight() / 2;
+			}
+			else {
+				currentGameState = Pause;
+				MouseInput.xOrigin = (float)CP_System_GetWindowWidth() / 2;
+				MouseInput.yOrigin = (float)CP_System_GetWindowHeight() / 2;
+			}
+		}
 	}
 }
 void game_exit(void)

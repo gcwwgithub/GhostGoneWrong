@@ -172,8 +172,8 @@ void init_play_button(void)
 {
 	CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_CENTER, CP_TEXT_ALIGN_V_MIDDLE);
 
-	PlayButton.buttonData.xOrigin = CP_System_GetWindowWidth() / 5 * 1.0f;
-	PlayButton.buttonData.yOrigin = CP_System_GetWindowHeight() * 0.5f;
+	PlayButton.buttonData.xOrigin = CP_System_GetWindowWidth() / 5.0f;
+	PlayButton.buttonData.yOrigin = CP_System_GetWindowHeight() / 2.0f;
 	PlayButton.buttonData.width = BUTTON_WIDTH;
 	PlayButton.buttonData.height = BUTTON_HEIGHT;
 
@@ -184,8 +184,8 @@ void init_play_button(void)
 
 void init_quit_button(void)
 {
-	QuitButton.buttonData.xOrigin = CP_System_GetWindowWidth()  / 3 * 2.0f;
-	QuitButton.buttonData.yOrigin = CP_System_GetWindowHeight() * 0.5f;
+	QuitButton.buttonData.xOrigin = CP_System_GetWindowWidth() / 1.5f;
+	QuitButton.buttonData.yOrigin = CP_System_GetWindowHeight() / 2.0f;
 	QuitButton.buttonData.width = BUTTON_WIDTH;
 	QuitButton.buttonData.height = BUTTON_HEIGHT;
 
@@ -196,8 +196,8 @@ void init_quit_button(void)
 
 void init_back_button(void)
 {
-	BackButton.buttonData.xOrigin = CP_System_GetWindowWidth() / 5 * 3.1f;
-	BackButton.buttonData.yOrigin = CP_System_GetWindowHeight() * 0.9f;
+	BackButton.buttonData.xOrigin = CP_System_GetWindowWidth() / 2 - BUTTON_WIDTH / 2.0f;
+	BackButton.buttonData.yOrigin = CP_System_GetWindowHeight() * 0.8f;
 	BackButton.buttonData.width = BUTTON_WIDTH;
 	BackButton.buttonData.height = BUTTON_HEIGHT;
 
@@ -207,16 +207,14 @@ void init_back_button(void)
 }
 
 // number of levels is hardcoded.
-// LSelect buttons seperated by pure vertical gap that is BUTTON_HEIGHT units long.
+// LSelect buttons seperated by pure vertical gap that is 25.0f units long.
 void init_level_select_buttons(void)
 {
-	// should prob move this next line somewhere else
-	//CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_CENTER, CP_TEXT_ALIGN_V_MIDDLE);
 	int c = 0;
 	for (int i = 0; i < 5; i++)
 	{
 		levelButtons[i].buttonData.xOrigin = CP_System_GetWindowWidth() / 2 - BUTTON_WIDTH / 2.0f;
-		levelButtons[i].buttonData.yOrigin = (CP_System_GetWindowHeight() / 3 + i * BUTTON_HEIGHT) + i * 25.0f;
+		levelButtons[i].buttonData.yOrigin = CP_System_GetWindowHeight() / 3 + i * (BUTTON_HEIGHT + 25.0f);
 		levelButtons[i].buttonData.width = BUTTON_WIDTH + 6.0f;
 		levelButtons[i].buttonData.height = BUTTON_HEIGHT;
 
