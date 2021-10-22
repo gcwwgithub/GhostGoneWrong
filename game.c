@@ -22,7 +22,7 @@ void render_new_turret(void);
 
 void game_init(void)
 {
-	CP_System_Fullscreen();
+	//CP_System_Fullscreen();
 	currentGameState = MainMenu;
 
 	//Main menu, level select
@@ -57,6 +57,7 @@ void game_init(void)
 	game_grid_color_init(&Tutorial);
 	turret_init();
 	enemy_test_init();
+	Enemies_init();
 	//Enemies_spawn();
 }
 
@@ -71,11 +72,16 @@ void game_update(void)
 
 	if (currentGameState == Wave)
 	{
+		//do enemy update first
+		//enemy_move(&test, Xarray, Yarray, 2);
+		update_enemy();
+		EnemyDeath(&test);
 
+		//do turret & projectile update next
 		update_turret();
 		update_projectile();
 
-
+		//render all the stuff
 		render_game_grid();
 		render_game_grid_color(Tutorial);
 		render_turret_menu();
@@ -86,7 +92,6 @@ void game_update(void)
 		render_button(GameButton[2], COLOR_WHITE);
 		render_button(GameButton[3], COLOR_WHITE);
 
-
 		render_turret();
 		render_projectile();
 
@@ -94,11 +99,8 @@ void game_update(void)
 		render_new_turret();
 
 		//test enemy
-		enemy_move(&test, Xarray, Yarray, 2);
 		Draw_enemy(&test);
-		EnemyDeath(&test);
-		//draw_multiple_enemies();
-		//update_enemy();
+		draw_multiple_enemies();
 	}
 
 	else if (currentGameState == MainMenu)

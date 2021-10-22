@@ -51,7 +51,6 @@ typedef struct Projectile
 	Vector2 dir;
 } Projectile;
 
-
 //init 
 void turret_init(void);
 
@@ -77,7 +76,4 @@ void update_turretAnimation(Turret* t);
 
 Projectile proj[MAX_PROJECTILE];
 Turret turret[MAX_TURRET];
-
-//test variables
-
 CP_Image turretImageArray[6];
