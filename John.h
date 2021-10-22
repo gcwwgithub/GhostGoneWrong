@@ -41,7 +41,7 @@ void EnemyAnimationState(enemy* r);
 
 void EnemyDeath(enemy* r);
 void Red_arrow(enemy* r);
-void Enemies_spawn(void);
+void Enemies_init(void);
 void update_enemy(void);
 void draw_multiple_enemies(void);
 
