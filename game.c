@@ -56,6 +56,7 @@ void game_init(void)
 	game_grid_color_init(&Tutorial);
 	turret_init();
 	enemy_test_init();
+	Enemies_spawn();
 }
 
 void game_update(void)
@@ -94,6 +95,8 @@ void game_update(void)
 		enemy_move(&test, Xarray, Yarray, 2);
 		Draw_enemy(&test);
 		EnemyDeath(&test);
+		draw_multiple_enemies();
+		update_enemy();
 	}
 
 	else if (currentGameState == MainMenu)

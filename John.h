@@ -1,5 +1,6 @@
 #include"cprocessing.h"
 #include"game.h"
+#define MAX_ENEMIES 2
 typedef enum Direction {
 	NoMove,
 	Up,
@@ -39,6 +40,10 @@ int update_point_num(float enemy_pathpointsX[], float enemy_pathpointsY[], enemy
 void EnemyAnimationState(enemy* r);
 
 void EnemyDeath(enemy* r);
+void Red_arrow(enemy* r);
+void Enemies_spawn(void);
+void update_enemy(void);
+void draw_multiple_enemies(void);
 
 enemy test;
 CP_Image ImageArray[3];
@@ -50,7 +55,8 @@ float ypoint;
 float Xarray[2];
 float Yarray[2];
 int count;
-
+float timer;
+enemy Enemy[MAX_ENEMIES];
 /* //test enemy movement
 enemy_move(&test, Xarray, Yarray, 2);
 Draw_enemy(&test);

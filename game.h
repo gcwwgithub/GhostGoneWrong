@@ -83,7 +83,7 @@ typedef struct Coordinates {
 	float yOrigin;
 	ObjectShape objectType;
 }Coordinates;
-void object_init(void);
+
 int Collision_Detection(Coordinates object1, Coordinates object2);
 
 //TurretMenu

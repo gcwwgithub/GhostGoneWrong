@@ -5,19 +5,19 @@
 
 void enemy_test_init(void)  //Initialising test enemy
 {
-	test.health = 5;
+	test.health = 15;
 	test.speed = 15;
 	test.CurrentWaypoint = 0;
 	test.data.xOrigin = (float)(Game.xOrigin + Game.gridWidth * 1.5);
-	test.data.yOrigin = (float)(Game.yOrigin + Game.gridHeight * 0.5);
+	test.data.yOrigin = (float)(Game.yOrigin + Game.gridHeight *0.5);
 	test.enemy_width = Game.gridWidth;
 	test.enemy_height = Game.gridHeight;
 	test.angle = 180;
 	test.type = Red;
 	test.alpha = 255;
 	test.data.objectType = objectRectangle;
-	test.data.width = test.enemy_width*0.5f;
-	test.data.height = test.enemy_width*0.5f;
+	test.data.width = Game.gridWidth*0.5f;
+	test.data.height = Game.gridHeight;
 	test.state = Moving;
 	count = 0;
 
@@ -140,8 +140,10 @@ int update_point_num(float Enemy_PathpointsX[], float Enemy_PathpointsY[], enemy
 void EnemyDeath(enemy* r) {
 	for (int i = 0; i < MAX_PROJECTILE; ++i) {
 		if (proj[i].isActive) {
-			if (Collision_Detection(r->data, proj[i].data) == 1) {
-
+			Coordinates a = r->data;
+			a.xOrigin -= 0.2f * r->enemy_width;
+			a.yOrigin -= 0.5f * r->enemy_height;
+			if (Collision_Detection(a, proj[i].data) == 1) {
 				proj[i].isActive = 0;
 				if (r->state != Death)
 				{
@@ -158,8 +160,58 @@ void EnemyDeath(enemy* r) {
 		r->state = Death;
 	}
 	if (r->state == Death) {
-		r->alpha -= 10;
-		if (r->alpha <= 0)
-			CP_Image_Free(&currentArrowImage);
+		if (r->alpha > 50) {
+			r->alpha -= 10;
+		}
+	}
+}
+
+void Enemies_spawn(void) {
+	timer = 0;
+	count = 0;
+	for (int i = 0; i < MAX_ENEMIES; i++) {
+		Red_arrow(&Enemy[i]);
+	}
+}
+void Red_arrow(enemy* r) {
+	r->health = 1;
+	r->speed = 100;
+	r->CurrentWaypoint = 0;
+	r->data.xOrigin = Xarray[0];
+	r->data.yOrigin = Yarray[0];
+	r->enemy_width = Game.gridWidth;
+	r->enemy_height = Game.gridHeight;
+	r->angle = 180;
+	r->type = Red;
+	r->alpha = 255;
+	r->data.objectType = objectRectangle;
+	r->data.width = Game.gridWidth * 0.5f;
+	r->data.height = Game.gridHeight;
+	r->state = Moving;
+	r->timer = 0;
+}
+
+void update_enemy(void) {
+	timer += CP_System_GetDt();
+	if (timer >= 1) {
+		count++;
+		timer--;
+	}
+	for (int i = 0; i < count/2 && i < MAX_ENEMIES; i++) {
+		enemy_move(&Enemy[i], Xarray, Yarray, 2);
+		EnemyDeath(&Enemy[i]);
+	}
+}
+void draw_multiple_enemies(void) {
+	for (int i = 0; i<count/2 && i < MAX_ENEMIES; i++) {
+		EnemyAnimationState(&Enemy[i]);
+		switch (Enemy[i].type) {
+		case Red:
+			CP_Image_DrawAdvanced(currentArrowImage, Enemy[i].data.xOrigin, Enemy[i].data.yOrigin, Enemy[i].enemy_width, Enemy[i].enemy_height, Enemy[i].alpha, Enemy[i].angle);
+			Enemy[i].timer += CP_System_GetDt();
+			break;
+		case Blue:
+			break;
+		}
 	}
 }
