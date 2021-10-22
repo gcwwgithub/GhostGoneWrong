@@ -5,7 +5,7 @@
 
 void enemy_test_init(void)  //Initialising test enemy
 {
-	test.health = 15;
+	test.health = 1;
 	test.speed = 15;
 	test.CurrentWaypoint = 0;
 	test.data.xOrigin = (float)(Game.xOrigin + Game.gridWidth * 1.5);
@@ -156,7 +156,7 @@ void EnemyDeath(enemy* r) {
 		}
 	}
 
-	if (r->health == 0) {
+	if (r->health <= 0) {
 		r->state = Death;
 	}
 	if (r->state == Death) {
@@ -188,8 +188,8 @@ void Enemies_init(void) {
 	}
 }
 void Red_arrow(enemy* r) {
-	r->health = 1;
-	r->speed = 100;
+	r->health = 2;
+	r->speed = 10;
 	r->CurrentWaypoint = 0;
 	r->data.xOrigin = Xarray[0];
 	r->data.yOrigin = Yarray[0];
@@ -212,6 +212,8 @@ void update_enemy(void) {
 		timer--;
 	}
 	for (int i = 0; i < count / 2 && i < MAX_ENEMIES; i++) {
+		if (Enemy[i].state == Inactive) //dont check if inactive
+			continue;
 		enemy_move(&Enemy[i], Xarray, Yarray, 2);
 		EnemyDeath(&Enemy[i]);
 	}
