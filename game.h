@@ -2,6 +2,10 @@
 #pragma once
 #include <stdio.h>
 
+//True, False
+#define TRUE 1
+#define FALSE 0
+
 //Game Grid
 #define GAME_GRID_COLS 3
 #define GAME_GRID_ROWS 7
@@ -76,20 +80,23 @@ typedef enum ButtonType {
 }ButtonType;
 
 typedef struct Coordinates {
-	ButtonType name;
+	ButtonType buttonName;
 	float width; //Width and Height are the same for Circles
 	float height; //Width and Height are the same for Circles
 	float xOrigin;
 	float yOrigin;
 	ObjectShape objectType;
 }Coordinates;
-void object_init(void);
 int Collision_Detection(Coordinates object1, Coordinates object2);
+int btn_is_pressed(Coordinates object1);
+void render_button(Coordinates ButtonX, CP_Color Color);
 
 //TurretMenu
 Coordinates TurretMenu;
 
 //Buttons
+ButtonType check_game_button_pressed(void);
 #define NUMBER_OF_BUTTONS 5
 Coordinates GameButton[NUMBER_OF_BUTTONS];
 Coordinates MouseInput;
+int isPlacingTurret;
