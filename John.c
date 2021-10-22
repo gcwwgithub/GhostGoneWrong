@@ -9,14 +9,14 @@ void enemy_test_init(void)  //Initialising test enemy
 	test.speed = 15;
 	test.CurrentWaypoint = 0;
 	test.data.xOrigin = (float)(Game.xOrigin + Game.gridWidth * 1.5);
-	test.data.yOrigin = (float)(Game.yOrigin + Game.gridHeight *0.5);
+	test.data.yOrigin = (float)(Game.yOrigin + Game.gridHeight * 0.5);
 	test.enemy_width = Game.gridWidth;
 	test.enemy_height = Game.gridHeight;
 	test.angle = 180;
 	test.type = Red;
 	test.alpha = 255;
 	test.data.objectType = objectRectangle;
-	test.data.width = Game.gridWidth*0.5f;
+	test.data.width = Game.gridWidth * 0.5f;
 	test.data.height = Game.gridHeight;
 	test.state = Moving;
 	count = 0;
@@ -151,7 +151,7 @@ void EnemyDeath(enemy* r) {
 					r->state = Hurt;
 					r->timer = 0;
 				}
-				
+
 			}
 		}
 	}
@@ -160,9 +160,13 @@ void EnemyDeath(enemy* r) {
 		r->state = Death;
 	}
 	if (r->state == Death) {
-		if (r->alpha > 50) {
+		if (r->alpha >= 0) {
 			r->alpha -= 10;
 		}
+		if (r->alpha <= 0) {
+			r->state = Inactive;
+		}
+
 	}
 }
 
@@ -197,13 +201,16 @@ void update_enemy(void) {
 		count++;
 		timer--;
 	}
-	for (int i = 0; i < count/2 && i < MAX_ENEMIES; i++) {
+	for (int i = 0; i < count / 2 && i < MAX_ENEMIES; i++) {
 		enemy_move(&Enemy[i], Xarray, Yarray, 2);
 		EnemyDeath(&Enemy[i]);
 	}
 }
 void draw_multiple_enemies(void) {
-	for (int i = 0; i<count/2 && i < MAX_ENEMIES; i++) {
+	for (int i = 0; i < count / 2 && i < MAX_ENEMIES; i++) {
+		if (Enemy[i].state == Inactive) {
+			continue;
+		}
 		EnemyAnimationState(&Enemy[i]);
 		switch (Enemy[i].type) {
 		case Red:
