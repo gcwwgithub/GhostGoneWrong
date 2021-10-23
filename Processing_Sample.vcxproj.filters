@@ -48,5 +48,8 @@
     <ClInclude Include="Anderson.h">
       <Filter>C Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="Gabriel.h">
+      <Filter>C Source Files\Current header files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

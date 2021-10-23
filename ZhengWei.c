@@ -1,5 +1,6 @@
 #include "cprocessing.h"
 #include "game.h"
+#include "Gabriel.h"
 
 //Tools
 float myabs(float x) {
@@ -134,7 +135,7 @@ void game_grid_init(void) {
 void turret_menu_init(void) {
 	TurretMenu.xOrigin = 0.0f;
 	TurretMenu.yOrigin = 0.0f;
-	TurretMenu.width = Game.xOrigin;
+	TurretMenu.width = Game.xOrigin/2;
 	TurretMenu.height = (float)CP_System_GetWindowHeight();
 }
 
@@ -146,6 +147,7 @@ void turret0_button_init(void) {
 	GameButton[0].height = (TurretMenu.height - unusableButtonHeight) / 4;
 	GameButton[0].objectType = objectRectangle;
 	GameButton[0].buttonName = TurretButton0;
+	GameButton[0].imageOfButton = triangleTurretImageArray[0];
 }
 
 void turret1_button_init(void) {
@@ -155,6 +157,7 @@ void turret1_button_init(void) {
 	GameButton[1].height = GameButton[0].height;
 	GameButton[1].objectType = objectRectangle;
 	GameButton[1].buttonName = TurretButton1;
+	GameButton[1].imageOfButton = tempCircle;
 }
 
 void turret2_button_init(void) {
@@ -164,6 +167,7 @@ void turret2_button_init(void) {
 	GameButton[2].height = GameButton[0].height;
 	GameButton[2].objectType = objectRectangle;
 	GameButton[2].buttonName = TurretButton2;
+	GameButton[2].imageOfButton = tempStar;
 }
 
 void turret3_button_init(void) {
@@ -173,6 +177,7 @@ void turret3_button_init(void) {
 	GameButton[3].height = GameButton[0].height;
 	GameButton[3].objectType = objectRectangle;
 	GameButton[3].buttonName = TurretButton3;
+	GameButton[3].imageOfButton = tempPercentage;
 }
 
 void pause_button_init(void) {
@@ -182,6 +187,7 @@ void pause_button_init(void) {
 	GameButton[4].height = GameButton[0].yOrigin - 1;
 	GameButton[4].objectType = objectRectangle;
 	GameButton[4].buttonName = PauseButton;
+	GameButton[4].imageOfButton = triangleTurretImageArray[0];
 }
 
 void render_button_pressed(void) {
@@ -241,12 +247,22 @@ void render_turret_menu(void) {
 	CP_Settings_RectMode(CP_POSITION_CORNER);
 	CP_Settings_Fill(COLOR_BLACK);
 	CP_Graphics_DrawRect(TurretMenu.xOrigin, TurretMenu.yOrigin, TurretMenu.width, TurretMenu.height);
+	
 }
 
 void render_button(Coordinates ButtonX, CP_Color Color) {
 	CP_Settings_RectMode(CP_POSITION_CORNER);
 	CP_Settings_Fill(Color);
 	CP_Graphics_DrawRect(ButtonX.xOrigin, ButtonX.yOrigin, ButtonX.width, ButtonX.height);
+
+	if (ButtonX.buttonName != PauseButton)
+	{
+		CP_Image_DrawAdvanced(ButtonX.imageOfButton, ButtonX.width / 4,
+			(ButtonX.yOrigin + ButtonX.height / 2), 128,
+			128, 255, 0);
+	}
+	
+
 }
 
 void render_new_turret(void) {

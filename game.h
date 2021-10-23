@@ -86,6 +86,7 @@ typedef struct Coordinates {
 	float xOrigin;
 	float yOrigin;
 	ObjectShape objectType;
+	CP_Image imageOfButton;
 }Coordinates;
 int Collision_Detection(Coordinates object1, Coordinates object2);
 int btn_is_pressed(Coordinates object1);

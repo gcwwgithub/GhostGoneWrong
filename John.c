@@ -2,6 +2,7 @@
 #include <math.h>
 #include "John.h"
 #include "Samuel.h"
+#include "Gabriel.h"
 
 void enemy_test_init(void)  //Initialising test enemy
 {
@@ -20,11 +21,7 @@ void enemy_test_init(void)  //Initialising test enemy
 	test.data.height = Game.gridHeight;
 	test.state = Moving;
 	count = 0;
-
-	ImageArray[0] = CP_Image_Load("./Assets/RedArrow1.png");
-	ImageArray[1] = CP_Image_Load("./Assets/RedArrow2.png");
-	ImageArray[2] = CP_Image_Load("./Assets/RedArrow3.png");
-	currentArrowImage = ImageArray[0];
+	currentArrowImage = redArrowImageArray[0];
 	test.timer = 0;
 
 	//test path
@@ -51,10 +48,10 @@ void EnemyAnimationState(enemy* r)
 	switch (r->state)
 	{
 	case Moving:
-		currentArrowImage = ImageArray[0];
+		currentArrowImage = redArrowImageArray[0];
 		break;
 	case Hurt:
-		currentArrowImage = ImageArray[1];
+		currentArrowImage = redArrowImageArray[1];
 		if (r->timer >= 0.25)
 		{
 			r->state = Moving;
@@ -62,7 +59,7 @@ void EnemyAnimationState(enemy* r)
 		}
 		break;
 	case Death:
-		currentArrowImage = ImageArray[2];
+		currentArrowImage = redArrowImageArray[2];
 		break;
 	}
 }
@@ -173,10 +170,7 @@ void EnemyDeath(enemy* r) {
 void Enemies_init(void) {
 	timer = 0;
 	count = 0;
-	ImageArray[0] = CP_Image_Load("./Assets/RedArrow1.png");
-	ImageArray[1] = CP_Image_Load("./Assets/RedArrow2.png");
-	ImageArray[2] = CP_Image_Load("./Assets/RedArrow3.png");
-	currentArrowImage = ImageArray[0];
+	currentArrowImage = redArrowImageArray[0];
 
 	//test path
 	for (int i = 0; i < 2; i++) {

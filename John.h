@@ -46,7 +46,6 @@ void update_enemy(void);
 void draw_multiple_enemies(void);
 
 enemy test;
-CP_Image ImageArray[3];
 CP_Image currentArrowImage;
 
 //test path

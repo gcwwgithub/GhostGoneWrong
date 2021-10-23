@@ -3,6 +3,7 @@
 #include "Samuel.h"
 #include "John.h"
 #include"Anderson.h"
+#include "Gabriel.h"
 
 void game_grid_init(void);
 void game_grid_color_init(LevelData* Level);
@@ -20,11 +21,14 @@ void render_turret_menu(void);
 void render_button_pressed(void);
 void render_new_turret(void);
 
+
 void game_init(void)
 {
+	init_all_images();
+
 	CP_System_Fullscreen();
 	currentGameState = MainMenu;
-
+	
 	//Main menu, level select
 	init_play_button();
 	init_quit_button();

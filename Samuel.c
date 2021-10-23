@@ -2,6 +2,7 @@
 #include "Samuel.h"
 #include <math.h>
 #include "John.h"
+#include "Gabriel.h"
 
 #if _DEBUG
 #include <stdio.h>
@@ -11,12 +12,7 @@ void turret_init(void)
 {
 	//hard code test values
 	Vector2 v;
-	turretImageArray[0] = CP_Image_Load("./Assets/Triangle1.png");
-	turretImageArray[1] = CP_Image_Load("./Assets/Triangle2.png");
-	turretImageArray[2] = CP_Image_Load("./Assets/Triangle3.png");
-	turretImageArray[3] = CP_Image_Load("./Assets/Triangle4.png");
-	turretImageArray[4] = CP_Image_Load("./Assets/Triangle5.png");
-	turretImageArray[5] = CP_Image_Load("./Assets/Triangle6.png");
+	
 
 
 	for (int i = 0; i < MAX_PROJECTILE; ++i)
@@ -38,7 +34,7 @@ void turret_init(void)
 		v.pos_y = 1;
 		turret[i].dir = v;
 		turret[i].turretAnimTimer = 0;
-		turret[i].turret_img = turretImageArray[0];
+		turret[i].turret_img = triangleTurretImageArray[0];
 		turret[i].currentAnimState = INACTIVE;
 		turret[i].animCounter = 0;
 	}
@@ -329,7 +325,7 @@ void update_turretAnimation(Turret *t)
 			{
 				t->animCounter++;
 			}
-			t->turret_img = turretImageArray[t->animCounter];
+			t->turret_img = triangleTurretImageArray[t->animCounter];
 			t->turretAnimTimer = 0;
 		}
 		
@@ -346,7 +342,7 @@ void update_turretAnimation(Turret *t)
 			{
 				t->animCounter++;
 			}
-			t->turret_img = turretImageArray[t->animCounter];
+			t->turret_img = triangleTurretImageArray[t->animCounter];
 			t->turretAnimTimer = 0;
 		}
 		

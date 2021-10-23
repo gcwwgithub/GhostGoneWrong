@@ -76,4 +76,3 @@ void update_turretAnimation(Turret* t);
 
 Projectile proj[MAX_PROJECTILE];
 Turret turret[MAX_TURRET];
-CP_Image turretImageArray[6];
