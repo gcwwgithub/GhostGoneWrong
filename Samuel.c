@@ -318,7 +318,7 @@ void update_turretAnimation(Turret *t)
 	switch (t->currentAnimState)
 	{
 	case INACTIVE:
-		if (t->turretAnimTimer >= 0.5)
+		if (t->turretAnimTimer >= 0.65)
 		{
 			if (t->animCounter >= 2)
 			{
@@ -335,7 +335,7 @@ void update_turretAnimation(Turret *t)
 		
 		break;
 	case SHOOTING:
-		if (t->turretAnimTimer >= 0.5)
+		if (t->turretAnimTimer >= 0.65)
 		{
 			if (t->animCounter >= 5)
 			{

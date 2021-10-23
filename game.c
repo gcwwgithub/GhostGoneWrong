@@ -22,7 +22,7 @@ void render_new_turret(void);
 
 void game_init(void)
 {
-	//CP_System_Fullscreen();
+	CP_System_Fullscreen();
 	currentGameState = MainMenu;
 
 	//Main menu, level select
