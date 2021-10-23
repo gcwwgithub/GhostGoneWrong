@@ -30,28 +30,30 @@ void turret_init(void)
 	for (int i = 0; i < MAX_TURRET; ++i)
 	{
 		turret[i].isActive = 0;
-		turret[i].cooldown = 0.f;
+		turret[i].size = Game.gridHeight;
 		turret[i].angle = 0.f;
+		turret[i].cooldown = 0.f;
+		turret[i].damage = 1.f;
 		v.pos_x = 0;
 		v.pos_y = 1;
 		turret[i].dir = v;
-		turret[i].size = Game.gridHeight;
-		turret[i].damage = 1.f;
 		turret[i].turretAnimTimer = 0;
 		turret[i].turret_img = turretImageArray[0];
 		turret[i].currentAnimState = INACTIVE;
 		turret[i].animCounter = 0;
 	}
 
-	turret[0].data.xOrigin = Game.xOrigin + (Game.gridWidth * (2 + 0.5f));
-	turret[0].data.yOrigin = Game.yOrigin + (Game.gridHeight * (1 + 0.5f));
-	turret[0].size = Game.gridHeight;
-	turret[0].dir = v;
-	turret[0].angle = 0;
-	turret[0].type = T_TRIANGLE;
-	turret[0].cooldown = 0.f;
-	turret[0].isActive = 1;
-	turret[0].range = Game.gridWidth * 2;
+	//turret[0].data.xOrigin = Game.xOrigin + (Game.gridWidth * (2 + 0.5f));
+	//turret[0].data.yOrigin = Game.yOrigin + (Game.gridHeight * (1 + 0.5f));
+	//turret[0].size = Game.gridHeight;
+	//turret[0].dir = v;
+	//turret[0].angle = 0;
+	//turret[0].type = T_TRIANGLE;
+	//turret[0].cooldown = 0.f;
+	//turret[0].isActive = 1;
+	//turret[0].range = Game.gridWidth * 2;
+	place_turret(T_TRIANGLE, 2, 1);
+	place_turret(T_TRIANGLE, 0, 4);
 }
 
 //call this function to palce turret (pass in the grid index)
@@ -65,8 +67,8 @@ void place_turret(TurretType type, int index_x, int index_y)
 		turret[i].isActive = 1;
 		turret[i].type = type;
 		//origin + gridwidth * (index + 0.5); (to place the turret on the grid box)
-		turret[i].data.xOrigin = Game.xOrigin + Game.gridWidth * (index_x + 0.5f);
-		turret[i].data.yOrigin = Game.xOrigin + Game.gridWidth * (index_y + 0.5f);
+		turret[i].data.xOrigin = Game.xOrigin + (Game.gridWidth * (index_x + 0.5f));
+		turret[i].data.yOrigin = Game.yOrigin + (Game.gridHeight * (index_y + 0.5f));
 		//edit here for the type range and dmg
 		switch (turret[i].type)
 		{
@@ -136,6 +138,10 @@ void update_turret(void)
 	{
 		if (!turret[i].isActive)
 			continue;
+
+		//reset variables
+		wp = -1;
+		e_index = -1;
 
 		//switch (turret[i].type)
 		//{
