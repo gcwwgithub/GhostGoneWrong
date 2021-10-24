@@ -196,7 +196,7 @@ void init_quit_button(void)
 
 void init_back_button(void)
 {
-	BackButton.buttonData.xOrigin = CP_System_GetWindowWidth() / 2 - BUTTON_WIDTH / 2.0f;
+	BackButton.buttonData.xOrigin = CP_System_GetWindowWidth() / 2 + BUTTON_WIDTH / 0.5f;
 	BackButton.buttonData.yOrigin = CP_System_GetWindowHeight() * 0.8f;
 	BackButton.buttonData.width = BUTTON_WIDTH;
 	BackButton.buttonData.height = BUTTON_HEIGHT;
@@ -204,6 +204,30 @@ void init_back_button(void)
 	BackButton.textPositionX = BackButton.buttonData.xOrigin + BUTTON_WIDTH / 2;
 	BackButton.textPositionY = BackButton.buttonData.yOrigin + BUTTON_HEIGHT / 2;
 	strcpy_s(BackButton.textString, sizeof(BackButton.textString), "Back");
+}
+
+void init_pause_quit_button(void)
+{
+	PauseQuitButton.buttonData.xOrigin = CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH / 2;
+	PauseQuitButton.buttonData.yOrigin = CP_System_GetWindowHeight() * 0.4f - BUTTON_HEIGHT / 2;
+	PauseQuitButton.buttonData.width = BUTTON_WIDTH;
+	PauseQuitButton.buttonData.height = BUTTON_HEIGHT;
+
+	PauseQuitButton.textPositionX = PauseQuitButton.buttonData.xOrigin + BUTTON_WIDTH / 2;
+	PauseQuitButton.textPositionY = PauseQuitButton.buttonData.yOrigin + BUTTON_HEIGHT / 2;
+	strcpy_s(PauseQuitButton.textString, sizeof(PauseQuitButton.textString), "Quit");
+}
+
+void init_pause_back_button(void)
+{
+	PauseBackButton.buttonData.xOrigin = CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH / 2;
+	PauseBackButton.buttonData.yOrigin = CP_System_GetWindowHeight() * 0.3f - BUTTON_HEIGHT / 2;
+	PauseBackButton.buttonData.width = BUTTON_WIDTH;
+	PauseBackButton.buttonData.height = BUTTON_HEIGHT;
+
+	PauseBackButton.textPositionX = PauseBackButton.buttonData.xOrigin + BUTTON_WIDTH / 2;
+	PauseBackButton.textPositionY = PauseBackButton.buttonData.yOrigin + BUTTON_HEIGHT / 2;
+	strcpy_s(PauseBackButton.textString, sizeof(PauseBackButton.textString), "Back");
 }
 
 // number of levels is hardcoded.
@@ -248,9 +272,24 @@ void credits_screen(void)
 	// just render text and other things here
 }
 
-void main_game_screen(void)
+void init_pause_screen(void)
 {
-	// render game screen here
+	init_pause_back_button();
+	init_pause_quit_button();
+}
+
+
+
+void render_pause_screen(void)
+{	
+	// The following shall be rendered here:
+	//	Restart button tbd
+
+	CP_Settings_Fill(COLOR_GREY);
+	CP_Graphics_DrawRect(CP_System_GetWindowWidth() * 0.4f, CP_System_GetWindowHeight() * 0.25f, CP_System_GetWindowWidth() * 0.2f, CP_System_GetWindowHeight() * 0.2f);
+	render_ui_button(PauseBackButton);
+	render_ui_button(PauseQuitButton);
+
 }
 
 #pragma endregion
