@@ -1,6 +1,7 @@
 #pragma once
 #include "cprocessing.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 CP_Image triangleTurretImageArray[6];
 CP_Image redArrowImageArray[3];
@@ -24,8 +25,8 @@ struct node
 struct node* firstNode;
 int keyNumber;
 
-void insert_new_node(float xPos, float yPos);
-struct node* delete_node(int key);
+void insert_new_node(struct node**list, float xPos, float yPos);
+struct node* delete_node(struct node* list,int key);
 int isEmpty(void);
 
 

@@ -148,7 +148,7 @@ void EnemyDeath(enemy* r) {
 					r->health -= turret[i].damage;
 					r->state = Hurt;
 					r->timer = 0;
-					insert_new_node(r->data.xOrigin, r->data.yOrigin);
+					insert_new_node(&firstNode,r->data.xOrigin, r->data.yOrigin);
 				}
 
 			}
