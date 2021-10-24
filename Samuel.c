@@ -248,8 +248,8 @@ void shoot(float x, float y, Vector2 dir)
 		proj[i].data.xOrigin = x;
 		proj[i].data.yOrigin = y;
 		proj[i].dir = dir;
-		proj[i].data.width = 5.f;
-		proj[i].data.height = 5.f;
+		proj[i].data.width = 10.f;
+		proj[i].data.height = 10.f;
 		proj[i].data.objectType = objectCircle;
 		break;
 	}
