@@ -1,5 +1,4 @@
 
-#include "cprocessing.h"
 #include "Gabriel.h"
 void init_all_images(void)
 {
@@ -17,4 +16,8 @@ void init_all_images(void)
 	tempStar = CP_Image_Load("./Assets/Star1.png");
 	tempCircle = CP_Image_Load("./Assets/Circle1.png");
 	tempPercentage = CP_Image_Load("./Assets/Percentage1.png");
+
+    keyNumber = 0;
 }
+
+

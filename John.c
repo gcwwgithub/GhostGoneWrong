@@ -6,7 +6,8 @@
 
 void enemy_test_init(void)  //Initialising test enemy
 {
-	test.health = 1;
+	test.health = 4;
+	test.max_health = 4;
 	test.speed = 15;
 	test.CurrentWaypoint = 0;
 	test.data.xOrigin = (float)(Game.xOrigin + Game.gridWidth * 1.5);
@@ -182,7 +183,8 @@ void Enemies_init(void) {
 	}
 }
 void Red_arrow(enemy* r) {
-	r->health = 2;
+	r->health = 4;
+	r->max_health = 4;
 	r->speed = 10;
 	r->CurrentWaypoint = 0;
 	r->data.xOrigin = Xarray[0];
@@ -222,9 +224,25 @@ void draw_multiple_enemies(void) {
 		case Red:
 			CP_Image_DrawAdvanced(currentArrowImage, Enemy[i].data.xOrigin, Enemy[i].data.yOrigin, Enemy[i].enemy_width, Enemy[i].enemy_height, Enemy[i].alpha, Enemy[i].angle);
 			Enemy[i].timer += CP_System_GetDt();
+			update_enemy_health(&Enemy[i]);
 			break;
 		case Blue:
 			break;
 		}
 	}
+}
+
+void update_enemy_health(enemy* r)
+{
+	if (r->health != 0)
+	{
+		float newWidth = r->health / r->max_health;
+		CP_Settings_Fill(COLOR_RED);
+		CP_Graphics_DrawRect(r->data.xOrigin - r->enemy_width, r->data.yOrigin - r->enemy_height, r->enemy_width * 2, r->enemy_height / 4);
+
+		CP_Settings_Fill(COLOR_GREEN);
+		CP_Graphics_DrawRect(r->data.xOrigin - r->enemy_width, r->data.yOrigin - r->enemy_height, r->enemy_width * 2 * newWidth, r->enemy_height / 4);
+	}
+	
+	
 }

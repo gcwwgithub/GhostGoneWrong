@@ -26,6 +26,7 @@ void game_init(void)
 {
 	init_all_images();
 
+	//CP_System_ShowConsole(); //pls dont delete this cause scrub me uses printf to debug -gabriel
 	CP_System_Fullscreen();
 	currentGameState = MainMenu;
 	
