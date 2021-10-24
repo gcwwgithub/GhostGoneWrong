@@ -10,11 +10,8 @@
 
 void turret_init(void)
 {
-	//hard code test values
 	Vector2 v;
 	
-
-
 	for (int i = 0; i < MAX_PROJECTILE; ++i)
 	{
 		proj[i].isActive = 0;
@@ -182,10 +179,6 @@ void update_turret(void)
 					continue;
 
 			}
-			else
-			{
-				turret[i].currentAnimState = INACTIVE;
-			}
 		}
 
 		//if there is a targeted enemy shoot him
@@ -206,6 +199,11 @@ void update_turret(void)
 					turret[i].cooldown = 2.f;
 				}
 		}
+		else
+		{
+			turret[i].currentAnimState = INACTIVE;
+		}
+		
 
 #if _DEBUG
 		//single enemy
