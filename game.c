@@ -37,6 +37,9 @@ void game_init(void)
 	init_level_select_buttons();
 	init_back_button();
 
+	init_pause_screen();
+
+
 	//game grid 
 	game_grid_init();
 
@@ -144,19 +147,32 @@ void game_update(void)
 		render_level_select_buttons();
 		render_ui_button(BackButton);
 	}
-	else if (currentGameState == Pause) {
-		if (check_game_button_pressed() == PauseButton) {
-			if (currentGameState == Pause) {
+	else if (currentGameState == Pause) 
+	{
+		if (check_game_button_pressed() == PauseButton) 
+		{
+			if (currentGameState == Pause)
+			{
 				currentGameState = Wave;
 				MouseInput.xOrigin = (float)CP_System_GetWindowWidth() / 2;
 				MouseInput.yOrigin = (float)CP_System_GetWindowHeight() / 2;
 			}
-			else {
+			else // if the game is not paused
+			{
 				currentGameState = Pause;
 				MouseInput.xOrigin = (float)CP_System_GetWindowWidth() / 2;
 				MouseInput.yOrigin = (float)CP_System_GetWindowHeight() / 2;
 			}
 		}
+		else if (btn_is_pressed(PauseBackButton.buttonData))
+		{
+			currentGameState = MainMenu;
+		}
+		else if (btn_is_pressed(PauseQuitButton.buttonData))
+		{
+			exit_game(); // placing a button in the bottom half of the screen automatically activates it.
+		}
+		render_pause_screen();
 	}
 }
 void game_exit(void)
