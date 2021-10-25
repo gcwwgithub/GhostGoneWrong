@@ -65,22 +65,15 @@ typedef struct LevelData {
 LevelData Tutorial;
 
 //Common Tools
+#define NUMBER_OF_BUTTONS 5
+
 typedef enum ObjectShape {
 	objectCircle,
 	objectRectangle
 }ObjectShape;
 
-typedef enum ButtonType {
-	NoButton,
-	TurretButton0,
-	TurretButton1,
-	TurretButton2,
-	TurretButton3,
-	PauseButton
-}ButtonType;
 
 typedef struct Coordinates {
-	ButtonType buttonName;
 	float width; //Width and Height are the same for Circles
 	float height; //Width and Height are the same for Circles
 	float xOrigin;
@@ -88,6 +81,7 @@ typedef struct Coordinates {
 	ObjectShape objectType;
 	CP_Image imageOfButton;
 }Coordinates;
+
 int Collision_Detection(Coordinates object1, Coordinates object2);
 int btn_is_pressed(Coordinates object1);
 void render_button(Coordinates ButtonX, CP_Color Color);
@@ -96,8 +90,16 @@ void render_button(Coordinates ButtonX, CP_Color Color);
 Coordinates TurretMenu;
 
 //Buttons
-ButtonType check_game_button_pressed(void);
-#define NUMBER_OF_BUTTONS 5
+int check_game_button_pressed(void);
 Coordinates GameButton[NUMBER_OF_BUTTONS];
 Coordinates MouseInput;
 int isPlacingTurret;
+
+enum ButtonType {
+	TurretButton0 = 0,
+	TurretButton1 = 1,
+	TurretButton2 = 2,
+	TurretButton3 = 3,
+	PauseButton = 4,
+	NoButton = NUMBER_OF_BUTTONS
+};

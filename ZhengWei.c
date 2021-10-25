@@ -7,8 +7,6 @@ float myabs(float x) {
 	return x < 0 ? x * -1 : x;
 }
 
-
-
 int btn_is_pressed(Coordinates object1) {
 	if (((object1.xOrigin <= MouseInput.xOrigin) && (MouseInput.xOrigin <= object1.xOrigin + object1.width)) && ((object1.yOrigin <= MouseInput.yOrigin) && (MouseInput.yOrigin <= object1.yOrigin + object1.height))) {
 		return 1;
@@ -99,16 +97,15 @@ int Collision_Detection(Coordinates object1, Coordinates object2) {
 	}
 }
 
-ButtonType check_game_button_pressed(void) {
+int check_game_button_pressed(void) {
 	for (int i = 0; i < NUMBER_OF_BUTTONS; i++) {
 		if (btn_is_pressed(GameButton[i])) {
-			return GameButton[i].buttonName;
+			return i;
 		}
 	}
 	return NoButton;
 
 }
-
 
 //Graphics
 void mouse_init(void) {
@@ -135,98 +132,103 @@ void game_grid_init(void) {
 void turret_menu_init(void) {
 	TurretMenu.xOrigin = 0.0f;
 	TurretMenu.yOrigin = 0.0f;
-	TurretMenu.width = Game.xOrigin/2;
+	TurretMenu.width = Game.xOrigin / 2;
 	TurretMenu.height = (float)CP_System_GetWindowHeight();
 }
 
 void turret0_button_init(void) {
 	float unusableButtonHeight = TurretMenu.height / 4;
-	GameButton[0].xOrigin = TurretMenu.xOrigin;
-	GameButton[0].yOrigin = TurretMenu.yOrigin + unusableButtonHeight; //1/4 of the space is for other uses
-	GameButton[0].width = TurretMenu.width;
-	GameButton[0].height = (TurretMenu.height - unusableButtonHeight) / 4;
-	GameButton[0].objectType = objectRectangle;
-	GameButton[0].buttonName = TurretButton0;
-	GameButton[0].imageOfButton = triangleTurretImageArray[0];
+	GameButton[TurretButton0].xOrigin = TurretMenu.xOrigin;
+	GameButton[TurretButton0].yOrigin = TurretMenu.yOrigin + unusableButtonHeight; //1/4 of the space is for other uses
+	GameButton[TurretButton0].width = TurretMenu.width;
+	GameButton[TurretButton0].height = (TurretMenu.height - unusableButtonHeight) / 4;
+	GameButton[TurretButton0].objectType = objectRectangle;
+	GameButton[TurretButton0].imageOfButton = triangleTurretImageArray[0];
 }
 
 void turret1_button_init(void) {
-	GameButton[1].xOrigin = TurretMenu.xOrigin + 1;
-	GameButton[1].yOrigin = GameButton[0].yOrigin + GameButton[0].height; //1/4 of the space is for other uses
-	GameButton[1].width = TurretMenu.width;
-	GameButton[1].height = GameButton[0].height;
-	GameButton[1].objectType = objectRectangle;
-	GameButton[1].buttonName = TurretButton1;
-	GameButton[1].imageOfButton = tempCircle;
+	GameButton[TurretButton1].xOrigin = TurretMenu.xOrigin;
+	GameButton[TurretButton1].yOrigin = GameButton[0].yOrigin + GameButton[0].height; //1/4 of the space is for other uses
+	GameButton[TurretButton1].width = TurretMenu.width;
+	GameButton[TurretButton1].height = GameButton[0].height;
+	GameButton[TurretButton1].objectType = objectRectangle;
+	GameButton[TurretButton1].imageOfButton = tempCircle;
 }
 
 void turret2_button_init(void) {
-	GameButton[2].xOrigin = TurretMenu.xOrigin + 1;
-	GameButton[2].yOrigin = GameButton[1].yOrigin + GameButton[1].height; //1/4 of the space is for other uses
-	GameButton[2].width = TurretMenu.width;
-	GameButton[2].height = GameButton[0].height;
-	GameButton[2].objectType = objectRectangle;
-	GameButton[2].buttonName = TurretButton2;
-	GameButton[2].imageOfButton = tempStar;
+	GameButton[TurretButton2].xOrigin = TurretMenu.xOrigin;
+	GameButton[TurretButton2].yOrigin = GameButton[1].yOrigin + GameButton[1].height; //1/4 of the space is for other uses
+	GameButton[TurretButton2].width = TurretMenu.width;
+	GameButton[TurretButton2].height = GameButton[0].height;
+	GameButton[TurretButton2].objectType = objectRectangle;
+	GameButton[TurretButton2].imageOfButton = tempStar;
 }
 
 void turret3_button_init(void) {
-	GameButton[3].xOrigin = TurretMenu.xOrigin + 1;
-	GameButton[3].yOrigin = GameButton[2].yOrigin + GameButton[2].height; //1/4 of the space is for other uses
-	GameButton[3].width = TurretMenu.width;
-	GameButton[3].height = GameButton[0].height;
-	GameButton[3].objectType = objectRectangle;
-	GameButton[3].buttonName = TurretButton3;
-	GameButton[3].imageOfButton = tempPercentage;
+	GameButton[TurretButton3].xOrigin = TurretMenu.xOrigin;
+	GameButton[TurretButton3].yOrigin = GameButton[2].yOrigin + GameButton[2].height; //1/4 of the space is for other uses
+	GameButton[TurretButton3].width = TurretMenu.width;
+	GameButton[TurretButton3].height = GameButton[0].height;
+	GameButton[TurretButton3].objectType = objectRectangle;
+	GameButton[TurretButton3].imageOfButton = tempPercentage;
 }
 
 void pause_button_init(void) {
-	GameButton[4].xOrigin = 0.0f;
-	GameButton[4].yOrigin = 0.0f;
-	GameButton[4].width = TurretMenu.width / 2;
-	GameButton[4].height = GameButton[0].yOrigin - 1;
-	GameButton[4].objectType = objectRectangle;
-	GameButton[4].buttonName = PauseButton;
-	GameButton[4].imageOfButton = triangleTurretImageArray[0];
+	GameButton[PauseButton].xOrigin = TurretMenu.xOrigin;
+	GameButton[PauseButton].yOrigin = TurretMenu.yOrigin;
+	GameButton[PauseButton].width = TurretMenu.width / 2;
+	GameButton[PauseButton].height = GameButton[0].yOrigin;
+	GameButton[PauseButton].objectType = objectRectangle;
+	GameButton[PauseButton].imageOfButton = CP_Image_Load("Assets/Dummy");
 }
 
 void render_button_pressed(void) {
-	if (check_game_button_pressed() == TurretButton0) {
-		isPlacingTurret = TRUE;
-		CP_Settings_Fill(COLOR_GREEN);
-		CP_Graphics_DrawCircle(CP_Input_GetMouseX(), CP_Input_GetMouseY(), 20.0f);
-	}
-	else if (check_game_button_pressed() == TurretButton1) {
-		isPlacingTurret = TRUE;
-		CP_Settings_Fill(COLOR_GREEN);
-		CP_Graphics_DrawCircle(CP_Input_GetMouseX(), CP_Input_GetMouseY(), 20.0f);
-	}
-	else if (check_game_button_pressed() == TurretButton2) {
-		isPlacingTurret = TRUE;
-		CP_Settings_Fill(COLOR_GREEN);
-		CP_Graphics_DrawCircle(CP_Input_GetMouseX(), CP_Input_GetMouseY(), 20.0f);
-	}
-	else if (check_game_button_pressed() == TurretButton3) {
-		isPlacingTurret = TRUE;
-		CP_Settings_Fill(COLOR_GREEN);
-		CP_Graphics_DrawCircle(CP_Input_GetMouseX(), CP_Input_GetMouseY(), 20.0f);
-	}
-	else if (check_game_button_pressed() == PauseButton) {
-		if (currentGameState == Pause) {
-			currentGameState = Wave;
-			MouseInput.xOrigin = (float)CP_System_GetWindowWidth() / 2;
-			MouseInput.yOrigin = (float)CP_System_GetWindowHeight() / 2;
-		}
-		else {
-			currentGameState = Pause;
-			MouseInput.xOrigin = (float)CP_System_GetWindowWidth() / 2;
-			MouseInput.yOrigin = (float)CP_System_GetWindowHeight() / 2;
-		}
+	if (NoButton == check_game_button_pressed()) {
+		isPlacingTurret = FALSE;
 	}
 	else {
-		;
+		isPlacingTurret = TRUE;
+		CP_Image_DrawAdvanced(GameButton[check_game_button_pressed()].imageOfButton, CP_Input_GetMouseX(), CP_Input_GetMouseY(), Game.gridWidth, Game.gridHeight, 255, 0);
 	}
 }
+
+//void render_button_pressed(void) {
+//	if (check_game_button_pressed() == TurretButton0) {
+//		isPlacingTurret = TRUE;
+//		CP_Settings_Fill(COLOR_GREEN);
+//		CP_Graphics_DrawCircle(CP_Input_GetMouseX(), CP_Input_GetMouseY(), 20.0f);
+//	}
+//	else if (check_game_button_pressed() == TurretButton1) {
+//		isPlacingTurret = TRUE;
+//		CP_Settings_Fill(COLOR_GREEN);
+//		CP_Graphics_DrawCircle(CP_Input_GetMouseX(), CP_Input_GetMouseY(), 20.0f);
+//	}
+//	else if (check_game_button_pressed() == TurretButton2) {
+//		isPlacingTurret = TRUE;
+//		CP_Settings_Fill(COLOR_GREEN);
+//		CP_Graphics_DrawCircle(CP_Input_GetMouseX(), CP_Input_GetMouseY(), 20.0f);
+//	}
+//	else if (check_game_button_pressed() == TurretButton3) {
+//		isPlacingTurret = TRUE;
+//		CP_Settings_Fill(COLOR_GREEN);
+//		CP_Graphics_DrawCircle(CP_Input_GetMouseX(), CP_Input_GetMouseY(), 20.0f);
+//	}
+//	else if (check_game_button_pressed() == PauseButton) {
+//		if (currentGameState == Pause) {
+//			currentGameState = Wave;
+//			MouseInput.xOrigin = (float)CP_System_GetWindowWidth() / 2;
+//			MouseInput.yOrigin = (float)CP_System_GetWindowHeight() / 2;
+//		}
+//		else {
+//			currentGameState = Pause;
+//			MouseInput.xOrigin = (float)CP_System_GetWindowWidth() / 2;
+//			MouseInput.yOrigin = (float)CP_System_GetWindowHeight() / 2;
+//		}
+//	}
+//	else {
+//		;
+//	}
+//}
 
 void render_game_grid(void)
 {
@@ -247,7 +249,7 @@ void render_turret_menu(void) {
 	CP_Settings_RectMode(CP_POSITION_CORNER);
 	CP_Settings_Fill(COLOR_BLACK);
 	CP_Graphics_DrawRect(TurretMenu.xOrigin, TurretMenu.yOrigin, TurretMenu.width, TurretMenu.height);
-	
+
 }
 
 void render_button(Coordinates ButtonX, CP_Color Color) {
@@ -255,13 +257,13 @@ void render_button(Coordinates ButtonX, CP_Color Color) {
 	CP_Settings_Fill(Color);
 	CP_Graphics_DrawRect(ButtonX.xOrigin, ButtonX.yOrigin, ButtonX.width, ButtonX.height);
 
-	if (ButtonX.buttonName != PauseButton)
+	if (ButtonX.imageOfButton != GameButton[4].imageOfButton)
 	{
 		CP_Image_DrawAdvanced(ButtonX.imageOfButton, ButtonX.width / 4,
 			(ButtonX.yOrigin + ButtonX.height / 2), 128,
 			128, 255, 0);
 	}
-	
+
 
 }
 
@@ -273,10 +275,10 @@ void render_new_turret(void) {
 	GameTemp.height = Game.height;
 	if (btn_is_pressed(GameTemp)) {
 		if (isPlacingTurret == TRUE) {
-			float drawX,drawY;
+			float drawX, drawY;
 			drawX = ((int)((CP_Input_GetMouseX() - Game.xOrigin) / Game.gridWidth) + 0.5f) * Game.gridWidth + Game.xOrigin;
 			drawY = ((int)((CP_Input_GetMouseY() - Game.yOrigin) / Game.gridHeight) + 0.5f) * Game.gridHeight + Game.yOrigin;
-			CP_Graphics_DrawCircle(drawX, drawY, 20.0f);
+			CP_Image_DrawAdvanced(GameButton[check_game_button_pressed()].imageOfButton, drawX, drawY, Game.gridWidth, Game.gridHeight, 255, 0);
 			isPlacingTurret = FALSE;
 		}
 	}

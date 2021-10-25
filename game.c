@@ -106,8 +106,8 @@ void game_update(void)
 
 		render_bullet_circles();
 
-		render_button_pressed();
 		render_new_turret();
+		render_button_pressed();//Must be after render_new_turret
 
 		//test enemy
 		Draw_enemy(&test);
