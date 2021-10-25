@@ -1,6 +1,8 @@
 #include "cprocessing.h"
+#include"ZhengWei.h"
 #include "game.h"
 #include "Gabriel.h"
+#include"Samuel.h"
 
 //Tools
 float myabs(float x) {
@@ -191,44 +193,6 @@ void render_button_pressed(void) {
 		CP_Image_DrawAdvanced(GameButton[check_game_button_pressed()].imageOfButton, CP_Input_GetMouseX(), CP_Input_GetMouseY(), Game.gridWidth, Game.gridHeight, 255, 0);
 	}
 }
-
-//void render_button_pressed(void) {
-//	if (check_game_button_pressed() == TurretButton0) {
-//		isPlacingTurret = TRUE;
-//		CP_Settings_Fill(COLOR_GREEN);
-//		CP_Graphics_DrawCircle(CP_Input_GetMouseX(), CP_Input_GetMouseY(), 20.0f);
-//	}
-//	else if (check_game_button_pressed() == TurretButton1) {
-//		isPlacingTurret = TRUE;
-//		CP_Settings_Fill(COLOR_GREEN);
-//		CP_Graphics_DrawCircle(CP_Input_GetMouseX(), CP_Input_GetMouseY(), 20.0f);
-//	}
-//	else if (check_game_button_pressed() == TurretButton2) {
-//		isPlacingTurret = TRUE;
-//		CP_Settings_Fill(COLOR_GREEN);
-//		CP_Graphics_DrawCircle(CP_Input_GetMouseX(), CP_Input_GetMouseY(), 20.0f);
-//	}
-//	else if (check_game_button_pressed() == TurretButton3) {
-//		isPlacingTurret = TRUE;
-//		CP_Settings_Fill(COLOR_GREEN);
-//		CP_Graphics_DrawCircle(CP_Input_GetMouseX(), CP_Input_GetMouseY(), 20.0f);
-//	}
-//	else if (check_game_button_pressed() == PauseButton) {
-//		if (currentGameState == Pause) {
-//			currentGameState = Wave;
-//			MouseInput.xOrigin = (float)CP_System_GetWindowWidth() / 2;
-//			MouseInput.yOrigin = (float)CP_System_GetWindowHeight() / 2;
-//		}
-//		else {
-//			currentGameState = Pause;
-//			MouseInput.xOrigin = (float)CP_System_GetWindowWidth() / 2;
-//			MouseInput.yOrigin = (float)CP_System_GetWindowHeight() / 2;
-//		}
-//	}
-//	else {
-//		;
-//	}
-//}
 
 void render_game_grid(void)
 {

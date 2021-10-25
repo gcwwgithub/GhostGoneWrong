@@ -51,5 +51,8 @@
     <ClInclude Include="Gabriel.h">
       <Filter>C Source Files\Current header files</Filter>
     </ClInclude>
+    <ClInclude Include="ZhengWei.h">
+      <Filter>C Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
