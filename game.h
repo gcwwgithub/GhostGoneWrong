@@ -2,10 +2,6 @@
 #pragma once
 #include <stdio.h>
 
-//True, False
-#define TRUE 1
-#define FALSE 0
-
 //Game Grid
 #define GAME_GRID_COLS 3
 #define GAME_GRID_ROWS 7
@@ -87,10 +83,10 @@ Coordinates TurretMenu;
 
 //Buttons
 enum ButtonType {
-	TurretButton0 = 0,
-	TurretButton1 = 1,
-	TurretButton2 = 2,
-	TurretButton3 = 3,
+	TurretButtonTriangle = 0,
+	TurretButtonCircle = 1,
+	TurretButtonStar = 2,
+	TurretButtonPercentage = 3,
 	PauseButton = 4,
 	NoButton = NUMBER_OF_BUTTONS
 };

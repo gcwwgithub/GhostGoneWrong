@@ -1,14 +1,17 @@
 #pragma once
 #include"game.h"
 
+// Max Number of Turret Type
+#define NOT_PLACING_TURRET 4
+
 void game_grid_init(void);
 void game_grid_color_init(LevelData* Level);
 void turret_menu_init(void);
 void pause_button_init(void);
-void turret0_button_init(void);
-void turret1_button_init(void);
-void turret2_button_init(void);
-void turret3_button_init(void);
+void turret_triangle_button_init(void);
+void turret_circle_button_init(void);
+void turret_star_button_init(void);
+void turret_percentage_button_init(void);
 void mouse_init(void);
 
 void render_game_grid(void);

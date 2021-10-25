@@ -31,15 +31,15 @@ void game_init(void)
 	turret_menu_init();
 
 	//buttons
-	turret0_button_init();
-	turret1_button_init();
-	turret2_button_init();
-	turret3_button_init();
+	turret_triangle_button_init();
+	turret_circle_button_init();
+	turret_star_button_init();
+	turret_percentage_button_init();
 	pause_button_init();
 
 	//Initialize Objects
 	mouse_init();
-	isPlacingTurret = FALSE;
+	isPlacingTurret = NOT_PLACING_TURRET;
 
 	//Level Data
 	Tutorial.spawnRow = 0;
@@ -79,11 +79,11 @@ void game_update(void)
 		render_game_grid_color(Tutorial);
 		render_turret_menu();
 
-		render_button(GameButton[4], COLOR_PURPLE);
-		render_button(GameButton[0], COLOR_WHITE);
-		render_button(GameButton[1], COLOR_WHITE);
-		render_button(GameButton[2], COLOR_WHITE);
-		render_button(GameButton[3], COLOR_WHITE);
+		render_button(GameButton[PauseButton], COLOR_PURPLE);
+		render_button(GameButton[TurretButtonTriangle], COLOR_WHITE);
+		render_button(GameButton[TurretButtonCircle], COLOR_WHITE);
+		render_button(GameButton[TurretButtonStar], COLOR_WHITE);
+		render_button(GameButton[TurretButtonPercentage], COLOR_WHITE);
 
 		render_turret();
 		render_projectile();
@@ -138,15 +138,13 @@ void game_update(void)
 			if (currentGameState == Pause)
 			{
 				currentGameState = Wave;
-				MouseInput.xOrigin = (float)CP_System_GetWindowWidth() / 2;
-				MouseInput.yOrigin = (float)CP_System_GetWindowHeight() / 2;
 			}
 			else // if the game is not paused
 			{
 				currentGameState = Pause;
-				MouseInput.xOrigin = (float)CP_System_GetWindowWidth() / 2;
-				MouseInput.yOrigin = (float)CP_System_GetWindowHeight() / 2;
 			}
+			MouseInput.xOrigin = (float)CP_System_GetWindowWidth() / 2;
+			MouseInput.yOrigin = (float)CP_System_GetWindowHeight() / 2;
 		}
 		else if (btn_is_pressed(PauseBackButton.buttonData))
 		{
