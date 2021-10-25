@@ -8,11 +8,14 @@
 
 void game_init(void)
 {
-	init_all_images();
-
+	
 	//CP_System_ShowConsole(); //pls dont delete this cause scrub me uses printf to debug -gabriel
 	//CP_System_Fullscreen();
 	CP_System_SetWindowSize(1280, 780);
+
+	init_all_images();
+	SpreadsheetInit();
+
 	currentGameState = MainMenu;
 	
 	//Main menu, level select
@@ -96,6 +99,8 @@ void game_update(void)
 		//test enemy
 		Draw_enemy(&test);
 		draw_multiple_enemies();
+
+		UpdatePortal();
 	}
 
 	else if (currentGameState == MainMenu)

@@ -18,7 +18,10 @@ void init_all_images(void)
 	tempPercentage = CP_Image_Load("./Assets/Percentage1.png");
 	tempBullet = CP_Image_Load("./Assets/TriangleBullet.png");
 	tempBulletRadius = CP_Image_Load("./Assets/BulletRadius.png");
-
+	bluePortalSpriteSheet = CP_Image_Load("./Assets/SummationPortal.png"); 
+	redPortalSpriteSheet = CP_Image_Load("./Assets/EnemyPortal.png");  
+	portalCounter = 0;
+	portalTimer = 0;
 	keyNumber = 0;
 	firstNode = NULL;
 }
@@ -28,15 +31,19 @@ void insert_new_node(struct node** list, float xPosInput, float yPosInput)
 {
 	struct node* newNode;
 	newNode = malloc(sizeof(struct node));
-	newNode->circleAlphaValue = 255;
-	newNode->key = keyNumber;
-	newNode->next = firstNode;
-	newNode->xPos = xPosInput;
-	newNode->yPos = yPosInput;
+	if (newNode != NULL)
+	{
+		newNode->circleAlphaValue = 255;
+		newNode->key = keyNumber;
+		newNode->next = firstNode;
+		newNode->xPos = xPosInput;
+		newNode->yPos = yPosInput;
 
-	newNode->next = *list;
-	keyNumber++;
-	*list = newNode;
+		newNode->next = *list;
+		keyNumber++;
+		*list = newNode;
+	}
+	
 }
 
 
@@ -106,4 +113,64 @@ void render_bullet_circles()
 
 int isEmpty() {
 	return firstNode == NULL;
+}
+
+
+void SpreadsheetCalculation(struct SpreadSheetImage* s, CP_Image image, int pixel, int stopPoint)
+{
+	int width = CP_Image_GetWidth(image);
+	int height = CP_Image_GetHeight(image);
+	int counter = 0;
+
+	for (int j = 0; j < height /pixel; j++)
+	{
+		
+		for (int i = 0; i < width / pixel; i++)
+		{	
+			if (!(j == height / pixel - 1 && i > width/pixel-stopPoint-1))
+			{
+
+				s[counter].pixelOfImage = pixel;
+				s[counter].leftXPixel = (float)(i * s[counter].pixelOfImage);
+				s[counter].rightXPixel = (float)((i + 1) * s[counter].pixelOfImage);
+				s[counter].topYPixel = (float)(j * s[counter].pixelOfImage);
+				s[counter].bottomYPixel = (float)((j + 1) * s[counter].pixelOfImage);
+				counter++;
+			}
+		}
+	}
+}
+
+void UpdatePortal(void)
+{
+	if (portalTimer >= 0.25)
+	{
+		if (portalCounter == 2)
+		{
+			portalCounter = 0;
+			portalTimer = 0;
+		}
+
+		else
+		{
+			portalCounter++;
+			portalTimer = 0;
+		}
+	}
+	portalTimer += CP_System_GetDt();
+	SpreadsheetDraw(bluePortalArray[portalCounter], &portalVariablesArray[0], bluePortalSpriteSheet);
+	SpreadsheetDraw(redPortalArray[portalCounter], &portalVariablesArray[1], redPortalSpriteSheet);
+
+}
+
+void SpreadsheetDraw(struct SpreadSheetImage s, struct PortalVariables* pv, CP_Image image)
+{
+	CP_Image_DrawSubImage(image, pv->portalXPos, pv->portalYPos, pv->sizeX, pv->sizeY,
+		s.leftXPixel, s.topYPixel, s.rightXPixel, s.bottomYPixel, 255);
+}
+
+void SpreadsheetInit(void)
+{
+	SpreadsheetCalculation(bluePortalArray, bluePortalSpriteSheet, 128, 1);
+	SpreadsheetCalculation(redPortalArray, redPortalSpriteSheet, 128, 1);
 }

@@ -319,9 +319,25 @@ void render_game_grid_color(LevelData Level) {
 			if (Level.gridColor[i][j] == Grid_Color_Grey)
 				color_game_square(i, j, COLOR_GREY);
 			else if (Level.gridColor[i][j] == Grid_Color_Red)
+			{
 				color_game_square(i, j, COLOR_RED);
+				portalVariablesArray[1].portalXPos = ((Game.xOrigin + Game.gridWidth * j) +
+					(Game.xOrigin + Game.gridWidth * (j + 1))) / 2;
+				portalVariablesArray[1].portalYPos = ((Game.yOrigin + Game.gridHeight * i) +
+					(Game.yOrigin + Game.gridHeight * (i + 1))) / 2;
+				portalVariablesArray[1].sizeX = Game.gridWidth;
+				portalVariablesArray[1].sizeY = Game.gridHeight;
+			}			
 			else if (Level.gridColor[i][j] == Grid_Color_Blue)
+			{
 				color_game_square(i, j, COLOR_BLUE);
+				portalVariablesArray[0].portalXPos = ((Game.xOrigin + Game.gridWidth * j) +
+				(Game.xOrigin + Game.gridWidth * (j+1)))/2;
+				portalVariablesArray[0].portalYPos = ((Game.yOrigin + Game.gridHeight * i) +
+					(Game.yOrigin + Game.gridHeight * (i + 1))) / 2;
+				portalVariablesArray[0].sizeX = Game.gridWidth;
+				portalVariablesArray[0].sizeY = Game.gridHeight;
+			}
 			else {}
 		}
 	}
