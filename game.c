@@ -97,7 +97,6 @@ void game_update(void)
 		render_button_pressed();//Must be after render_new_turret
 
 		//test enemy
-		Draw_enemy(&test);
 		draw_multiple_enemies();
 
 		UpdatePortal();

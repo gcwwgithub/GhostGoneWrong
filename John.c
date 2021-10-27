@@ -135,7 +135,7 @@ int update_point_num(float Enemy_PathpointsX[], float Enemy_PathpointsY[], enemy
 
 
 
-void EnemyDeath(enemy* r) {
+void EnemyDeath(enemy* r) {  //function updates and checks for collision or death also what happens upon death
 	for (int i = 0; i < MAX_PROJECTILE; ++i) {
 		if (proj[i].isActive) {
 			Coordinates a = r->data;
@@ -183,7 +183,7 @@ void Enemies_init(void) {
 		Red_arrow(&Enemy[i]);
 	}
 }
-void Red_arrow(enemy* r) {
+void Red_arrow(enemy* r) { // setup variable for red arrow enemy
 	r->health = 4;
 	r->max_health = 4;
 	r->speed = 10;
@@ -192,13 +192,13 @@ void Red_arrow(enemy* r) {
 	r->data.yOrigin = Yarray[0];
 	r->enemy_width = Game.gridWidth;
 	r->enemy_height = Game.gridHeight;
-	r->angle = 180;
+	r->angle = 0;
 	r->type = Red;
 	r->alpha = 255;
 	r->data.objectType = objectRectangle;
 	r->data.width = Game.gridWidth * 0.5f;
 	r->data.height = Game.gridHeight;
-	r->state = Moving;
+	r->state = Inactive;
 	r->timer = 0;
 }
 
@@ -208,7 +208,15 @@ void update_enemy(void) {
 		count++;
 		timer--;
 	}
-	for (int i = 0; i < count / 2 && i < MAX_ENEMIES; i++) {
+
+	for (int i = 0;i < MAX_ENEMIES; i++) {
+		if ((Enemy[i].state == Inactive) && (Enemy[i].health != 0) && (Enemy[i].CurrentWaypoint == 0)) {
+			if (count >2) {
+				if (i / (count/3) == 1) {
+					Enemy[i].state = Moving;
+				}
+			}
+		}
 		if (Enemy[i].state == Inactive) //dont check if inactive
 			continue;
 		enemy_move(&Enemy[i], Xarray, Yarray, 2);
@@ -216,7 +224,7 @@ void update_enemy(void) {
 	}
 }
 void draw_multiple_enemies(void) {
-	for (int i = 0; i < count / 2 && i < MAX_ENEMIES; i++) {
+	for (int i = 0;i < MAX_ENEMIES; i++) {
 		if (Enemy[i].state == Inactive) {
 			continue;
 		}
@@ -247,3 +255,4 @@ void update_enemy_health(enemy* r)
 	
 	
 }
+

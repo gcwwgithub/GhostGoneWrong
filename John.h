@@ -1,6 +1,6 @@
 #include"cprocessing.h"
 #include"game.h"
-#define MAX_ENEMIES 2
+#define MAX_ENEMIES 100
 typedef enum Direction {
 	NoMove,
 	Up,
