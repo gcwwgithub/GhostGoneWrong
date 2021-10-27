@@ -10,8 +10,8 @@ typedef enum Direction {
 }Direction;
 
 typedef enum EnemyTypes {
-	Red,
-	Blue
+	Basic,
+	Fast_Ghost
 } EnemyTypes;
 
 typedef enum EnemyState {
@@ -40,10 +40,11 @@ int update_point_num(float enemy_pathpointsX[], float enemy_pathpointsY[], enemy
 void EnemyAnimationState(enemy* r);
 
 void EnemyDeath(enemy* r);
-void Red_arrow(enemy* r);
-void Enemies_init(void);
+void Basic_Ghost(enemy* r);
+void Enemies_init(int Basic_enemy_count, int Fast_enemy_count);
 void update_enemy(void);
 void draw_multiple_enemies(void);
+void Fast_Ghost_init(enemy* r);
 
 enemy test;
 CP_Image currentArrowImage;
@@ -53,7 +54,7 @@ float xpoint;
 float ypoint;
 float Xarray[2];
 float Yarray[2];
-float count;
+int count;
 float timer;
 enemy Enemy[MAX_ENEMIES];
 /* //test enemy movement
