@@ -314,7 +314,7 @@ void render_projectile(void)
 
 void update_turretAnimation(Turret* t)
 {
-	if (t->type == T_STAR)
+	if (t->type == T_PRECENTAGE)
 	{
 
 	}
