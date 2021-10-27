@@ -23,6 +23,7 @@ GameCoordinates Game;;
 #define COLOR_GREY CP_Color_Create(128, 128, 128, 255)
 #define COLOR_GREEN CP_Color_Create(0, 255, 0, 255)
 #define COLOR_PURPLE CP_Color_Create(255, 0, 255, 255)
+#define COLOR_YELLOW CP_Color_Create(255,255, 0, 255)
 
 //Font
 #define GAME_FONT CP_Font_Load("Assets/VT323-Regular.ttf")

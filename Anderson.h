@@ -2,10 +2,15 @@
 #include "game.h"
 
 // scaled to factor for different resolutions to an extent
+// admittedly hardcoded the anchored resolution
 #define BUTTON_WIDTH CP_System_GetWindowWidth() / 400 * 55.0f
 #define BUTTON_HEIGHT CP_System_GetWindowHeight() / 400 * 35.0f
 #define FONT_SIZE CP_System_GetWindowWidth() / 400 * 18.0f
 
+#define BUILDING_PHASE_TIME 10.0f
+#define TIME_LEFT 0.0f
+
+#define PORTAL_HEALTH 10
 
 
 typedef struct Button {

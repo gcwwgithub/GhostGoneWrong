@@ -5,6 +5,8 @@
 // text currently aligned to horizontal_center, vertical_center of text box.
 // init_play_button(...)
 
+int enemiesOnScreen = 0;
+
 CP_Font debugSquareFont;
 
 int redSquareClicked = 0;
@@ -13,9 +15,6 @@ int whiteSquareClicked = 0;
 int greySquareClicked = 0;
 
 int turretButton0Clicked = 0;
-int turretButton1Clicked = 0;
-int turretButton2Clicked = 0;
-int turretButton3Clicked = 0;
 
 // Taking top left & bottom right corners.
 int withinBoundaries(float minX, float minY, float maxX, float maxY)
@@ -43,9 +42,6 @@ void detect_grid_square_color(LevelData level)
 		blueSquareClicked = 0;
 
 		turretButton0Clicked = 0;
-		turretButton1Clicked = 0;
-		turretButton2Clicked = 0;
-		turretButton3Clicked = 0;
 
 		float distFromXOriginToMouseX = CP_Input_GetMouseX() - Game.xOrigin;
 		float distFromYOriginToMouseY = CP_Input_GetMouseY() - Game.yOrigin;
@@ -119,33 +115,21 @@ void detect_grid_square_color(LevelData level)
 	{
 		CP_Font_DrawText("Grey square", CP_System_GetWindowWidth() * 0.9f, CP_System_GetWindowHeight() * 0.1f);
 	}
-
 	if (turretButton0Clicked)
 	{
 		CP_Font_DrawText("Turret button 0", CP_System_GetWindowWidth() * 0.9f, CP_System_GetWindowHeight() * 0.1f);
 	}
 }
 
-/*
-void draw_pause_button(float buttonPosX, float buttonPosY)
+void turret_upgrade_menu(void)
 {
-	CP_Settings_Fill(COLOR_BLACK);
-	CP_Graphics_DrawRect(buttonPosX, buttonPosY, buttonPosX + 25.0f, buttonPosY + 15.0f);
-	CP_Settings_Fill(COLOR_WHITE);
-	CP_Graphics_DrawRect(buttonPosX * 1.4f, buttonPosY * 1.1f, buttonPosX * 0.25f, 45.0f);
-	CP_Graphics_DrawRect(buttonPosX * 1.9f, buttonPosY * 1.1f, buttonPosX * 0.25f, 45.0f);
-}
-*/
 
-// Terminates game.
-void exit_game(void)
-{
-	CP_Engine_Terminate();
 }
 
 #pragma region UI
 
 // Assuming all buttons are rectangles
+// Attempted soft coding of UI button initialisation - somewhat didn't work so is now just used for reference.
 void init_text_button(Button button, float buttonPosX, float buttonPosY, float buttonWidth, float buttonHeight, float textPosX, float textPosY, char string[])
 {
 	button.buttonData.xOrigin = buttonPosX;
@@ -156,16 +140,6 @@ void init_text_button(Button button, float buttonPosX, float buttonPosY, float b
 	button.textPositionX = textPosX;
 	button.textPositionY = textPosY;
 	strcpy_s(button.textString, sizeof(button.textString), string);
-}
-
-void render_game_title(void)
-{
-	debugSquareFont = GAME_FONT;
-	CP_Font_Set(debugSquareFont);
-	CP_Settings_Fill(COLOR_BLUE);
-	CP_Settings_TextSize(FONT_SIZE);
-
-	CP_Font_DrawText("Math Gone Wrong", CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.25f);
 }
 
 void init_play_button(void)
@@ -250,6 +224,57 @@ void init_level_select_buttons(void)
 	}
 }
 
+void init_pause_screen(void)
+{
+	init_pause_back_button();
+	init_pause_quit_button();
+}
+
+void render_wave_timer_text(void)
+{
+	CP_Settings_Fill(COLOR_BLUE);
+	CP_Settings_TextSize(FONT_SIZE);
+
+	CP_Font_DrawText("Math Gone Wrong", CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.25f);
+
+}
+
+//TODO
+void init_skip_wave_button(void)
+{
+	// Init skip wave button's position.
+}
+
+void init_win_screen(void)
+{
+
+}
+
+void init_lose_screen(void)
+{
+
+}
+
+
+
+// Currently the score is really just a text output
+void render_score_text(int score)
+{
+	const char scoreString[] = { 0 };
+	sprintf_s(scoreString, sizeof(scoreString), "Score: %d", score);
+	CP_Font_DrawText(scoreString, CP_System_GetWindowWidth() * 0.75f, CP_System_GetWindowHeight() * 0.1f);
+}
+
+void render_game_title(void)
+{
+	debugSquareFont = GAME_FONT;
+	CP_Font_Set(debugSquareFont);
+	CP_Settings_Fill(COLOR_BLUE);
+	CP_Settings_TextSize(FONT_SIZE);
+
+	CP_Font_DrawText("Math Gone Wrong", CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.25f);
+}
+
 void render_ui_button(Button button)
 {
 	CP_Settings_Fill(COLOR_BLACK);
@@ -267,21 +292,14 @@ void render_level_select_buttons(void)
 	}
 }
 
-void credits_screen(void)
+// Currently intended to be just text. Though I do have plans for this to be more than that.
+void render_credits_screen(void)
 {
 	// just render text and other things here
 }
 
-void init_pause_screen(void)
-{
-	init_pause_back_button();
-	init_pause_quit_button();
-}
-
-
-
 void render_pause_screen(void)
-{	
+{
 	// The following shall be rendered here:
 	//	Restart button tbd
 
@@ -291,5 +309,65 @@ void render_pause_screen(void)
 	render_ui_button(PauseQuitButton);
 
 }
+
+void render_win_screen(void)
+{
+	// should have: statistics (e.g. enemies defeated, waves cleared, bonus(es) etc.) 
+	//				next level button | main menu button | quit button
+	//				score display (high score if time permits)
+}
+
+void render_lose_screen(void)
+{
+	// should have: statistics
+	//				restart button | main menu button | quit button
+	//				score display (high score if time permits)
+
+
+
+}
+
+// Terminates game.
+void exit_game(void)
+{
+	CP_Engine_Terminate();
+}
+
+#pragma endregion
+
+#pragma region Building / Wave Phase System
+
+void building_phase(void)
+{
+	// nothing happens - player able to build turrets
+}
+
+void time_is_up(void)
+{
+	// update time left till next wave
+	// planning to use a ternary to return a 1 if time's up, reduce time otherwise
+}
+
+void wave_system_enemy_check(void)
+{
+	// check for no. of enemies left
+
+	// If no enemies left on screen, return to building phase
+}
+
+void fast_forward_building_phase(void)
+{
+
+}
+
+#pragma endregion
+
+#pragma region Win / Lose Conditions
+
+void GameWinLoseCheck(void)
+{
+	// checks 
+}
+
 
 #pragma endregion
