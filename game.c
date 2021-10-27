@@ -70,7 +70,6 @@ void game_update(void)
 		//do enemy update first
 		//enemy_move(&test, Xarray, Yarray, 2);
 		update_enemy();
-		EnemyDeath(&test);
 
 		//do turret & projectile update next
 		update_turret();
@@ -87,6 +86,8 @@ void game_update(void)
 		render_button(GameButton[TurretButtonStar], COLOR_WHITE);
 		render_button(GameButton[TurretButtonPercentage], COLOR_WHITE);
 
+		draw_multiple_enemies();
+
 		render_turret();
 		render_projectile();
 
@@ -96,7 +97,7 @@ void game_update(void)
 		render_button_pressed();//Must be after render_new_turret
 
 		//test enemy
-		draw_multiple_enemies();
+
 
 		UpdatePortal();
 	}

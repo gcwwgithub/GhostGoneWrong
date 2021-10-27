@@ -195,9 +195,9 @@ void Red_arrow(enemy* r) { // setup variable for red arrow enemy
 	r->angle = 0;
 	r->type = Red;
 	r->alpha = 255;
-	r->data.objectType = objectRectangle;
-	r->data.width = Game.gridWidth * 0.5f;
-	r->data.height = Game.gridHeight;
+	r->data.objectType = objectCircle;
+	r->data.width = Game.gridWidth;
+	r->data.height = Game.gridWidth;
 	r->state = Inactive;
 	r->timer = 0;
 }
@@ -211,9 +211,9 @@ void update_enemy(void) {
 
 	for (int i = 0;i < MAX_ENEMIES; i++) {
 		if ((Enemy[i].state == Inactive) && (Enemy[i].health != 0) && (Enemy[i].CurrentWaypoint == 0)) {
-			float Enemy_spawn_timer = 5;  // Current EnemySpawn timer
-			if (count >Enemy_spawn_timer) {
-				if ((float)i / (count/Enemy_spawn_timer) == 1) {
+			float Enemy_spawn_timer = 3;  // Current EnemySpawn timer
+			if (count != 0) {
+				if ((float)i / (count / Enemy_spawn_timer) <= 1) {
 					Enemy[i].state = Moving;
 				}
 			}
