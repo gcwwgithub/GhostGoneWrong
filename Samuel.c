@@ -245,8 +245,8 @@ void shoot(float x, float y, Vector2 dir)
 
 		//set the projectile as active and other stuff
 		proj[i].isActive = 1;
-		proj[i].data.xOrigin = x;
-		proj[i].data.yOrigin = y;
+		proj[i].data.xOrigin = x + (float)(PROJ_OFFSET * dir.pos_x);
+		proj[i].data.yOrigin = y + (float)(PROJ_OFFSET * dir.pos_y);
 		proj[i].dir = dir;
 		proj[i].data.width = 10.f;
 		proj[i].data.height = 10.f;

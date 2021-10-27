@@ -5,7 +5,7 @@
 //change value as need
 #define MAX_PROJECTILE 100
 #define MAX_TURRET 100
-
+#define PROJ_OFFSET Game.gridHeight * 0.4
 //enum of turret types
 typedef enum TurretType
 {
