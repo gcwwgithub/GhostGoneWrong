@@ -5,6 +5,9 @@
 
 CP_Image triangleTurretImageArray[6];
 CP_Image redArrowImageArray[3];
+CP_Image fastGhostImageArray[3];
+CP_Image fatGhostImageArray[3];
+CP_Image grimReaperImageArray[3];
 CP_Image bulletArray[4];
 CP_Image bulletRadiusArrray[4];
 CP_Image tempStar;

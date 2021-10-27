@@ -9,9 +9,17 @@ void init_all_images(void)
 	triangleTurretImageArray[4] = CP_Image_Load("./Assets/BasicTurret4.png");
 	triangleTurretImageArray[5] = CP_Image_Load("./Assets/BasicTurret5.png");
 
-	redArrowImageArray[0] = CP_Image_Load("./Assets/BasicGhost1.png");
-	redArrowImageArray[1] = CP_Image_Load("./Assets/BasicGhost2.png");
-	redArrowImageArray[2] = CP_Image_Load("./Assets/BasicGhost3.png");
+	fastGhostImageArray[0] = CP_Image_Load("./Assets/FastGhost1.png");
+	fastGhostImageArray[1] = CP_Image_Load("./Assets/FastGhost2.png");
+	fastGhostImageArray[2] = CP_Image_Load("./Assets/FastGhost3.png");
+
+	fatGhostImageArray[0] = CP_Image_Load("./Assets/FatGhost1.png");
+	fatGhostImageArray[1] = CP_Image_Load("./Assets/FatGhost2.png");
+	fatGhostImageArray[2] = CP_Image_Load("./Assets/FatGhost3.png");
+
+	grimReaperImageArray[0] = CP_Image_Load("./Assets/GrimReaper1.png");
+	grimReaperImageArray[1] = CP_Image_Load("./Assets/GrimReaper2.png");
+	grimReaperImageArray[2] = CP_Image_Load("./Assets/GrimReaper3.png");
 
 	tempStar = CP_Image_Load("./Assets/Star1.png");
 	tempCircle = CP_Image_Load("./Assets/Circle1.png");
