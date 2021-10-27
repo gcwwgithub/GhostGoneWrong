@@ -46,6 +46,8 @@ void init_all_images(void)
 }
 
 
+#pragma region LinkedList
+
 void insert_new_node(struct node** list, float xPosInput, float yPosInput,int typeOfBullet)
 {
 	
@@ -82,7 +84,6 @@ void insert_new_node(struct node** list, float xPosInput, float yPosInput,int ty
 	
 }
 
-
 //delete a link with given key
 struct node* delete_node(struct node* list, int key)
 {
@@ -108,49 +109,24 @@ struct node* delete_node(struct node* list, int key)
 
 }
 
-void render_bullet_circles()
-{
-	if (!isEmpty())
-	{
-		struct node* current = firstNode;
-		while (1)
-		{
-			
-			if (current != NULL)
-			{
-				RenderBulletRadius(bulletRadiusSpriteSheet, current->bulletImage, current->xPos, current->yPos,
-					100.0f, 100.0f, current->circleAlphaValue);
-				current->circleAlphaValue -= 50;
-				if (current->circleAlphaValue < 0)
-				{
-					firstNode=delete_node(current, current->key);
-					break;
-				}
-				if (current->next == NULL)
-				{
-					break;
-				}
-
-				else
-				{
-					current = current->next;
-				}
-			}
-
-			else
-			{
-				break;
-			}
-
-		}
-	}
-
-}
-
 int isEmpty() {
 	return firstNode == NULL;
 }
+#pragma endregion
 
+
+#pragma region SpriteSheetRelated
+
+void SpriteSheetInit(void)
+{
+	SpriteSheetCalculation(bluePortalArray, bluePortalSpriteSheet, 128, 1);
+	SpriteSheetCalculation(redPortalArray, redPortalSpriteSheet, 128, 1);
+	SpriteSheetCalculation(basicTurretArray, basicTurretSpriteSheet, 128, 0);
+	SpriteSheetCalculation(mineArray, mineSpriteSheet, 128, 0);
+	SpriteSheetCalculation(homingMissleTurretArray, homingMissleTurretSpriteSheet, 128, 0);
+	SpriteSheetCalculation(bulletArray, bulletSpriteSheet, 128, 1);
+	SpriteSheetCalculation(bulletRadiusArray, bulletRadiusSpriteSheet, 128, 0);
+}
 
 void SpriteSheetCalculation(struct SpriteSheetImage* s, CP_Image image, int pixel, int stopPoint)
 {
@@ -177,6 +153,69 @@ void SpriteSheetCalculation(struct SpriteSheetImage* s, CP_Image image, int pixe
 	}
 }
 
+void RenderPortal(struct SpriteSheetImage s, struct PortalVariables* pv, CP_Image image)
+{
+	CP_Image_DrawSubImage(image, pv->portalXPos, pv->portalYPos, pv->sizeX, pv->sizeY,
+		s.leftXPixel, s.topYPixel, s.rightXPixel, s.bottomYPixel, 255);
+}
+
+
+void RenderTurret(CP_Image image, struct SpriteSheetImage s, float xPos, float yPos, float sizeOfImageX, float sizeOfImageY)
+{
+	//put size of image as the turret size
+	CP_Image_DrawSubImage(image, xPos, yPos, sizeOfImageX, sizeOfImageY,
+		s.leftXPixel, s.topYPixel, s.rightXPixel, s.bottomYPixel, 255);
+}
+
+void RenderBulletRadius(CP_Image image, struct SpriteSheetImage s, float xPos, float yPos, float sizeOfImageX, float sizeOfImageY, int alphaValue)
+{
+	//put size of image as the turret size
+	CP_Image_DrawSubImage(image, xPos, yPos, sizeOfImageX, sizeOfImageY,
+		s.leftXPixel, s.topYPixel, s.rightXPixel, s.bottomYPixel, alphaValue);
+}
+
+#pragma endregion
+
+void render_bullet_circles()
+{
+	if (!isEmpty())
+	{
+		struct node* current = firstNode;
+		while (1)
+		{
+
+			if (current != NULL)
+			{
+				RenderBulletRadius(bulletRadiusSpriteSheet, current->bulletImage, current->xPos, current->yPos,
+					100.0f, 100.0f, current->circleAlphaValue);
+				current->circleAlphaValue -= 50;
+				if (current->circleAlphaValue < 0)
+				{
+					firstNode = delete_node(current, current->key);
+					break;
+				}
+				if (current->next == NULL)
+				{
+					break;
+				}
+
+				else
+				{
+					current = current->next;
+				}
+			}
+
+			else
+			{
+				break;
+			}
+
+		}
+	}
+
+}
+
+
 void UpdatePortal(void)
 {
 	if (portalTimer >= 0.25)
@@ -194,38 +233,7 @@ void UpdatePortal(void)
 		}
 	}
 	portalTimer += CP_System_GetDt();
-	SpriteSheetRenderPortal(bluePortalArray[portalCounter], &portalVariablesArray[0], bluePortalSpriteSheet);
-	SpriteSheetRenderPortal(redPortalArray[portalCounter], &portalVariablesArray[1], redPortalSpriteSheet);
+	RenderPortal(bluePortalArray[portalCounter], &portalVariablesArray[0], bluePortalSpriteSheet);
+	RenderPortal(redPortalArray[portalCounter], &portalVariablesArray[1], redPortalSpriteSheet);
 
-}
-
-void SpriteSheetRenderPortal(struct SpriteSheetImage s, struct PortalVariables* pv, CP_Image image)
-{
-	CP_Image_DrawSubImage(image, pv->portalXPos, pv->portalYPos, pv->sizeX, pv->sizeY,
-		s.leftXPixel, s.topYPixel, s.rightXPixel, s.bottomYPixel, 255);
-}
-
-void SpriteSheetInit(void)
-{
-	SpriteSheetCalculation(bluePortalArray, bluePortalSpriteSheet, 128, 1);
-	SpriteSheetCalculation(redPortalArray, redPortalSpriteSheet, 128, 1);
-	SpriteSheetCalculation(basicTurretArray, basicTurretSpriteSheet, 128, 0);
-	SpriteSheetCalculation(mineArray, mineSpriteSheet, 128, 0);
-	SpriteSheetCalculation(homingMissleTurretArray, homingMissleTurretSpriteSheet, 128, 0);
-	SpriteSheetCalculation(bulletArray, bulletSpriteSheet, 128, 1);
-	SpriteSheetCalculation(bulletRadiusArray,bulletRadiusSpriteSheet,128,0);
-}
-
-void RenderTurret(CP_Image image, struct SpriteSheetImage s, float xPos, float yPos, float sizeOfImageX, float sizeOfImageY)
-{
-	//put size of image as the turret size
-	CP_Image_DrawSubImage(image, xPos, yPos, sizeOfImageX, sizeOfImageY,
-		s.leftXPixel, s.topYPixel, s.rightXPixel, s.bottomYPixel, 255);
-}
-
-void RenderBulletRadius(CP_Image image, struct SpriteSheetImage s, float xPos, float yPos, float sizeOfImageX, float sizeOfImageY, int alphaValue)
-{
-	//put size of image as the turret size
-	CP_Image_DrawSubImage(image, xPos, yPos, sizeOfImageX, sizeOfImageY,
-		s.leftXPixel, s.topYPixel, s.rightXPixel, s.bottomYPixel, alphaValue);
 }

@@ -42,8 +42,6 @@ CP_Image tempCircle;
 CP_Image tempPercentage;
 CP_Image tempBulletRadius;
 CP_Image tempBullet;
-CP_Image testIMG;
-CP_Image myImage;
 
 CP_Image bluePortalSpriteSheet;
 CP_Image redPortalSpriteSheet;
@@ -76,9 +74,8 @@ int isEmpty(void);
 void render_bullet_circles();
 
 void SpriteSheetCalculation(struct SpriteSheetImage* s, CP_Image image, int pixel, int stopPoint);
-void SpriteSheetUpdate(float* timer, float elapsedTime, CP_Image image, float xPos, float yPos);
 void SpriteSheetInit(void);
-void SpriteSheetRenderPortal(struct SpriteSheetImage s, struct PortalVariables* pv, CP_Image image);
+void RenderPortal(struct SpriteSheetImage s, struct PortalVariables* pv, CP_Image image);
 void RenderTurret(CP_Image image, struct SpriteSheetImage s, float xPos, float yPos, float sizeOfImageX, float sizeOfImageY);
 void RenderBulletRadius(CP_Image image, struct SpriteSheetImage s, float xPos, float yPos, float sizeOfImageX, float sizeOfImageY, int alphaValue);
 void UpdatePortal(void);
