@@ -53,7 +53,7 @@ void game_init(void)
 	game_grid_color_init(&Tutorial);
 	turret_init();
 	enemy_test_init();
-	Enemies_init();
+	Enemies_init(5,95);
 }
 
 void game_update(void)

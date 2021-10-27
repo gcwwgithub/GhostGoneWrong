@@ -15,7 +15,7 @@ void enemy_test_init(void)  //Initialising test enemy
 	test.enemy_width = Game.gridWidth;
 	test.enemy_height = Game.gridHeight;
 	test.angle = 180;
-	test.type = Red;
+	test.type = Basic;
 	test.alpha = 255;
 	test.data.objectType = objectRectangle;
 	test.data.width = Game.gridWidth * 0.5f;
@@ -35,35 +35,61 @@ void enemy_test_init(void)  //Initialising test enemy
 void Draw_enemy(enemy* r) { //Draws the enemy
 	EnemyAnimationState(r);
 	switch (r->type) {
-	case Red:
+	case Basic:
 		CP_Image_DrawAdvanced(currentArrowImage, r->data.xOrigin, r->data.yOrigin, r->enemy_width, r->enemy_height, r->alpha, r->angle);
 		r->timer += CP_System_GetDt();
 		break;
-	case Blue:
+	case Fast_Ghost:
+		CP_Image_DrawAdvanced(currentArrowImage, r->data.xOrigin, r->data.yOrigin, r->enemy_width, r->enemy_height, r->alpha, r->angle);
+		r->timer += CP_System_GetDt();
 		break;
 	}
 }
 
 void EnemyAnimationState(enemy* r)
 {
-	switch (r->state)
-	{
-	case Moving:
-		currentArrowImage = redArrowImageArray[0];
-		break;
-	case Hurt:
-		currentArrowImage = redArrowImageArray[1];
-		if (r->timer >= 0.25)
+	switch (r->type) {
+	case Basic:
+		switch (r->state)
 		{
-			r->state = Moving;
-			r->timer = 0;
+		case Moving:
+			currentArrowImage = redArrowImageArray[0];
+			break;
+		case Hurt:
+			currentArrowImage = redArrowImageArray[1];
+			if (r->timer >= 0.25)
+			{
+				r->state = Moving;
+				r->timer = 0;
+			}
+			break;
+		case Death:
+			currentArrowImage = redArrowImageArray[2];
+			break;
 		}
 		break;
-	case Death:
-		currentArrowImage = redArrowImageArray[2];
+	case Fast_Ghost:
+		switch (r->state)
+		{
+		case Moving:
+			currentArrowImage = fastGhostImageArray[0];
+			break;
+		case Hurt:
+			currentArrowImage = fastGhostImageArray[1];
+			if (r->timer >= 0.25)
+			{
+				r->state = Moving;
+				r->timer = 0;
+			}
+			break;
+		case Death:
+			currentArrowImage = fastGhostImageArray[2];
+			break;
+		}
 		break;
 	}
 }
+
 
 void enemy_move(enemy* r, float Enemy_PathpointsX[], float Enemy_PathpointsY[], int number_of_points) { //Enemy movement
 	float Speed = (r->speed) * CP_System_GetDt();
@@ -148,7 +174,7 @@ void EnemyDeath(enemy* r) {  //function updates and checks for collision or deat
 					r->health -= turret[i].damage;
 					r->state = Hurt;
 					r->timer = 0;
-					insert_new_node(&firstNode,r->data.xOrigin, r->data.yOrigin);
+					insert_new_node(&firstNode, r->data.xOrigin, r->data.yOrigin);
 				}
 
 			}
@@ -169,7 +195,7 @@ void EnemyDeath(enemy* r) {  //function updates and checks for collision or deat
 	}
 }
 
-void Enemies_init(void) {
+void Enemies_init(int Basic_enemy_count,int Fast_enemy_count) {
 	timer = 0;
 	count = 0;
 	currentArrowImage = redArrowImageArray[0];
@@ -179,11 +205,14 @@ void Enemies_init(void) {
 		Xarray[i] = test.data.xOrigin;
 		Yarray[i] = (test.data.yOrigin + Game.gridHeight * 6 * i);
 	}
-	for (int i = 0; i < MAX_ENEMIES; i++) {
-		Red_arrow(&Enemy[i]);
+	for (int i = 0; i < Basic_enemy_count; i++) {
+		Basic_Ghost(&Enemy[i]);
+	}
+	for (int i = Basic_enemy_count; i < MAX_ENEMIES; i++) {
+		Fast_Ghost_init(&Enemy[i]);
 	}
 }
-void Red_arrow(enemy* r) { // setup variable for red arrow enemy
+void Basic_Ghost(enemy* r) { // setup variable for basic ghost enemy
 	r->health = 4;
 	r->max_health = 4;
 	r->speed = 10;
@@ -193,7 +222,7 @@ void Red_arrow(enemy* r) { // setup variable for red arrow enemy
 	r->enemy_width = Game.gridWidth;
 	r->enemy_height = Game.gridHeight;
 	r->angle = 0;
-	r->type = Red;
+	r->type = Basic;
 	r->alpha = 255;
 	r->data.objectType = objectCircle;
 	r->data.width = Game.gridWidth;
@@ -202,6 +231,24 @@ void Red_arrow(enemy* r) { // setup variable for red arrow enemy
 	r->timer = 0;
 }
 
+void Fast_Ghost_init(enemy* r) { // setup variable for fast ghost enemy
+	r->health = 2;
+	r->max_health = 2;
+	r->speed = 40;
+	r->CurrentWaypoint = 0;
+	r->data.xOrigin = Xarray[0];
+	r->data.yOrigin = Yarray[0];
+	r->enemy_width = Game.gridWidth;
+	r->enemy_height = Game.gridHeight;
+	r->angle = 0;
+	r->type = Fast_Ghost;
+	r->alpha = 255;
+	r->data.objectType = objectCircle;
+	r->data.width = Game.gridWidth;
+	r->data.height = Game.gridWidth;
+	r->state = Inactive;
+	r->timer = 0;
+}
 void update_enemy(void) {
 	timer += CP_System_GetDt();
 	if (timer >= 1) {
@@ -209,14 +256,10 @@ void update_enemy(void) {
 		timer--;
 	}
 
-	for (int i = 0;i < MAX_ENEMIES; i++) {
+	for (int i = 0; i < MAX_ENEMIES; i++) {
 		if ((Enemy[i].state == Inactive) && (Enemy[i].health != 0) && (Enemy[i].CurrentWaypoint == 0)) {
-			float Enemy_spawn_timer = 3;  // Current EnemySpawn timer
-			if (count != 0) {
-				if ((float)i / (count / Enemy_spawn_timer) <= 1) {
-					Enemy[i].state = Moving;
-				}
-			}
+			int Enemy_spawn_timer = 3;  // Current EnemySpawn timer
+			Enemy[(count - 1) / Enemy_spawn_timer].state = Moving;
 		}
 		if (Enemy[i].state == Inactive) //dont check if inactive
 			continue;
@@ -225,20 +268,22 @@ void update_enemy(void) {
 	}
 }
 void draw_multiple_enemies(void) {
-	for (int i = 0;i < MAX_ENEMIES; i++) {
+	for (int i = 0; i < MAX_ENEMIES; i++) {
 		if (Enemy[i].state == Inactive) {
 			continue;
 		}
 		EnemyAnimationState(&Enemy[i]);
 		switch (Enemy[i].type) {
-		case Red:
+		case Basic:
 			CP_Image_DrawAdvanced(currentArrowImage, Enemy[i].data.xOrigin, Enemy[i].data.yOrigin, Enemy[i].enemy_width, Enemy[i].enemy_height, Enemy[i].alpha, Enemy[i].angle);
 			Enemy[i].timer += CP_System_GetDt();
-			update_enemy_health(&Enemy[i]);
 			break;
-		case Blue:
+		case Fast_Ghost:
+			CP_Image_DrawAdvanced(currentArrowImage, Enemy[i].data.xOrigin, Enemy[i].data.yOrigin, Enemy[i].enemy_width, Enemy[i].enemy_height, Enemy[i].alpha, Enemy[i].angle);
+			Enemy[i].timer += CP_System_GetDt();
 			break;
 		}
+		update_enemy_health(&Enemy[i]);
 	}
 }
 
@@ -253,7 +298,7 @@ void update_enemy_health(enemy* r)
 		CP_Settings_Fill(COLOR_GREEN);
 		CP_Graphics_DrawRect(r->data.xOrigin - r->enemy_width, r->data.yOrigin - r->enemy_height, r->enemy_width * 2 * newWidth, r->enemy_height / 4);
 	}
-	
-	
+
+
 }
 
