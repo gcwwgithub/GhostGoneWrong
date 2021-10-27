@@ -53,7 +53,7 @@ float xpoint;
 float ypoint;
 float Xarray[2];
 float Yarray[2];
-int count;
+float count;
 float timer;
 enemy Enemy[MAX_ENEMIES];
 /* //test enemy movement

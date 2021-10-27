@@ -54,7 +54,6 @@ void game_init(void)
 	turret_init();
 	enemy_test_init();
 	Enemies_init();
-	//Enemies_spawn();
 }
 
 void game_update(void)

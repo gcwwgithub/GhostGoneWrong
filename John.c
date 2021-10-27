@@ -211,8 +211,9 @@ void update_enemy(void) {
 
 	for (int i = 0;i < MAX_ENEMIES; i++) {
 		if ((Enemy[i].state == Inactive) && (Enemy[i].health != 0) && (Enemy[i].CurrentWaypoint == 0)) {
-			if (count >2) {
-				if (i / (count/3) == 1) {
+			float Enemy_spawn_timer = 5;  // Current EnemySpawn timer
+			if (count >Enemy_spawn_timer) {
+				if ((float)i / (count/Enemy_spawn_timer) == 1) {
 					Enemy[i].state = Moving;
 				}
 			}
