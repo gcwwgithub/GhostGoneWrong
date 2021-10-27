@@ -22,7 +22,7 @@ void enemy_test_init(void)  //Initialising test enemy
 	test.data.height = Game.gridHeight;
 	test.state = Moving;
 	count = 0;
-	currentArrowImage = redArrowImageArray[0];
+	currentArrowImage = basicGhostImageArray[0];
 	test.timer = 0;
 
 	//test path
@@ -53,10 +53,10 @@ void EnemyAnimationState(enemy* r)
 		switch (r->state)
 		{
 		case Moving:
-			currentArrowImage = redArrowImageArray[0];
+			currentArrowImage = basicGhostImageArray[0];
 			break;
 		case Hurt:
-			currentArrowImage = redArrowImageArray[1];
+			currentArrowImage = basicGhostImageArray[1];
 			if (r->timer >= 0.25)
 			{
 				r->state = Moving;
@@ -64,7 +64,7 @@ void EnemyAnimationState(enemy* r)
 			}
 			break;
 		case Death:
-			currentArrowImage = redArrowImageArray[2];
+			currentArrowImage = basicGhostImageArray[2];
 			break;
 		}
 		break;
@@ -174,7 +174,8 @@ void EnemyDeath(enemy* r) {  //function updates and checks for collision or deat
 					r->health -= turret[i].damage;
 					r->state = Hurt;
 					r->timer = 0;
-					insert_new_node(&firstNode, r->data.xOrigin, r->data.yOrigin);
+					insert_new_node(&firstNode, r->data.xOrigin, r->data.yOrigin,1	);
+					//lmao im hallucinating, this is for my bullet radius ignore me, Gabriel
 				}
 
 			}
@@ -198,7 +199,7 @@ void EnemyDeath(enemy* r) {  //function updates and checks for collision or deat
 void Enemies_init(int Basic_enemy_count,int Fast_enemy_count) {
 	timer = 0;
 	count = 0;
-	currentArrowImage = redArrowImageArray[0];
+	currentArrowImage = basicGhostImageArray[0];
 
 	//test path
 	for (int i = 0; i < 2; i++) {
@@ -253,7 +254,7 @@ void update_enemy(void) {
 	timer += CP_System_GetDt();
 	if (timer >= 1) {
 		count++;
-		timer--;
+		timer = 0;
 	}
 
 	for (int i = 0; i < MAX_ENEMIES; i++) {
@@ -289,7 +290,7 @@ void draw_multiple_enemies(void) {
 
 void update_enemy_health(enemy* r)
 {
-	if (r->health != 0)
+	if (r->health > 0)
 	{
 		float newWidth = r->health / r->max_health;
 		CP_Settings_Fill(COLOR_RED);

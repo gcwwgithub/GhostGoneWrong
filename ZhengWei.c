@@ -150,7 +150,7 @@ void turret_triangle_button_init(void) {
 	GameButton[TurretButtonTriangle].width = TurretMenu.width;
 	GameButton[TurretButtonTriangle].height = (TurretMenu.height - unusableButtonHeight) / 4;
 	GameButton[TurretButtonTriangle].objectType = objectRectangle;
-	GameButton[TurretButtonTriangle].imageOfButton = triangleTurretImageArray[0];
+	GameButton[TurretButtonTriangle].imageOfButton = slowTurretImageArray[0];
 }
 
 void turret_circle_button_init(void) {
