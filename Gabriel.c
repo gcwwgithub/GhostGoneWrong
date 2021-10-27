@@ -5,16 +5,16 @@ void init_all_images(void)
 	triangleTurretImageArray[0] = CP_Image_Load("./Assets/SlowTurret1.png");
 	triangleTurretImageArray[1] = CP_Image_Load("./Assets/SlowTurret2.png");
 	triangleTurretImageArray[2] = CP_Image_Load("./Assets/SlowTurret3.png");
-	triangleTurretImageArray[3] = CP_Image_Load("./Assets/SlowTurret4.png");
-	triangleTurretImageArray[4] = CP_Image_Load("./Assets/SlowTurret5.png");
-	triangleTurretImageArray[5] = CP_Image_Load("./Assets/SlowTurret6.png");
+	triangleTurretImageArray[3] = CP_Image_Load("./Assets/SlowTurret1.png");
+	triangleTurretImageArray[4] = CP_Image_Load("./Assets/SlowTurret4.png");
+	triangleTurretImageArray[5] = CP_Image_Load("./Assets/SlowTurret5.png");
 
 	slowTurretImageArray[0] = CP_Image_Load("./Assets/SlowTurret1.png");
 	slowTurretImageArray[1] = CP_Image_Load("./Assets/SlowTurret2.png");
 	slowTurretImageArray[2] = CP_Image_Load("./Assets/SlowTurret3.png");
-	slowTurretImageArray[3] = CP_Image_Load("./Assets/SlowTurret4.png");
-	slowTurretImageArray[4] = CP_Image_Load("./Assets/SlowTurret5.png");
-	slowTurretImageArray[5] = CP_Image_Load("./Assets/SlowTurret6.png");
+	slowTurretImageArray[3] = CP_Image_Load("./Assets/SlowTurret1.png");
+	slowTurretImageArray[4] = CP_Image_Load("./Assets/SlowTurret4.png");
+	slowTurretImageArray[5] = CP_Image_Load("./Assets/SlowTurret5.png");
 
 	redArrowImageArray[0] = CP_Image_Load("./Assets/BasicGhost1.png");
 	redArrowImageArray[1] = CP_Image_Load("./Assets/BasicGhost2.png");
@@ -32,14 +32,14 @@ void init_all_images(void)
 	grimReaperImageArray[1] = CP_Image_Load("./Assets/GrimReaper2.png");
 	grimReaperImageArray[2] = CP_Image_Load("./Assets/GrimReaper3.png");
 
-	tempStar = CP_Image_Load("./Assets/BasicGhost1.png");
-	tempCircle = CP_Image_Load("./Assets/FatGhost1.png");
+	tempStar = CP_Image_Load("./Assets/GrimReaper1.png");
+	tempCircle = CP_Image_Load("./Assets/GrimReaper1.png");
 	tempPercentage = CP_Image_Load("./Assets/GrimReaper1.png");
 	tempBullet = CP_Image_Load("./Assets/BasicTurretBullet.png");
 	tempBulletRadius = CP_Image_Load("./Assets/BulletRadius.png");
 
 	bluePortalSpriteSheet = CP_Image_Load("./Assets/FriendlyPortal.png"); 
-	redPortalSpriteSheet = CP_Image_Load("./Assets/EnemyPortal.png");  
+	redPortalSpriteSheet = CP_Image_Load("./Assets/GhostPortal.png");  
 	basicTurretSpriteSheet = CP_Image_Load("./Assets/BasicTurret.png");
 	homingMissleTurretSpriteSheet = CP_Image_Load("./Assets/HomingMissleTurret.png");
 	mineSpriteSheet = CP_Image_Load("./Assets/Mine.png");
@@ -199,9 +199,9 @@ void SpreadsheetInit(void)
 {
 	SpreadsheetCalculation(bluePortalArray, bluePortalSpriteSheet, 128, 1);
 	SpreadsheetCalculation(redPortalArray, redPortalSpriteSheet, 128, 1);
-	SpreadsheetCalculation(basicTurretArray, basicTurretSpriteSheet, 128, 0);
+	/*SpreadsheetCalculation(basicTurretArray, basicTurretSpriteSheet, 128, 0);
 	SpreadsheetCalculation(mineArray, mineSpriteSheet, 128, 0);
 	SpreadsheetCalculation(homingMissleTurretArray, homingMissleTurretSpriteSheet, 128, 0);
 	SpreadsheetCalculation(bulletArray, bulletSpriteSheet, 128, 1);
-	SpreadsheetCalculation(bulletRadiusArray, basicTurretSpriteSheet, 128, 0);
+	SpreadsheetCalculation(bulletRadiusArray,basicTurretSpriteSheet,128,0);*/
 }
