@@ -32,13 +32,13 @@ void init_all_images(void)
 	grimReaperImageArray[1] = CP_Image_Load("./Assets/GrimReaper2.png");
 	grimReaperImageArray[2] = CP_Image_Load("./Assets/GrimReaper3.png");
 
-	tempStar = CP_Image_Load("./Assets/Star1.png");
-	tempCircle = CP_Image_Load("./Assets/Circle1.png");
-	tempPercentage = CP_Image_Load("./Assets/Percentage1.png");
+	tempStar = CP_Image_Load("./Assets/BasicGhost1.png");
+	tempCircle = CP_Image_Load("./Assets/FatGhost1.png");
+	tempPercentage = CP_Image_Load("./Assets/GrimReaper1.png");
 	tempBullet = CP_Image_Load("./Assets/BasicTurretBullet.png");
 	tempBulletRadius = CP_Image_Load("./Assets/BulletRadius.png");
 
-	bluePortalSpriteSheet = CP_Image_Load("./Assets/SummationPortal.png"); 
+	bluePortalSpriteSheet = CP_Image_Load("./Assets/FriendlyPortal.png"); 
 	redPortalSpriteSheet = CP_Image_Load("./Assets/EnemyPortal.png");  
 	basicTurretSpriteSheet = CP_Image_Load("./Assets/BasicTurret.png");
 	homingMissleTurretSpriteSheet = CP_Image_Load("./Assets/HomingMissleTurret.png");
