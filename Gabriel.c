@@ -199,9 +199,9 @@ void SpreadsheetInit(void)
 {
 	SpreadsheetCalculation(bluePortalArray, bluePortalSpriteSheet, 128, 1);
 	SpreadsheetCalculation(redPortalArray, redPortalSpriteSheet, 128, 1);
-	/*SpreadsheetCalculation(basicTurretArray, basicTurretSpriteSheet, 128, 0);
+	SpreadsheetCalculation(basicTurretArray, basicTurretSpriteSheet, 128, 0);
 	SpreadsheetCalculation(mineArray, mineSpriteSheet, 128, 0);
 	SpreadsheetCalculation(homingMissleTurretArray, homingMissleTurretSpriteSheet, 128, 0);
 	SpreadsheetCalculation(bulletArray, bulletSpriteSheet, 128, 1);
-	SpreadsheetCalculation(bulletRadiusArray,basicTurretSpriteSheet,128,0);*/
+	SpreadsheetCalculation(bulletRadiusArray,bulletRadiusSpriteSheet,128,0);
 }
