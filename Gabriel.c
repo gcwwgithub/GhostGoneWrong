@@ -63,16 +63,16 @@ void insert_new_node(struct node** list, float xPosInput, float yPosInput, int t
 
 		switch (typeOfBullet)
 		{
-		case 4:
+		case 3:
 			newNode->bulletImage = bulletRadiusArray[3];
 			break;
-		case 3:
+		case 2:
 			newNode->bulletImage = bulletRadiusArray[2];
 			break;
-		case 2:
+		case 1:
 			newNode->bulletImage = bulletRadiusArray[1];
 			break;
-		case 1:
+		case 0:
 			newNode->bulletImage = bulletRadiusArray[0];
 			break;
 		}
