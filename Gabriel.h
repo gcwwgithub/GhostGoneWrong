@@ -77,6 +77,7 @@ void SpriteSheetCalculation(struct SpriteSheetImage* s, CP_Image image, int pixe
 void SpriteSheetInit(void);
 void RenderPortal(struct SpriteSheetImage s, struct PortalVariables* pv, CP_Image image);
 void RenderTurret(CP_Image image, struct SpriteSheetImage s, float xPos, float yPos, float sizeOfImageX, float sizeOfImageY);
+void RenderTurretButtonsIcon(CP_Image image, struct SpriteSheetImage s, float xPos, float yPos, float sizeOfImageX, float sizeOfImageY);
 void RenderBulletRadius(CP_Image image, struct SpriteSheetImage s, float xPos, float yPos, float sizeOfImageX, float sizeOfImageY, int alphaValue);
 void UpdatePortal(void);
 void init_all_images(void);

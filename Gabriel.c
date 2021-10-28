@@ -174,6 +174,12 @@ void RenderBulletRadius(CP_Image image, struct SpriteSheetImage s, float xPos, f
 		s.leftXPixel, s.topYPixel, s.rightXPixel, s.bottomYPixel, alphaValue);
 }
 
+void RenderTurretButtonsIcon(CP_Image image, struct SpriteSheetImage s, float xPos, float yPos, float sizeOfImageX, float sizeOfImageY)
+{
+	CP_Image_DrawSubImage(image, xPos, yPos, sizeOfImageX, sizeOfImageY,
+		s.leftXPixel, s.topYPixel, s.rightXPixel, s.bottomYPixel, 255);
+}
+
 #pragma endregion
 
 void render_bullet_circles()

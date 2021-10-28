@@ -299,7 +299,13 @@ void render_button(Coordinates ButtonX, CP_Color Color) {
 	{
 		CP_Image_DrawAdvanced(ButtonX.imageOfButton, ButtonX.width / 4,
 			(ButtonX.yOrigin + ButtonX.height / 2), 128,
-			128, 255, 0);
+			128, 255, 90);
+		
+		//This is for the turret buttons icons, can do a switch statement so that it doesnt use image of button but calls this method instead?
+		// And if its the slow turret, use that draw advanced feature.
+		//RenderTurretButtonsIcon(basicTurretSpriteSheet, basicTurretArray[0], ButtonX.width / 4, (ButtonX.yOrigin + ButtonX.height / 2), 128, 128);
+		//RenderTurretButtonsIcon(homingMissleTurretSpriteSheet, homingMissleTurretArray[0], ButtonX.width / 4, (ButtonX.yOrigin + ButtonX.height / 2), 128, 128);
+		//RenderTurretButtonsIcon(mineSpriteSheet, mineArray[0], ButtonX.width / 4, (ButtonX.yOrigin + ButtonX.height / 2), 128, 128);
 	}
 
 
