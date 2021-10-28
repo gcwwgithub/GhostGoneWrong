@@ -164,7 +164,7 @@ void EnemyDeath(enemy* r) {  //function updates and checks for collision or deat
 
 
 				}
-
+				insert_new_node(&firstNode, r->data.xOrigin, r->data.yOrigin, r->type);
 			}
 		}
 	}
