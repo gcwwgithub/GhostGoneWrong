@@ -44,19 +44,29 @@ typedef enum GameState
 GameState currentGameState;
 
 //Level
-typedef enum GridState {
-	Grid_Color_White,
-	Grid_Color_Grey,
-	Grid_Color_Red,
-	Grid_Color_Blue
-}GridState;
+typedef enum PathType {
+	Clear = 0,
+	Blocked = 1,
+	Spawn = 2,
+	Exit = 3,
+	Path = 4
+}PathType;
+
+typedef struct Grids {
+	int cost;
+	int parentRow;
+	int parentCol;
+	int visited;
+	PathType type;
+}Grids;
+
 
 typedef struct LevelData {
 	int spawnRow;
 	int spawnCol;
 	int exitRow;
 	int exitCol;
-	GridState gridColor[GAME_GRID_ROWS][GAME_GRID_COLS];
+	Grids grid[GAME_GRID_ROWS][GAME_GRID_COLS];
 }LevelData;
 
 LevelData Tutorial;

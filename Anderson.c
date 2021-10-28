@@ -52,10 +52,10 @@ void detect_grid_square_color(LevelData level)
 		// clicked within the grid
 		if ((clickedCol >= 0 && clickedCol < GAME_GRID_COLS) && (clickedRow >= 0 && clickedRow < GAME_GRID_ROWS))
 		{
-			color = level.gridColor[(int)clickedRow][(int)clickedCol];
+			color = level.grid[(int)clickedRow][(int)clickedCol].type;
 			switch (color)
 			{
-			case (Grid_Color_White):
+			case (Clear):
 			{
 				whiteSquareClicked = 1;
 				// if (playerIsBuildingTurret) // i.e. clicked on turret to buy and now hovering over this grid cell
@@ -71,17 +71,17 @@ void detect_grid_square_color(LevelData level)
 
 				break;
 			}
-			case (Grid_Color_Grey):
+			case (Path):
 			{
 				greySquareClicked = 1;
 				break;
 			}
-			case (Grid_Color_Red):
+			case (Spawn):
 			{
 				redSquareClicked = 1;
 				break;
 			}
-			case (Grid_Color_Blue):
+			case (Exit):
 			{
 				blueSquareClicked = 1;
 				break;
