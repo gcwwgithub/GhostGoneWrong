@@ -49,12 +49,15 @@ void game_init(void)
 	Tutorial.spawnCol = (GAME_GRID_COLS - 1) / 2;
 	Tutorial.exitRow = GAME_GRID_ROWS - 1;
 	Tutorial.exitCol = (GAME_GRID_COLS - 1) / 2;
+	
+	pathfinding_init(&Tutorial);
 
 	turret_init();
 	enemy_test_init();
 	Enemies_init(2,2,2);
 
-	pathfinding_init(&Tutorial);
+	pathfinding_calculate_cost(&Tutorial);
+	pathfinding_update(&Tutorial);
 }
 
 
@@ -79,8 +82,6 @@ void game_update(void)
 
 		//render all the stuff
 		render_game_grid();
-		pathfinding_calculate_cost(&Tutorial);
-		pathfinding_update(&Tutorial);
 		render_path(&Tutorial);
 		render_turret_menu();
 
@@ -97,7 +98,7 @@ void game_update(void)
 
 		render_bullet_circles();
 
-		render_new_turret();
+		render_new_turret(&Tutorial);
 		render_button_pressed();//Must be after render_new_turret
 
 		//test enemy
