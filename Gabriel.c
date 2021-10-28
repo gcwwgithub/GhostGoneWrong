@@ -121,11 +121,11 @@ void SpriteSheetInit(void)
 {
 	SpriteSheetCalculation(bluePortalArray, bluePortalSpriteSheet, 128, 1);
 	SpriteSheetCalculation(redPortalArray, redPortalSpriteSheet, 128, 1);
-	SpriteSheetCalculation(basicTurretArray, basicTurretSpriteSheet, 128, 0);
+	SpriteSheetCalculation(basicTurretArray, basicTurretSpriteSheet, 128, 1);
 	SpriteSheetCalculation(mineArray, mineSpriteSheet, 128, 0);
-	SpriteSheetCalculation(homingMissleTurretArray, homingMissleTurretSpriteSheet, 128, 0);
+	SpriteSheetCalculation(homingMissleTurretArray, homingMissleTurretSpriteSheet, 128, 1);
 	SpriteSheetCalculation(bulletArray, bulletSpriteSheet, 128, 1);
-	SpriteSheetCalculation(bulletRadiusArray, bulletRadiusSpriteSheet, 128, 0);
+	SpriteSheetCalculation(bulletRadiusArray, bulletRadiusSpriteSheet, 128, 1);
 }
 
 void SpriteSheetCalculation(struct SpriteSheetImage* s, CP_Image image, int pixel, int stopPoint)
