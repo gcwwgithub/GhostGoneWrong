@@ -103,7 +103,7 @@ void game_update(void)
 		//test enemy
 
 
-		//UpdatePortal();
+		UpdatePortal();
 	}
 
 	else if (currentGameState == MainMenu)

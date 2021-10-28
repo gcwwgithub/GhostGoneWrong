@@ -297,7 +297,7 @@ void render_button(Coordinates ButtonX, CP_Color Color) {
 
 	if (ButtonX.imageOfButton != GameButton[4].imageOfButton)
 	{
-		CP_Image_DrawAdvanced(CP_Image_Load("Assets / Dummmy")/*ButtonX.imageOfButton*/, ButtonX.width / 4,
+		CP_Image_DrawAdvanced(ButtonX.imageOfButton, ButtonX.width / 4,
 			(ButtonX.yOrigin + ButtonX.height / 2), 128,
 			128, 255, 0);
 	}
