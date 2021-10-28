@@ -38,21 +38,21 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="game.h">
-      <Filter>C Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="Samuel.h" />
     <ClInclude Include="John.h">
       <Filter>C Source Files\Current header files</Filter>
     </ClInclude>
-    <ClInclude Include="Anderson.h">
-      <Filter>C Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="Gabriel.h">
       <Filter>C Source Files\Current header files</Filter>
     </ClInclude>
+    <ClInclude Include="game.h">
+      <Filter>C Source Files\Current header files</Filter>
+    </ClInclude>
     <ClInclude Include="ZhengWei.h">
-      <Filter>C Source Files</Filter>
+      <Filter>C Source Files\Current header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Anderson.h">
+      <Filter>C Source Files\Current header files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

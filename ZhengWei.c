@@ -28,6 +28,52 @@ void color_game_square(int rectRow, int rectCol, CP_Color squareColor)
 	CP_Graphics_DrawRect((Game.xOrigin + Game.gridWidth * rectCol), (Game.yOrigin + Game.gridHeight * rectRow), (Game.gridWidth), (Game.gridHeight));
 }
 
+//Path Finding
+int is_destination_updated(LevelData* LevelX) {
+	return LevelX->grid[LevelX->exitRow][LevelX->exitCol].visited;
+}
+
+
+//Update neighbors cost
+void pathfinding_update_neighbor_cost(int gridRow, int gridCol, int generation, LevelData* LevelX) {
+	//Update Row Neighbor
+	for (int i = -1; i <= 1; i++) {
+		if (gridRow + i >= 0 && gridRow + i < GAME_GRID_ROWS) {
+			if (LevelX->grid[gridRow + i][gridCol].visited == 0) {
+				LevelX->grid[gridRow + i][gridCol].cost = generation + 1;
+				LevelX->grid[gridRow + i][gridCol].parentRow = gridRow;
+				LevelX->grid[gridRow + i][gridCol].parentCol = gridCol;
+				LevelX->grid[gridRow + i][gridCol].visited = 1;
+			}
+		}
+	}
+	//Update Col Neighbor
+	for (int i = -1; i <= 1; i++) {
+		if (gridCol + i >= 0 && gridCol + i < GAME_GRID_COLS) {
+			if (LevelX->grid[gridRow][gridCol + i].visited == 0) {
+				LevelX->grid[gridRow][gridCol + i].cost = generation + 1;
+				LevelX->grid[gridRow][gridCol + i].parentRow = gridRow;
+				LevelX->grid[gridRow][gridCol + i].parentCol = gridCol;
+				LevelX->grid[gridRow][gridCol + i].visited = 1;
+			}
+		}
+	}
+}
+
+//Calculate all grid cost. Find the squares in the same generation and call a function to update neighbors.
+void pathfinding_calculate_cost(LevelData* LevelX) {
+	for (int currentCost = 0; !is_destination_updated(LevelX) && currentCost <= GAME_GRID_ROWS * GAME_GRID_COLS; currentCost++) {
+		for (int i = 0; i < GAME_GRID_ROWS; i++) {
+			for (int j = 0; j < GAME_GRID_COLS; j++) {
+				if (LevelX->grid[i][j].cost == currentCost) {
+					pathfinding_update_neighbor_cost(i, j, currentCost, LevelX);
+				}
+			}
+		}
+	}
+}
+
+
 //Collision Detection between circles and squares
 int Collision_Detection(Coordinates object1, Coordinates object2) {
 	if (object1.objectType == objectCircle && object2.objectType == objectCircle) {
@@ -150,7 +196,7 @@ void turret_triangle_button_init(void) {
 	GameButton[TurretButtonTriangle].width = TurretMenu.width;
 	GameButton[TurretButtonTriangle].height = (TurretMenu.height - unusableButtonHeight) / 4;
 	GameButton[TurretButtonTriangle].objectType = objectRectangle;
-	GameButton[TurretButtonTriangle].imageOfButton = triangleTurretImageArray[0];
+	GameButton[TurretButtonTriangle].imageOfButton = slowTurretImageArray[0];
 }
 
 void turret_circle_button_init(void) {
@@ -253,7 +299,13 @@ void render_button(Coordinates ButtonX, CP_Color Color) {
 	{
 		CP_Image_DrawAdvanced(ButtonX.imageOfButton, ButtonX.width / 4,
 			(ButtonX.yOrigin + ButtonX.height / 2), 128,
-			128, 255, 0);
+			128, 255, 90);
+		
+		//This is for the turret buttons icons, can do a switch statement so that it doesnt use image of button but calls this method instead?
+		// And if its the slow turret, use that draw advanced feature.
+		//RenderTurretButtonsIcon(basicTurretSpriteSheet, basicTurretArray[0], ButtonX.width / 4, (ButtonX.yOrigin + ButtonX.height / 2), 128, 128);
+		//RenderTurretButtonsIcon(homingMissleTurretSpriteSheet, homingMissleTurretArray[0], ButtonX.width / 4, (ButtonX.yOrigin + ButtonX.height / 2), 128, 128);
+		//RenderTurretButtonsIcon(mineSpriteSheet, mineArray[0], ButtonX.width / 4, (ButtonX.yOrigin + ButtonX.height / 2), 128, 128);
 	}
 
 
@@ -278,48 +330,65 @@ void render_new_turret(void) {
 
 //Level
 
-void game_grid_color_init(LevelData* Level) {
+void pathfinding_init(LevelData* LevelX) {
 	for (int i = 0; i < GAME_GRID_ROWS; i++) {
 		for (int j = 0; j < GAME_GRID_COLS; j++) {
-			Level->gridColor[i][j] = Grid_Color_White;
+			LevelX->grid[i][j].type = Clear;
+			LevelX->grid[i][j].visited = 0;
+			LevelX->grid[i][j].cost = -1;
+			LevelX->grid[i][j].parentRow = -1;
+			LevelX->grid[i][j].parentCol = -1;
 		}
 	}
-	Level->gridColor[Level->spawnRow][Level->spawnCol] = Grid_Color_Red;
-	Level->gridColor[Level->exitRow][Level->exitCol] = Grid_Color_Blue;
-	int colApart, rowApart, counter = 1;
-	colApart = Level->exitCol - Level->spawnCol;
-	rowApart = Level->exitRow - Level->spawnRow;
-	if (rowApart < 0) {
-		counter = rowApart;
-		rowApart = -1;
-	}
-	while (counter <= rowApart) {
-		if (Level->spawnCol != Level->exitCol || Level->spawnRow + counter != Level->exitRow) {
-			Level->gridColor[Level->spawnRow + counter][Level->spawnCol] = Grid_Color_Grey;
+	LevelX->grid[LevelX->spawnRow][LevelX->spawnCol].cost = 0;
+	LevelX->grid[LevelX->spawnRow][LevelX->spawnCol].visited = 1;
+	LevelX->grid[LevelX->spawnRow][LevelX->spawnCol].type = Spawn;
+	LevelX->grid[LevelX->exitRow][LevelX->exitCol].type = Exit;
+}
+//reset data in pathfinding
+void pathfinding_reset(LevelData* LevelX) {
+	for (int i = 0; i < GAME_GRID_ROWS; i++) {
+		for (int j = 0; j < GAME_GRID_COLS; j++) {
+			LevelX->grid[i][j].visited = 0;
+			LevelX->grid[i][j].cost = -1;
+			LevelX->grid[i][j].parentRow = -1;
+			LevelX->grid[i][j].parentCol = -1;
+			if (LevelX->grid[i][j].type == Path) {
+				LevelX->grid[i][j].type = Clear;
+			}
+			if (LevelX->grid[i][j].type == Blocked) {
+				LevelX->grid[i][j].visited = 1;
+			}
+
 		}
-		counter++;
 	}
-	if (colApart < 0) {
-		counter = colApart;
-		colApart = 0;
-	}
-	else
-		counter = 1;
-	while (counter <= colApart) {
-		if (Level->spawnCol + counter != Level->exitCol) {
-			Level->gridColor[Level->exitRow][Level->spawnCol + counter] = Grid_Color_Grey;
+	LevelX->grid[LevelX->spawnRow][LevelX->spawnCol].cost = 0;
+	LevelX->grid[LevelX->spawnRow][LevelX->spawnCol].visited = 1;
+}
+//update path for pathfinding
+void pathfinding_update(LevelData* LevelX) {
+	int pathRow, pathCol;
+	pathRow = LevelX->grid[LevelX->exitRow][LevelX->exitCol].parentRow;
+	pathCol = LevelX->grid[LevelX->exitRow][LevelX->exitCol].parentCol;
+	//To check if path have no neighbors
+	if (pathRow != -1 && pathCol != -1) {
+		while (LevelX->grid[pathRow][pathCol].cost) {
+			LevelX->grid[pathRow][pathCol].type = Path;
+			int newPathRow, newPathCol;
+			newPathRow = LevelX->grid[pathRow][pathCol].parentRow;
+			newPathCol = LevelX->grid[pathRow][pathCol].parentCol;
+			pathRow = newPathRow;
+			pathCol = newPathCol;
 		}
-		counter++;
 	}
 }
-
-void render_game_grid_color(LevelData Level) {
+void render_path(LevelData* LevelX) {
 	for (int i = 0; i < GAME_GRID_ROWS; i++) {
 		for (int j = 0; j < GAME_GRID_COLS; j++) {
-			if (Level.gridColor[i][j] == Grid_Color_Grey)
+			if (LevelX->grid[i][j].type == Path) {
 				color_game_square(i, j, COLOR_GREY);
-			else if (Level.gridColor[i][j] == Grid_Color_Red)
-			{
+			}
+			else if (LevelX->grid[i][j].type == Spawn) {
 				color_game_square(i, j, COLOR_RED);
 				portalVariablesArray[1].portalXPos = ((Game.xOrigin + Game.gridWidth * j) +
 					(Game.xOrigin + Game.gridWidth * (j + 1))) / 2;
@@ -327,18 +396,16 @@ void render_game_grid_color(LevelData Level) {
 					(Game.yOrigin + Game.gridHeight * (i + 1))) / 2;
 				portalVariablesArray[1].sizeX = Game.gridWidth;
 				portalVariablesArray[1].sizeY = Game.gridHeight;
-			}			
-			else if (Level.gridColor[i][j] == Grid_Color_Blue)
-			{
+			}
+			else if (LevelX->grid[i][j].type == Exit) {
 				color_game_square(i, j, COLOR_BLUE);
 				portalVariablesArray[0].portalXPos = ((Game.xOrigin + Game.gridWidth * j) +
-				(Game.xOrigin + Game.gridWidth * (j+1)))/2;
+					(Game.xOrigin + Game.gridWidth * (j + 1))) / 2;
 				portalVariablesArray[0].portalYPos = ((Game.yOrigin + Game.gridHeight * i) +
 					(Game.yOrigin + Game.gridHeight * (i + 1))) / 2;
 				portalVariablesArray[0].sizeX = Game.gridWidth;
 				portalVariablesArray[0].sizeY = Game.gridHeight;
 			}
-			else {}
 		}
 	}
 }

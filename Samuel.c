@@ -11,7 +11,7 @@
 void turret_init(void)
 {
 	Vector2 v;
-	
+
 	for (int i = 0; i < MAX_PROJECTILE; ++i)
 	{
 		proj[i].isActive = 0;
@@ -31,7 +31,7 @@ void turret_init(void)
 		v.pos_y = 1;
 		turret[i].dir = v;
 		turret[i].turretAnimTimer = 0;
-		turret[i].turret_img = triangleTurretImageArray[0];
+		turret[i].turret_img = slowTurretImageArray[0];
 		turret[i].currentAnimState = INACTIVE;
 		turret[i].animCounter = 0;
 	}
@@ -102,10 +102,15 @@ void render_turret(void)
 		case T_TRIANGLE:
 			turret[i].turretAnimTimer += CP_System_GetDt();
 			update_turretAnimation(&turret[i]);
-			CP_Image_DrawAdvanced(turret[i].turret_img, turret[i].data.xOrigin, turret[i].data.yOrigin,
-				turret[i].size, turret[i].size, 255, turret[i].angle + 90.f); //the +90 degree is to offset the atan2
+			RenderTurret(basicTurretSpriteSheet, basicTurretArray[turret[i].animCounter],
+				turret[i].data.xOrigin, turret[i].data.yOrigin, turret[i].size, turret[i].size);
+			//the +90 degree is to offset the atan2
 			break;
 		case T_CIRCLE:
+			turret[i].turretAnimTimer += CP_System_GetDt();
+			update_turretAnimation(&turret[i]);
+			CP_Image_DrawAdvanced(turret[i].turret_img, turret[i].data.xOrigin, turret[i].data.yOrigin,
+				turret[i].size, turret[i].size, 255, turret[i].angle + 90.f);
 			break;
 		case T_STAR:
 			break;
@@ -160,7 +165,7 @@ void update_turret(void)
 			//find dist
 			v1.pos_x = Enemy[j].data.xOrigin - turret[i].data.xOrigin;
 			v1.pos_y = Enemy[j].data.yOrigin - turret[i].data.yOrigin;
-			
+
 			//if in range
 			if (magnitude_sq(v1) <= turret[i].range * turret[i].range)
 			{
@@ -184,26 +189,26 @@ void update_turret(void)
 		//if there is a targeted enemy shoot him
 		if (e_index >= 0)
 		{
-				turret[i].currentAnimState = SHOOTING;
-				if (turret[i].animCounter <= 2)
-				{
-					turret[i].animCounter = 3;
-				}
-				turret[i].dir = targeted_dir;
-				turret[i].dir = normalise(turret[i].dir);
-				turret[i].angle = atan2f(turret[i].dir.pos_y, turret[i].dir.pos_x) * 180.f / (float)PI;
-				turret[i].cooldown -= 1.f * CP_System_GetDt();
-				if (turret[i].cooldown <= 0)
-				{
-					shoot(turret[i].data.xOrigin, turret[i].data.yOrigin, turret[i].dir);
-					turret[i].cooldown = 2.f;
-				}
+			turret[i].currentAnimState = SHOOTING;
+			if (turret[i].animCounter <= 2)
+			{
+				turret[i].animCounter = 3;
+			}
+			turret[i].dir = targeted_dir;
+			turret[i].dir = normalise(turret[i].dir);
+			turret[i].angle = atan2f(turret[i].dir.pos_y, turret[i].dir.pos_x) * 180.f / (float)PI;
+			turret[i].cooldown -= 1.f * CP_System_GetDt();
+			if (turret[i].cooldown <= 0)
+			{
+				shoot(turret[i].data.xOrigin, turret[i].data.yOrigin, turret[i].dir);
+				turret[i].cooldown = 2.f;
+			}
 		}
 		else
 		{
 			turret[i].currentAnimState = INACTIVE;
 		}
-		
+
 
 #if _DEBUG
 		//single enemy
@@ -307,43 +312,61 @@ void render_projectile(void)
 	}
 }
 
-void update_turretAnimation(Turret *t)
+void update_turretAnimation(Turret* t)
 {
-	switch (t->currentAnimState)
+	if (t->type == T_PRECENTAGE)
 	{
-	case INACTIVE:
-		if (t->turretAnimTimer >= 0.35)
+
+	}
+
+	else
+	{
+		switch (t->currentAnimState)
 		{
-			if (t->animCounter >= 2)
+		case INACTIVE:
+			if (t->turretAnimTimer >= 0.35)
 			{
-				t->animCounter = 0;
+				if (t->animCounter >= 2)
+				{
+					t->animCounter = 0;
+				}
+
+				else
+				{
+					t->animCounter++;
+				}
+
+				if (turret->type == T_TRIANGLE)
+				{
+					t->turret_img = slowTurretImageArray[t->animCounter];
+				}
+				t->turretAnimTimer = 0;
+
 			}
 
-			else
+			break;
+		case SHOOTING:
+			if (t->turretAnimTimer >= 0.65)
 			{
-				t->animCounter++;
-			}
-			t->turret_img = triangleTurretImageArray[t->animCounter];
-			t->turretAnimTimer = 0;
-		}
-		
-		break;
-	case SHOOTING:
-		if (t->turretAnimTimer >= 0.65)
-		{
-			if (t->animCounter >= 5)
-			{
-				t->animCounter = 3;
+				if (t->animCounter >= 5)
+				{
+					t->animCounter = 3;
+				}
+
+				else
+				{
+					t->animCounter++;
+				}
+				if (turret->type == T_TRIANGLE)
+				{
+					t->turret_img = slowTurretImageArray[t->animCounter];
+				}
+				t->turretAnimTimer = 0;
 			}
 
-			else
-			{
-				t->animCounter++;
-			}
-			t->turret_img = triangleTurretImageArray[t->animCounter];
-			t->turretAnimTimer = 0;
+			break;
 		}
-		
-		break;
-	}	
+	}
+
+
 }

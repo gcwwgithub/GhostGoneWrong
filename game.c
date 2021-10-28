@@ -14,7 +14,7 @@ void game_init(void)
 	CP_System_SetWindowSize(1280, 780);
 
 	init_all_images();
-	SpreadsheetInit();
+	SpriteSheetInit();
 
 	currentGameState = MainMenu;
 	
@@ -50,18 +50,16 @@ void game_init(void)
 	Tutorial.exitRow = GAME_GRID_ROWS - 1;
 	Tutorial.exitCol = (GAME_GRID_COLS - 1) / 2;
 
-	game_grid_color_init(&Tutorial);
 	turret_init();
 	enemy_test_init();
-	Enemies_init(2,2,0);
+	Enemies_init(5,95);
+
+	pathfinding_init(&Tutorial);
 }
+
 
 void game_update(void)
 {
-	
-	if (CP_Input_KeyTriggered(KEY_X)) {
-		Enemy[0].health = 0;
-	}
 	//Input
 	if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
 		MouseInput.xOrigin = CP_Input_GetMouseX();
@@ -71,12 +69,9 @@ void game_update(void)
 
 	if (currentGameState == Wave)
 	{
-		int time = CP_System_GetMillis();
-
 		//do enemy update first
 		//enemy_move(&test, Xarray, Yarray, 2);
 		update_enemy();
-
 
 		//do turret & projectile update next
 		update_turret();
@@ -84,7 +79,9 @@ void game_update(void)
 
 		//render all the stuff
 		render_game_grid();
-		render_game_grid_color(Tutorial);
+		pathfinding_calculate_cost(&Tutorial);
+		pathfinding_update(&Tutorial);
+		render_path(&Tutorial);
 		render_turret_menu();
 
 		render_button(GameButton[PauseButton], COLOR_PURPLE);
@@ -106,7 +103,7 @@ void game_update(void)
 		//test enemy
 
 
-		//UpdatePortal();
+		UpdatePortal();
 	}
 
 	else if (currentGameState == MainMenu)
@@ -168,6 +165,7 @@ void game_update(void)
 		render_pause_screen();
 	}
 }
+
 void game_exit(void)
 {
 

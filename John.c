@@ -22,6 +22,7 @@ void enemy_test_init(void)  //Initialising test enemy
 	test.data.height = Game.gridHeight;
 	test.state = Moving;
 	count = 0;
+	currentArrowImage = basicGhostImageArray[0];
 	test.timer = 0;
 
 	//test path
@@ -35,11 +36,11 @@ void Draw_enemy(enemy* r) { //Draws the enemy
 	EnemyAnimationState(r);
 	switch (r->type) {
 	case Basic:
-		CP_Image_DrawAdvanced(r->Render_Enemy, r->data.xOrigin, r->data.yOrigin, r->enemy_width, r->enemy_height, r->alpha, r->angle);
+		CP_Image_DrawAdvanced(currentArrowImage, r->data.xOrigin, r->data.yOrigin, r->enemy_width, r->enemy_height, r->alpha, r->angle);
 		r->timer += CP_System_GetDt();
 		break;
 	case Fast_Ghost:
-		CP_Image_DrawAdvanced(r->Render_Enemy, r->data.xOrigin, r->data.yOrigin, r->enemy_width, r->enemy_height, r->alpha, r->angle);
+		CP_Image_DrawAdvanced(currentArrowImage, r->data.xOrigin, r->data.yOrigin, r->enemy_width, r->enemy_height, r->alpha, r->angle);
 		r->timer += CP_System_GetDt();
 		break;
 	}
@@ -47,35 +48,48 @@ void Draw_enemy(enemy* r) { //Draws the enemy
 
 void EnemyAnimationState(enemy* r)
 {
-	int i = Check_state(r);
-	if (i == 1) {
-		if (r->timer >= 0.25) {
-			r->state = Moving;
-		}
-	}
 	switch (r->type) {
 	case Basic:
-		r->Render_Enemy = redArrowImageArray[i];
+		switch (r->state)
+		{
+		case Moving:
+			currentArrowImage = basicGhostImageArray[0];
+			break;
+		case Hurt:
+			currentArrowImage = basicGhostImageArray[1];
+			if (r->timer >= 0.25)
+			{
+				r->state = Moving;
+				r->timer = 0;
+			}
+			break;
+		case Death:
+			currentArrowImage = basicGhostImageArray[2];
+			break;
+		}
 		break;
 	case Fast_Ghost:
-		r->Render_Enemy = fastGhostImageArray[i];
-		break;
-	case Fat_Ghost:
-		r->Render_Enemy = fatGhostImageArray[i];
+		switch (r->state)
+		{
+		case Moving:
+			currentArrowImage = fastGhostImageArray[0];
+			break;
+		case Hurt:
+			currentArrowImage = fastGhostImageArray[1];
+			if (r->timer >= 0.25)
+			{
+				r->state = Moving;
+				r->timer = 0;
+			}
+			break;
+		case Death:
+			currentArrowImage = fastGhostImageArray[2];
+			break;
+		}
 		break;
 	}
 }
-int Check_state(enemy* r) {
-	switch (r->state) {
-	case Moving:
-		return 0;
-	case Hurt:
-		return 1;
-	case Death:
-		return 2;
-	}
-	return 0;
-}
+
 
 void enemy_move(enemy* r, float Enemy_PathpointsX[], float Enemy_PathpointsY[], int number_of_points) { //Enemy movement
 	float Speed = (r->speed) * CP_System_GetDt();
@@ -151,8 +165,8 @@ void EnemyDeath(enemy* r) {  //function updates and checks for collision or deat
 	for (int i = 0; i < MAX_PROJECTILE; ++i) {
 		if (proj[i].isActive) {
 			Coordinates a = r->data;
-			a.width *= 0.7f;
-			a.height *= 0.7f;
+			a.xOrigin -= 0.2f * r->enemy_width;
+			a.yOrigin -= 0.5f * r->enemy_height;
 			if (Collision_Detection(a, proj[i].data) == 1) {
 				proj[i].isActive = 0;
 				if (r->state != Death)
@@ -160,8 +174,8 @@ void EnemyDeath(enemy* r) {  //function updates and checks for collision or deat
 					r->health -= turret[i].damage;
 					r->state = Hurt;
 					r->timer = 0;
-
-
+					insert_new_node(&firstNode, r->data.xOrigin, r->data.yOrigin,1	);
+					//lmao im hallucinating, this is for my bullet radius ignore me, Gabriel
 				}
 
 			}
@@ -182,11 +196,10 @@ void EnemyDeath(enemy* r) {  //function updates and checks for collision or deat
 	}
 }
 
-void Enemies_init(int Basic_enemy_count, int Fast_enemy_count, int Fat_enemy_count) {
+void Enemies_init(int Basic_enemy_count,int Fast_enemy_count) {
 	timer = 0;
 	count = 0;
-	Enemy_node = NULL;
-	wave_timer = 0;
+	currentArrowImage = basicGhostImageArray[0];
 
 	//test path
 	for (int i = 0; i < 2; i++) {
@@ -196,14 +209,10 @@ void Enemies_init(int Basic_enemy_count, int Fast_enemy_count, int Fat_enemy_cou
 	for (int i = 0; i < Basic_enemy_count; i++) {
 		Basic_Ghost(&Enemy[i]);
 	}
-	for (int i = Basic_enemy_count; i < Basic_enemy_count + Fast_enemy_count; i++) {
+	for (int i = Basic_enemy_count; i < MAX_ENEMIES; i++) {
 		Fast_Ghost_init(&Enemy[i]);
 	}
-	for (int i = Basic_enemy_count + Fast_enemy_count; i < MAX_ENEMIES; i++) {
-		Fat_Ghost_init(&Enemy[i]);
-	}
 }
-
 void Basic_Ghost(enemy* r) { // setup variable for basic ghost enemy
 	r->health = 4;
 	r->max_health = 4;
@@ -241,48 +250,23 @@ void Fast_Ghost_init(enemy* r) { // setup variable for fast ghost enemy
 	r->state = Inactive;
 	r->timer = 0;
 }
-
-void Fat_Ghost_init(enemy* r) {
-	r->health = 10;
-	r->max_health = 10;
-	r->speed = 10;
-	r->CurrentWaypoint = 0;
-	r->data.xOrigin = Xarray[0];
-	r->data.yOrigin = Yarray[0];
-	r->enemy_width = Game.gridWidth;
-	r->enemy_height = Game.gridHeight;
-	r->angle = 0;
-	r->type = Fat_Ghost;
-	r->alpha = 255;
-	r->data.objectType = objectCircle;
-	r->data.width = Game.gridWidth;
-	r->data.height = Game.gridWidth;
-	r->state = Inactive;
-	r->timer = 0;
-}
-
 void update_enemy(void) {
 	timer += CP_System_GetDt();
 	if (timer >= 1) {
 		count++;
-		timer--;
+		timer = 0;
 	}
-	for (int i = 0; i < MAX_ENEMIES; i++) {
-		if ((Enemy[i].state == Inactive) && (Enemy[i].health >= 1)) {
 
-			int b = count;
-			if (b - wave_timer >= 5) {
-				Enemy[i].state = Moving;
-				wave_timer = count;
-			}
+	for (int i = 0; i < MAX_ENEMIES; i++) {
+		if ((Enemy[i].state == Inactive) && (Enemy[i].health != 0) && (Enemy[i].CurrentWaypoint == 0)) {
+			int Enemy_spawn_timer = 3;  // Current EnemySpawn timer
+			Enemy[(count - 1) / Enemy_spawn_timer].state = Moving;
 		}
 		if (Enemy[i].state == Inactive) //dont check if inactive
 			continue;
-
 		enemy_move(&Enemy[i], Xarray, Yarray, 2);
 		EnemyDeath(&Enemy[i]);
 	}
-	enemy* En = &Enemy[0];
 }
 void draw_multiple_enemies(void) {
 	for (int i = 0; i < MAX_ENEMIES; i++) {
@@ -292,15 +276,11 @@ void draw_multiple_enemies(void) {
 		EnemyAnimationState(&Enemy[i]);
 		switch (Enemy[i].type) {
 		case Basic:
-			CP_Image_DrawAdvanced(Enemy[i].Render_Enemy, Enemy[i].data.xOrigin, Enemy[i].data.yOrigin, Enemy[i].enemy_width, Enemy[i].enemy_height, Enemy[i].alpha, Enemy[i].angle);
+			CP_Image_DrawAdvanced(currentArrowImage, Enemy[i].data.xOrigin, Enemy[i].data.yOrigin, Enemy[i].enemy_width, Enemy[i].enemy_height, Enemy[i].alpha, Enemy[i].angle);
 			Enemy[i].timer += CP_System_GetDt();
 			break;
 		case Fast_Ghost:
-			CP_Image_DrawAdvanced(Enemy[i].Render_Enemy, Enemy[i].data.xOrigin, Enemy[i].data.yOrigin, Enemy[i].enemy_width, Enemy[i].enemy_height, Enemy[i].alpha, Enemy[i].angle);
-			Enemy[i].timer += CP_System_GetDt();
-			break;
-		case Fat_Ghost:
-			CP_Image_DrawAdvanced(Enemy[i].Render_Enemy, Enemy[i].data.xOrigin, Enemy[i].data.yOrigin, Enemy[i].enemy_width, Enemy[i].enemy_height, Enemy[i].alpha, Enemy[i].angle);
+			CP_Image_DrawAdvanced(currentArrowImage, Enemy[i].data.xOrigin, Enemy[i].data.yOrigin, Enemy[i].enemy_width, Enemy[i].enemy_height, Enemy[i].alpha, Enemy[i].angle);
 			Enemy[i].timer += CP_System_GetDt();
 			break;
 		}
@@ -310,7 +290,7 @@ void draw_multiple_enemies(void) {
 
 void update_enemy_health(enemy* r)
 {
-	if (r->health != 0)
+	if (r->health > 0)
 	{
 		float newWidth = r->health / r->max_health;
 		CP_Settings_Fill(COLOR_RED);
