@@ -140,11 +140,8 @@ void SpriteSheetCalculation(struct SpriteSheetImage* s, CP_Image image, int pixe
 
 		for (int i = 0; i < width / pixel; i++)
 		{
-			//printf("%d,%d,%d\n", j, i, width / pixel - stopPoint - 1);
 			if (!(j == height / pixel - 1 && i > width / pixel - stopPoint - 1))
 			{
-
-
 				s[counter].pixelOfImage = pixel;
 				s[counter].leftXPixel = (float)(i * s[counter].pixelOfImage);
 				s[counter].rightXPixel = (float)((i + 1) * s[counter].pixelOfImage);
@@ -154,7 +151,6 @@ void SpriteSheetCalculation(struct SpriteSheetImage* s, CP_Image image, int pixe
 			}
 		}
 	}
-	printf("%d\n",counter);
 }
 
 void RenderPortal(struct SpriteSheetImage s, struct PortalVariables* pv, CP_Image image)
