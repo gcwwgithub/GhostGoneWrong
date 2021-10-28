@@ -25,7 +25,8 @@ typedef enum EnemyState {
 
 typedef struct Enemy {
 	int CurrentWaypoint, health,alpha;
-	float xOrigin, yOrigin, enemy_width, enemy_height, max_health, angle, speed;
+	float xOrigin, yOrigin, enemy_width, enemy_height, 
+		max_health, angle, speed, slow_amt, slow_timer;
 	Coordinates data;
 	EnemyState state;
 	EnemyTypes type;

@@ -38,7 +38,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Samuel.h" />
     <ClInclude Include="John.h">
       <Filter>C Source Files\Current header files</Filter>
     </ClInclude>
@@ -52,6 +51,9 @@
       <Filter>C Source Files\Current header files</Filter>
     </ClInclude>
     <ClInclude Include="Anderson.h">
+      <Filter>C Source Files\Current header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Samuel.h">
       <Filter>C Source Files\Current header files</Filter>
     </ClInclude>
   </ItemGroup>

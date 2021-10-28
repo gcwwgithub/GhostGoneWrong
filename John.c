@@ -78,7 +78,7 @@ int Check_state(enemy* r) {
 }
 
 void enemy_move(enemy* r, float Enemy_PathpointsX[], float Enemy_PathpointsY[], int number_of_points) { //Enemy movement
-	float Speed = (r->speed) * CP_System_GetDt();
+	float Speed = (r->speed) * r->slow_amt * CP_System_GetDt();
 	update_point_num(Enemy_PathpointsX, Enemy_PathpointsY, r);
 	if (r->CurrentWaypoint + 1 == number_of_points) {
 		r->state = Death;
@@ -157,7 +157,8 @@ void EnemyDeath(enemy* r) {  //function updates and checks for collision or deat
 				proj[i].isActive = 0;
 				if (r->state != Death)
 				{
-					r->health -= turret[i].damage;
+					col_type_projectile(&proj[i]);
+					r->health -= turret[i].mod.damage;
 					r->state = Hurt;
 					r->timer = 0;
 
@@ -221,6 +222,9 @@ void Basic_Ghost(enemy* r) { // setup variable for basic ghost enemy
 	r->data.height = Game.gridWidth;
 	r->state = Inactive;
 	r->timer = 0;
+	//for the freeze turret & enemy interaction
+	r->slow_amt = 1;
+	r->slow_timer = 0;
 }
 
 void Fast_Ghost_init(enemy* r) { // setup variable for fast ghost enemy
@@ -240,6 +244,9 @@ void Fast_Ghost_init(enemy* r) { // setup variable for fast ghost enemy
 	r->data.height = Game.gridWidth;
 	r->state = Inactive;
 	r->timer = 0;
+	//for the freeze turret & enemy interaction
+	r->slow_amt = 1;
+	r->slow_timer = 0;
 }
 
 void Fat_Ghost_init(enemy* r) {
@@ -259,6 +266,9 @@ void Fat_Ghost_init(enemy* r) {
 	r->data.height = Game.gridWidth;
 	r->state = Inactive;
 	r->timer = 0;
+	//for the freeze turret & enemy interaction
+	r->slow_amt = 1;
+	r->slow_timer = 0;
 }
 
 void update_enemy(void) {
@@ -278,6 +288,14 @@ void update_enemy(void) {
 		}
 		if (Enemy[i].state == Inactive) //dont check if inactive
 			continue;
+
+		if (Enemy[i].slow_timer > 0.f)
+		{
+			Enemy[i].slow_timer -= CP_System_GetDt();
+			if (Enemy[i].slow_timer <= 0.f)
+				Enemy[i].slow_amt = 1.f;
+		}
+
 
 		enemy_move(&Enemy[i], Xarray, Yarray, 2);
 		EnemyDeath(&Enemy[i]);

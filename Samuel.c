@@ -17,16 +17,21 @@ void turret_init(void)
 		proj[i].isActive = 0;
 		proj[i].data.xOrigin = 0;
 		proj[i].data.yOrigin = 0;
-		proj[i].damage = 1.f;
-		proj[i].speed = 100.f;
+		proj[i].mod.damage = 1.f;
+		proj[i].mod.speed = 100.f;
+		proj[i].size = 10;
+		proj[i].mod.slow_amt = 1.f;
+		proj[i].mod.slow_timer = 0.f;
 	}
 	for (int i = 0; i < MAX_TURRET; ++i)
 	{
 		turret[i].isActive = 0;
 		turret[i].size = Game.gridHeight;
 		turret[i].angle = 0.f;
-		turret[i].cooldown = 0.f;
-		turret[i].damage = 1.f;
+		turret[i].mod.cooldown = 0.f;
+		turret[i].mod.damage = 1.f;
+		turret[i].mod.slow_amt = 1.f; //leaving it at 1 means no slow if slow_amt < 1 then slow
+		turret[i].mod.slow_timer = 0.f;
 		v.pos_x = 0;
 		v.pos_y = 1;
 		turret[i].dir = v;
@@ -45,7 +50,7 @@ void turret_init(void)
 	//turret[0].cooldown = 0.f;
 	//turret[0].isActive = 1;
 	//turret[0].range = Game.gridWidth * 2;
-	place_turret(T_TRIANGLE, 2, 1);
+	place_turret(T_CIRCLE, 2, 1);
 	place_turret(T_TRIANGLE, 0, 4);
 }
 
@@ -66,20 +71,22 @@ void place_turret(TurretType type, int index_x, int index_y)
 		switch (turret[i].type)
 		{
 		case T_TRIANGLE:
-			turret[i].range = Game.gridWidth * 2;
-			turret[i].damage = 1;
+			turret[i].mod.range = Game.gridWidth * 2;
+			turret[i].mod.damage = 1;
 			break;
-		case T_CIRCLE: //placeholder
-			turret[i].range = Game.gridWidth * 2;
-			turret[i].damage = 1;
+		case T_CIRCLE: // FREEZE TURRET
+			turret[i].mod.range = Game.gridWidth * 2;
+			turret[i].mod.damage = 0.5f;
+			turret[i].mod.slow_amt = 0.6f; //leaving it at 1 means no slow if slow_amt < 1 then slow
+			turret[i].mod.slow_timer = 2.f;
 			break;
 		case T_STAR:
-			turret[i].range = Game.gridWidth * 2;
-			turret[i].damage = 1;
+			turret[i].mod.range = Game.gridWidth * 2;
+			turret[i].mod.damage = 1;
 			break;
 		case T_PRECENTAGE:
-			turret[i].range = Game.gridWidth * 2;
-			turret[i].damage = 1;
+			turret[i].mod.range = Game.gridWidth * 2;
+			turret[i].mod.damage = 1;
 			break;
 		default:
 			break;
@@ -109,8 +116,10 @@ void render_turret(void)
 		case T_CIRCLE:
 			turret[i].turretAnimTimer += CP_System_GetDt();
 			update_turretAnimation(&turret[i]);
-			CP_Image_DrawAdvanced(turret[i].turret_img, turret[i].data.xOrigin, turret[i].data.yOrigin,
-				turret[i].size, turret[i].size, 255, turret[i].angle + 90.f);
+			RenderTurret(homingMissleTurretSpriteSheet, homingMissleTurretArray[turret[i].animCounter],
+				turret[i].data.xOrigin, turret[i].data.yOrigin, turret[i].size, turret[i].size);
+			//CP_Image_DrawAdvanced(turret[i].turret_img, turret[i].data.xOrigin, turret[i].data.yOrigin,
+			//	turret[i].size, turret[i].size, 255, turret[i].angle + 90.f);
 			break;
 		case T_STAR:
 			break;
@@ -124,7 +133,7 @@ void render_turret(void)
 
 void update_turret(void)
 {
-	//highest wp, enemy index
+	//highest wp, enemy index, enemy dist to turret
 	int wp = -1, e_index = -1;
 	//dist check, targeted enemy direction
 	Vector2 v1, targeted_dir;
@@ -165,11 +174,10 @@ void update_turret(void)
 			//find dist
 			v1.pos_x = Enemy[j].data.xOrigin - turret[i].data.xOrigin;
 			v1.pos_y = Enemy[j].data.yOrigin - turret[i].data.yOrigin;
-
 			//if in range
-			if (magnitude_sq(v1) <= turret[i].range * turret[i].range)
+			if (magnitude_sq(v1) <= turret[i].mod.range * turret[i].mod.range)
 			{
-				//target the enemy closest to end goal
+				//target the enemy closest to end goal needs refinig
 				if (Enemy[j].CurrentWaypoint > wp)
 				{
 					//set the highest waypoint
@@ -197,11 +205,11 @@ void update_turret(void)
 			turret[i].dir = targeted_dir;
 			turret[i].dir = normalise(turret[i].dir);
 			turret[i].angle = atan2f(turret[i].dir.pos_y, turret[i].dir.pos_x) * 180.f / (float)PI;
-			turret[i].cooldown -= 1.f * CP_System_GetDt();
-			if (turret[i].cooldown <= 0)
+			turret[i].mod.cooldown -= 1.f * CP_System_GetDt();
+			if (turret[i].mod.cooldown <= 0)
 			{
-				shoot(turret[i].data.xOrigin, turret[i].data.yOrigin, turret[i].dir);
-				turret[i].cooldown = 2.f;
+				shoot(turret[i].data.xOrigin, turret[i].data.yOrigin, turret[i].mod, turret[i].type, turret[i].dir);
+				turret[i].mod.cooldown = 2.f;
 			}
 		}
 		else
@@ -239,7 +247,7 @@ void update_turret(void)
 	}
 }
 
-void shoot(float x, float y, Vector2 dir)
+void shoot(float x, float y, Modifiers mod, ProjectileType type, Vector2 dir)
 {
 	//takes the pos of turret and dir turret facing
 	//loop to find unactive projectile
@@ -256,6 +264,10 @@ void shoot(float x, float y, Vector2 dir)
 		proj[i].data.width = 10.f;
 		proj[i].data.height = 10.f;
 		proj[i].data.objectType = objectCircle;
+		proj[i].mod.damage = mod.damage;
+		proj[i].mod.slow_amt = mod.slow_amt;
+		proj[i].mod.slow_timer = mod.slow_timer;
+		proj[i].type = type;
 		break;
 	}
 
@@ -278,25 +290,9 @@ void update_projectile(void)
 			continue;
 
 		//proj movement dir * speed * deltatime
-		proj[i].data.xOrigin += proj[i].dir.pos_x * proj[i].speed * CP_System_GetDt();
-		proj[i].data.yOrigin += proj[i].dir.pos_y * proj[i].speed * CP_System_GetDt();
+		proj[i].data.xOrigin += proj[i].dir.pos_x * proj[i].mod.speed * CP_System_GetDt();
+		proj[i].data.yOrigin += proj[i].dir.pos_y * proj[i].mod.speed * CP_System_GetDt();
 
-		//collision check here with enemy or enemy can be done in enemy update
-#if _DEBUG
-		////Test with john's ai
-		//Coordinates tmp;
-		//tmp.width = Game.gridWidth * 0.25f;
-		//tmp.height = Game.gridWidth * 0.25f;
-		//tmp.xOrigin = test.data.xOrigin;
-		//tmp.yOrigin = test.data.yOrigin;
-		//tmp.objectType = objectCircle;
-		////if (Collision_Detection(tmp, proj[i].data))
-		//if(collision_detection(proj[i]))
-		//{
-		//	//enemy hit do magical stuff here
-		//	proj[i].isActive = 0;
-		//}		
-#endif
 	}
 }
 
@@ -308,7 +304,40 @@ void render_projectile(void)
 			continue;
 
 		//render of the projectile here for now
-		CP_Graphics_DrawCircle(proj[i].data.xOrigin, proj[i].data.yOrigin, 10);
+		CP_Graphics_DrawCircle(proj[i].data.xOrigin, proj[i].data.yOrigin, proj[i].size);
+	}
+}
+
+void col_type_projectile(Projectile* p)
+{
+	switch (p->type)
+	{
+	case P_SLOW:
+	{
+		float dist;
+		Vector2 dif;
+		for (int i = 0; i < MAX_ENEMIES; ++i)
+		{
+			//skip dead or inactive
+			if (Enemy[i].state == Inactive || Enemy[i].state == Death)
+				continue;
+
+			dif.pos_x = Enemy[i].data.xOrigin - p->data.xOrigin;
+			dif.pos_y = Enemy[i].data.yOrigin - p->data.yOrigin;
+			dist = magnitude_sq(dif);
+			if (dist <= SLOW_RANGE * SLOW_RANGE) // will change range to be able to be upgarded ltr
+			{
+				//printf("Speed[%d]: %f\n", i, Enemy[i].speed);
+				Enemy[i].slow_amt = p->mod.slow_amt;
+				Enemy[i].slow_timer = p->mod.slow_timer;
+				//printf("A_Speed[%d]: %f\n", i, Enemy[i].speed);
+			}
+
+		}
+		break;
+	}
+	default:
+		break;
 	}
 }
 
