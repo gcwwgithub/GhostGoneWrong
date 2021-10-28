@@ -31,8 +31,8 @@ void init_all_images(void)
 	tempBullet = CP_Image_Load("./Assets/BasicTurretBullet.png");
 	tempBulletRadius = CP_Image_Load("./Assets/BulletRadius.png");
 
-	bluePortalSpriteSheet = CP_Image_Load("./Assets/FriendlyPortal.png"); 
-	redPortalSpriteSheet = CP_Image_Load("./Assets/GhostPortal.png");  
+	bluePortalSpriteSheet = CP_Image_Load("./Assets/FriendlyPortal.png");
+	redPortalSpriteSheet = CP_Image_Load("./Assets/GhostPortal.png");
 	basicTurretSpriteSheet = CP_Image_Load("./Assets/BasicTurret.png");
 	homingMissleTurretSpriteSheet = CP_Image_Load("./Assets/HomingMissleTurret.png");
 	mineSpriteSheet = CP_Image_Load("./Assets/Mine.png");
@@ -48,9 +48,9 @@ void init_all_images(void)
 
 #pragma region LinkedList
 
-void insert_new_node(struct node** list, float xPosInput, float yPosInput,int typeOfBullet)
+void insert_new_node(struct node** list, float xPosInput, float yPosInput, int typeOfBullet)
 {
-	
+
 	struct node* newNode;
 	newNode = malloc(sizeof(struct node));
 	if (newNode != NULL)
@@ -81,7 +81,7 @@ void insert_new_node(struct node** list, float xPosInput, float yPosInput,int ty
 		keyNumber++;
 		*list = newNode;
 	}
-	
+
 }
 
 //delete a link with given key
@@ -121,26 +121,29 @@ void SpriteSheetInit(void)
 {
 	SpriteSheetCalculation(bluePortalArray, bluePortalSpriteSheet, 128, 1);
 	SpriteSheetCalculation(redPortalArray, redPortalSpriteSheet, 128, 1);
-	SpriteSheetCalculation(basicTurretArray, basicTurretSpriteSheet, 128, 1);
+	SpriteSheetCalculation(basicTurretArray, basicTurretSpriteSheet, 128, 0);
 	SpriteSheetCalculation(mineArray, mineSpriteSheet, 128, 0);
-	SpriteSheetCalculation(homingMissleTurretArray, homingMissleTurretSpriteSheet, 128, 1);
+	SpriteSheetCalculation(homingMissleTurretArray, homingMissleTurretSpriteSheet, 128, 0);
 	SpriteSheetCalculation(bulletArray, bulletSpriteSheet, 128, 1);
-	SpriteSheetCalculation(bulletRadiusArray, bulletRadiusSpriteSheet, 128, 1);
+	SpriteSheetCalculation(bulletRadiusArray, bulletRadiusSpriteSheet, 128, 0);
 }
 
 void SpriteSheetCalculation(struct SpriteSheetImage* s, CP_Image image, int pixel, int stopPoint)
 {
+
 	int width = CP_Image_GetWidth(image);
 	int height = CP_Image_GetHeight(image);
 	int counter = 0;
 
-	for (int j = 0; j < height /pixel; j++)
+	for (int j = 0; j < height / pixel; j++)
 	{
-		
+
 		for (int i = 0; i < width / pixel; i++)
-		{	
-			if (!(j == height / pixel - 1 && i > width/pixel-stopPoint-1))
+		{
+			//printf("%d,%d,%d\n", j, i, width / pixel - stopPoint - 1);
+			if (!(j == height / pixel - 1 && i > width / pixel - stopPoint - 1))
 			{
+
 
 				s[counter].pixelOfImage = pixel;
 				s[counter].leftXPixel = (float)(i * s[counter].pixelOfImage);
@@ -151,6 +154,7 @@ void SpriteSheetCalculation(struct SpriteSheetImage* s, CP_Image image, int pixe
 			}
 		}
 	}
+	printf("%d\n",counter);
 }
 
 void RenderPortal(struct SpriteSheetImage s, struct PortalVariables* pv, CP_Image image)

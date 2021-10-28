@@ -53,8 +53,8 @@ CP_Image bulletRadiusSpriteSheet;
 
 struct SpriteSheetImage bluePortalArray[3];
 struct SpriteSheetImage redPortalArray[3];
-struct SpriteSheetImage basicTurretArray[5];
-struct SpriteSheetImage homingMissleTurretArray[5];
+struct SpriteSheetImage basicTurretArray[6];
+struct SpriteSheetImage homingMissleTurretArray[6];
 struct SpriteSheetImage mineArray[2];
 struct SpriteSheetImage bulletArray[3];
 struct SpriteSheetImage bulletRadiusArray[4];
