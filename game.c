@@ -52,7 +52,7 @@ void game_init(void)
 
 	turret_init();
 	enemy_test_init();
-	Enemies_init(5,95);
+	Enemies_init(2,2,2);
 
 	pathfinding_init(&Tutorial);
 }
