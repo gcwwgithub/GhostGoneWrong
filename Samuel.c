@@ -116,10 +116,10 @@ void render_turret(void)
 		case T_CIRCLE:
 			turret[i].turretAnimTimer += CP_System_GetDt();
 			update_turretAnimation(&turret[i]);
-			RenderTurret(homingMissleTurretSpriteSheet, homingMissleTurretArray[turret[i].animCounter],
-				turret[i].data.xOrigin, turret[i].data.yOrigin, turret[i].size, turret[i].size);
-			//CP_Image_DrawAdvanced(turret[i].turret_img, turret[i].data.xOrigin, turret[i].data.yOrigin,
-			//	turret[i].size, turret[i].size, 255, turret[i].angle + 90.f);
+			/*RenderTurret(homingMissleTurretSpriteSheet, homingMissleTurretArray[turret[i].animCounter],
+				turret[i].data.xOrigin, turret[i].data.yOrigin, turret[i].size, turret[i].size);*/
+			CP_Image_DrawAdvanced(turret[i].turret_img, turret[i].data.xOrigin, turret[i].data.yOrigin,
+				turret[i].size, turret[i].size, 255, turret[i].angle + 90.f);
 			break;
 		case T_STAR:
 			break;

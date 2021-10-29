@@ -158,13 +158,17 @@ void EnemyDeath(enemy* r) {  //function updates and checks for collision or deat
 				if (r->state != Death)
 				{
 					col_type_projectile(&proj[i]);
-					r->health -= turret[i].mod.damage;
+					if (proj[i].type != P_SLOW)
+					{
+						r->health -= turret[i].mod.damage;
+					}
+					
 					r->state = Hurt;
 					r->timer = 0;
 
 
 				}
-				insert_new_node(&firstNode, r->data.xOrigin, r->data.yOrigin, r->type);
+				insert_new_node(&firstNode, r->data.xOrigin, r->data.yOrigin, proj[i].type);
 			}
 		}
 	}
