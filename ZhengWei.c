@@ -300,7 +300,7 @@ void render_button(Coordinates ButtonX, CP_Color Color) {
 		CP_Image_DrawAdvanced(ButtonX.imageOfButton, ButtonX.width / 4,
 			(ButtonX.yOrigin + ButtonX.height / 2), 128,
 			128, 255, 90);
-		
+
 		//This is for the turret buttons icons, can do a switch statement so that it doesnt use image of button but calls this method instead?
 		// And if its the slow turret, use that draw advanced feature.
 		//RenderTurretButtonsIcon(basicTurretSpriteSheet, basicTurretArray[0], ButtonX.width / 4, (ButtonX.yOrigin + ButtonX.height / 2), 128, 128);
@@ -311,22 +311,34 @@ void render_button(Coordinates ButtonX, CP_Color Color) {
 
 }
 
-void render_new_turret(void) {
+void render_new_turret(LevelData* LevelX) {
 	Coordinates GameTemp;
 	GameTemp.xOrigin = Game.xOrigin;
 	GameTemp.yOrigin = Game.yOrigin;
 	GameTemp.width = Game.width;
 	GameTemp.height = Game.height;
-	if (btn_is_pressed(GameTemp)) {
-		if (isPlacingTurret != NOT_PLACING_TURRET) {
-			int drawX, drawY;
-			drawX = (int)((CP_Input_GetMouseX() - Game.xOrigin) / Game.gridWidth);
-			drawY = (int)((CP_Input_GetMouseY() - Game.yOrigin) / Game.gridHeight);
-			place_turret(isPlacingTurret, drawX, drawY);
-			isPlacingTurret = NOT_PLACING_TURRET;
+	if (btn_is_pressed(GameTemp) && isPlacingTurret != NOT_PLACING_TURRET) {
+		int drawX, drawY;
+		drawX = (int)((CP_Input_GetMouseX() - Game.xOrigin) / Game.gridWidth);
+		drawY = (int)((CP_Input_GetMouseY() - Game.yOrigin) / Game.gridHeight);
+		if (LevelX->grid[drawY][drawX].type == Clear || LevelX->grid[drawY][drawX].type == Path) {
+			LevelX->grid[drawY][drawX].type = Blocked;
+			pathfinding_reset(LevelX);
+			pathfinding_calculate_cost(LevelX);
+			if (!is_destination_updated(LevelX)) {
+				LevelX->grid[drawY][drawX].type = Clear;
+				pathfinding_reset(LevelX);
+				pathfinding_calculate_cost(LevelX);
+			}
+			else {
+				place_turret(isPlacingTurret, drawX, drawY);
+				isPlacingTurret = NOT_PLACING_TURRET;
+			}
+			pathfinding_update(LevelX);
 		}
 	}
 }
+
 
 //Level
 

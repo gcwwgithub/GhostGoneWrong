@@ -5,7 +5,7 @@
 #define NOT_PLACING_TURRET 4
 
 void game_grid_init(void);
-void pathfinding_init(LevelData* Level);
+void pathfinding_init(LevelData* LevelX);
 void turret_menu_init(void);
 void pause_button_init(void);
 void turret_triangle_button_init(void);
@@ -21,7 +21,7 @@ void render_game_grid(void);
 void render_path(LevelData* LevelX);
 void render_turret_menu(void);
 void render_button_pressed(void);
-void render_new_turret(void);
+void render_new_turret(LevelData* LevelX);
 void pathfinding_update(LevelData* LevelX);
 
 int isPlacingTurret;
