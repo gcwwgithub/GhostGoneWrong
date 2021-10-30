@@ -7,6 +7,7 @@
 #define MAX_TURRET 100
 #define PROJ_OFFSET Game.gridHeight * 0.4
 #define SLOW_RANGE Game.gridWidth * 2
+#define EXPLOSION_RANGE Game.gridWidth * 2
 //enum of turret types
 typedef enum TurretType
 {
@@ -22,7 +23,7 @@ typedef enum ProjectileType
 {
 	P_BASIC,
 	P_SLOW,
-	P_TRACKING,
+	P_HOMING,
 	P_MINE,
 } ProjectileType;
 
@@ -34,6 +35,7 @@ typedef enum TriangleAnimState
 
 typedef struct
 {
+	int tracked_index;
 	float damage, speed, range, cooldown,
 		slow_amt, slow_timer;
 } Modifiers;

@@ -50,10 +50,10 @@ void turret_init(void)
 	//turret[0].cooldown = 0.f;
 	//turret[0].isActive = 1;
 	//turret[0].range = Game.gridWidth * 2;
-	place_turret(T_SLOW, 2, 1);
-	Level[0].grid[1][2].type = Blocked;//Hard coded to set turret spot to blocked
-	place_turret(T_BASIC, 0, 4);
-	Level[0].grid[4][0].type = Blocked;//Hard coded to set turret spot to blocked
+	//place_turret(T_SLOW, 2, 1);
+	//Level[0].grid[1][2].type = Blocked;//Hard coded to set turret spot to blocked
+	//place_turret(T_BASIC, 0, 4);
+	//Level[0].grid[4][0].type = Blocked;//Hard coded to set turret spot to blocked
 }
 
 //call this function to palce turret (pass in the grid index)
@@ -64,6 +64,7 @@ void place_turret(TurretType type, int index_x, int index_y)
 		if (turret[i].isActive)
 			continue;
 
+		//set to active and the turret type
 		turret[i].isActive = 1;
 		turret[i].type = type;
 		//origin + gridwidth * (index + 0.5); (to place the turret on the grid box)
@@ -85,6 +86,8 @@ void place_turret(TurretType type, int index_x, int index_y)
 		case T_HOMING:
 			turret[i].mod.range = Game.gridWidth * 2;
 			turret[i].mod.damage = 1;
+			turret[i].dir.pos_x = -1;
+			turret[i].dir.pos_y = -1;
 			break;
 		case T_MINE:
 			turret[i].mod.range = Game.gridWidth * 2;
@@ -106,26 +109,25 @@ void render_turret(void)
 			continue;
 
 		//draw type of turrets
+		update_turretAnimation(&turret[i]);
+		turret[i].turretAnimTimer += CP_System_GetDt();
 		switch (turret[i].type)
 		{
 		case T_BASIC:
-			turret[i].turretAnimTimer += CP_System_GetDt();
-			update_turretAnimation(&turret[i]);
 			RenderTurret(basicTurretSpriteSheet, basicTurretArray[turret[i].animCounter],
 				turret[i].data.xOrigin, turret[i].data.yOrigin, turret[i].size, turret[i].size);
-			//the +90 degree is to offset the atan2
 			break;
 		case T_SLOW:
-			turret[i].turretAnimTimer += CP_System_GetDt();
-			update_turretAnimation(&turret[i]);
-			/*RenderTurret(homingMissleTurretSpriteSheet, homingMissleTurretArray[turret[i].animCounter],
-				turret[i].data.xOrigin, turret[i].data.yOrigin, turret[i].size, turret[i].size);*/
 			CP_Image_DrawAdvanced(turret[i].turret_img, turret[i].data.xOrigin, turret[i].data.yOrigin,
-				turret[i].size, turret[i].size, 255, turret[i].angle + 90.f);
+				turret[i].size, turret[i].size, 255, turret[i].angle + 90.f);//the +90 degree is to offset the atan2
 			break;
 		case T_HOMING:
+			RenderTurret(homingMissleTurretSpriteSheet, homingMissleTurretArray[turret[i].animCounter],
+				turret[i].data.xOrigin, turret[i].data.yOrigin, turret[i].size, turret[i].size);
 			break;
 		case T_MINE:
+			RenderTurret(mineSpriteSheet, mineArray[turret[i].animCounter],
+				turret[i].data.xOrigin, turret[i].data.yOrigin, turret[i].size, turret[i].size);
 			break;
 		default:
 			break;
@@ -189,6 +191,7 @@ void update_turret(void)
 					//set the targeted enemy dir
 					targeted_dir.pos_x = v1.pos_x;
 					targeted_dir.pos_y = v1.pos_y;
+					
 				}
 				else
 					continue;
@@ -204,12 +207,23 @@ void update_turret(void)
 			{
 				turret[i].animCounter = 3;
 			}
-			turret[i].dir = targeted_dir;
-			turret[i].dir = normalise(turret[i].dir);
-			turret[i].angle = atan2f(turret[i].dir.pos_y, turret[i].dir.pos_x) * 180.f / (float)PI;
+
+			// update the dir of all turret except homing turret
+			if (turret[i].type != T_HOMING)
+			{
+				turret[i].dir = targeted_dir;
+				turret[i].dir = normalise(turret[i].dir);
+			}
+
+			//get angle to roate sprite for slow turret only
+			if(turret[i].type == T_SLOW)
+				turret[i].angle = atan2f(turret[i].dir.pos_y, turret[i].dir.pos_x) * 180.f / (float)PI;
+
 			turret[i].mod.cooldown -= 1.f * CP_System_GetDt();
 			if (turret[i].mod.cooldown <= 0)
 			{
+				turret[i].mod.tracked_index = e_index;
+				printf("index: %d\n", e_index);
 				shoot(turret[i].data.xOrigin, turret[i].data.yOrigin, turret[i].mod, turret[i].type, turret[i].dir);
 				turret[i].mod.cooldown = 2.f;
 			}
@@ -270,6 +284,7 @@ void shoot(float x, float y, Modifiers mod, ProjectileType type, Vector2 dir)
 		proj[i].mod.slow_amt = mod.slow_amt;
 		proj[i].mod.slow_timer = mod.slow_timer;
 		proj[i].type = type;
+		proj[i].mod.tracked_index = mod.tracked_index;
 		break;
 	}
 
@@ -290,6 +305,22 @@ void update_projectile(void)
 		}
 		if (!proj[i].isActive)
 			continue;
+
+		// tracking proj, track if a valid id is provided and state is alive
+		if (proj[i].type == P_HOMING && proj[i].mod.tracked_index >= 0 &&
+			Enemy[proj[i].mod.tracked_index].state != Death && 
+			Enemy[proj[i].mod.tracked_index].state != Inactive)
+		{ 
+			//fake homing projectile
+			Vector2 v;
+			v.pos_x = proj[i].dir.pos_x - (Enemy[proj[i].mod.tracked_index].data.xOrigin - proj[i].data.xOrigin);
+			v.pos_y = proj[i].dir.pos_y - (Enemy[proj[i].mod.tracked_index].data.yOrigin - proj[i].data.yOrigin);
+
+			proj[i].dir.pos_x -= v.pos_x * 0.1f * CP_System_GetDt(); //gradual change of dir, magic number is the rate of change
+			proj[i].dir.pos_y -= v.pos_y * 0.1f * CP_System_GetDt();
+			proj[i].dir = normalise(proj[i].dir);
+			//printf("x:%f y:%f\n", proj[i].dir.pos_x, proj[i].dir.pos_y);
+		}
 
 		//proj movement dir * speed * deltatime
 		proj[i].data.xOrigin += proj[i].dir.pos_x * proj[i].mod.speed * CP_System_GetDt();
@@ -325,12 +356,12 @@ void render_projectile(void)
 
 void col_type_projectile(Projectile* p)
 {
+	float dist;
+	Vector2 dif;
 	switch (p->type)
 	{
 	case P_SLOW:
 	{
-		float dist;
-		Vector2 dif;
 		for (int i = 0; i < MAX_ENEMIES; ++i)
 		{
 			//skip dead or inactive
@@ -346,6 +377,29 @@ void col_type_projectile(Projectile* p)
 				Enemy[i].slow_amt = p->mod.slow_amt;
 				Enemy[i].slow_timer = p->mod.slow_timer;
 				//printf("A_Speed[%d]: %f\n", i, Enemy[i].speed);
+			}
+
+		}
+		break;
+	}
+	case P_HOMING:
+	{
+		for (int i = 0; i < MAX_ENEMIES; ++i)
+		{
+			//skip dead or inactive
+			if (Enemy[i].state == Inactive || Enemy[i].state == Death)
+				continue;
+			if (p->mod.tracked_index == i) //is gonna be dmg in enemy so skip the targeted one, this case will be changed ltr has flaws
+				continue;
+
+			dif.pos_x = Enemy[i].data.xOrigin - p->data.xOrigin;
+			dif.pos_y = Enemy[i].data.yOrigin - p->data.yOrigin;
+			dist = magnitude_sq(dif);
+			if (dist <= EXPLOSION_RANGE * EXPLOSION_RANGE) // will change range to be able to be upgarded ltr
+			{
+				Enemy[i].health -= p->mod.damage;
+				Enemy[i].state = Hurt;
+				Enemy[i].timer = 0;
 			}
 
 		}
