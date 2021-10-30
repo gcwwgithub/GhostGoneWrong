@@ -196,7 +196,7 @@ void turret_triangle_button_init(void) {
 	GameButton[TurretButtonBasic].width = TurretMenu.width;
 	GameButton[TurretButtonBasic].height = (TurretMenu.height - unusableButtonHeight) / 4;
 	GameButton[TurretButtonBasic].objectType = objectRectangle;
-	//GameButton[TurretButtonBasic].imageOfButton = slowTurretImageArray[0];
+	GameButton[TurretButtonBasic].imageOfButton = slowTurretImageArray[0];
 }
 
 void turret_circle_button_init(void) {
@@ -214,7 +214,7 @@ void turret_star_button_init(void) {
 	GameButton[TurretButtonHoming].width = TurretMenu.width;
 	GameButton[TurretButtonHoming].height = GameButton[TurretButtonBasic].height;
 	GameButton[TurretButtonHoming].objectType = objectRectangle;
-	//GameButton[TurretButtonHoming].imageOfButton = tempStar;
+	GameButton[TurretButtonHoming].imageOfButton = tempStar;
 }
 
 void turret_percentage_button_init(void) {
@@ -223,7 +223,7 @@ void turret_percentage_button_init(void) {
 	GameButton[TurretButtonMine].width = TurretMenu.width;
 	GameButton[TurretButtonMine].height = GameButton[TurretButtonBasic].height;
 	GameButton[TurretButtonMine].objectType = objectRectangle;
-	//GameButton[TurretButtonMine].imageOfButton = tempPercentage;
+	GameButton[TurretButtonMine].imageOfButton = tempPercentage;
 }
 
 void pause_button_init(void) {
@@ -264,7 +264,25 @@ void render_button_pressed(void) {
 		else if (TurretButtonMine == check_game_button_pressed()) {
 			isPlacingTurret = T_MINE;
 		}
-		CP_Image_DrawAdvanced(GameButton[check_game_button_pressed()].imageOfButton, CP_Input_GetMouseX(), CP_Input_GetMouseY(), Game.gridWidth, Game.gridHeight, 255, 0);
+		switch (check_game_button_pressed())
+		{
+		case 0:
+			RenderNormal(basicTurretSpriteSheet, basicTurretArray[0], CP_Input_GetMouseX(), CP_Input_GetMouseY(), Game.gridWidth, Game.gridHeight);
+			break;
+		case 1:
+			CP_Image_DrawAdvanced(GameButton[check_game_button_pressed()].imageOfButton, CP_Input_GetMouseX(), CP_Input_GetMouseY(), Game.gridWidth, Game.gridHeight, 255, 0);
+			break;
+		case 2:
+			RenderNormal(homingMissleTurretSpriteSheet, homingMissleTurretArray[0], CP_Input_GetMouseX(), CP_Input_GetMouseY(), Game.gridWidth, Game.gridHeight);
+			break;
+		case 3:
+			RenderNormal(mineSpriteSheet, mineArray[0], CP_Input_GetMouseX(), CP_Input_GetMouseY(), Game.gridWidth, Game.gridHeight);
+			break;
+		case 4:
+			CP_Image_DrawAdvanced(GameButton[check_game_button_pressed()].imageOfButton, CP_Input_GetMouseX(), CP_Input_GetMouseY(), Game.gridWidth, Game.gridHeight, 255, 0);
+			break;
+		}
+		
 	}
 }
 
