@@ -94,10 +94,10 @@ Coordinates TurretMenu;
 
 //Buttons
 enum ButtonType {
-	TurretButtonTriangle = 0,
-	TurretButtonCircle = 1,
-	TurretButtonStar = 2,
-	TurretButtonPercentage = 3,
+	TurretButtonBasic = 0,
+	TurretButtonSlow = 1,
+	TurretButtonHoming = 2,
+	TurretButtonMine = 3,
 	PauseButton = 4,
 	NoButton = NUMBER_OF_BUTTONS
 };
@@ -110,4 +110,4 @@ Coordinates MouseInput;
 //Common Tools
 int Collision_Detection(Coordinates object1, Coordinates object2);
 int btn_is_pressed(Coordinates object1);
-void render_button(Coordinates ButtonX, CP_Color Color);
+void render_button(Coordinates ButtonX, int type);

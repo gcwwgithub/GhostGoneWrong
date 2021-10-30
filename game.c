@@ -85,11 +85,11 @@ void game_update(void)
 		render_path(&Tutorial);
 		render_turret_menu();
 
-		render_button(GameButton[PauseButton], COLOR_PURPLE);
-		render_button(GameButton[TurretButtonTriangle], COLOR_WHITE);
-		render_button(GameButton[TurretButtonCircle], COLOR_WHITE);
-		render_button(GameButton[TurretButtonStar], COLOR_WHITE);
-		render_button(GameButton[TurretButtonPercentage], COLOR_WHITE);
+		render_button(GameButton[PauseButton], PauseButton);
+		render_button(GameButton[TurretButtonBasic], TurretButtonBasic);
+		render_button(GameButton[TurretButtonSlow], TurretButtonSlow);
+		render_button(GameButton[TurretButtonHoming], TurretButtonHoming);
+		render_button(GameButton[TurretButtonMine], TurretButtonMine);
 
 		draw_multiple_enemies();
 
