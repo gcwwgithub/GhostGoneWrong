@@ -253,16 +253,16 @@ void render_button_pressed(void) {
 	}
 	else {
 		if (TurretButtonTriangle == check_game_button_pressed()) {
-			isPlacingTurret = T_TRIANGLE;
+			isPlacingTurret = T_BASIC;
 		}
 		else if (TurretButtonCircle == check_game_button_pressed()) {
-			isPlacingTurret = T_CIRCLE;
+			isPlacingTurret = T_SLOW;
 		}
 		else if (TurretButtonStar == check_game_button_pressed()) {
-			isPlacingTurret = T_STAR;
+			isPlacingTurret = T_HOMING;
 		}
 		else if (TurretButtonPercentage == check_game_button_pressed()) {
-			isPlacingTurret = T_PRECENTAGE;
+			isPlacingTurret = T_MINE;
 		}
 		CP_Image_DrawAdvanced(GameButton[check_game_button_pressed()].imageOfButton, CP_Input_GetMouseX(), CP_Input_GetMouseY(), Game.gridWidth, Game.gridHeight, 255, 0);
 	}

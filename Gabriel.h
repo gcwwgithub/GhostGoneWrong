@@ -42,23 +42,31 @@ CP_Image tempCircle;
 CP_Image tempPercentage;
 CP_Image tempBulletRadius;
 CP_Image tempBullet;
+CP_Image dirtTileImage;
+CP_Image pauseButtonImage;
 
 CP_Image bluePortalSpriteSheet;
 CP_Image redPortalSpriteSheet;
 CP_Image basicTurretSpriteSheet;
 CP_Image homingMissleTurretSpriteSheet;
 CP_Image mineSpriteSheet;
+CP_Image energyWallSpriteSheet;
 CP_Image bulletSpriteSheet;
 CP_Image bulletRadiusSpriteSheet;
+CP_Image currencySpriteSheet;
+CP_Image environmentObjectsSpriteSheet;
+
 
 struct SpriteSheetImage bluePortalArray[3];
 struct SpriteSheetImage redPortalArray[3];
 struct SpriteSheetImage basicTurretArray[6];
 struct SpriteSheetImage homingMissleTurretArray[6];
 struct SpriteSheetImage mineArray[2];
+struct SpriteSheetImage energyWallArray[2];
 struct SpriteSheetImage bulletArray[3];
 struct SpriteSheetImage bulletRadiusArray[4];
-
+struct SpriteSheetImage currencyArray[2];
+struct SpriteSheetImage environmentObjectArray[8];
 struct PortalVariables portalVariablesArray[2];
 
 struct node* firstNode;
@@ -77,7 +85,7 @@ void SpriteSheetCalculation(struct SpriteSheetImage* s, CP_Image image, int pixe
 void SpriteSheetInit(void);
 void RenderPortal(struct SpriteSheetImage s, struct PortalVariables* pv, CP_Image image);
 void RenderTurret(CP_Image image, struct SpriteSheetImage s, float xPos, float yPos, float sizeOfImageX, float sizeOfImageY);
-void RenderTurretButtonsIcon(CP_Image image, struct SpriteSheetImage s, float xPos, float yPos, float sizeOfImageX, float sizeOfImageY);
+void RenderNormal(CP_Image image, struct SpriteSheetImage s, float xPos, float yPos, float sizeOfImageX, float sizeOfImageY);
 void RenderBulletRadius(CP_Image image, struct SpriteSheetImage s, float xPos, float yPos, float sizeOfImageX, float sizeOfImageY, int alphaValue);
 void UpdatePortal(void);
 void init_all_images(void);

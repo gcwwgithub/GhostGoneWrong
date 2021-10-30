@@ -19,7 +19,7 @@ void turret_init(void)
 		proj[i].data.yOrigin = 0;
 		proj[i].mod.damage = 1.f;
 		proj[i].mod.speed = 100.f;
-		proj[i].size = 10;
+		proj[i].size = 48;
 		proj[i].mod.slow_amt = 1.f;
 		proj[i].mod.slow_timer = 0.f;
 	}
@@ -50,9 +50,9 @@ void turret_init(void)
 	//turret[0].cooldown = 0.f;
 	//turret[0].isActive = 1;
 	//turret[0].range = Game.gridWidth * 2;
-	place_turret(T_CIRCLE, 2, 1);
+	place_turret(T_SLOW, 2, 1);
 	Tutorial.grid[1][2].type = Blocked;//Hard coded to set turret spot to blocked
-	place_turret(T_TRIANGLE, 0, 4);
+	place_turret(T_BASIC, 0, 4);
 	Tutorial.grid[4][0].type = Blocked;//Hard coded to set turret spot to blocked
 }
 
@@ -72,21 +72,21 @@ void place_turret(TurretType type, int index_x, int index_y)
 		//edit here for the type range and dmg
 		switch (turret[i].type)
 		{
-		case T_TRIANGLE:
+		case T_BASIC:
 			turret[i].mod.range = Game.gridWidth * 2;
 			turret[i].mod.damage = 1;
 			break;
-		case T_CIRCLE: // FREEZE TURRET
+		case T_SLOW: // FREEZE TURRET
 			turret[i].mod.range = Game.gridWidth * 2;
 			turret[i].mod.damage = 0.5f;
 			turret[i].mod.slow_amt = 0.6f; //leaving it at 1 means no slow if slow_amt < 1 then slow
 			turret[i].mod.slow_timer = 2.f;
 			break;
-		case T_STAR:
+		case T_HOMING:
 			turret[i].mod.range = Game.gridWidth * 2;
 			turret[i].mod.damage = 1;
 			break;
-		case T_PRECENTAGE:
+		case T_MINE:
 			turret[i].mod.range = Game.gridWidth * 2;
 			turret[i].mod.damage = 1;
 			break;
@@ -108,14 +108,14 @@ void render_turret(void)
 		//draw type of turrets
 		switch (turret[i].type)
 		{
-		case T_TRIANGLE:
+		case T_BASIC:
 			turret[i].turretAnimTimer += CP_System_GetDt();
 			update_turretAnimation(&turret[i]);
 			RenderTurret(basicTurretSpriteSheet, basicTurretArray[turret[i].animCounter],
 				turret[i].data.xOrigin, turret[i].data.yOrigin, turret[i].size, turret[i].size);
 			//the +90 degree is to offset the atan2
 			break;
-		case T_CIRCLE:
+		case T_SLOW:
 			turret[i].turretAnimTimer += CP_System_GetDt();
 			update_turretAnimation(&turret[i]);
 			/*RenderTurret(homingMissleTurretSpriteSheet, homingMissleTurretArray[turret[i].animCounter],
@@ -123,9 +123,9 @@ void render_turret(void)
 			CP_Image_DrawAdvanced(turret[i].turret_img, turret[i].data.xOrigin, turret[i].data.yOrigin,
 				turret[i].size, turret[i].size, 255, turret[i].angle + 90.f);
 			break;
-		case T_STAR:
+		case T_HOMING:
 			break;
-		case T_PRECENTAGE:
+		case T_MINE:
 			break;
 		default:
 			break;
@@ -160,7 +160,7 @@ void update_turret(void)
 		//	break;
 		//case T_STAR:
 		//	break;
-		//case T_PRECENTAGE:
+		//case T_MINE:
 		//	break;
 		//default:
 		//	break;
@@ -306,7 +306,20 @@ void render_projectile(void)
 			continue;
 
 		//render of the projectile here for now
-		CP_Graphics_DrawCircle(proj[i].data.xOrigin, proj[i].data.yOrigin, proj[i].size);
+		//CP_Graphics_DrawCircle(proj[i].data.xOrigin, proj[i].data.yOrigin, proj[i].size);
+
+		switch (proj[i].type)
+		{
+		case 0:
+			RenderNormal(bulletSpriteSheet, bulletArray[0], proj[i].data.xOrigin, proj[i].data.yOrigin, proj[i].size, proj[i].size);
+			break;
+		case 1:
+			RenderNormal(bulletSpriteSheet, bulletArray[1], proj[i].data.xOrigin, proj[i].data.yOrigin, proj[i].size, proj[i].size);
+			break;
+		case 2:
+			RenderNormal(bulletSpriteSheet, bulletArray[2], proj[i].data.xOrigin, proj[i].data.yOrigin, proj[i].size, proj[i].size);
+			break;
+		}
 	}
 }
 
@@ -345,7 +358,7 @@ void col_type_projectile(Projectile* p)
 
 void update_turretAnimation(Turret* t)
 {
-	if (t->type == T_PRECENTAGE)
+	if (t->type == T_MINE)
 	{
 
 	}
@@ -367,7 +380,7 @@ void update_turretAnimation(Turret* t)
 					t->animCounter++;
 				}
 
-				if (turret->type == T_TRIANGLE)
+				if (turret->type == T_SLOW)
 				{
 					t->turret_img = slowTurretImageArray[t->animCounter];
 				}
@@ -377,7 +390,7 @@ void update_turretAnimation(Turret* t)
 
 			break;
 		case SHOOTING:
-			if (t->turretAnimTimer >= 0.65)
+			if (t->turretAnimTimer >= 0.60)
 			{
 				if (t->animCounter >= 5)
 				{
@@ -388,7 +401,7 @@ void update_turretAnimation(Turret* t)
 				{
 					t->animCounter++;
 				}
-				if (turret->type == T_TRIANGLE)
+				if (turret->type == T_SLOW)
 				{
 					t->turret_img = slowTurretImageArray[t->animCounter];
 				}

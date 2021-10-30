@@ -30,14 +30,19 @@ void init_all_images(void)
 	tempPercentage = CP_Image_Load("./Assets/GrimReaper1.png");
 	tempBullet = CP_Image_Load("./Assets/BasicTurretBullet.png");
 	tempBulletRadius = CP_Image_Load("./Assets/BulletRadius.png");
+	dirtTileImage = CP_Image_Load("./Assets/Dirt.png");
+	pauseButtonImage = CP_Image_Load("./Assets/Pause.png");
 
 	bluePortalSpriteSheet = CP_Image_Load("./Assets/FriendlyPortal.png");
 	redPortalSpriteSheet = CP_Image_Load("./Assets/GhostPortal.png");
 	basicTurretSpriteSheet = CP_Image_Load("./Assets/BasicTurret.png");
 	homingMissleTurretSpriteSheet = CP_Image_Load("./Assets/HomingMissleTurret.png");
 	mineSpriteSheet = CP_Image_Load("./Assets/Mine.png");
+	energyWallSpriteSheet = CP_Image_Load("./Assets/EnergyWall.png");
 	bulletSpriteSheet = CP_Image_Load("./Assets/TurretBullets.png");
 	bulletRadiusSpriteSheet = CP_Image_Load("./Assets/BulletsRadius.png");
+	currencySpriteSheet = CP_Image_Load("./Assets/Currency.png");
+	environmentObjectsSpriteSheet = CP_Image_Load("./Assets/Environment.png");
 
 	portalCounter = 0;
 	portalTimer = 0;
@@ -123,9 +128,12 @@ void SpriteSheetInit(void)
 	SpriteSheetCalculation(redPortalArray, redPortalSpriteSheet, 128, 1);
 	SpriteSheetCalculation(basicTurretArray, basicTurretSpriteSheet, 128, 0);
 	SpriteSheetCalculation(mineArray, mineSpriteSheet, 128, 0);
+	SpriteSheetCalculation(energyWallArray, energyWallSpriteSheet, 128, 0);
 	SpriteSheetCalculation(homingMissleTurretArray, homingMissleTurretSpriteSheet, 128, 0);
 	SpriteSheetCalculation(bulletArray, bulletSpriteSheet, 128, 1);
 	SpriteSheetCalculation(bulletRadiusArray, bulletRadiusSpriteSheet, 128, 0);
+	SpriteSheetCalculation(currencyArray, currencySpriteSheet, 128, 0);
+	SpriteSheetCalculation(environmentObjectArray, environmentObjectsSpriteSheet, 128, 1);
 }
 
 void SpriteSheetCalculation(struct SpriteSheetImage* s, CP_Image image, int pixel, int stopPoint)
@@ -174,7 +182,7 @@ void RenderBulletRadius(CP_Image image, struct SpriteSheetImage s, float xPos, f
 		s.leftXPixel, s.topYPixel, s.rightXPixel, s.bottomYPixel, alphaValue);
 }
 
-void RenderTurretButtonsIcon(CP_Image image, struct SpriteSheetImage s, float xPos, float yPos, float sizeOfImageX, float sizeOfImageY)
+void RenderNormal(CP_Image image, struct SpriteSheetImage s, float xPos, float yPos, float sizeOfImageX, float sizeOfImageY)
 {
 	CP_Image_DrawSubImage(image, xPos, yPos, sizeOfImageX, sizeOfImageY,
 		s.leftXPixel, s.topYPixel, s.rightXPixel, s.bottomYPixel, 255);

@@ -10,10 +10,11 @@
 //enum of turret types
 typedef enum TurretType
 {
-	T_TRIANGLE,
-	T_CIRCLE,
-	T_STAR,
-	T_PRECENTAGE
+	T_BASIC,
+	T_SLOW,
+	T_HOMING,
+	T_MINE,
+	T_WALL
 } TurretType;
 
 //enum of projectile types
