@@ -32,6 +32,7 @@ void init_all_images(void)
 	tempBulletRadius = CP_Image_Load("./Assets/BulletRadius.png");
 	dirtTileImage = CP_Image_Load("./Assets/Dirt.png");
 	pauseButtonImage = CP_Image_Load("./Assets/Pause.png");
+	titleWordImage = CP_Image_Load("./Assets/Title.png");
 
 	bluePortalSpriteSheet = CP_Image_Load("./Assets/FriendlyPortal.png");
 	redPortalSpriteSheet = CP_Image_Load("./Assets/GhostPortal.png");

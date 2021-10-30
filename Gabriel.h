@@ -44,6 +44,7 @@ CP_Image tempBulletRadius;
 CP_Image tempBullet;
 CP_Image dirtTileImage;
 CP_Image pauseButtonImage;
+CP_Image titleWordImage;
 
 CP_Image bluePortalSpriteSheet;
 CP_Image redPortalSpriteSheet;

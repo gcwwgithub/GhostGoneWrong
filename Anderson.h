@@ -1,5 +1,6 @@
 #pragma once
 #include "game.h"
+#include "Gabriel.h"
 
 // scaled to factor for different resolutions to an extent
 // admittedly hardcoded the anchored resolution

@@ -269,10 +269,10 @@ void render_game_title(void)
 {
 	debugSquareFont = GAME_FONT;
 	CP_Font_Set(debugSquareFont);
-	CP_Settings_Fill(COLOR_BLUE);
+	//CP_Settings_Fill(COLOR_BLUE);
 	CP_Settings_TextSize(FONT_SIZE);
-
-	CP_Font_DrawText("Math Gone Wrong", CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.25f);
+	CP_Image_Draw(titleWordImage, CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.2f, 256, 256, 255);
+	//CP_Font_DrawText("Math Gone Wrong", CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.25f);
 }
 
 void render_ui_button(Button button)
