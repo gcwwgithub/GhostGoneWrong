@@ -223,7 +223,7 @@ void update_turret(void)
 			if (turret[i].mod.cooldown <= 0)
 			{
 				turret[i].mod.tracked_index = e_index;
-				printf("index: %d\n", e_index);
+				//printf("index: %d\n", e_index);
 				shoot(turret[i].data.xOrigin, turret[i].data.yOrigin, turret[i].mod, turret[i].type, turret[i].dir);
 				turret[i].mod.cooldown = 2.f;
 			}
