@@ -51,9 +51,9 @@ void turret_init(void)
 	//turret[0].isActive = 1;
 	//turret[0].range = Game.gridWidth * 2;
 	place_turret(T_SLOW, 2, 1);
-	Tutorial.grid[1][2].type = Blocked;//Hard coded to set turret spot to blocked
+	Level[0].grid[1][2].type = Blocked;//Hard coded to set turret spot to blocked
 	place_turret(T_BASIC, 0, 4);
-	Tutorial.grid[4][0].type = Blocked;//Hard coded to set turret spot to blocked
+	Level[0].grid[4][0].type = Blocked;//Hard coded to set turret spot to blocked
 }
 
 //call this function to palce turret (pass in the grid index)

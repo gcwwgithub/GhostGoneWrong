@@ -33,31 +33,38 @@ void game_init(void)
 	//turret menu
 	turret_menu_init();
 
-	//buttons
+	//turret menu items
 	turret_triangle_button_init();
 	turret_circle_button_init();
 	turret_star_button_init();
 	turret_percentage_button_init();
 	pause_button_init();
+	cash_init();
+	health_init();
 
 	//Initialize Objects
 	mouse_init();
 	isPlacingTurret = NOT_PLACING_TURRET;
 
 	//Level Data
-	Tutorial.spawnRow = 0;
-	Tutorial.spawnCol = (GAME_GRID_COLS - 1) / 2;
-	Tutorial.exitRow = GAME_GRID_ROWS - 1;
-	Tutorial.exitCol = (GAME_GRID_COLS - 1) / 2;
+	currentGameLevel = 0;
+	Level[0].spawnRow = 0;
+	Level[0].spawnCol = (GAME_GRID_COLS - 1) / 2;
+	Level[0].exitRow = GAME_GRID_ROWS - 1;
+	Level[0].exitCol = (GAME_GRID_COLS - 1) / 2;
+	Level[0].health = 100;
+	Level[0].cash = 0;
 	
-	pathfinding_init(&Tutorial);
+	pathfinding_init(&Level[0]);
+	environment_init(&Level[0]);
 
 	turret_init();
 	enemy_test_init();
 	Enemies_init(2,2,2);
 
-	pathfinding_calculate_cost(&Tutorial);
-	pathfinding_update(&Tutorial);
+	pathfinding_reset(&Level[0]);
+	pathfinding_calculate_cost(&Level[0]);
+	pathfinding_update(&Level[0]);
 }
 
 
@@ -82,14 +89,16 @@ void game_update(void)
 
 		//render all the stuff
 		render_game_grid();
-		render_path(&Tutorial);
+		render_path(&Level[currentGameLevel]);
 		render_turret_menu();
 
-		render_button(GameButton[PauseButton], PauseButton);
-		render_button(GameButton[TurretButtonBasic], TurretButtonBasic);
-		render_button(GameButton[TurretButtonSlow], TurretButtonSlow);
-		render_button(GameButton[TurretButtonHoming], TurretButtonHoming);
-		render_button(GameButton[TurretButtonMine], TurretButtonMine);
+		render_turret_menu_object(GameMenuObject[PauseButton], PauseButton);
+		render_turret_menu_object(GameMenuObject[TurretButtonBasic], TurretButtonBasic);
+		render_turret_menu_object(GameMenuObject[TurretButtonSlow], TurretButtonSlow);
+		render_turret_menu_object(GameMenuObject[TurretButtonHoming], TurretButtonHoming);
+		render_turret_menu_object(GameMenuObject[TurretButtonMine], TurretButtonMine);
+		render_turret_menu_object(GameMenuObject[CashMenu], CashMenu);
+		render_turret_menu_object(GameMenuObject[HealthMenu], HealthMenu);
 
 		draw_multiple_enemies();
 
@@ -98,12 +107,12 @@ void game_update(void)
 
 		render_bullet_circles();
 
-		render_new_turret(&Tutorial);
+		render_new_turret(&Level[currentGameLevel]);
 		render_button_pressed();//Must be after render_new_turret
 
 		//test enemy
 
-
+		render_environment();
 		UpdatePortal();
 	}
 

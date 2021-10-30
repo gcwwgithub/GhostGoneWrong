@@ -89,7 +89,7 @@ void detect_grid_square_color(LevelData level)
 			}
 		}
 		// if clicked outside the grid
-		//else if (withinBoundaries(GameButton[0].xOrigin, GameButton[0].yOrigin, GameButton[0].xOrigin + GameButton[0].width, GameButton[0].yOrigin + GameButton[0].height))
+		//else if (withinBoundaries(GameMenuObject[0].xOrigin, GameMenuObject[0].yOrigin, GameMenuObject[0].xOrigin + GameMenuObject[0].width, GameMenuObject[0].yOrigin + GameMenuObject[0].height))
 		//{
 		//	turretButton0Clicked = 1;
 		//}

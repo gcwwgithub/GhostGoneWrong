@@ -44,6 +44,7 @@ typedef enum GameState
 GameState currentGameState;
 
 //Level
+#define MAX_NUMBER_OF_LEVEL 5
 typedef enum PathType {
 	Clear = 0,
 	Blocked = 1,
@@ -67,12 +68,16 @@ typedef struct LevelData {
 	int exitRow;
 	int exitCol;
 	Grids grid[GAME_GRID_ROWS][GAME_GRID_COLS];
+	int cash;
+	int health;
 }LevelData;
 
-LevelData Tutorial;
+LevelData Level[MAX_NUMBER_OF_LEVEL];
+
+int currentGameLevel;
 
 //Objects
-#define NUMBER_OF_BUTTONS 5
+#define NUMBER_OF_MENU_OBJECTS 7
 
 typedef enum ObjectShape {
 	objectCircle,
@@ -86,28 +91,34 @@ typedef struct Coordinates {
 	float xOrigin;
 	float yOrigin;
 	ObjectShape objectType;
-	CP_Image imageOfButton;
+	CP_Image image;
 }Coordinates;
 
 //TurretMenu
 Coordinates TurretMenu;
 
 //Buttons
-enum ButtonType {
+enum MenuObjectType {
 	TurretButtonBasic = 0,
 	TurretButtonSlow = 1,
 	TurretButtonHoming = 2,
 	TurretButtonMine = 3,
 	PauseButton = 4,
-	NoButton = NUMBER_OF_BUTTONS
+	CashMenu = 5,
+	HealthMenu = 6,
+	NoButton = NUMBER_OF_MENU_OBJECTS
 };
 
 int check_game_button_pressed(void);
 
-Coordinates GameButton[NUMBER_OF_BUTTONS];
+Coordinates GameMenuObject[NUMBER_OF_MENU_OBJECTS];
 Coordinates MouseInput;
+
+//Environment
+#define MAX_ENVIRONMENT_OBJECT 1
+Coordinates Environment[MAX_ENVIRONMENT_OBJECT];
 
 //Common Tools
 int Collision_Detection(Coordinates object1, Coordinates object2);
 int btn_is_pressed(Coordinates object1);
-void render_button(Coordinates ButtonX, int type);
+void render_turret_menu_object(Coordinates ButtonX, int type);

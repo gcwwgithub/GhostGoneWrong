@@ -13,10 +13,14 @@ void turret_circle_button_init(void);
 void turret_star_button_init(void);
 void turret_percentage_button_init(void);
 void mouse_init(void);
+void environment_init(LevelData* LevelX);
+void cash_init(void);
+void health_init(void);
 
 void pathfinding_reset(LevelData* LevelX);
 void pathfinding_calculate_cost(LevelData* LevelX);
 
+void render_environment(void);
 void render_game_grid(void);
 void render_path(LevelData* LevelX);
 void render_turret_menu(void);
