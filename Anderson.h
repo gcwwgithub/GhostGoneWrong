@@ -49,5 +49,7 @@ void render_pause_screen(void);
 
 int withinBoundaries(float minX, float minY, float maxX, float maxY);
 void detect_grid_square_color(LevelData level);
+void reduce_building_phase_time();
+
 
 void exit_game(void);
