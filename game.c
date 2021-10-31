@@ -14,8 +14,8 @@ void game_init(void)
 	CP_System_SetWindowSize(1280, 780);
 
 	init_all_images();
-	SpriteSheetInit();
-
+	int_spritesheet_array();
+	init_game_font();
 	currentGameState = MainMenu;
 	
 	//Main menu, level select
@@ -131,7 +131,7 @@ void game_update(void)
 		}
 
 		CP_Graphics_ClearBackground(COLOR_GREY);
-		render_game_title();
+		render_title_screen();
 		render_ui_button(PlayButton);
 		render_ui_button(QuitButton);
 	}
@@ -148,7 +148,7 @@ void game_update(void)
 		}
 
 		CP_Graphics_ClearBackground(COLOR_GREY);
-		render_game_title();
+		render_title_screen();
 		render_level_select_buttons();
 		render_ui_button(BackButton);
 	}

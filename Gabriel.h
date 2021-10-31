@@ -82,15 +82,15 @@ void insert_new_node(struct node**list, float xPos, float yPos, int typeOfBullet
 struct node* delete_node(struct node* list,int key);
 int isEmpty(void);
 
-void render_bullet_circles();
+void init_all_images(void);
+void render_bullet_circles(void);
+void int_spritesheet_array(void);
 
 void SpriteSheetCalculation(struct SpriteSheetImage* s, CP_Image image, int pixelWidth, int pixelHeight, int stopPoint);
-void SpriteSheetInit(void);
 void RenderPortal(struct SpriteSheetImage s, struct PortalVariables* pv, CP_Image image);
 void RenderTurret(CP_Image image, struct SpriteSheetImage s, float xPos, float yPos, float sizeOfImageX, float sizeOfImageY);
 void RenderNormal(CP_Image image, struct SpriteSheetImage s, float xPos, float yPos, float sizeOfImageX, float sizeOfImageY);
 void RenderWithAlphaChanged(CP_Image image, struct SpriteSheetImage s, float xPos, float yPos, float sizeOfImageX, float sizeOfImageY, int alphaValue);
 void UpdatePortal(void);
-void init_all_images(void);
 
 

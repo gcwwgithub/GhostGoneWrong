@@ -34,7 +34,7 @@ Button PauseBackButton;
 
 void init_text_button(Button button, float buttonPosX, float buttonPosY, float buttonWidth, float buttonHeight, float textPosX, float textPosY, char string[]);
 
-void render_game_title(void);
+void render_title_screen(void);
 void init_play_button(void);
 void init_quit_button(void);
 void init_back_button(void);
@@ -50,6 +50,6 @@ void render_pause_screen(void);
 int withinBoundaries(float minX, float minY, float maxX, float maxY);
 void detect_grid_square_color(LevelData level);
 void reduce_building_phase_time();
-
+void init_game_font(void);
 
 void exit_game(void);

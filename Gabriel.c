@@ -124,7 +124,7 @@ int isEmpty() {
 
 #pragma region SpriteSheetRelated
 
-void SpriteSheetInit(void)
+void int_spritesheet_array(void)
 {
 	SpriteSheetCalculation(bluePortalArray, bluePortalSpriteSheet, 128, 128, 1);
 	SpriteSheetCalculation(redPortalArray, redPortalSpriteSheet, 128, 128, 1);
@@ -195,7 +195,7 @@ void RenderNormal(CP_Image image, struct SpriteSheetImage s, float xPos, float y
 
 #pragma endregion
 
-void render_bullet_circles()
+void render_bullet_circles(void)
 {
 	if (!isEmpty())
 	{
