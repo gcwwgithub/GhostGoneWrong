@@ -14,7 +14,7 @@ void game_init(void)
 	CP_System_SetWindowSize(1280, 780);
 
 	init_all_images();
-	int_spritesheet_array();
+	init_spritesheet_array();
 	init_game_font();
 	currentGameState = MainMenu;
 	

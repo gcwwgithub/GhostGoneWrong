@@ -124,7 +124,7 @@ int isEmpty() {
 
 #pragma region SpriteSheetRelated
 
-void int_spritesheet_array(void)
+void init_spritesheet_array(void)
 {
 	SpriteSheetCalculation(bluePortalArray, bluePortalSpriteSheet, 128, 128, 1);
 	SpriteSheetCalculation(redPortalArray, redPortalSpriteSheet, 128, 128, 1);

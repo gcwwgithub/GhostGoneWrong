@@ -84,7 +84,7 @@ int isEmpty(void);
 
 void init_all_images(void);
 void render_bullet_circles(void);
-void int_spritesheet_array(void);
+void init_spritesheet_array(void);
 
 void SpriteSheetCalculation(struct SpriteSheetImage* s, CP_Image image, int pixelWidth, int pixelHeight, int stopPoint);
 void RenderPortal(struct SpriteSheetImage s, struct PortalVariables* pv, CP_Image image);
