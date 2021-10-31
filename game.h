@@ -68,7 +68,8 @@ typedef struct LevelData {
 	int exitRow;
 	int exitCol;
 	Grids grid[GAME_GRID_ROWS][GAME_GRID_COLS];
-	int cash;
+	int cash1;
+	int cash2;
 	int health;
 }LevelData;
 
@@ -77,7 +78,7 @@ LevelData Level[MAX_NUMBER_OF_LEVEL];
 int currentGameLevel;
 
 //Objects
-#define NUMBER_OF_MENU_OBJECTS 7
+#define NUMBER_OF_MENU_OBJECTS 8
 
 typedef enum ObjectShape {
 	objectCircle,
@@ -104,8 +105,9 @@ enum MenuObjectType {
 	TurretButtonHoming = 2,
 	TurretButtonMine = 3,
 	PauseButton = 4,
-	CashMenu = 5,
-	HealthMenu = 6,
+	CashMenu1 = 5,
+	CashMenu2 = 6,
+	HealthMenu = 7,
 	NoButton = NUMBER_OF_MENU_OBJECTS
 };
 
