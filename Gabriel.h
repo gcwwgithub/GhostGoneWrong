@@ -7,7 +7,7 @@
 
 struct SpriteSheetImage
 {
-	int pixelOfImage;
+	int pixelSizeX,pixelSizeY;
 	float leftXPixel, rightXPixel, topYPixel, bottomYPixel;
 };
 
@@ -56,6 +56,7 @@ CP_Image bulletSpriteSheet;
 CP_Image bulletRadiusSpriteSheet;
 CP_Image currencySpriteSheet;
 CP_Image environmentObjectsSpriteSheet;
+CP_Image backgroundSpriteSheet;
 
 
 struct SpriteSheetImage bluePortalArray[3];
@@ -68,6 +69,7 @@ struct SpriteSheetImage bulletArray[3];
 struct SpriteSheetImage bulletRadiusArray[4];
 struct SpriteSheetImage currencyArray[2];
 struct SpriteSheetImage environmentObjectArray[8];
+struct SpriteSheetImage backgroundArray[5];
 struct PortalVariables portalVariablesArray[2];
 
 struct node* firstNode;
@@ -80,14 +82,15 @@ void insert_new_node(struct node**list, float xPos, float yPos, int typeOfBullet
 struct node* delete_node(struct node* list,int key);
 int isEmpty(void);
 
-void render_bullet_circles();
+void init_all_images(void);
+void render_bullet_circles(void);
+void init_spritesheet_array(void);
 
-void SpriteSheetCalculation(struct SpriteSheetImage* s, CP_Image image, int pixel, int stopPoint);
-void SpriteSheetInit(void);
+void SpriteSheetCalculation(struct SpriteSheetImage* s, CP_Image image, int pixelWidth, int pixelHeight, int stopPoint);
 void RenderPortal(struct SpriteSheetImage s, struct PortalVariables* pv, CP_Image image);
 void RenderTurret(CP_Image image, struct SpriteSheetImage s, float xPos, float yPos, float sizeOfImageX, float sizeOfImageY);
 void RenderNormal(CP_Image image, struct SpriteSheetImage s, float xPos, float yPos, float sizeOfImageX, float sizeOfImageY);
-void RenderBulletRadius(CP_Image image, struct SpriteSheetImage s, float xPos, float yPos, float sizeOfImageX, float sizeOfImageY, int alphaValue);
+void RenderWithAlphaChanged(CP_Image image, struct SpriteSheetImage s, float xPos, float yPos, float sizeOfImageX, float sizeOfImageY, int alphaValue);
 void UpdatePortal(void);
-void init_all_images(void);
+
 

@@ -14,8 +14,8 @@ void game_init(void)
 	CP_System_SetWindowSize(1280, 780);
 
 	init_all_images();
-	SpriteSheetInit();
-
+	init_spritesheet_array();
+	init_game_font();
 	currentGameState = MainMenu;
 	
 	//Main menu, level select
@@ -39,7 +39,8 @@ void game_init(void)
 	turret_star_button_init();
 	turret_percentage_button_init();
 	pause_button_init();
-	cash_init();
+	cash1_init();
+	cash2_init();
 	health_init();
 
 	//Initialize Objects
@@ -53,7 +54,8 @@ void game_init(void)
 	Level[0].exitRow = GAME_GRID_ROWS - 1;
 	Level[0].exitCol = (GAME_GRID_COLS - 1) / 2;
 	Level[0].health = 100;
-	Level[0].cash = 0;
+	Level[0].cash1 = 0;
+	Level[0].cash2 = 50;
 	
 	pathfinding_init(&Level[0]);
 	environment_init(&Level[0]);
@@ -96,7 +98,8 @@ void game_update(void)
 		render_turret_menu_object(GameMenuObject[TurretButtonSlow], TurretButtonSlow);
 		render_turret_menu_object(GameMenuObject[TurretButtonHoming], TurretButtonHoming);
 		render_turret_menu_object(GameMenuObject[TurretButtonMine], TurretButtonMine);
-		render_turret_menu_object(GameMenuObject[CashMenu], CashMenu);
+		render_turret_menu_object(GameMenuObject[CashMenu1], CashMenu1);
+		render_turret_menu_object(GameMenuObject[CashMenu2], CashMenu2);
 		render_turret_menu_object(GameMenuObject[HealthMenu], HealthMenu);
 
 		draw_multiple_enemies();
@@ -126,7 +129,7 @@ void game_update(void)
 		}
 
 		CP_Graphics_ClearBackground(COLOR_GREY);
-		render_game_title();
+		render_title_screen();
 		render_ui_button(PlayButton);
 		render_ui_button(QuitButton);
 	}
@@ -143,7 +146,7 @@ void game_update(void)
 		}
 
 		CP_Graphics_ClearBackground(COLOR_GREY);
-		render_game_title();
+		render_title_screen();
 		render_level_select_buttons();
 		render_ui_button(BackButton);
 	}

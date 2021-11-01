@@ -219,47 +219,19 @@ void update_turret(void)
 			if(turret[i].type == T_SLOW)
 				turret[i].angle = atan2f(turret[i].dir.pos_y, turret[i].dir.pos_x) * 180.f / (float)PI;
 
-			turret[i].mod.cooldown -= 1.f * CP_System_GetDt();
-			if (turret[i].mod.cooldown <= 0)
+			//turret[i].mod.cooldown -= 1.f * CP_System_GetDt();
+			if (/*turret[i].mod.cooldown <= 0 &&*/ turret[i].turretAnimTimer >= 0.60 && turret[i].animCounter >= 5)
 			{
 				turret[i].mod.tracked_index = e_index;
 				//printf("index: %d\n", e_index);
 				shoot(turret[i].data.xOrigin, turret[i].data.yOrigin, turret[i].mod, turret[i].type, turret[i].dir);
-				turret[i].mod.cooldown = 2.f;
+				//turret[i].mod.cooldown = 2.f;
 			}
 		}
 		else
 		{
 			turret[i].currentAnimState = INACTIVE;
 		}
-
-
-#if _DEBUG
-		//single enemy
-		/*if (magnitude_sq(v1) <= turret[i].range * turret[i].range && test.state != Death)
-		{
-			turret[i].currentAnimState = SHOOTING;
-			if (turret[i].animCounter <= 2)
-			{
-				turret[i].animCounter = 3;
-			}
-			turret[i].dir = v1;
-			turret[i].dir = normalise(turret[i].dir);
-			turret[i].angle = atan2f(turret[i].dir.pos_y, turret[i].dir.pos_x) * 180.f / (float)PI;
-			turret[i].cooldown -= 1.f * CP_System_GetDt();
-			if (turret[i].cooldown <= 0)
-			{
-				shoot(turret[i].data.xOrigin, turret[i].data.yOrigin, turret[i].dir);
-				turret[i].cooldown = 2.f;
-			}
-		}
-		else
-		{
-			turret[i].currentAnimState = INACTIVE;
-		}*/
-#endif
-
-
 	}
 }
 
@@ -358,7 +330,7 @@ void col_type_projectile(Projectile* p)
 {
 	float dist;
 	Vector2 dif;
-	switch (p->type)
+	switch (p->type) //will refactor
 	{
 	case P_SLOW:
 	{
@@ -424,7 +396,7 @@ void update_turretAnimation(Turret* t)
 		case INACTIVE:
 			if (t->turretAnimTimer >= 0.35)
 			{
-				if (t->animCounter >= 2)
+				if (t->animCounter >= 2) //0 1 2
 				{
 					t->animCounter = 0;
 				}
