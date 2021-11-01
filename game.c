@@ -118,6 +118,42 @@ void game_update(void)
 		render_environment();
 		UpdatePortal();
 	}
+	else if (currentGameState == Building)
+	{
+		reduce_building_phase_time();
+
+		//do turret & projectile update next
+		update_turret();
+		update_projectile();
+
+		//render all the stuff
+		render_game_grid();
+		render_path(&Level[currentGameLevel]);
+		render_turret_menu();
+
+		render_wave_timer_text();
+		render_turret_menu_object(GameMenuObject[PauseButton], PauseButton);
+		render_turret_menu_object(GameMenuObject[TurretButtonBasic], TurretButtonBasic);
+		render_turret_menu_object(GameMenuObject[TurretButtonSlow], TurretButtonSlow);
+		render_turret_menu_object(GameMenuObject[TurretButtonHoming], TurretButtonHoming);
+		render_turret_menu_object(GameMenuObject[TurretButtonMine], TurretButtonMine);
+		render_turret_menu_object(GameMenuObject[CashMenu1], CashMenu1);
+		render_turret_menu_object(GameMenuObject[CashMenu2], CashMenu2);
+		render_turret_menu_object(GameMenuObject[HealthMenu], HealthMenu);
+
+		render_turret();
+		render_projectile();
+
+		render_bullet_circles();
+
+		render_new_turret(&Level[currentGameLevel]);
+		render_button_pressed();//Must be after render_new_turret
+
+		//test enemy
+
+		render_environment();
+		UpdatePortal();
+	}
 
 	else if (currentGameState == MainMenu)
 	{
@@ -140,7 +176,7 @@ void game_update(void)
 		// Level 1
 		if (btn_is_pressed(levelButtons[0].buttonData))
 		{
-			currentGameState = Wave;
+			currentGameState = Building;
 		}
 		else if (btn_is_pressed(BackButton.buttonData))
 		{

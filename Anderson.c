@@ -17,20 +17,6 @@ int greySquareClicked = 0;
 int turretButton0Clicked = 0;
 float buildingTime = BUILDING_PHASE_TIME;
 
-
-// Taking top left & bottom right corners.
-int withinBoundaries(float minX, float minY, float maxX, float maxY)
-{
-	if (CP_Input_GetMouseX() > minX && CP_Input_GetMouseX() < maxX)
-	{
-		if (CP_Input_GetMouseY() > minY && CP_Input_GetMouseY() < maxY)
-		{
-			return 1;
-		}
-	}
-	return 0;
-}
-
 // This should output the color of the square that is clicked.
 // This is dependent on the level set input.
 void detect_grid_square_color(LevelData level)
@@ -39,9 +25,6 @@ void detect_grid_square_color(LevelData level)
 	if (CP_Input_MouseTriggered(MOUSE_BUTTON_1))
 	{
 		whiteSquareClicked = 0;
-		greySquareClicked = 0;
-		redSquareClicked = 0;
-		blueSquareClicked = 0;
 
 		turretButton0Clicked = 0;
 
@@ -73,49 +56,17 @@ void detect_grid_square_color(LevelData level)
 
 				break;
 			}
-			case (Path):
-			{
-				greySquareClicked = 1;
-				break;
-			}
-			case (Spawn):
-			{
-				redSquareClicked = 1;
-				break;
-			}
-			case (Exit):
-			{
-				blueSquareClicked = 1;
-				break;
-			}
 			}
 		}
-		// if clicked outside the grid
-		//else if (withinBoundaries(GameMenuObject[0].xOrigin, GameMenuObject[0].yOrigin, GameMenuObject[0].xOrigin + GameMenuObject[0].width, GameMenuObject[0].yOrigin + GameMenuObject[0].height))
-		//{
-		//	turretButton0Clicked = 1;
-		//}
 	}
 
 	debugSquareFont = GAME_FONT;
 	CP_Font_Set(debugSquareFont);
 	CP_Settings_Fill(COLOR_RED);
 	CP_Settings_TextSize(FONT_SIZE);
-	if (redSquareClicked)
-	{
-		CP_Font_DrawText("Red square", CP_System_GetWindowWidth() * 0.9f, CP_System_GetWindowHeight() * 0.1f);
-	}
-	if (blueSquareClicked)
-	{
-		CP_Font_DrawText("Blue square", CP_System_GetWindowWidth() * 0.9f, CP_System_GetWindowHeight() * 0.1f);
-	}
 	if (whiteSquareClicked)
 	{
 		CP_Font_DrawText("White square", CP_System_GetWindowWidth() * 0.9f, CP_System_GetWindowHeight() * 0.1f);
-	}
-	if (greySquareClicked)
-	{
-		CP_Font_DrawText("Grey square", CP_System_GetWindowWidth() * 0.9f, CP_System_GetWindowHeight() * 0.1f);
 	}
 	if (turretButton0Clicked)
 	{
@@ -125,8 +76,15 @@ void detect_grid_square_color(LevelData level)
 
 void reduce_building_phase_time()
 {
-	if (buildingTime < 0.0f) currentGameState = Wave;
-	buildingTime -= CP_System_GetDt();
+	if (buildingTime < 0.05f)
+	{
+		buildingTime = 0.0f;
+		currentGameState = Wave;
+	}
+	else
+	{
+		buildingTime -= CP_System_GetDt();
+	}
 }
 
 #pragma region UI
@@ -235,11 +193,11 @@ void init_pause_screen(void)
 
 void render_wave_timer_text(void)
 {
-	CP_Settings_Fill(COLOR_BLUE);
 	CP_Settings_TextSize(FONT_SIZE);
 
-	CP_Font_DrawText("Math Gone Wrong", CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.25f);
-
+	char buffer[50] = { 0 };
+	sprintf_s(buffer, sizeof(buffer), "Time Left: %.1f", buildingTime);
+	CP_Font_DrawText(buffer, CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.05f);
 }
 
 //TODO
@@ -272,8 +230,8 @@ void render_title_screen(void)
 {
 	RenderWithAlphaChanged(backgroundSpriteSheet, backgroundArray[0], CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.5f, CP_System_GetWindowWidth(), CP_System_GetWindowHeight(), 150);
 	CP_Image_Draw(titleWordImage, CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.2f, 256, 256, 255);
-	
-	
+
+
 }
 
 void init_game_font(void)
@@ -364,6 +322,12 @@ void fast_forward_building_phase(void)
 	// set building phase time to 0.0f
 	buildingTime = 0.0f;
 }
+
+void display_enemies_left(void)
+{
+
+}
+
 
 #pragma endregion
 
