@@ -37,13 +37,13 @@ typedef struct Enemy {
 
 void enemy_test_init(void);
 void Draw_enemy(enemy* r);
-void enemy_move(enemy* r, float Enemy_PathpointsX[], float Enemy_PathY[], int number_of_points);
+void enemy_move(enemy* r, float Enemy_PathpointsX[], float Enemy_PathpointsY[], int number_of_points, LevelData* Level);
 int direction_to_next_point(float enemy_pathpointsX[], float enemy_pathpointsY[], enemy* r);
 int update_point_num(float enemy_pathpointsX[], float enemy_pathpointsY[], enemy* r);
 void EnemyAnimationState(enemy* r);
 int Check_state(enemy* r);
 
-void EnemyDeath(enemy* r);
+void EnemyDeath(enemy* r, LevelData* Level);
 void Basic_Ghost(enemy* r);
 void Enemies_init(int Basic_enemy_count, int Fast_enemy_count, int Fat_enemy_count);
 void update_enemy(void);

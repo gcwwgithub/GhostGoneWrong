@@ -77,10 +77,13 @@ int Check_state(enemy* r) {
 	return 0;
 }
 
-void enemy_move(enemy* r, float Enemy_PathpointsX[], float Enemy_PathpointsY[], int number_of_points) { //Enemy movement
-	float Speed = (r->speed) * r->slow_amt * CP_System_GetDt();
+void enemy_move(enemy* r, float Enemy_PathpointsX[], float Enemy_PathpointsY[], int number_of_points, LevelData* Level) { //Enemy movement
+	float Speed = (r->speed) * CP_System_GetDt();
 	update_point_num(Enemy_PathpointsX, Enemy_PathpointsY, r);
 	if (r->CurrentWaypoint + 1 == number_of_points) {
+		if (r->state != Death && r->state != Inactive) {
+			Level->health -= 10;
+		}
 		r->state = Death;
 	}
 
@@ -147,7 +150,7 @@ int update_point_num(float Enemy_PathpointsX[], float Enemy_PathpointsY[], enemy
 
 
 
-void EnemyDeath(enemy* r) {  //function updates and checks for collision or death also what happens upon death
+void EnemyDeath(enemy* r, LevelData* Level) {  //function updates and checks for collision or death also what happens upon death
 	for (int i = 0; i < MAX_PROJECTILE; ++i) {
 		if (proj[i].isActive) {
 			Coordinates a = r->data;
@@ -157,24 +160,23 @@ void EnemyDeath(enemy* r) {  //function updates and checks for collision or deat
 				proj[i].isActive = 0;
 				if (r->state != Death)
 				{
-					col_type_projectile(&proj[i]);
-					if (proj[i].type != P_SLOW)
-					{
-						r->health -= turret[i].mod.damage;
-					}
-					
+					r->health -= turret[i].mod.damage;
 					r->state = Hurt;
 					r->timer = 0;
 
 
 				}
-				insert_new_node(&firstNode, r->data.xOrigin, r->data.yOrigin, proj[i].type);
+
 			}
 		}
 	}
 
 	if (r->health <= 0) {
+		if (r->state == Hurt) {
+			Level->cash2 += 100;
+		}
 		r->state = Death;
+
 	}
 	if (r->state == Death) {
 		if (r->alpha >= 0) {
@@ -282,10 +284,10 @@ void update_enemy(void) {
 		timer--;
 	}
 	for (int i = 0; i < MAX_ENEMIES; i++) {
-		if ((Enemy[i].state == Inactive) && (Enemy[i].health >= 1)) {
+		if ((Enemy[i].state == Inactive) && (Enemy[i].health >= 1) &&(count/3<=MAX_ENEMIES)){
 
 			int b = count;
-			if (b - wave_timer >= 5) {
+			if (b - wave_timer >= 3) {
 				Enemy[i].state = Moving;
 				wave_timer = count;
 			}
@@ -301,8 +303,8 @@ void update_enemy(void) {
 		}
 
 
-		enemy_move(&Enemy[i], Xarray, Yarray, 2);
-		EnemyDeath(&Enemy[i]);
+		enemy_move(&Enemy[i], Xarray, Yarray, 2, &Level[0]);
+		EnemyDeath(&Enemy[i], &Level[0]);
 	}
 	enemy* En = &Enemy[0];
 }
