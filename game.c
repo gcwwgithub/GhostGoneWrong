@@ -80,7 +80,6 @@ void game_update(void)
 	if (currentGameState == Wave)
 	{
 		//do enemy update first
-		//enemy_move(&test, Xarray, Yarray, 2);
 		update_enemy();
 
 		//do turret & projectile update next
@@ -110,7 +109,6 @@ void game_update(void)
 		render_new_turret(&Level[currentGameLevel]);
 		render_button_pressed();//Must be after render_new_turret
 
-		//test enemy
 
 		render_environment();
 		UpdatePortal();
