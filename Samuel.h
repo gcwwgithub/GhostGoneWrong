@@ -8,6 +8,8 @@
 #define PROJ_OFFSET Game.gridHeight * 0.4
 #define SLOW_RANGE Game.gridWidth * 2
 #define EXPLOSION_RANGE Game.gridWidth * 2
+#define TRUE 1
+#define FALSE 0
 //enum of turret types
 typedef enum TurretType
 {
@@ -77,6 +79,9 @@ void turret_init(void);
 */
 void place_turret(TurretType type, int index_x, int index_y);
 
+//remove a turret from grid ()
+void remove_turret(int index_x, int index_y);
+
 //void render_turret(Turret* t);
 void render_turret(void);
 
@@ -100,3 +105,4 @@ void update_turretAnimation(Turret* t);
 
 Projectile proj[MAX_PROJECTILE];
 Turret turret[MAX_TURRET];
+int turret_on_grid[GAME_GRID_ROWS][GAME_GRID_COLS];
