@@ -45,6 +45,8 @@ void init_all_images(void)
 	currencySpriteSheet = CP_Image_Load("./Assets/Currency.png");
 	environmentObjectsSpriteSheet = CP_Image_Load("./Assets/Environment.png");
 	backgroundSpriteSheet = CP_Image_Load("./Assets/Background.png");
+	portalEnterEffectSpriteSheet = CP_Image_Load("./Assets/PortalEnterEffect.png");
+	portalSpawnEffectSpriteSheet = CP_Image_Load("./Assets/EnemySpawnEffect.png");
 
 	portalCounter = 0;
 	portalTimer = 0;
@@ -91,6 +93,26 @@ void insert_new_node(struct node** list, float xPosInput, float yPosInput, int t
 
 }
 
+void insert_new_node_portal(struct node** list, float xPosInput, float yPosInput,int* key)
+{
+
+	struct node* newNode;
+	newNode = malloc(sizeof(struct node));
+	if (newNode != NULL)
+	{
+		newNode->circleAlphaValue = 255;
+		newNode->key = keyNumber;
+		newNode->next = firstNode;
+		newNode->xPos = xPosInput;
+		newNode->yPos = yPosInput;
+
+		newNode->next = *list;
+		*key++;
+		*list = newNode;
+	}
+
+}
+
 //delete a link with given key
 struct node* delete_node(struct node* list, int key)
 {
@@ -116,8 +138,8 @@ struct node* delete_node(struct node* list, int key)
 
 }
 
-int isEmpty() {
-	return firstNode == NULL;
+int isEmpty(struct node* currentNode) {
+	return currentNode == NULL;
 }
 #pragma endregion
 
@@ -137,6 +159,8 @@ void init_spritesheet_array(void)
 	SpriteSheetCalculation(currencyArray, currencySpriteSheet, 128, 128, 0);
 	SpriteSheetCalculation(environmentObjectArray, environmentObjectsSpriteSheet, 128, 128, 1);
 	SpriteSheetCalculation(backgroundArray, backgroundSpriteSheet,1920,1080, 1);
+	SpriteSheetCalculation(portalEnterEffectArray, portalEnterEffectSpriteSheet, 128, 128, 1);
+	SpriteSheetCalculation(portalSpawnEffectArray, portalSpawnEffectSpriteSheet, 128, 128, 1);
 }
 
 void SpriteSheetCalculation(struct SpriteSheetImage* s, CP_Image image, int pixelWidth, int pixelHeight, int stopPoint)
@@ -197,7 +221,7 @@ void RenderNormal(CP_Image image, struct SpriteSheetImage s, float xPos, float y
 
 void render_bullet_circles(void)
 {
-	if (!isEmpty())
+	if (!isEmpty(firstNode))
 	{
 		struct node* current = firstNode;
 		while (1)
@@ -232,6 +256,51 @@ void render_bullet_circles(void)
 		}
 	}
 
+}
+
+void render_portal_effect(struct node* nodeToChange)
+{
+	if (!isEmpty(nodeToChange))
+	{
+		struct node* current = nodeToChange;
+		while (1)
+		{
+
+			if (current != NULL)
+			{
+				RenderWithAlphaChanged(bulletRadiusSpriteSheet, current->bulletImage, current->xPos, current->yPos,
+					100.0f, 100.0f, current->circleAlphaValue);
+				current->circleAlphaValue -= 50;
+				if (current->circleAlphaValue < 0)
+				{
+					nodeToChange = delete_node(current, current->key);
+					break;
+				}
+				if (current->next == NULL)
+				{
+					break;
+				}
+
+				else
+				{
+					current = current->next;
+				}
+			}
+
+			else
+			{
+				break;
+			}
+
+		}
+	}
+
+}
+
+void render_all_portal_effects(void)
+{
+	render_portal_effect(portalEnterFirstNode);
+	render_portal_effect(portalSpawnFirstNode);
 }
 
 
