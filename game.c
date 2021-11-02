@@ -35,13 +35,14 @@ void game_init(void)
 
 	//turret menu items
 	pause_button_init();
-	turret_triangle_button_init();
-	turret_circle_button_init();
-	turret_star_button_init();
-	turret_percentage_button_init();
+	turret_basic_button_init();
+	turret_slow_button_init();
+	turret_homing_button_init();
+	turret_mine_button_init();
 	goldQuartz_init();
 	phantomQuartz_init();
 	health_init();
+	currency_swap_init();
 
 	//Initialize Objects
 	mouse_init();
@@ -54,8 +55,8 @@ void game_init(void)
 	Level[0].exitRow = GAME_GRID_ROWS - 1;
 	Level[0].exitCol = (GAME_GRID_COLS - 1) / 2;
 	Level[0].health = 100;
-	Level[0].goldQuartz = 0;
-	Level[0].phantomQuartz = 50;
+	Level[0].goldQuartz = 50;
+	Level[0].phantomQuartz = 0;
 	
 	pathfinding_init(&Level[0]);
 	environment_init(&Level[0]);
@@ -97,6 +98,7 @@ void game_update(void)
 		render_turret_menu_object(GameMenuObject[TurretButtonSlow], TurretButtonSlow);
 		render_turret_menu_object(GameMenuObject[TurretButtonHoming], TurretButtonHoming);
 		render_turret_menu_object(GameMenuObject[TurretButtonMine], TurretButtonMine);
+		render_turret_menu_object(GameMenuObject[SwapButton], SwapButton);
 		render_turret_menu_object(GameMenuObject[GoldQuartzMenu], GoldQuartzMenu);
 		render_turret_menu_object(GameMenuObject[PhantomQuartzMenu], PhantomQuartzMenu);
 		render_turret_menu_object(GameMenuObject[HealthMenu], HealthMenu);
@@ -134,9 +136,10 @@ void game_update(void)
 		render_turret_menu_object(GameMenuObject[TurretButtonSlow], TurretButtonSlow);
 		render_turret_menu_object(GameMenuObject[TurretButtonHoming], TurretButtonHoming);
 		render_turret_menu_object(GameMenuObject[TurretButtonMine], TurretButtonMine);
-		render_turret_menu_object(GameMenuObject[CashMenu1], CashMenu1);
-		render_turret_menu_object(GameMenuObject[CashMenu2], CashMenu2);
+		render_turret_menu_object(GameMenuObject[GoldQuartzMenu], GoldQuartzMenu);
+		render_turret_menu_object(GameMenuObject[PhantomQuartzMenu], PhantomQuartzMenu);
 		render_turret_menu_object(GameMenuObject[HealthMenu], HealthMenu);
+		render_turret_menu_object(GameMenuObject[SwapButton], SwapButton);
 
 		render_turret();
 		render_projectile();

@@ -343,16 +343,16 @@ void GameWinLoseCheck(void)
 
 void phantom_quartz_change(int changeInQuartz)
 {
-	Level[0].cash2 += changeInQuartz;
+	Level[0].phantomQuartz += changeInQuartz;
 }
 
 void gold_quartz_add(int changeInQuartz)
 {
-	Level[0].cash1 += changeInQuartz;
+	Level[0].goldQuartz += changeInQuartz;
 }
 
 void phantom_gold_quartz_conversion(int phantomAmtToConvert, int conversionRate)
 {
-	Level[0].cash2 -= phantomAmtToConvert;
-	Level[0].cash1 += phantomAmtToConvert / conversionRate;
+	Level[0].phantomQuartz -= phantomAmtToConvert;
+	Level[0].goldQuartz += phantomAmtToConvert / conversionRate;
 }

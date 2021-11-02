@@ -78,7 +78,7 @@ LevelData Level[MAX_NUMBER_OF_LEVEL];
 int currentGameLevel;
 
 //Objects
-#define NUMBER_OF_MENU_OBJECTS 8
+#define NUMBER_OF_MENU_OBJECTS 10
 
 typedef enum ObjectShape {
 	objectCircle,
@@ -100,15 +100,16 @@ Coordinates TurretMenu;
 
 //Buttons
 enum MenuObjectType {
-	TurretButtonBasic = 0,
-	TurretButtonSlow = 1,
-	TurretButtonHoming = 2,
-	TurretButtonMine = 3,
-	PauseButton = 4,
-	GoldQuartzMenu = 5,
-	PhantomQuartzMenu = 6,
-	HealthMenu = 7,
-	NoButton = NUMBER_OF_MENU_OBJECTS
+	PauseButton,
+	TurretButtonBasic,
+	TurretButtonSlow,
+	TurretButtonHoming,
+	TurretButtonMine,
+	SwapButton,
+	GoldQuartzMenu,
+	PhantomQuartzMenu,
+	HealthMenu,
+	NoButton
 };
 
 int check_game_button_pressed(void);

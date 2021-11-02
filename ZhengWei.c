@@ -198,7 +198,7 @@ void pause_button_init(void) {
 	GameMenuObject[PauseButton].image = pauseButtonImage;
 }
 
-void turret_triangle_button_init(void) {
+void turret_basic_button_init(void) {
 	GameMenuObject[TurretButtonBasic].xOrigin = GameMenuObject[PauseButton].xOrigin;
 	GameMenuObject[TurretButtonBasic].yOrigin = GameMenuObject[PauseButton].height;
 	GameMenuObject[TurretButtonBasic].width = GameMenuObject[PauseButton].width * 2;
@@ -207,34 +207,32 @@ void turret_triangle_button_init(void) {
 	GameMenuObject[TurretButtonBasic].image = slowTurretImageArray[0];
 }
 
-void turret_circle_button_init(void) {
+void turret_slow_button_init(void) {
 	GameMenuObject[TurretButtonSlow].xOrigin = GameMenuObject[TurretButtonBasic].xOrigin;
-	GameMenuObject[TurretButtonSlow].yOrigin = GameMenuObject[TurretButtonBasic].yOrigin + GameMenuObject[TurretButtonBasic].height; //1/4 of the space is for other uses
+	GameMenuObject[TurretButtonSlow].yOrigin = GameMenuObject[TurretButtonBasic].yOrigin + GameMenuObject[TurretButtonBasic].height;
 	GameMenuObject[TurretButtonSlow].width = GameMenuObject[TurretButtonBasic].width;
 	GameMenuObject[TurretButtonSlow].height = GameMenuObject[TurretButtonBasic].height;
 	GameMenuObject[TurretButtonSlow].objectType = objectRectangle;
 	GameMenuObject[TurretButtonSlow].image = slowTurretImageArray[0];
 }
 
-void turret_star_button_init(void) {
+void turret_homing_button_init(void) {
 	GameMenuObject[TurretButtonHoming].xOrigin = GameMenuObject[TurretButtonSlow].xOrigin;
-	GameMenuObject[TurretButtonHoming].yOrigin = GameMenuObject[TurretButtonSlow].yOrigin + GameMenuObject[TurretButtonSlow].height; //1/4 of the space is for other uses
+	GameMenuObject[TurretButtonHoming].yOrigin = GameMenuObject[TurretButtonSlow].yOrigin + GameMenuObject[TurretButtonSlow].height;
 	GameMenuObject[TurretButtonHoming].width = GameMenuObject[TurretButtonSlow].width;
 	GameMenuObject[TurretButtonHoming].height = GameMenuObject[TurretButtonSlow].height;
 	GameMenuObject[TurretButtonHoming].objectType = objectRectangle;
 	GameMenuObject[TurretButtonHoming].image = tempStar;
 }
 
-void turret_percentage_button_init(void) {
+void turret_mine_button_init(void) {
 	GameMenuObject[TurretButtonMine].xOrigin = GameMenuObject[TurretButtonHoming].xOrigin;
-	GameMenuObject[TurretButtonMine].yOrigin = GameMenuObject[TurretButtonHoming].yOrigin + GameMenuObject[TurretButtonHoming].height; //1/4 of the space is for other uses
+	GameMenuObject[TurretButtonMine].yOrigin = GameMenuObject[TurretButtonHoming].yOrigin + GameMenuObject[TurretButtonHoming].height;
 	GameMenuObject[TurretButtonMine].width = GameMenuObject[TurretButtonHoming].width;
 	GameMenuObject[TurretButtonMine].height = GameMenuObject[TurretButtonBasic].height;
 	GameMenuObject[TurretButtonMine].objectType = objectRectangle;
 	GameMenuObject[TurretButtonMine].image = tempPercentage;
 }
-
-
 
 void environment_init(LevelData* LevelX) {
 	int row = 1, col = 1;
@@ -276,58 +274,49 @@ void health_init(void) {
 	GameMenuObject[HealthMenu].objectType = objectRectangle;
 }
 
-void render_cash(LevelData LevelX) {
-
+void currency_swap_init(void) {
+	GameMenuObject[SwapButton].xOrigin = GameMenuObject[TurretButtonMine].xOrigin;
+	GameMenuObject[SwapButton].yOrigin = GameMenuObject[TurretButtonMine].yOrigin + GameMenuObject[TurretButtonMine].height;
+	GameMenuObject[SwapButton].width = GameMenuObject[TurretButtonMine].width;
+	GameMenuObject[SwapButton].height = GameMenuObject[TurretButtonMine].height / 2;
+	GameMenuObject[SwapButton].objectType = objectRectangle;
+	GameMenuObject[SwapButton].image = CP_Image_Load(("Assets/Dummy"));
 }
 
 void render_button_pressed(void) {
-	if (NoButton == check_game_button_pressed()) {
-		isPlacingTurret = NOT_PLACING_TURRET;
-	}
-	else if (PauseButton == check_game_button_pressed()) {
-		if (currentGameState == Pause)
-		{
-			currentGameState = Wave;
-		}
-		else // if the game is not paused
-		{
-			currentGameState = Pause;
-		}
+	switch (check_game_button_pressed())
+	{
+	case PauseButton:
+		currentGameState = currentGameState == Pause ? Wave : Pause;
 		MouseInput.xOrigin = (float)CP_System_GetWindowWidth() / 2;
 		MouseInput.yOrigin = (float)CP_System_GetWindowHeight() / 2;
-	}
-	else {
-		if (TurretButtonBasic == check_game_button_pressed()) {
-			isPlacingTurret = T_BASIC;
-		}
-		else if (TurretButtonSlow == check_game_button_pressed()) {
-			isPlacingTurret = T_SLOW;
-		}
-		else if (TurretButtonHoming == check_game_button_pressed()) {
-			isPlacingTurret = T_HOMING;
-		}
-		else if (TurretButtonMine == check_game_button_pressed()) {
-			isPlacingTurret = T_MINE;
-		}
-		switch (check_game_button_pressed())
-		{
-		case 0:
-			RenderNormal(basicTurretSpriteSheet, basicTurretArray[0], CP_Input_GetMouseX(), CP_Input_GetMouseY(), Game.gridWidth, Game.gridHeight);
-			break;
-		case 1:
-			CP_Image_DrawAdvanced(GameMenuObject[check_game_button_pressed()].image, CP_Input_GetMouseX(), CP_Input_GetMouseY(), Game.gridWidth, Game.gridHeight, 255, 0);
-			break;
-		case 2:
-			RenderNormal(homingMissleTurretSpriteSheet, homingMissleTurretArray[0], CP_Input_GetMouseX(), CP_Input_GetMouseY(), Game.gridWidth, Game.gridHeight);
-			break;
-		case 3:
-			RenderNormal(mineSpriteSheet, mineArray[0], CP_Input_GetMouseX(), CP_Input_GetMouseY(), Game.gridWidth, Game.gridHeight);
-			break;
-		case 4:
-			CP_Image_DrawAdvanced(GameMenuObject[check_game_button_pressed()].image, CP_Input_GetMouseX(), CP_Input_GetMouseY(), Game.gridWidth, Game.gridHeight, 255, 0);
-			break;
-		}
-
+		break;
+	case TurretButtonBasic:
+		isPlacingTurret = T_BASIC;
+		RenderNormal(basicTurretSpriteSheet, basicTurretArray[0], CP_Input_GetMouseX(), CP_Input_GetMouseY(), Game.gridWidth, Game.gridHeight);
+		break;
+	case TurretButtonSlow:
+		isPlacingTurret = T_SLOW;
+		CP_Image_DrawAdvanced(GameMenuObject[check_game_button_pressed()].image, CP_Input_GetMouseX(), CP_Input_GetMouseY(), Game.gridWidth, Game.gridHeight, 255, 0);
+		break;
+	case TurretButtonHoming:
+		isPlacingTurret = T_HOMING;
+		RenderNormal(homingMissleTurretSpriteSheet, homingMissleTurretArray[0], CP_Input_GetMouseX(), CP_Input_GetMouseY(), Game.gridWidth, Game.gridHeight);
+		break;
+	case TurretButtonMine:
+		isPlacingTurret = T_MINE;
+		RenderNormal(mineSpriteSheet, mineArray[0], CP_Input_GetMouseX(), CP_Input_GetMouseY(), Game.gridWidth, Game.gridHeight);
+		break;
+	case SwapButton:
+		isPlacingTurret = NOT_PLACING_TURRET;
+		Level[currentGameLevel].goldQuartz -= 10;
+		Level[currentGameLevel].phantomQuartz += 1;
+		MouseInput.xOrigin = (float)CP_System_GetWindowWidth() / 2;
+		MouseInput.yOrigin = (float)CP_System_GetWindowHeight() / 2;
+		break;
+	case NoButton:
+		isPlacingTurret = NOT_PLACING_TURRET;
+		break;
 	}
 }
 
@@ -380,6 +369,9 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 			(menuObjectX.yOrigin + menuObjectX.height / 2), 64,
 			64, 255, 0);
 		break;
+	case SwapButton:
+		RenderNormal(mineSpriteSheet, mineArray[0], menuObjectX.width / 4, (menuObjectX.yOrigin + menuObjectX.height / 2), 128, 128);
+		break;
 	case GoldQuartzMenu:
 		CP_Settings_Fill(COLOR_BLACK);
 		CP_Settings_TextSize(15.0f);
@@ -431,7 +423,6 @@ void render_new_turret(LevelData* LevelX) {
 		}
 	}
 }
-
 
 //Level
 
