@@ -184,56 +184,57 @@ void game_grid_init(void) {
 
 void turret_menu_init(void) {
 	TurretMenu.xOrigin = 0.0f;
-	TurretMenu.yOrigin = 0.0f;
+	TurretMenu.yOrigin = (float)CP_System_GetWindowHeight() / 10;
 	TurretMenu.width = Game.xOrigin / 2;
 	TurretMenu.height = (float)CP_System_GetWindowHeight();
 }
 
+void pause_button_init(void) {
+	GameMenuObject[PauseButton].xOrigin = 0.0f;
+	GameMenuObject[PauseButton].yOrigin = 0.0f;
+	GameMenuObject[PauseButton].width = Game.xOrigin / 4;
+	GameMenuObject[PauseButton].height = (float)CP_System_GetWindowHeight() / 10;
+	GameMenuObject[PauseButton].objectType = objectRectangle;
+	GameMenuObject[PauseButton].image = pauseButtonImage;
+}
+
 void turret_triangle_button_init(void) {
-	float unusableButtonHeight = TurretMenu.height / 4;
-	GameMenuObject[TurretButtonBasic].xOrigin = TurretMenu.xOrigin;
-	GameMenuObject[TurretButtonBasic].yOrigin = TurretMenu.yOrigin + unusableButtonHeight; //1/4 of the space is for other uses
-	GameMenuObject[TurretButtonBasic].width = TurretMenu.width;
-	GameMenuObject[TurretButtonBasic].height = (TurretMenu.height - unusableButtonHeight) / 4;
+	GameMenuObject[TurretButtonBasic].xOrigin = GameMenuObject[PauseButton].xOrigin;
+	GameMenuObject[TurretButtonBasic].yOrigin = GameMenuObject[PauseButton].height;
+	GameMenuObject[TurretButtonBasic].width = GameMenuObject[PauseButton].width * 2;
+	GameMenuObject[TurretButtonBasic].height = GameMenuObject[PauseButton].height * 2;
 	GameMenuObject[TurretButtonBasic].objectType = objectRectangle;
 	GameMenuObject[TurretButtonBasic].image = slowTurretImageArray[0];
 }
 
 void turret_circle_button_init(void) {
-	GameMenuObject[TurretButtonSlow].xOrigin = TurretMenu.xOrigin;
+	GameMenuObject[TurretButtonSlow].xOrigin = GameMenuObject[TurretButtonBasic].xOrigin;
 	GameMenuObject[TurretButtonSlow].yOrigin = GameMenuObject[TurretButtonBasic].yOrigin + GameMenuObject[TurretButtonBasic].height; //1/4 of the space is for other uses
-	GameMenuObject[TurretButtonSlow].width = TurretMenu.width;
+	GameMenuObject[TurretButtonSlow].width = GameMenuObject[TurretButtonBasic].width;
 	GameMenuObject[TurretButtonSlow].height = GameMenuObject[TurretButtonBasic].height;
 	GameMenuObject[TurretButtonSlow].objectType = objectRectangle;
 	GameMenuObject[TurretButtonSlow].image = slowTurretImageArray[0];
 }
 
 void turret_star_button_init(void) {
-	GameMenuObject[TurretButtonHoming].xOrigin = TurretMenu.xOrigin;
+	GameMenuObject[TurretButtonHoming].xOrigin = GameMenuObject[TurretButtonSlow].xOrigin;
 	GameMenuObject[TurretButtonHoming].yOrigin = GameMenuObject[TurretButtonSlow].yOrigin + GameMenuObject[TurretButtonSlow].height; //1/4 of the space is for other uses
-	GameMenuObject[TurretButtonHoming].width = TurretMenu.width;
-	GameMenuObject[TurretButtonHoming].height = GameMenuObject[TurretButtonBasic].height;
+	GameMenuObject[TurretButtonHoming].width = GameMenuObject[TurretButtonSlow].width;
+	GameMenuObject[TurretButtonHoming].height = GameMenuObject[TurretButtonSlow].height;
 	GameMenuObject[TurretButtonHoming].objectType = objectRectangle;
 	GameMenuObject[TurretButtonHoming].image = tempStar;
 }
 
 void turret_percentage_button_init(void) {
-	GameMenuObject[TurretButtonMine].xOrigin = TurretMenu.xOrigin;
+	GameMenuObject[TurretButtonMine].xOrigin = GameMenuObject[TurretButtonHoming].xOrigin;
 	GameMenuObject[TurretButtonMine].yOrigin = GameMenuObject[TurretButtonHoming].yOrigin + GameMenuObject[TurretButtonHoming].height; //1/4 of the space is for other uses
-	GameMenuObject[TurretButtonMine].width = TurretMenu.width;
+	GameMenuObject[TurretButtonMine].width = GameMenuObject[TurretButtonHoming].width;
 	GameMenuObject[TurretButtonMine].height = GameMenuObject[TurretButtonBasic].height;
 	GameMenuObject[TurretButtonMine].objectType = objectRectangle;
 	GameMenuObject[TurretButtonMine].image = tempPercentage;
 }
 
-void pause_button_init(void) {
-	GameMenuObject[PauseButton].xOrigin = TurretMenu.xOrigin;
-	GameMenuObject[PauseButton].yOrigin = TurretMenu.yOrigin;
-	GameMenuObject[PauseButton].width = TurretMenu.width / 2;
-	GameMenuObject[PauseButton].height = GameMenuObject[TurretButtonBasic].yOrigin;
-	GameMenuObject[PauseButton].objectType = objectRectangle;
-	GameMenuObject[PauseButton].image = pauseButtonImage;
-}
+
 
 void environment_init(LevelData* LevelX) {
 	int row = 1, col = 1;
@@ -251,27 +252,27 @@ void render_environment(void) {
 	}
 }
 
-void cash1_init(void) {
-	GameMenuObject[CashMenu1].xOrigin = TurretMenu.xOrigin + GameMenuObject[PauseButton].width;
-	GameMenuObject[CashMenu1].yOrigin = GameMenuObject[PauseButton].yOrigin;
-	GameMenuObject[CashMenu1].width = TurretMenu.width - GameMenuObject[CashMenu1].xOrigin;
-	GameMenuObject[CashMenu1].height = GameMenuObject[PauseButton].height / 3;
-	GameMenuObject[CashMenu1].objectType = objectRectangle;
+void goldQuartz_init(void) {
+	GameMenuObject[GoldQuartzMenu].yOrigin = 0.0f;
+	GameMenuObject[GoldQuartzMenu].width = ((float)CP_System_GetWindowWidth() - Game.xOrigin - Game.width) / 2;
+	GameMenuObject[GoldQuartzMenu].height = (float)CP_System_GetWindowHeight() / 10;
+	GameMenuObject[GoldQuartzMenu].xOrigin = (float)CP_System_GetWindowWidth() - GameMenuObject[GoldQuartzMenu].width;
+	GameMenuObject[GoldQuartzMenu].objectType = objectRectangle;
 }
 
-void cash2_init(void) {
-	GameMenuObject[CashMenu2].xOrigin = GameMenuObject[CashMenu1].xOrigin;
-	GameMenuObject[CashMenu2].yOrigin = GameMenuObject[CashMenu1].yOrigin + GameMenuObject[CashMenu1].height;
-	GameMenuObject[CashMenu2].width = GameMenuObject[CashMenu1].xOrigin;
-	GameMenuObject[CashMenu2].height = GameMenuObject[CashMenu1].height;
-	GameMenuObject[CashMenu2].objectType = objectRectangle;
+void phantomQuartz_init(void) {
+	GameMenuObject[PhantomQuartzMenu].xOrigin = GameMenuObject[GoldQuartzMenu].xOrigin;
+	GameMenuObject[PhantomQuartzMenu].yOrigin = GameMenuObject[GoldQuartzMenu].yOrigin + GameMenuObject[GoldQuartzMenu].height;
+	GameMenuObject[PhantomQuartzMenu].width = GameMenuObject[GoldQuartzMenu].width;
+	GameMenuObject[PhantomQuartzMenu].height = GameMenuObject[GoldQuartzMenu].height;
+	GameMenuObject[PhantomQuartzMenu].objectType = objectRectangle;
 }
 
 void health_init(void) {
-	GameMenuObject[HealthMenu].xOrigin = GameMenuObject[CashMenu2].xOrigin;
-	GameMenuObject[HealthMenu].yOrigin = GameMenuObject[CashMenu2].yOrigin + GameMenuObject[CashMenu2].height;
-	GameMenuObject[HealthMenu].width = GameMenuObject[CashMenu2].width;
-	GameMenuObject[HealthMenu].height = GameMenuObject[CashMenu2].height;
+	GameMenuObject[HealthMenu].xOrigin = GameMenuObject[PhantomQuartzMenu].xOrigin;
+	GameMenuObject[HealthMenu].yOrigin = GameMenuObject[PhantomQuartzMenu].yOrigin + GameMenuObject[PhantomQuartzMenu].height;
+	GameMenuObject[HealthMenu].width = GameMenuObject[PhantomQuartzMenu].width;
+	GameMenuObject[HealthMenu].height = GameMenuObject[PhantomQuartzMenu].height;
 	GameMenuObject[HealthMenu].objectType = objectRectangle;
 }
 
@@ -352,7 +353,7 @@ void render_turret_menu(void) {
 
 }
 
-void render_turret_menu_object(Coordinates menuObjectX, int type) {
+void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type) {
 	char temp[100];
 	CP_Settings_RectMode(CP_POSITION_CORNER);
 	CP_Settings_Fill(COLOR_WHITE);
@@ -360,35 +361,35 @@ void render_turret_menu_object(Coordinates menuObjectX, int type) {
 
 	switch (type)
 	{
-	case 0:
+	case TurretButtonBasic:
 		RenderNormal(basicTurretSpriteSheet, basicTurretArray[0], menuObjectX.width / 4, (menuObjectX.yOrigin + menuObjectX.height / 2), 128, 128);
 		break;
-	case 1:
+	case TurretButtonSlow:
 		CP_Image_DrawAdvanced(menuObjectX.image, menuObjectX.width / 4,
 			(menuObjectX.yOrigin + menuObjectX.height / 2), 128,
 			128, 255, 90);
 		break;
-	case 2:
+	case  TurretButtonHoming:
 		RenderNormal(homingMissleTurretSpriteSheet, homingMissleTurretArray[0], menuObjectX.width / 4, (menuObjectX.yOrigin + menuObjectX.height / 2), 128, 128);
 		break;
-	case 3:
+	case TurretButtonMine:
 		RenderNormal(mineSpriteSheet, mineArray[0], menuObjectX.width / 4, (menuObjectX.yOrigin + menuObjectX.height / 2), 128, 128);
 		break;
-	case 4:
+	case PauseButton:
 		CP_Image_DrawAdvanced(menuObjectX.image, menuObjectX.width / 2,
-			(menuObjectX.yOrigin + menuObjectX.height / 2), 128,
-			128, 255, 0);
+			(menuObjectX.yOrigin + menuObjectX.height / 2), 64,
+			64, 255, 0);
 		break;
-	case CashMenu1:
+	case GoldQuartzMenu:
 		CP_Settings_Fill(COLOR_BLACK);
 		CP_Settings_TextSize(15.0f);
-		sprintf_s(temp, 100, "Gold Quartz: %d", Level[currentGameLevel].cash1);
+		sprintf_s(temp, 100, "Gold Quartz: %d", Level[currentGameLevel].goldQuartz);
 		CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 2, menuObjectX.yOrigin + menuObjectX.height / 2);
 		break;
-	case CashMenu2:
+	case PhantomQuartzMenu:
 		CP_Settings_Fill(COLOR_BLACK);
 		CP_Settings_TextSize(15.0f);
-		sprintf_s(temp, 100, "Phantom Quartz: %d", Level[currentGameLevel].cash2);
+		sprintf_s(temp, 100, "Phantom Quartz: %d", Level[currentGameLevel].phantomQuartz);
 		CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 2, menuObjectX.yOrigin + menuObjectX.height / 2);
 		break;
 	case HealthMenu:

@@ -31,16 +31,16 @@ void game_init(void)
 	game_grid_init();
 
 	//turret menu
-	turret_menu_init();
+	//turret_menu_init();
 
 	//turret menu items
+	pause_button_init();
 	turret_triangle_button_init();
 	turret_circle_button_init();
 	turret_star_button_init();
 	turret_percentage_button_init();
-	pause_button_init();
-	cash1_init();
-	cash2_init();
+	goldQuartz_init();
+	phantomQuartz_init();
 	health_init();
 
 	//Initialize Objects
@@ -54,8 +54,8 @@ void game_init(void)
 	Level[0].exitRow = GAME_GRID_ROWS - 1;
 	Level[0].exitCol = (GAME_GRID_COLS - 1) / 2;
 	Level[0].health = 100;
-	Level[0].cash1 = 0;
-	Level[0].cash2 = 50;
+	Level[0].goldQuartz = 0;
+	Level[0].phantomQuartz = 50;
 	
 	pathfinding_init(&Level[0]);
 	environment_init(&Level[0]);
@@ -92,15 +92,15 @@ void game_update(void)
 		//render all the stuff
 		render_game_grid();
 		render_path(&Level[currentGameLevel]);
-		render_turret_menu();
+		//render_turret_menu();
 
 		render_turret_menu_object(GameMenuObject[PauseButton], PauseButton);
 		render_turret_menu_object(GameMenuObject[TurretButtonBasic], TurretButtonBasic);
 		render_turret_menu_object(GameMenuObject[TurretButtonSlow], TurretButtonSlow);
 		render_turret_menu_object(GameMenuObject[TurretButtonHoming], TurretButtonHoming);
 		render_turret_menu_object(GameMenuObject[TurretButtonMine], TurretButtonMine);
-		render_turret_menu_object(GameMenuObject[CashMenu1], CashMenu1);
-		render_turret_menu_object(GameMenuObject[CashMenu2], CashMenu2);
+		render_turret_menu_object(GameMenuObject[GoldQuartzMenu], GoldQuartzMenu);
+		render_turret_menu_object(GameMenuObject[PhantomQuartzMenu], PhantomQuartzMenu);
 		render_turret_menu_object(GameMenuObject[HealthMenu], HealthMenu);
 
 		draw_multiple_enemies();

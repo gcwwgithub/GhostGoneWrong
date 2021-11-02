@@ -14,8 +14,8 @@ void turret_star_button_init(void);
 void turret_percentage_button_init(void);
 void mouse_init(void);
 void environment_init(LevelData* LevelX);
-void cash1_init(void);
-void cash2_init(void);
+void goldQuartz_init(void);
+void phantomQuartz_init(void);
 void health_init(void);
 
 void pathfinding_reset(LevelData* LevelX);

@@ -68,8 +68,8 @@ typedef struct LevelData {
 	int exitRow;
 	int exitCol;
 	Grids grid[GAME_GRID_ROWS][GAME_GRID_COLS];
-	int cash1;
-	int cash2;
+	int goldQuartz;
+	int phantomQuartz;
 	int health;
 }LevelData;
 
@@ -105,8 +105,8 @@ enum MenuObjectType {
 	TurretButtonHoming = 2,
 	TurretButtonMine = 3,
 	PauseButton = 4,
-	CashMenu1 = 5,
-	CashMenu2 = 6,
+	GoldQuartzMenu = 5,
+	PhantomQuartzMenu = 6,
 	HealthMenu = 7,
 	NoButton = NUMBER_OF_MENU_OBJECTS
 };
