@@ -45,11 +45,13 @@ int Check_state(enemy* r);
 
 void EnemyDeath(enemy* r, LevelData* Level);
 void Basic_Ghost(enemy* r);
-void Enemies_init(int Basic_enemy_count, int Fast_enemy_count, int Fat_enemy_count);
+void Enemies_init(int Basic_enemy_count, int Fast_enemy_count, int Fat_enemy_count,LevelData* Level);
 void update_enemy(void);
 void draw_multiple_enemies(void);
 void Fast_Ghost_init(enemy* r);
 void Fat_Ghost_init(enemy* r);
+
+void Update_Path_Array(LevelData Level);
 
 enemy test;
 struct node* Enemy_node;
@@ -57,11 +59,13 @@ struct node* Enemy_node;
 //test path
 float xpoint;
 float ypoint;
-float Xarray[2];
-float Yarray[2];
+float Xarray[30];
+float Yarray[30];
 int count;
 float timer;
 int wave_timer;
+int Array_count;
+int Number_of_points;
 enemy Enemy[MAX_ENEMIES];
 /* //test enemy movement
 enemy_move(&test, Xarray, Yarray, 2);
