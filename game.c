@@ -61,8 +61,7 @@ void game_init(void)
 	environment_init(&Level[0]);
 
 	turret_init();
-	enemy_test_init();
-	Enemies_init(2,2,2);
+	Enemies_init(2,2,2,&Level[0]);
 
 	pathfinding_reset(&Level[0]);
 	pathfinding_calculate_cost(&Level[0]);

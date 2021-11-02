@@ -4,32 +4,7 @@
 #include "Samuel.h"
 #include "Gabriel.h"
 
-void enemy_test_init(void)  //Initialising test enemy
-{
-	test.health = 4;
-	test.max_health = 4;
-	test.speed = 15;
-	test.CurrentWaypoint = 0;
-	test.data.xOrigin = (float)(Game.xOrigin + Game.gridWidth * 1.5);
-	test.data.yOrigin = (float)(Game.yOrigin + Game.gridHeight * 0.5);
-	test.enemy_width = Game.gridWidth;
-	test.enemy_height = Game.gridHeight;
-	test.angle = 180;
-	test.type = Basic;
-	test.alpha = 255;
-	test.data.objectType = objectRectangle;
-	test.data.width = Game.gridWidth * 0.5f;
-	test.data.height = Game.gridHeight;
-	test.state = Moving;
-	count = 0;
-	test.timer = 0;
 
-	//test path
-	for (int i = 0; i < 2; i++) {
-		Xarray[i] = test.data.xOrigin;
-		Yarray[i] = (test.data.yOrigin + Game.gridHeight * 6 * i);
-	}
-}
 
 void Draw_enemy(enemy* r) { //Draws the enemy
 	EnemyAnimationState(r);
@@ -189,24 +164,23 @@ void EnemyDeath(enemy* r, LevelData* Level) {  //function updates and checks for
 	}
 }
 
-void Enemies_init(int Basic_enemy_count, int Fast_enemy_count, int Fat_enemy_count) {
+void Enemies_init(int Basic_enemy_count, int Fast_enemy_count, int Fat_enemy_count,LevelData* Level) {
 	timer = 0;
 	count = 0;
 	Enemy_node = NULL;
 	wave_timer = 0;
-
+	Array_count = 1;
+	Number_of_points = 0;
+	Xarray[0] = (Game.xOrigin + Game.gridWidth * (0.5 + Level->spawnCol));
+	Yarray[0] = (Game.yOrigin + Game.gridHeight * (0.5 + Level->spawnRow));
 	//test path
-	for (int i = 0; i < 2; i++) {
-		Xarray[i] = test.data.xOrigin;
-		Yarray[i] = (test.data.yOrigin + Game.gridHeight * 6 * i);
-	}
-	for (int i = 0; i < Basic_enemy_count; i++) {
+	for (int i = 0; i < MAX_ENEMIES && i < Basic_enemy_count; i++) {
 		Basic_Ghost(&Enemy[i]);
 	}
-	for (int i = Basic_enemy_count; i < Basic_enemy_count + Fast_enemy_count; i++) {
+	for (int i = Basic_enemy_count; i < MAX_ENEMIES && i < Basic_enemy_count + Fast_enemy_count; i++) {
 		Fast_Ghost_init(&Enemy[i]);
 	}
-	for (int i = Basic_enemy_count + Fast_enemy_count; i < MAX_ENEMIES; i++) {
+	for (int i = Basic_enemy_count + Fast_enemy_count; i < MAX_ENEMIES && i < Basic_enemy_count + Fast_enemy_count + Fat_enemy_count; i++) {
 		Fat_Ghost_init(&Enemy[i]);
 	}
 }
@@ -228,10 +202,11 @@ void Basic_Ghost(enemy* r) { // setup variable for basic ghost enemy
 	r->data.height = Game.gridWidth;
 	r->state = Inactive;
 	r->timer = 0;
+	r->points = 100;
 	//for the freeze turret & enemy interaction
 	r->slow_amt = 1;
 	r->slow_timer = 0;
-	r->points = 100;
+
 }
 
 void Fast_Ghost_init(enemy* r) { // setup variable for fast ghost enemy
@@ -251,10 +226,11 @@ void Fast_Ghost_init(enemy* r) { // setup variable for fast ghost enemy
 	r->data.height = Game.gridWidth;
 	r->state = Inactive;
 	r->timer = 0;
+	r->points = 100;
 	//for the freeze turret & enemy interaction
 	r->slow_amt = 1;
 	r->slow_timer = 0;
-	r->points = 100;
+
 }
 
 void Fat_Ghost_init(enemy* r) {
@@ -274,10 +250,10 @@ void Fat_Ghost_init(enemy* r) {
 	r->data.height = Game.gridWidth;
 	r->state = Inactive;
 	r->timer = 0;
+	r->points = 300;
 	//for the freeze turret & enemy interaction
 	r->slow_amt = 1;
 	r->slow_timer = 0;
-	r->points = 300;
 }
 
 void update_enemy(void) {
@@ -287,7 +263,7 @@ void update_enemy(void) {
 		timer--;
 	}
 	for (int i = 0; i < MAX_ENEMIES; i++) {
-		if ((Enemy[i].state == Inactive) && (Enemy[i].health >= 1) &&(count/3<=MAX_ENEMIES)){
+		if ((Enemy[i].state == Inactive) && (Enemy[i].health >= 1) && (count / 3 <= MAX_ENEMIES)) {
 
 			int b = count;
 			if (b - wave_timer >= 3) {
@@ -305,8 +281,8 @@ void update_enemy(void) {
 				Enemy[i].slow_amt = 1.f;
 		}
 
-
-		enemy_move(&Enemy[i], Xarray, Yarray, 2, &Level[0]);
+		Update_Path_Array(Level[0]);
+		enemy_move(&Enemy[i], Xarray, Yarray,Number_of_points, &Level[0]);
 		EnemyDeath(&Enemy[i], &Level[0]);
 	}
 	enemy* En = &Enemy[0];
@@ -348,5 +324,25 @@ void update_enemy_health(enemy* r)
 	}
 
 
+}
+
+void Update_Path_Array(LevelData Level) {
+	int nextPathRow = 1, nextPathCol = 1;
+	for (int currentCost = 1; currentCost <= Level.grid[Level.exitRow][Level.exitCol].cost; currentCost++) {
+		for (int currentRow = 0; currentRow < GAME_GRID_ROWS; currentRow++) {
+			for (int currentCol = 0; currentCol < GAME_GRID_COLS; currentCol++) {
+				if (Level.grid[currentRow][currentCol].cost == currentCost && (Level.grid[currentRow][currentCol].type == Path|| Level.grid[currentRow][currentCol].type == Exit)) {
+					nextPathRow = currentRow;
+					nextPathCol = currentCol;
+					break;
+				}
+			}
+		}
+		Xarray[Array_count] = (Game.xOrigin + Game.gridWidth * (0.5 + nextPathCol));
+		Yarray[Array_count] = (Game.yOrigin + Game.gridHeight * (0.5 + nextPathRow));
+		Array_count++;
+	}
+	Number_of_points = Array_count;
+	Array_count = 1;
 }
 
