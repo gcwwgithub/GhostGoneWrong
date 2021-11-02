@@ -65,6 +65,7 @@ void reduce_building_phase_time()
 	if (buildingTime < 0.05f)
 	{
 		buildingTime = 0.0f;
+		Level[currentGameLevel].currentWave += 1;
 		currentGameState = Wave;
 	}
 	else

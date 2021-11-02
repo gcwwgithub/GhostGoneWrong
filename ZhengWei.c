@@ -3,7 +3,7 @@
 #include "game.h"
 #include "Gabriel.h"
 #include"Samuel.h"
-
+#include "Anderson.h"
 //Tools
 
 //Return positive value of float
@@ -182,13 +182,6 @@ void game_grid_init(void) {
 
 }
 
-void turret_menu_init(void) {
-	TurretMenu.xOrigin = 0.0f;
-	TurretMenu.yOrigin = (float)CP_System_GetWindowHeight() / 10;
-	TurretMenu.width = Game.xOrigin / 2;
-	TurretMenu.height = (float)CP_System_GetWindowHeight();
-}
-
 void pause_button_init(void) {
 	GameMenuObject[PauseButton].xOrigin = 0.0f;
 	GameMenuObject[PauseButton].yOrigin = 0.0f;
@@ -280,7 +273,31 @@ void currency_swap_init(void) {
 	GameMenuObject[SwapButton].width = GameMenuObject[TurretButtonMine].width;
 	GameMenuObject[SwapButton].height = GameMenuObject[TurretButtonMine].height / 2;
 	GameMenuObject[SwapButton].objectType = objectRectangle;
-	GameMenuObject[SwapButton].image = CP_Image_Load(("Assets/Dummy"));
+	GameMenuObject[SwapButton].image = CP_Image_Load("Assets/dummy");
+}
+
+void wave_number_display_init(void) {
+	GameMenuObject[WaveDisplay].xOrigin = GameMenuObject[HealthMenu].xOrigin;
+	GameMenuObject[WaveDisplay].yOrigin = GameMenuObject[HealthMenu].yOrigin + GameMenuObject[HealthMenu].height;
+	GameMenuObject[WaveDisplay].width = GameMenuObject[HealthMenu].width;
+	GameMenuObject[WaveDisplay].height = GameMenuObject[HealthMenu].height;
+	GameMenuObject[WaveDisplay].objectType = objectRectangle;
+}
+
+void battlefield_effects_display_init(void) {
+	GameMenuObject[BattlefieldEffects].xOrigin = GameMenuObject[WaveDisplay].xOrigin;
+	GameMenuObject[BattlefieldEffects].yOrigin = GameMenuObject[WaveDisplay].yOrigin + GameMenuObject[WaveDisplay].height;
+	GameMenuObject[BattlefieldEffects].width = GameMenuObject[WaveDisplay].width;
+	GameMenuObject[BattlefieldEffects].height = GameMenuObject[WaveDisplay].height;
+	GameMenuObject[BattlefieldEffects].objectType = objectRectangle;
+}
+
+void monster_remaining_display_init(void) {
+	GameMenuObject[MonsterRemainingDisplay].xOrigin = GameMenuObject[BattlefieldEffects].xOrigin;
+	GameMenuObject[MonsterRemainingDisplay].yOrigin = GameMenuObject[BattlefieldEffects].yOrigin + GameMenuObject[BattlefieldEffects].height;
+	GameMenuObject[MonsterRemainingDisplay].width = GameMenuObject[BattlefieldEffects].width;
+	GameMenuObject[MonsterRemainingDisplay].height = GameMenuObject[BattlefieldEffects].height * 5;
+	GameMenuObject[MonsterRemainingDisplay].objectType = objectRectangle;
 }
 
 void render_button_pressed(void) {
@@ -337,13 +354,6 @@ void render_game_grid(void)
 	}
 }
 
-void render_turret_menu(void) {
-	CP_Settings_RectMode(CP_POSITION_CORNER);
-	CP_Settings_Fill(COLOR_BLACK);
-	CP_Graphics_DrawRect(TurretMenu.xOrigin, TurretMenu.yOrigin, TurretMenu.width, TurretMenu.height);
-
-}
-
 void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type) {
 	char temp[100];
 	CP_Settings_RectMode(CP_POSITION_CORNER);
@@ -372,7 +382,6 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 			64, 255, 0);
 		break;
 	case SwapButton:
-		RenderNormal(mineSpriteSheet, mineArray[0], menuObjectX.width / 4, (menuObjectX.yOrigin + menuObjectX.height / 2), 128, 128);
 		break;
 	case GoldQuartzMenu:
 		CP_Settings_Fill(COLOR_BLACK);
@@ -391,6 +400,36 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 		CP_Settings_TextSize(15.0f);
 		sprintf_s(temp, 100, "Health: %d", Level[currentGameLevel].health);
 		CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 2, menuObjectX.yOrigin + menuObjectX.height / 2);
+		break;
+	case WaveDisplay:
+		CP_Settings_Fill(COLOR_BLACK);
+		CP_Settings_TextSize(15.0f);
+		sprintf_s(temp, 100, "Wave: %d", Level[currentGameLevel].currentWave);
+		CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 2, menuObjectX.yOrigin + menuObjectX.height / 2);
+		break;
+	case BattlefieldEffects:
+		CP_Settings_Fill(COLOR_BLACK);
+		CP_Settings_TextSize(15.0f);
+		switch (Level[currentGameLevel].currentEffect) {
+		case MoreHP:
+			CP_Font_DrawText("Environment Effect: Enemies have more HP", menuObjectX.xOrigin + menuObjectX.width / 2, menuObjectX.yOrigin + menuObjectX.height / 2);
+			break;
+		case FasterEnemies:
+			CP_Font_DrawText("Environment Effect: Enemies move Faster", menuObjectX.xOrigin + menuObjectX.width / 2, menuObjectX.yOrigin + menuObjectX.height / 2);
+			break;
+		}
+		break;
+	case MonsterRemainingDisplay:
+		CP_Settings_Fill(COLOR_BLACK);
+		CP_Settings_TextSize(24.0f);
+		sprintf_s(temp, sizeof(temp), "Enemies Left: %d", enemiesLeft);
+		CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 2, menuObjectX.yOrigin + menuObjectX.height / 5);
+		sprintf_s(temp, sizeof(temp), "Basic: %d", basicEnemyNum);
+		CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 2, menuObjectX.yOrigin + menuObjectX.height / 5 * 2);
+		sprintf_s(temp, sizeof(temp), "Fast: %d", fastEnemyNum);
+		CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 2, menuObjectX.yOrigin + menuObjectX.height / 5 * 3);
+		sprintf_s(temp, sizeof(temp), "Fat: %d", fatEnemyNum);
+		CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 2, menuObjectX.yOrigin + menuObjectX.height / 5 * 4);
 		break;
 	}
 

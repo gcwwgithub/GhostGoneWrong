@@ -17,10 +17,12 @@ void goldQuartz_init(void);
 void phantomQuartz_init(void);
 void health_init(void);
 void currency_swap_init(void);
+void wave_number_display_init(void);
+void battlefield_effects_display_init(void);
+void monster_remaining_display_init(void);
 
 void pathfinding_reset(LevelData* LevelX);
 void pathfinding_calculate_cost(LevelData* LevelX);
-
 void render_environment(void);
 void render_game_grid(void);
 void render_path(LevelData* LevelX);

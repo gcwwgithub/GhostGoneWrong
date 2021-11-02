@@ -148,7 +148,7 @@ void EnemyDeath(enemy* r, LevelData* Level) {  //function updates and checks for
 
 	if (r->health <= 0) {
 		if (r->state == Hurt) {
-			Level->phantomQuartz += r->points;
+			Level->goldQuartz += r->points;
 		}
 		r->state = Death;
 

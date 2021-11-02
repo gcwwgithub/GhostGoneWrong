@@ -61,6 +61,10 @@ typedef struct Grids {
 	PathType type;
 }Grids;
 
+enum Environmentaleffects {
+	MoreHP,
+	FasterEnemies
+};
 
 typedef struct LevelData {
 	int spawnRow;
@@ -71,6 +75,8 @@ typedef struct LevelData {
 	int goldQuartz;
 	int phantomQuartz;
 	int health;
+	int currentWave;
+	enum EnvironmentalEffects currentEffect;
 }LevelData;
 
 LevelData Level[MAX_NUMBER_OF_LEVEL];
@@ -78,8 +84,6 @@ LevelData Level[MAX_NUMBER_OF_LEVEL];
 int currentGameLevel;
 
 //Objects
-#define NUMBER_OF_MENU_OBJECTS 10
-
 typedef enum ObjectShape {
 	objectCircle,
 	objectRectangle
@@ -99,6 +103,8 @@ typedef struct Coordinates {
 Coordinates TurretMenu;
 
 //Buttons
+#define NUMBER_OF_MENU_OBJECTS 12
+
 enum MenuObjectType {
 	PauseButton,
 	TurretButtonBasic,
@@ -109,6 +115,9 @@ enum MenuObjectType {
 	GoldQuartzMenu,
 	PhantomQuartzMenu,
 	HealthMenu,
+	WaveDisplay,
+	BattlefieldEffects,
+	MonsterRemainingDisplay,
 	NoButton
 };
 
@@ -124,4 +133,4 @@ Coordinates Environment[MAX_ENVIRONMENT_OBJECT];
 //Common Tools
 int Collision_Detection(Coordinates object1, Coordinates object2);
 int btn_is_pressed(Coordinates object1);
-void render_turret_menu_object(Coordinates ButtonX, int type);
+void render_turret_menu_object(Coordinates ButtonX, enum MenuObjectType type);
