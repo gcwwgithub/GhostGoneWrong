@@ -309,8 +309,10 @@ void render_button_pressed(void) {
 		break;
 	case SwapButton:
 		isPlacingTurret = NOT_PLACING_TURRET;
-		Level[currentGameLevel].goldQuartz -= 10;
-		Level[currentGameLevel].phantomQuartz += 1;
+		if (Level[currentGameLevel].goldQuartz >= 10) {
+			Level[currentGameLevel].goldQuartz -= 10;
+			Level[currentGameLevel].phantomQuartz += 1;
+		}
 		MouseInput.xOrigin = (float)CP_System_GetWindowWidth() / 2;
 		MouseInput.yOrigin = (float)CP_System_GetWindowHeight() / 2;
 		break;
