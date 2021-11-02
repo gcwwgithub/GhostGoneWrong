@@ -350,6 +350,3 @@ void update_enemy_health(enemy* r)
 
 }
 
-void update_movement_points() {
-
-}
