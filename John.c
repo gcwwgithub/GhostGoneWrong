@@ -3,7 +3,7 @@
 #include "John.h"
 #include "Samuel.h"
 #include "Gabriel.h"
-
+#include "Anderson.h"
 
 
 void Draw_enemy(enemy* r) { //Draws the enemy
@@ -159,6 +159,19 @@ void EnemyDeath(enemy* r, LevelData* Level) {  //function updates and checks for
 		}
 		if (r->alpha <= 0) {
 			r->state = Inactive;
+			enemiesLeft--;
+			switch (r->type)
+			{
+			case Basic:
+				basicEnemyNum--;
+				break;
+			case Fast_Ghost:
+				fastEnemyNum--;
+				break;
+			case Fat_Ghost:
+				fatEnemyNum--;
+				break;
+			}
 		}
 
 	}
@@ -173,6 +186,13 @@ void Enemies_init(int Basic_enemy_count, int Fast_enemy_count, int Fat_enemy_cou
 	Number_of_points = 0;
 	Xarray[0] = (Game.xOrigin + Game.gridWidth * (0.5 + Level->spawnCol));
 	Yarray[0] = (Game.yOrigin + Game.gridHeight * (0.5 + Level->spawnRow));
+
+	// For initialisation of enemyLeft text
+	enemiesLeft = Basic_enemy_count + Fast_enemy_count + Fat_enemy_count;
+	basicEnemyNum = Basic_enemy_count;
+	fastEnemyNum = Fast_enemy_count;
+	fatEnemyNum = Fat_enemy_count;
+	
 	//test path
 	for (int i = 0; i < MAX_ENEMIES && i < Basic_enemy_count; i++) {
 		Basic_Ghost(&Enemy[i]);
@@ -345,4 +365,5 @@ void Update_Path_Array(LevelData Level) {
 	Number_of_points = Array_count;
 	Array_count = 1;
 }
+
 

@@ -30,7 +30,10 @@ Button levelButtons[5];
 Button PauseQuitButton;
 Button PauseBackButton;
 
-
+int enemiesLeft;
+int basicEnemyNum;
+int fastEnemyNum;
+int fatEnemyNum;
 
 void init_text_button(Button button, float buttonPosX, float buttonPosY, float buttonWidth, float buttonHeight, float textPosX, float textPosY, char string[]);
 
@@ -52,4 +55,6 @@ void detect_grid_square_color(LevelData level);
 void reduce_building_phase_time();
 void init_game_font(void);
 
+void restart_level(void);
+void display_enemies_left(void);
 void exit_game(void);

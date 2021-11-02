@@ -102,6 +102,7 @@ void game_update(void)
 		render_turret_menu_object(GameMenuObject[GoldQuartzMenu], GoldQuartzMenu);
 		render_turret_menu_object(GameMenuObject[PhantomQuartzMenu], PhantomQuartzMenu);
 		render_turret_menu_object(GameMenuObject[HealthMenu], HealthMenu);
+		display_enemies_left();
 
 		draw_multiple_enemies();
 
@@ -163,7 +164,7 @@ void game_update(void)
 		}
 		else if (btn_is_pressed(QuitButton.buttonData))
 		{
-			exit_game();
+			exit_to_desktop();
 		}
 
 		CP_Graphics_ClearBackground(COLOR_GREY);
@@ -209,7 +210,7 @@ void game_update(void)
 		}
 		else if (btn_is_pressed(PauseQuitButton.buttonData))
 		{
-			exit_game(); // placing a button in the bottom half of the screen automatically activates it.
+			exit_to_desktop(); // placing a button in the bottom half of the screen automatically activates it.
 		}
 		render_pause_screen();
 	}
