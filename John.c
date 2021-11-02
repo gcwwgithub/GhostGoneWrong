@@ -173,7 +173,7 @@ void EnemyDeath(enemy* r, LevelData* Level) {  //function updates and checks for
 
 	if (r->health <= 0) {
 		if (r->state == Hurt) {
-			Level->cash2 += 100;
+			Level->cash2 += r->points;
 		}
 		r->state = Death;
 
@@ -231,6 +231,7 @@ void Basic_Ghost(enemy* r) { // setup variable for basic ghost enemy
 	//for the freeze turret & enemy interaction
 	r->slow_amt = 1;
 	r->slow_timer = 0;
+	r->points = 100;
 }
 
 void Fast_Ghost_init(enemy* r) { // setup variable for fast ghost enemy
@@ -253,6 +254,7 @@ void Fast_Ghost_init(enemy* r) { // setup variable for fast ghost enemy
 	//for the freeze turret & enemy interaction
 	r->slow_amt = 1;
 	r->slow_timer = 0;
+	r->points = 100;
 }
 
 void Fat_Ghost_init(enemy* r) {
@@ -275,6 +277,7 @@ void Fat_Ghost_init(enemy* r) {
 	//for the freeze turret & enemy interaction
 	r->slow_amt = 1;
 	r->slow_timer = 0;
+	r->points = 300;
 }
 
 void update_enemy(void) {
@@ -344,5 +347,9 @@ void update_enemy_health(enemy* r)
 		CP_Graphics_DrawRect(r->data.xOrigin - r->enemy_width, r->data.yOrigin - r->enemy_height, r->enemy_width * 2 * newWidth, r->enemy_height / 4);
 	}
 
+
+}
+
+void update_movement_points() {
 
 }
