@@ -14,7 +14,7 @@ void turret_init(void)
 
 	for (int i = 0; i < MAX_PROJECTILE; ++i)
 	{
-		proj[i].isActive = 0;
+		proj[i].isActive = FALSE;
 		proj[i].data.xOrigin = 0;
 		proj[i].data.yOrigin = 0;
 		proj[i].mod.damage = 1.f;
@@ -25,7 +25,7 @@ void turret_init(void)
 	}
 	for (int i = 0; i < MAX_TURRET; ++i)
 	{
-		turret[i].isActive = 0;
+		turret[i].isActive = FALSE;
 		turret[i].size = Game.gridHeight;
 		turret[i].angle = 0.f;
 		turret[i].mod.cooldown = 0.f;
@@ -40,6 +40,10 @@ void turret_init(void)
 		turret[i].currentAnimState = INACTIVE;
 		turret[i].animCounter = 0;
 	}
+	//init the lcoations of turret placed
+	for (int i = 0; i < GAME_GRID_ROWS; ++i)
+		for (int j = 0; j < GAME_GRID_COLS; ++j)
+			turret_on_grid[i][j] = -1;
 
 	//turret[0].data.xOrigin = Game.xOrigin + (Game.gridWidth * (2 + 0.5f));
 	//turret[0].data.yOrigin = Game.yOrigin + (Game.gridHeight * (1 + 0.5f));
@@ -65,11 +69,13 @@ void place_turret(TurretType type, int index_x, int index_y)
 			continue;
 
 		//set to active and the turret type
-		turret[i].isActive = 1;
+		turret[i].isActive = TRUE;
 		turret[i].type = type;
 		//origin + gridwidth * (index + 0.5); (to place the turret on the grid box)
 		turret[i].data.xOrigin = Game.xOrigin + (Game.gridWidth * (index_x + 0.5f));
 		turret[i].data.yOrigin = Game.yOrigin + (Game.gridHeight * (index_y + 0.5f));
+		// where on grid turret placed storing the index of placed turret
+		turret_on_grid[index_x][index_y] = i;
 		//edit here for the type range and dmg
 		switch (turret[i].type)
 		{
@@ -91,7 +97,7 @@ void place_turret(TurretType type, int index_x, int index_y)
 			break;
 		case T_MINE:
 			turret[i].mod.range = Game.gridWidth * 2;
-			turret[i].mod.damage = 1;
+			turret[i].mod.damage = 2;
 			break;
 		default:
 			break;
@@ -99,6 +105,19 @@ void place_turret(TurretType type, int index_x, int index_y)
 		//escape from loop once done
 		break;
 	}
+}
+
+void remove_turret(int index_x, int index_y)
+{
+	int index = turret_on_grid[index_x][index_y];
+	if (index < 0)
+		return;
+
+	//set that grid not in used
+	turret_on_grid[index_x][index_y] = -1;
+	turret[index].isActive = FALSE;
+	//for now
+	Level[currentGameLevel].grid[index_y][index_x].type = Clear;
 }
 
 void render_turret(void)
@@ -219,47 +238,27 @@ void update_turret(void)
 			if(turret[i].type == T_SLOW)
 				turret[i].angle = atan2f(turret[i].dir.pos_y, turret[i].dir.pos_x) * 180.f / (float)PI;
 
-			turret[i].mod.cooldown -= 1.f * CP_System_GetDt();
-			if (turret[i].mod.cooldown <= 0)
+			if (turret[i].type == T_MINE)
+			{
+				//shoot(turret[i].data.xOrigin, turret[i].data.yOrigin, turret[i].mod, turret[i].type, turret[i].dir);
+				//testing
+				remove_turret((int)((turret[i].data.xOrigin - Game.xOrigin) / Game.gridWidth),
+					(int)((turret[i].data.yOrigin - Game.yOrigin) / Game.gridHeight));
+			}
+
+			//turret[i].mod.cooldown -= 1.f * CP_System_GetDt();
+			if (/*turret[i].mod.cooldown <= 0 &&*/ turret[i].turretAnimTimer >= 0.60 && turret[i].animCounter >= 5)
 			{
 				turret[i].mod.tracked_index = e_index;
 				//printf("index: %d\n", e_index);
 				shoot(turret[i].data.xOrigin, turret[i].data.yOrigin, turret[i].mod, turret[i].type, turret[i].dir);
-				turret[i].mod.cooldown = 2.f;
+				//turret[i].mod.cooldown = 2.f;
 			}
 		}
 		else
 		{
 			turret[i].currentAnimState = INACTIVE;
 		}
-
-
-#if _DEBUG
-		//single enemy
-		/*if (magnitude_sq(v1) <= turret[i].range * turret[i].range && test.state != Death)
-		{
-			turret[i].currentAnimState = SHOOTING;
-			if (turret[i].animCounter <= 2)
-			{
-				turret[i].animCounter = 3;
-			}
-			turret[i].dir = v1;
-			turret[i].dir = normalise(turret[i].dir);
-			turret[i].angle = atan2f(turret[i].dir.pos_y, turret[i].dir.pos_x) * 180.f / (float)PI;
-			turret[i].cooldown -= 1.f * CP_System_GetDt();
-			if (turret[i].cooldown <= 0)
-			{
-				shoot(turret[i].data.xOrigin, turret[i].data.yOrigin, turret[i].dir);
-				turret[i].cooldown = 2.f;
-			}
-		}
-		else
-		{
-			turret[i].currentAnimState = INACTIVE;
-		}*/
-#endif
-
-
 	}
 }
 
@@ -341,13 +340,13 @@ void render_projectile(void)
 
 		switch (proj[i].type)
 		{
-		case 0:
+		case P_BASIC:
 			RenderNormal(bulletSpriteSheet, bulletArray[0], proj[i].data.xOrigin, proj[i].data.yOrigin, proj[i].size, proj[i].size);
 			break;
-		case 1:
+		case P_SLOW:
 			RenderNormal(bulletSpriteSheet, bulletArray[1], proj[i].data.xOrigin, proj[i].data.yOrigin, proj[i].size, proj[i].size);
 			break;
-		case 2:
+		case P_HOMING:
 			RenderNormal(bulletSpriteSheet, bulletArray[2], proj[i].data.xOrigin, proj[i].data.yOrigin, proj[i].size, proj[i].size);
 			break;
 		}
@@ -358,7 +357,7 @@ void col_type_projectile(Projectile* p)
 {
 	float dist;
 	Vector2 dif;
-	switch (p->type)
+	switch (p->type) //will refactor
 	{
 	case P_SLOW:
 	{
@@ -382,6 +381,8 @@ void col_type_projectile(Projectile* p)
 		}
 		break;
 	}
+	case P_MINE: /* no break to go into p_homing*/
+		//printf("BOOM\n");
 	case P_HOMING:
 	{
 		for (int i = 0; i < MAX_ENEMIES; ++i)
@@ -424,7 +425,7 @@ void update_turretAnimation(Turret* t)
 		case INACTIVE:
 			if (t->turretAnimTimer >= 0.35)
 			{
-				if (t->animCounter >= 2)
+				if (t->animCounter >= 2) //0 1 2
 				{
 					t->animCounter = 0;
 				}
