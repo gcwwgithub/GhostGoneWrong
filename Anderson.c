@@ -368,8 +368,8 @@ void restart_level(int gameLevelToRestart)
 	Level[gameLevelToRestart].exitRow = GAME_GRID_ROWS - 1;
 	Level[gameLevelToRestart].exitCol = (GAME_GRID_COLS - 1) / 2;
 	Level[gameLevelToRestart].health = 100;
-	Level[gameLevelToRestart].cash1 = 0;
-	Level[gameLevelToRestart].cash2 = 50;
+	Level[gameLevelToRestart].goldQuartz = 0;
+	Level[gameLevelToRestart].phantomQuartz = 50;
 
 	pathfinding_init(&Level[gameLevelToRestart]);
 	environment_init(&Level[gameLevelToRestart]);
