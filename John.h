@@ -35,7 +35,7 @@ typedef struct Enemy {
 	float timer;
 }enemy;
 
-void enemy_test_init(void);
+
 void Draw_enemy(enemy* r);
 void enemy_move(enemy* r, float Enemy_PathpointsX[], float Enemy_PathpointsY[], int number_of_points, LevelData* Level);
 int direction_to_next_point(float enemy_pathpointsX[], float enemy_pathpointsY[], enemy* r);
