@@ -45,15 +45,6 @@ void turret_init(void)
 		for (int j = 0; j < GAME_GRID_COLS; ++j)
 			turret_on_grid[i][j] = -1;
 
-	//turret[0].data.xOrigin = Game.xOrigin + (Game.gridWidth * (2 + 0.5f));
-	//turret[0].data.yOrigin = Game.yOrigin + (Game.gridHeight * (1 + 0.5f));
-	//turret[0].size = Game.gridHeight;
-	//turret[0].dir = v;
-	//turret[0].angle = 0;
-	//turret[0].type = T_TRIANGLE;
-	//turret[0].cooldown = 0.f;
-	//turret[0].isActive = 1;
-	//turret[0].range = Game.gridWidth * 2;
 	//place_turret(T_SLOW, 2, 1);
 	//Level[0].grid[1][2].type = Blocked;//Hard coded to set turret spot to blocked
 	//place_turret(T_BASIC, 0, 4);
@@ -65,17 +56,11 @@ void place_turret(TurretType type, int index_x, int index_y)
 {
 	for (int i = 0; i < MAX_TURRET; ++i)
 	{
-		if (turret[i].isActive)
+		if (turret[i].isActive || turret_on_grid[index_x][index_y] >= 0)
 			continue;
 
-		//set to active and the turret type
-		turret[i].isActive = TRUE;
 		turret[i].type = type;
-		//origin + gridwidth * (index + 0.5); (to place the turret on the grid box)
-		turret[i].data.xOrigin = Game.xOrigin + (Game.gridWidth * (index_x + 0.5f));
-		turret[i].data.yOrigin = Game.yOrigin + (Game.gridHeight * (index_y + 0.5f));
-		// where on grid turret placed storing the index of placed turret
-		turret_on_grid[index_x][index_y] = i;
+
 		//edit here for the type range and dmg
 		switch (turret[i].type)
 		{
@@ -98,10 +83,23 @@ void place_turret(TurretType type, int index_x, int index_y)
 		case T_MINE:
 			turret[i].mod.range = Game.gridWidth * 2;
 			turret[i].mod.damage = 2;
+			turret[i].data.width = Game.gridWidth * 0.7f;
+			turret[i].data.width = Game.gridHeight * 0.7f;
+			turret[i].data.objectType = objectCircle;
 			break;
 		default:
 			break;
 		}
+		//set to active and the turret type
+		turret[i].isActive = TRUE;
+		//origin + gridwidth * (index + 0.5); (to place the turret on the grid box)
+		turret[i].data.xOrigin = Game.xOrigin + (Game.gridWidth * (index_x + 0.5f));
+		turret[i].data.yOrigin = Game.yOrigin + (Game.gridHeight * (index_y + 0.5f));
+		// where on grid turret placed storing the index of placed turret
+		turret_on_grid[index_x][index_y] = i;
+		//where u place u block
+		Level[currentGameLevel].grid[index_y][index_x].type = Blocked;
+
 		//escape from loop once done
 		break;
 	}
@@ -116,8 +114,10 @@ void remove_turret(int index_x, int index_y)
 	//set that grid not in used
 	turret_on_grid[index_x][index_y] = -1;
 	turret[index].isActive = FALSE;
-	//for now
-	Level[currentGameLevel].grid[index_y][index_x].type = Clear;
+	//set to clear if is blocked
+	if(Level[currentGameLevel].grid[index_y][index_x].type == Blocked)
+		Level[currentGameLevel].grid[index_y][index_x].type = Clear;
+
 }
 
 void render_turret(void)
@@ -173,31 +173,32 @@ void update_turret(void)
 		wp = -1;
 		e_index = -1;
 
-		//switch (turret[i].type)
-		//{
-		//case T_TRIANGLE:
-		//	break;
-		//case T_CIRCLE:
-		//	break;
-		//case T_STAR:
-		//	break;
-		//case T_MINE:
-		//	break;
-		//default:
-		//	break;
-		//}
-
-		//target enemy
+		//Start of enemy loop
 		for (int j = 0; j < MAX_ENEMIES; ++j)
 		{
 			//skip if dead
 			if (Enemy[j].state == Death || Enemy[j].state == Inactive)
 				continue;
 
+
+			if (turret[i].type == T_MINE)
+			{
+				if (Collision_Detection(turret[i].data, Enemy[j].data))
+				{
+					//set the highest waypoint
+					wp = Enemy[j].CurrentWaypoint;
+					//set the index of enemy to target
+					e_index = j;
+					break;
+				}
+				else
+					continue;
+			}
+
 			//find dist
 			v1.pos_x = Enemy[j].data.xOrigin - turret[i].data.xOrigin;
 			v1.pos_y = Enemy[j].data.yOrigin - turret[i].data.yOrigin;
-			//if in range
+			//if in range of turret
 			if (magnitude_sq(v1) <= turret[i].mod.range * turret[i].mod.range)
 			{
 				//target the enemy closest to end goal needs refinig
@@ -209,14 +210,12 @@ void update_turret(void)
 					e_index = j;
 					//set the targeted enemy dir
 					targeted_dir.pos_x = v1.pos_x;
-					targeted_dir.pos_y = v1.pos_y;
-					
+					targeted_dir.pos_y = v1.pos_y;			
 				}
 				else
 					continue;
-
 			}
-		}
+		}// end of enemy loop
 
 		//if there is a targeted enemy shoot him
 		if (e_index >= 0)
@@ -238,12 +237,15 @@ void update_turret(void)
 			if(turret[i].type == T_SLOW)
 				turret[i].angle = atan2f(turret[i].dir.pos_y, turret[i].dir.pos_x) * 180.f / (float)PI;
 
+			//mine specific updates
 			if (turret[i].type == T_MINE)
 			{
-				//shoot(turret[i].data.xOrigin, turret[i].data.yOrigin, turret[i].mod, turret[i].type, turret[i].dir);
-				//testing
+				//fake shoot for mine, just spawn a proj on it
+				shoot(turret[i].data.xOrigin, turret[i].data.yOrigin, turret[i].mod, turret[i].type, turret[i].dir);
+				//sync the remove with animation later
 				remove_turret((int)((turret[i].data.xOrigin - Game.xOrigin) / Game.gridWidth),
 					(int)((turret[i].data.yOrigin - Game.yOrigin) / Game.gridHeight));
+				continue; //go to next in iter since mine update is done
 			}
 
 			//turret[i].mod.cooldown -= 1.f * CP_System_GetDt();
@@ -259,7 +261,8 @@ void update_turret(void)
 		{
 			turret[i].currentAnimState = INACTIVE;
 		}
-	}
+
+	}// end of turret loop
 }
 
 void shoot(float x, float y, Modifiers mod, ProjectileType type, Vector2 dir)
@@ -273,11 +276,32 @@ void shoot(float x, float y, Modifiers mod, ProjectileType type, Vector2 dir)
 
 		//set the projectile as active and other stuff
 		proj[i].isActive = 1;
-		proj[i].data.xOrigin = x + (float)(PROJ_OFFSET * dir.pos_x);
-		proj[i].data.yOrigin = y + (float)(PROJ_OFFSET * dir.pos_y);
+
+		switch (type)
+		{
+		case P_BASIC:
+			proj[i].data.xOrigin = x ;
+			proj[i].data.yOrigin = y - 10.f;
+			break;
+		case P_SLOW:
+			proj[i].data.xOrigin = x + (float)(PROJ_OFFSET * dir.pos_x);
+			proj[i].data.yOrigin = y + (float)(PROJ_OFFSET * dir.pos_y);
+			break;
+		case P_MINE:
+			proj[i].data.width = Game.gridWidth;
+			proj[i].data.height = Game.gridHeight;
+			proj[i].data.xOrigin = x;
+			proj[i].data.yOrigin = y;
+			break;
+
+		default:
+			proj[i].data.xOrigin = x;
+			proj[i].data.yOrigin = y;
+			proj[i].data.width = 10.f;
+			proj[i].data.height = 10.f;
+			break;
+		}
 		proj[i].dir = dir;
-		proj[i].data.width = 10.f;
-		proj[i].data.height = 10.f;
 		proj[i].data.objectType = objectCircle;
 		proj[i].mod.damage = mod.damage;
 		proj[i].mod.slow_amt = mod.slow_amt;
@@ -306,24 +330,51 @@ void update_projectile(void)
 			continue;
 
 		// tracking proj, track if a valid id is provided and state is alive
-		if (proj[i].type == P_HOMING && proj[i].mod.tracked_index >= 0 &&
-			Enemy[proj[i].mod.tracked_index].state != Death && 
-			Enemy[proj[i].mod.tracked_index].state != Inactive)
-		{ 
-			//fake homing projectile
-			Vector2 v;
-			v.pos_x = proj[i].dir.pos_x - (Enemy[proj[i].mod.tracked_index].data.xOrigin - proj[i].data.xOrigin);
-			v.pos_y = proj[i].dir.pos_y - (Enemy[proj[i].mod.tracked_index].data.yOrigin - proj[i].data.yOrigin);
+		if (proj[i].type == P_HOMING)
+		{
+			if (proj[i].mod.tracked_index >= 0 &&
+				Enemy[proj[i].mod.tracked_index].state != Death &&
+				Enemy[proj[i].mod.tracked_index].state != Inactive)
+			{
+				//fake homing projectile
+				Vector2 v;
+				v.pos_x = proj[i].dir.pos_x - (Enemy[proj[i].mod.tracked_index].data.xOrigin - proj[i].data.xOrigin);
+				v.pos_y = proj[i].dir.pos_y - (Enemy[proj[i].mod.tracked_index].data.yOrigin - proj[i].data.yOrigin);
 
-			proj[i].dir.pos_x -= v.pos_x * 0.1f * CP_System_GetDt(); //gradual change of dir, magic number is the rate of change
-			proj[i].dir.pos_y -= v.pos_y * 0.1f * CP_System_GetDt();
-			proj[i].dir = normalise(proj[i].dir);
-			//printf("x:%f y:%f\n", proj[i].dir.pos_x, proj[i].dir.pos_y);
+				proj[i].dir.pos_x -= v.pos_x * 0.1f * CP_System_GetDt(); //gradual change of dir, magic number is the rate of change
+				proj[i].dir.pos_y -= v.pos_y * 0.1f * CP_System_GetDt();
+				proj[i].dir = normalise(proj[i].dir);
+				//printf("x:%f y:%f\n", proj[i].dir.pos_x, proj[i].dir.pos_y);
+			}
+			else //update the projectile targeting
+			{
+				Vector2 v;
+				int dist = Game.width * Game.height, tmp = 0; //abritrary large number
+				for (int j = 0; j < MAX_ENEMIES; ++j)
+				{
+					if (Enemy[j].state == Death || Enemy[j].state == Inactive)
+						continue;
+
+					v.pos_x = proj[i].data.xOrigin - Enemy[j].data.xOrigin;
+					v.pos_y = proj[i].data.yOrigin - Enemy[j].data.yOrigin;
+					tmp = magnitude_sq(v);
+					if (tmp < dist * dist)
+					{
+						dist = tmp;
+						proj[i].mod.tracked_index = j;
+					}
+				}
+			}
 		}
 
-		//proj movement dir * speed * deltatime
-		proj[i].data.xOrigin += proj[i].dir.pos_x * proj[i].mod.speed * CP_System_GetDt();
-		proj[i].data.yOrigin += proj[i].dir.pos_y * proj[i].mod.speed * CP_System_GetDt();
+
+		//projectile of mine dont move
+		if (proj[i].type != P_MINE)
+		{
+			//proj movement dir * speed * deltatime
+			proj[i].data.xOrigin += proj[i].dir.pos_x * proj[i].mod.speed * CP_System_GetDt();
+			proj[i].data.yOrigin += proj[i].dir.pos_y * proj[i].mod.speed * CP_System_GetDt();
+		}
 
 	}
 }
@@ -348,6 +399,10 @@ void render_projectile(void)
 			break;
 		case P_HOMING:
 			RenderNormal(bulletSpriteSheet, bulletArray[2], proj[i].data.xOrigin, proj[i].data.yOrigin, proj[i].size, proj[i].size);
+			break;
+		case P_MINE:
+			CP_Settings_Fill(COLOR_BLUE);
+			CP_Graphics_DrawCircle(proj[i].data.xOrigin, proj[i].data.yOrigin, proj[i].size);
 			break;
 		}
 	}
