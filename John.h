@@ -57,22 +57,14 @@ enemy test;
 struct node* Enemy_node;
 
 //test path
-float xpoint;
-float ypoint;
-float Xarray[30];
-float Yarray[30];
+float Xarray[50];
+float Yarray[50];
 int count;
 float timer;
 int wave_timer;
 int Array_count;
 int Number_of_points;
 enemy Enemy[MAX_ENEMIES];
-/* //test enemy movement
-enemy_move(&test, Xarray, Yarray, 2);
-Draw_enemy(&test);
-EnemyDeath(&test);
 
-//test enemy
-enemy_test_init();*/
 
 void update_enemy_health(enemy* r);
