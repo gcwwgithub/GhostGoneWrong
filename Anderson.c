@@ -1,18 +1,15 @@
 #include "cprocessing.h"
 #include "game.h"
 #include "Anderson.h"
+#include "ZhengWei.h"
+#include "John.h"
 
 // text currently aligned to horizontal_center, vertical_center of text box.
 // init_play_button(...)
 
-int enemiesOnScreen = 0;
+CP_Font pixelFont;
 
-CP_Font debugSquareFont;
-
-int redSquareClicked = 0;
-int blueSquareClicked = 0;
 int whiteSquareClicked = 0;
-int greySquareClicked = 0;
 
 int turretButton0Clicked = 0;
 float buildingTime = BUILDING_PHASE_TIME;
@@ -43,25 +40,14 @@ void detect_grid_square_color(LevelData level)
 			case (Clear):
 			{
 				whiteSquareClicked = 1;
-				// if (playerIsBuildingTurret) // i.e. clicked on turret to buy and now hovering over this grid cell
-				//		if  // there are no more white-colored grid cells left. || (!turret_space_occupied) 
-				//			// put new turret at center of white grid cell.
-				//			// and remove the cost of said turret from current points
-				//		else // display error message
-				//			
-
-				// else if (turret_space_occupied) // there is turret here
-				//		// select turret - maybe put something on it as visual feedback
-				//		// enable turret window,upgrade menu,etc.
-
 				break;
 			}
 			}
 		}
 	}
 
-	debugSquareFont = GAME_FONT;
-	CP_Font_Set(debugSquareFont);
+	pixelFont = GAME_FONT;
+	CP_Font_Set(pixelFont);
 	CP_Settings_Fill(COLOR_RED);
 	CP_Settings_TextSize(FONT_SIZE);
 	if (whiteSquareClicked)
@@ -131,8 +117,8 @@ void init_quit_button(void)
 
 void init_back_button(void)
 {
-	BackButton.buttonData.xOrigin = CP_System_GetWindowWidth() / 2 + BUTTON_WIDTH / 0.5f;
-	BackButton.buttonData.yOrigin = CP_System_GetWindowHeight() * 0.8f;
+	BackButton.buttonData.xOrigin = CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f;
+	BackButton.buttonData.yOrigin = CP_System_GetWindowHeight() * 0.75f;
 	BackButton.buttonData.width = BUTTON_WIDTH;
 	BackButton.buttonData.height = BUTTON_HEIGHT;
 
@@ -191,21 +177,6 @@ void init_pause_screen(void)
 	init_pause_quit_button();
 }
 
-void render_wave_timer_text(void)
-{
-	CP_Settings_TextSize(FONT_SIZE);
-
-	char buffer[50] = { 0 };
-	sprintf_s(buffer, sizeof(buffer), "Time Left: %.1f", buildingTime);
-	CP_Font_DrawText(buffer, CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.05f);
-}
-
-//TODO
-void init_skip_wave_button(void)
-{
-	// Init skip wave button's position.
-}
-
 void init_win_screen(void)
 {
 
@@ -216,28 +187,16 @@ void init_lose_screen(void)
 
 }
 
-
-
-// Currently the score is really just a text output
-void render_score_text(int score)
-{
-	const char scoreString[] = { 0 };
-	sprintf_s(scoreString, sizeof(scoreString), "Score: %d", score);
-	CP_Font_DrawText(scoreString, CP_System_GetWindowWidth() * 0.75f, CP_System_GetWindowHeight() * 0.1f);
-}
-
 void render_title_screen(void)
 {
 	RenderWithAlphaChanged(backgroundSpriteSheet, backgroundArray[0], CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.5f, CP_System_GetWindowWidth(), CP_System_GetWindowHeight(), 150);
 	CP_Image_Draw(titleWordImage, CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.2f, 256, 256, 255);
-
-
 }
 
 void init_game_font(void)
 {
-	debugSquareFont = GAME_FONT;
-	CP_Font_Set(debugSquareFont);
+	pixelFont = GAME_FONT;
+	CP_Font_Set(pixelFont);
 	CP_Settings_TextSize(FONT_SIZE);
 }
 
@@ -246,11 +205,13 @@ void render_ui_button(Button button)
 	CP_Settings_Fill(COLOR_BLACK);
 	CP_Graphics_DrawRect(button.buttonData.xOrigin, button.buttonData.yOrigin, button.buttonData.width, button.buttonData.height);
 	CP_Settings_Fill(COLOR_WHITE);
+	CP_Settings_TextSize(FONT_SIZE);
 	CP_Font_DrawText(button.textString, button.textPositionX, button.textPositionY);
 }
 
 void render_level_select_buttons(void)
 {
+	CP_Settings_TextSize(FONT_SIZE);
 	// render the 5 level buttons
 	for (int i = 0; i < 5; i++)
 	{
@@ -258,7 +219,7 @@ void render_level_select_buttons(void)
 	}
 }
 
-// Currently intended to be just text. Though I do have plans for this to be more than that.
+// Currently intended to be just text. Though I do have plans for this to be more than that. - anderson
 void render_credits_screen(void)
 {
 	// just render text and other things here
@@ -276,6 +237,72 @@ void render_pause_screen(void)
 
 }
 
+
+// Terminates game.
+void exit_to_desktop(void)
+{
+	CP_Engine_Terminate();
+}
+
+#pragma endregion
+
+#pragma region Building / Wave Phase System
+
+//TODO
+void init_skip_wave_button(void)
+{
+	// Init skip wave button's position.
+}
+
+
+void render_wave_timer_text(void)
+{
+	CP_Settings_TextSize(FONT_SIZE);
+
+	char buffer[25] = { 0 };
+	sprintf_s(buffer, sizeof(buffer), "Time Left: %.1f", buildingTime);
+	CP_Font_DrawText(buffer, CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.05f);
+}
+
+void wave_system_enemy_check(void)
+{
+	if (0 == enemiesLeft)
+	{
+		// currently assuming one wave only
+		currentGameState = Building;
+	}
+
+	// TODO
+	// If no enemies left on screen, return to building phase
+	// but make sure this doesn't happen on the first frame of the wave phase!
+}
+
+void skip_to_wave_phase(void)
+{
+	// set building phase time to 0.0f
+	buildingTime = 0.0f;
+}
+
+void display_enemies_left(void)
+{
+	// render text, go through list of enemies, check each if active.
+	// if so, increment no. of active enemies.
+	CP_Settings_TextSize(24.0f);
+	char buffer[55] = { 0 };
+	sprintf_s(buffer, sizeof(buffer), "Enemies Left: %d", enemiesLeft);
+	CP_Font_DrawText(buffer, CP_System_GetWindowWidth() * 0.9f, CP_System_GetWindowHeight() * 0.5f);
+	sprintf_s(buffer, sizeof(buffer), "Basic: %d", basicEnemyNum);
+	CP_Font_DrawText(buffer, CP_System_GetWindowWidth() * 0.9f, CP_System_GetWindowHeight() * 0.6f);
+	sprintf_s(buffer, sizeof(buffer), "Fast: %d", fastEnemyNum);
+	CP_Font_DrawText(buffer, CP_System_GetWindowWidth() * 0.9f, CP_System_GetWindowHeight() * 0.7f);
+	sprintf_s(buffer, sizeof(buffer), "Fat: %d", fatEnemyNum);
+	CP_Font_DrawText(buffer, CP_System_GetWindowWidth() * 0.9f, CP_System_GetWindowHeight() * 0.8f);
+}
+
+#pragma endregion
+
+#pragma region Win / Lose Conditions
+
 void render_win_screen(void)
 {
 	// should have: statistics (e.g. enemies defeated, waves cleared, bonus(es) etc.) 
@@ -292,52 +319,27 @@ void render_lose_screen(void)
 	// should have: statistics
 	//				restart button | main menu button | quit button
 	//				score display (high score if time permits)
+//	CP_Settings_RectMode(CP_POSITION_CENTER);
 
-
-
-
+//	CP_Graphics_DrawRect(CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.5f, CP_System_GetWindowWidth() * 0.2f, CP_System_GetWindowHeight() * 0.3f);
 
 
 }
-
-// Terminates game.
-void exit_game(void)
-{
-	CP_Engine_Terminate();
-}
-
-#pragma endregion
-
-#pragma region Building / Wave Phase System
-
-void wave_system_enemy_check(void)
-{
-	// check for no. of enemies left
-
-	// If no enemies left on screen, return to building phase
-}
-
-void fast_forward_building_phase(void)
-{
-	// set building phase time to 0.0f
-	buildingTime = 0.0f;
-}
-
-void display_enemies_left(void)
-{
-
-}
-
-
-#pragma endregion
-
-#pragma region Win / Lose Conditions
 
 void GameWinLoseCheck(void)
 {
-	// checks 
+	// checks portal health && number of enemies left.
+	if (!Level[currentGameLevel].health)
+	{
+		// game lost
+		render_lose_screen();
+	}
+	else if (0 == enemiesLeft)
+	{
+		// wave x won || game level won
+		render_win_screen();
+	}
 }
-
 
 #pragma endregion
 
@@ -355,4 +357,28 @@ void phantom_gold_quartz_conversion(int phantomAmtToConvert, int conversionRate)
 {
 	Level[0].cash2 -= phantomAmtToConvert;
 	Level[0].cash1 += phantomAmtToConvert / conversionRate;
+}
+
+void restart_level(int gameLevelToRestart)
+{
+	//Level Data (presumed to be level 1)
+	currentGameLevel = gameLevelToRestart;
+	Level[gameLevelToRestart].spawnRow = 0;
+	Level[gameLevelToRestart].spawnCol = (GAME_GRID_COLS - 1) / 2;
+	Level[gameLevelToRestart].exitRow = GAME_GRID_ROWS - 1;
+	Level[gameLevelToRestart].exitCol = (GAME_GRID_COLS - 1) / 2;
+	Level[gameLevelToRestart].health = 100;
+	Level[gameLevelToRestart].cash1 = 0;
+	Level[gameLevelToRestart].cash2 = 50;
+
+	pathfinding_init(&Level[gameLevelToRestart]);
+	environment_init(&Level[gameLevelToRestart]);
+
+	turret_init();
+	Enemies_init(2, 2, 2, &Level[0]);
+	buildingTime = BUILDING_PHASE_TIME;
+
+	pathfinding_reset(&Level[gameLevelToRestart]);
+	pathfinding_calculate_cost(&Level[gameLevelToRestart]);
+	pathfinding_update(&Level[gameLevelToRestart]);
 }
