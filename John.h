@@ -67,4 +67,4 @@ int Number_of_points;
 enemy Enemy[MAX_ENEMIES];
 
 
-void update_enemy_health(enemy* r);
+void update_enemy_health_bar(enemy* r);

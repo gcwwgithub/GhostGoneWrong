@@ -470,7 +470,11 @@ void update_turretAnimation(Turret* t)
 {
 	if (t->type == T_MINE)
 	{
-
+		if (t->turretAnimTimer >= 2)
+		{
+			t->animCounter = !t->animCounter;
+			t->turretAnimTimer = 0;
+		}
 	}
 
 	else

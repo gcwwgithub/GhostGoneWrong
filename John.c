@@ -135,11 +135,14 @@ void EnemyDeath(enemy* r, LevelData* Level) {  //function updates and checks for
 				proj[i].isActive = 0;
 				if (r->state != Death)
 				{
-					r->health -= turret[i].mod.damage;
-					r->state = Hurt;
-					r->timer = 0;
-
-
+					if (proj[i].type != T_SLOW)
+					{
+						r->health -= turret[i].mod.damage;
+						r->state = Hurt;
+						r->timer = 0;
+					}
+					
+					insert_new_node(&bulletRadiusFirstNode, r->data.xOrigin, r->data.yOrigin, proj[i].type);
 				}
 
 			}
@@ -278,9 +281,10 @@ void Fat_Ghost_init(enemy* r) {
 
 void update_enemy(void) {
 	timer += CP_System_GetDt();
-	if (timer >= 1) {
+	if (timer >= 2) {
 		count++;
-		timer--;
+		timer = 0;
+		
 	}
 	for (int i = 0; i < MAX_ENEMIES; i++) {
 		if ((Enemy[i].state == Inactive) && (Enemy[i].health >= 1) && (count / 3 <= MAX_ENEMIES)) {
@@ -327,11 +331,11 @@ void draw_multiple_enemies(void) {
 			Enemy[i].timer += CP_System_GetDt();
 			break;
 		}
-		update_enemy_health(&Enemy[i]);
+		update_enemy_health_bar(&Enemy[i]);
 	}
 }
 
-void update_enemy_health(enemy* r)
+void update_enemy_health_bar(enemy* r)
 {
 	if (r->health != 0)
 	{

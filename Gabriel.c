@@ -48,12 +48,21 @@ void init_all_images(void)
 	portalEnterEffectSpriteSheet = CP_Image_Load("./Assets/PortalEnterEffect.png");
 	portalSpawnEffectSpriteSheet = CP_Image_Load("./Assets/EnemySpawnEffect.png");
 
-	portalCounter = 0;
-	portalTimer = 0;
-	keyNumber = 0;
-	firstNode = NULL;
 }
 
+
+void init_linkedlist_variables(void)
+{
+	portalCounter = 0;
+	portalTimer = 0;
+	bulletRadiusNodeKeyNumber = 0;
+	bulletRadiusFirstNode = NULL;
+	portalEnterFirstNode = NULL;
+	portalEnterNodeKeyNumber = 0;
+	portalSpawnFirstNode = NULL;
+	portalSpawnNodeKeyNumber = 0;
+	isPortalEffectSpawn = 0;
+}
 
 #pragma region LinkedList
 
@@ -64,51 +73,62 @@ void insert_new_node(struct node** list, float xPosInput, float yPosInput, int t
 	newNode = malloc(sizeof(struct node));
 	if (newNode != NULL)
 	{
-		newNode->circleAlphaValue = 255;
-		newNode->key = keyNumber;
-		newNode->next = firstNode;
+		newNode->imageAlphaValue = 255;
+		newNode->key = bulletRadiusNodeKeyNumber;
+		newNode->next = bulletRadiusFirstNode;
 		newNode->xPos = xPosInput;
 		newNode->yPos = yPosInput;
 
 		switch (typeOfBullet)
 		{
 		case 3:
-			newNode->bulletImage = bulletRadiusArray[3];
+			newNode->internalCounter = 3;
 			break;
 		case 2:
-			newNode->bulletImage = bulletRadiusArray[2];
+			newNode->internalCounter = 2;
 			break;
 		case 1:
-			newNode->bulletImage = bulletRadiusArray[1];
+			newNode->internalCounter = 1;
 			break;
 		case 0:
-			newNode->bulletImage = bulletRadiusArray[0];
+			newNode->internalCounter = 0;
 			break;
 		}
 
 		newNode->next = *list;
-		keyNumber++;
+		bulletRadiusNodeKeyNumber++;
 		*list = newNode;
 	}
 
 }
 
-void insert_new_node_portal(struct node** list, float xPosInput, float yPosInput,int* key)
+void insert_new_node_portal(struct node** list, float xPosInput, float yPosInput,int portalEffect)
 {
 
 	struct node* newNode;
 	newNode = malloc(sizeof(struct node));
 	if (newNode != NULL)
 	{
-		newNode->circleAlphaValue = 255;
-		newNode->key = keyNumber;
-		newNode->next = firstNode;
+		switch (portalEffect)
+		{
+		case 0:
+			newNode->key = portalSpawnNodeKeyNumber;
+			portalSpawnNodeKeyNumber++;
+			break;
+		case 1:
+			newNode->key = portalEnterNodeKeyNumber;
+			portalEnterNodeKeyNumber++;
+			break;
+		}
+		newNode->next = list;
 		newNode->xPos = xPosInput;
 		newNode->yPos = yPosInput;
-
+		newNode->internalTimer = 0;
+		newNode->internalCounter = 0;
+		
 		newNode->next = *list;
-		*key++;
 		*list = newNode;
+		
 	}
 
 }
@@ -156,7 +176,7 @@ void init_spritesheet_array(void)
 	SpriteSheetCalculation(homingMissleTurretArray, homingMissleTurretSpriteSheet, 128, 128, 0);
 	SpriteSheetCalculation(bulletArray, bulletSpriteSheet, 128, 128, 1);
 	SpriteSheetCalculation(bulletRadiusArray, bulletRadiusSpriteSheet, 128, 128, 0);
-	SpriteSheetCalculation(currencyArray, currencySpriteSheet, 128, 128, 0);
+	SpriteSheetCalculation(currencyArray, currencySpriteSheet, 128, 128, 1);
 	SpriteSheetCalculation(environmentObjectArray, environmentObjectsSpriteSheet, 128, 128, 1);
 	SpriteSheetCalculation(backgroundArray, backgroundSpriteSheet,1920,1080, 1);
 	SpriteSheetCalculation(portalEnterEffectArray, portalEnterEffectSpriteSheet, 128, 128, 1);
@@ -221,20 +241,20 @@ void RenderNormal(CP_Image image, struct SpriteSheetImage s, float xPos, float y
 
 void render_bullet_circles(void)
 {
-	if (!isEmpty(firstNode))
+	if (!isEmpty(bulletRadiusFirstNode))
 	{
-		struct node* current = firstNode;
+		struct node* current = bulletRadiusFirstNode;
 		while (1)
 		{
 
 			if (current != NULL)
 			{
-				RenderWithAlphaChanged(bulletRadiusSpriteSheet, current->bulletImage, current->xPos, current->yPos,
-					100.0f, 100.0f, current->circleAlphaValue);
-				current->circleAlphaValue -= 50;
-				if (current->circleAlphaValue < 0)
+				RenderWithAlphaChanged(bulletRadiusSpriteSheet, bulletRadiusArray[current->internalCounter], current->xPos, current->yPos,
+					100.0f, 100.0f,current->imageAlphaValue);
+				current->imageAlphaValue -= 50;
+				if (current->imageAlphaValue < 0)
 				{
-					firstNode = delete_node(current, current->key);
+					bulletRadiusFirstNode = delete_node(current, current->key);
 					break;
 				}
 				if (current->next == NULL)
@@ -258,7 +278,7 @@ void render_bullet_circles(void)
 
 }
 
-void render_portal_effect(struct node* nodeToChange)
+void render_portal_effect(struct node* nodeToChange, int portalEffect)
 {
 	if (!isEmpty(nodeToChange))
 	{
@@ -268,13 +288,43 @@ void render_portal_effect(struct node* nodeToChange)
 
 			if (current != NULL)
 			{
-				RenderWithAlphaChanged(bulletRadiusSpriteSheet, current->bulletImage, current->xPos, current->yPos,
-					100.0f, 100.0f, current->circleAlphaValue);
-				current->circleAlphaValue -= 50;
-				if (current->circleAlphaValue < 0)
+				switch (portalEffect)
 				{
-					nodeToChange = delete_node(current, current->key);
+				case 0:
+					RenderNormal(portalSpawnEffectSpriteSheet, 
+						portalSpawnEffectArray[current->internalCounter], 
+						current->xPos, current->yPos,100.0f, 100.0f);
 					break;
+				case 1:
+					RenderNormal(portalEnterEffectSpriteSheet,
+						portalEnterEffectArray[current->internalCounter],
+						current->xPos, current->yPos, 100.0f, 100.0f);
+					break;
+				}
+
+				
+				current->internalTimer += CP_System_GetDt();
+				if (current->internalTimer > 0.25)
+				{
+					current->internalTimer = 0;
+					if (current->internalCounter >= (int)(sizeof(portalEnterEffectArray) / sizeof(portalEnterEffectArray[0])))
+					{
+						switch (portalEffect)
+						{
+						case 0:
+							portalSpawnFirstNode = delete_node(current, current->key);
+							break;
+						case 1:
+							portalEnterFirstNode = delete_node(current, current->key);
+							break;
+						}
+					}
+					else
+					{
+						current->internalCounter++;
+					}
+					
+					
 				}
 				if (current->next == NULL)
 				{
@@ -299,8 +349,8 @@ void render_portal_effect(struct node* nodeToChange)
 
 void render_all_portal_effects(void)
 {
-	render_portal_effect(portalEnterFirstNode);
-	render_portal_effect(portalSpawnFirstNode);
+	render_portal_effect(portalEnterFirstNode,!isPortalEffectSpawn);
+	render_portal_effect(portalSpawnFirstNode, isPortalEffectSpawn);
 }
 
 

@@ -15,6 +15,7 @@ void game_init(void)
 
 	init_all_images();
 	init_spritesheet_array();
+	init_linkedlist_variables();
 	init_game_font();
 	currentGameState = MainMenu;
 	
@@ -39,8 +40,9 @@ void game_init(void)
 	turret_slow_button_init();
 	turret_homing_button_init();
 	turret_mine_button_init();
-	goldQuartz_init();
 	phantomQuartz_init();
+	goldQuartz_init();
+	
 	health_init();
 	currency_swap_init();
 	wave_number_display_init();
@@ -107,7 +109,7 @@ void game_update(void)
 		render_projectile();
 
 		render_bullet_circles();
-
+		render_all_portal_effects();
 		render_new_turret(&Level[currentGameLevel]);
 		render_button_pressed();//Must be after render_new_turret
 

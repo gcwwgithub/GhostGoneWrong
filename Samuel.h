@@ -33,6 +33,7 @@ typedef enum TriangleAnimState
 {
 	INACTIVE,
 	SHOOTING,
+	ACTIVE
 } TriangleAnimState;
 
 typedef struct
