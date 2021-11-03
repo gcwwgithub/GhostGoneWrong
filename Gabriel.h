@@ -71,8 +71,8 @@ struct SpriteSheetImage bulletRadiusArray[4];
 struct SpriteSheetImage currencyArray[3];
 struct SpriteSheetImage environmentObjectArray[8];
 struct SpriteSheetImage backgroundArray[5];
-struct SpriteSheetImage portalEnterEffectArray[5];
-struct SpriteSheetImage portalSpawnEffectArray[5];
+struct SpriteSheetImage portalEnterEffectArray[4];
+struct SpriteSheetImage portalSpawnEffectArray[4];
 struct PortalVariables portalVariablesArray[2];
 
 struct node* bulletRadiusFirstNode;

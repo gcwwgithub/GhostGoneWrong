@@ -179,8 +179,8 @@ void init_spritesheet_array(void)
 	SpriteSheetCalculation(currencyArray, currencySpriteSheet, 128, 128, 1);
 	SpriteSheetCalculation(environmentObjectArray, environmentObjectsSpriteSheet, 128, 128, 1);
 	SpriteSheetCalculation(backgroundArray, backgroundSpriteSheet,1920,1080, 1);
-	SpriteSheetCalculation(portalEnterEffectArray, portalEnterEffectSpriteSheet, 128, 128, 1);
-	SpriteSheetCalculation(portalSpawnEffectArray, portalSpawnEffectSpriteSheet, 128, 128, 1);
+	SpriteSheetCalculation(portalEnterEffectArray, portalEnterEffectSpriteSheet, 128, 128, 0);
+	SpriteSheetCalculation(portalSpawnEffectArray, portalSpawnEffectSpriteSheet, 128, 128, 0);
 }
 
 void SpriteSheetCalculation(struct SpriteSheetImage* s, CP_Image image, int pixelWidth, int pixelHeight, int stopPoint)
@@ -307,7 +307,7 @@ void render_portal_effect(struct node* nodeToChange, int portalEffect)
 				if (current->internalTimer > 0.25)
 				{
 					current->internalTimer = 0;
-					if (current->internalCounter >= 4)
+					if (current->internalCounter >= 3)
 					{
 						
 						switch (portalEffect)

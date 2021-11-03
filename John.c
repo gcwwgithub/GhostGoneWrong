@@ -284,7 +284,7 @@ void Fat_Ghost_init(enemy* r) {
 
 void update_enemy(void) {
 	timer += CP_System_GetDt();
-	if (timer >= 2) {
+	if (timer >= 1) {
 		count++;
 		timer = 0;
 		
