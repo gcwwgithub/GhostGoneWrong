@@ -102,20 +102,21 @@ void game_update(void)
 			render_turret_menu_object(GameMenuObject[i], i);
 		}
 		//display_enemies_left(); //Already done by my code render turret menu object
-
+		UpdatePortal();
+		
 		draw_multiple_enemies();
-
+		render_all_portal_effects();
 		render_turret();
 		render_projectile();
 
 		render_bullet_circles();
-		render_all_portal_effects();
+		
 		render_new_turret(&Level[currentGameLevel]);
 		render_button_pressed();//Must be after render_new_turret
 
 
 		render_environment();
-		UpdatePortal();
+		
 	}
 	else if (currentGameState == Building)
 	{

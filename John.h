@@ -19,7 +19,8 @@ typedef enum EnemyState {
 	Inactive,
 	Moving,
 	Hurt,
-	Death
+	Death,
+	Reached
 	
 }EnemyState;
 

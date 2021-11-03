@@ -293,12 +293,12 @@ void render_portal_effect(struct node* nodeToChange, int portalEffect)
 				case 0:
 					RenderNormal(portalSpawnEffectSpriteSheet, 
 						portalSpawnEffectArray[current->internalCounter], 
-						current->xPos, current->yPos,100.0f, 100.0f);
+						current->xPos, current->yPos,50, 50);
 					break;
 				case 1:
 					RenderNormal(portalEnterEffectSpriteSheet,
 						portalEnterEffectArray[current->internalCounter],
-						current->xPos, current->yPos, 100.0f, 100.0f);
+						current->xPos, current->yPos, 50, 50);
 					break;
 				}
 
@@ -307,8 +307,9 @@ void render_portal_effect(struct node* nodeToChange, int portalEffect)
 				if (current->internalTimer > 0.25)
 				{
 					current->internalTimer = 0;
-					if (current->internalCounter >= (int)(sizeof(portalEnterEffectArray) / sizeof(portalEnterEffectArray[0])))
+					if (current->internalCounter >= 4)
 					{
+						
 						switch (portalEffect)
 						{
 						case 0:
@@ -318,6 +319,7 @@ void render_portal_effect(struct node* nodeToChange, int portalEffect)
 							portalEnterFirstNode = delete_node(current, current->key);
 							break;
 						}
+						break;
 					}
 					else
 					{

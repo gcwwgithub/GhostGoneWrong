@@ -56,10 +56,12 @@ void enemy_move(enemy* r, float Enemy_PathpointsX[], float Enemy_PathpointsY[], 
 	float Speed = (r->speed) * CP_System_GetDt();
 	update_point_num(Enemy_PathpointsX, Enemy_PathpointsY, r);
 	if (r->CurrentWaypoint + 1 == number_of_points) {
-		if (r->state != Death && r->state != Inactive) {
+		if (r->state != Death && r->state != Inactive && r->state != Reached) {
 			Level->health -= 10;
+			insert_new_node_portal(&portalEnterFirstNode, r->data.xOrigin,
+				r->data.yOrigin, 0);
 		}
-		r->state = Death;
+		r->state = Reached;
 	}
 
 	Direction direction_now = direction_to_next_point(Enemy_PathpointsX, Enemy_PathpointsY, r);
@@ -156,12 +158,13 @@ void EnemyDeath(enemy* r, LevelData* Level) {  //function updates and checks for
 		r->state = Death;
 
 	}
-	if (r->state == Death) {
+	if (r->state == Death || r->state == Reached) {
 		if (r->alpha >= 0) {
 			r->alpha -= 10;
 		}
 		if (r->alpha <= 0) {
 			r->state = Inactive;
+			r->health = 0; //do not delete this line
 			enemiesLeft--;
 			switch (r->type)
 			{
@@ -293,6 +296,10 @@ void update_enemy(void) {
 			if (b - wave_timer >= 3) {
 				Enemy[i].state = Moving;
 				wave_timer = count;
+					insert_new_node_portal(&portalSpawnFirstNode, Enemy[i].data.xOrigin,
+						Enemy[i].data.yOrigin, 0);
+				
+
 			}
 		}
 		if (Enemy[i].state == Inactive) //dont check if inactive
