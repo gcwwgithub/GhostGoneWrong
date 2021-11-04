@@ -33,7 +33,13 @@ void init_all_images(void)
 	dirtTileImage = CP_Image_Load("./Assets/Dirt.png");
 	pauseButtonImage = CP_Image_Load("./Assets/Pause.png");
 	titleWordImage = CP_Image_Load("./Assets/Title.png");
+	turretUIButton = CP_Image_Load("./Assets/TurretIcon.png");
+	currencyUIRectangle = CP_Image_Load("./Assets/CurrencyIcon.png");
 
+	basicGhostSpriteSheet = CP_Image_Load("./Assets/BasicGhost.png");
+	fastGhostSpriteSheet = CP_Image_Load("./Assets/FastGhost.png");
+	fatGhostSpriteSheet = CP_Image_Load("./Assets/FatGhost.png");
+	grimReaperSpriteSheet = CP_Image_Load("./Assets/GrimReaper.png");
 	bluePortalSpriteSheet = CP_Image_Load("./Assets/FriendlyPortal.png");
 	redPortalSpriteSheet = CP_Image_Load("./Assets/GhostPortal.png");
 	basicTurretSpriteSheet = CP_Image_Load("./Assets/BasicTurret.png");
@@ -168,6 +174,10 @@ int isEmpty(struct node* currentNode) {
 
 void init_spritesheet_array(void)
 {
+	SpriteSheetCalculation(basicGhostSpriteSheet, basicGhostSpriteArray, 128, 128, 1);
+	SpriteSheetCalculation(fastGhostSpriteSheet, fastGhostSpriteArray, 128, 128, 1);
+	SpriteSheetCalculation(fatGhostSpriteSheet, fatGhostSpriteArray, 128, 128, 1);
+	SpriteSheetCalculation(grimReaperSpriteSheet, grimReaperSpriteArray, 128, 128, 1);
 	SpriteSheetCalculation(bluePortalArray, bluePortalSpriteSheet, 128, 128, 1);
 	SpriteSheetCalculation(redPortalArray, redPortalSpriteSheet, 128, 128, 1);
 	SpriteSheetCalculation(basicTurretArray, basicTurretSpriteSheet, 128, 128, 0);

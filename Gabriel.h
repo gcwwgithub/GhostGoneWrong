@@ -45,7 +45,13 @@ CP_Image tempBullet;
 CP_Image dirtTileImage;
 CP_Image pauseButtonImage;
 CP_Image titleWordImage;
+CP_Image turretUIButton;
+CP_Image currencyUIRectangle;
 
+CP_Image basicGhostSpriteSheet;
+CP_Image fastGhostSpriteSheet;
+CP_Image fatGhostSpriteSheet;
+CP_Image grimReaperSpriteSheet;
 CP_Image bluePortalSpriteSheet;
 CP_Image redPortalSpriteSheet;
 CP_Image basicTurretSpriteSheet;
@@ -60,6 +66,10 @@ CP_Image backgroundSpriteSheet;
 CP_Image portalEnterEffectSpriteSheet;
 CP_Image portalSpawnEffectSpriteSheet;
 
+struct SpriteSheetImage basicGhostSpriteArray[4];
+struct SpriteSheetImage fastGhostSpriteArray[4];
+struct SpriteSheetImage fatGhostSpriteArray[4];
+struct SpriteSheetImage grimReaperSpriteArray[4];
 struct SpriteSheetImage bluePortalArray[3];
 struct SpriteSheetImage redPortalArray[3];
 struct SpriteSheetImage basicTurretArray[6];
