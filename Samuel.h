@@ -57,6 +57,7 @@ typedef struct Turret
 	float turretAnimTimer;
 	CP_Image turret_img;
 	int animCounter;
+	int price;
 } Turret;
 
 typedef struct Projectile

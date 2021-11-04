@@ -25,11 +25,6 @@ void init_all_images(void)
 	grimReaperImageArray[1] = CP_Image_Load("./Assets/GrimReaper2.png");
 	grimReaperImageArray[2] = CP_Image_Load("./Assets/GrimReaper3.png");
 
-	tempStar = CP_Image_Load("./Assets/GrimReaper1.png");
-	tempCircle = CP_Image_Load("./Assets/GrimReaper1.png");
-	tempPercentage = CP_Image_Load("./Assets/GrimReaper1.png");
-	tempBullet = CP_Image_Load("./Assets/BasicTurretBullet.png");
-	tempBulletRadius = CP_Image_Load("./Assets/BulletRadius.png");
 	dirtTileImage = CP_Image_Load("./Assets/Dirt.png");
 	pauseButtonImage = CP_Image_Load("./Assets/Pause.png");
 	titleWordImage = CP_Image_Load("./Assets/Title.png");

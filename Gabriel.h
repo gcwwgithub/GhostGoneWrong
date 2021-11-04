@@ -37,11 +37,6 @@ CP_Image fastGhostImageArray[3];
 CP_Image fatGhostImageArray[3];
 CP_Image grimReaperImageArray[3];
 
-CP_Image tempStar;
-CP_Image tempCircle;
-CP_Image tempPercentage;
-CP_Image tempBulletRadius;
-CP_Image tempBullet;
 CP_Image dirtTileImage;
 CP_Image pauseButtonImage;
 CP_Image titleWordImage;

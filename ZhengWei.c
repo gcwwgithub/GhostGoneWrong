@@ -192,9 +192,10 @@ void pause_button_init(void) {
 }
 
 void turret_basic_button_init(void) {
+
 	GameMenuObject[TurretButtonBasic].xOrigin = GameMenuObject[PauseButton].xOrigin;
 	GameMenuObject[TurretButtonBasic].yOrigin = GameMenuObject[PauseButton].height;
-	GameMenuObject[TurretButtonBasic].width = GameMenuObject[PauseButton].width * 2;
+	GameMenuObject[TurretButtonBasic].width = GameMenuObject[PauseButton].width;
 	GameMenuObject[TurretButtonBasic].height = GameMenuObject[PauseButton].height * 2;
 	GameMenuObject[TurretButtonBasic].objectType = objectRectangle;
 	GameMenuObject[TurretButtonBasic].image = slowTurretImageArray[0];
@@ -215,7 +216,7 @@ void turret_homing_button_init(void) {
 	GameMenuObject[TurretButtonHoming].width = GameMenuObject[TurretButtonSlow].width;
 	GameMenuObject[TurretButtonHoming].height = GameMenuObject[TurretButtonSlow].height;
 	GameMenuObject[TurretButtonHoming].objectType = objectRectangle;
-	GameMenuObject[TurretButtonHoming].image = tempStar;
+	GameMenuObject[TurretButtonHoming].image = slowTurretImageArray[0];
 }
 
 void turret_mine_button_init(void) {
@@ -224,7 +225,7 @@ void turret_mine_button_init(void) {
 	GameMenuObject[TurretButtonMine].width = GameMenuObject[TurretButtonHoming].width;
 	GameMenuObject[TurretButtonMine].height = GameMenuObject[TurretButtonBasic].height;
 	GameMenuObject[TurretButtonMine].objectType = objectRectangle;
-	GameMenuObject[TurretButtonMine].image = tempPercentage;
+	GameMenuObject[TurretButtonMine].image = slowTurretImageArray[0];
 }
 
 void environment_init(LevelData* LevelX) {
@@ -255,7 +256,7 @@ void goldQuartz_init(void) {
 void phantomQuartz_init(void) {
 	GameMenuObject[PhantomQuartzMenu].yOrigin = 0.0f;
 	GameMenuObject[PhantomQuartzMenu].width = ((float)CP_System_GetWindowWidth() - Game.xOrigin - Game.width) / 2;
-	GameMenuObject[PhantomQuartzMenu].height = (float)CP_System_GetWindowHeight() / 10;
+	GameMenuObject[PhantomQuartzMenu].height = (float)CP_System_GetWindowHeight() / 15;
 	GameMenuObject[PhantomQuartzMenu].xOrigin = (float)CP_System_GetWindowWidth() - GameMenuObject[PhantomQuartzMenu].width;
 	GameMenuObject[PhantomQuartzMenu].objectType = objectRectangle;
 }
@@ -281,7 +282,7 @@ void wave_number_display_init(void) {
 	GameMenuObject[WaveDisplay].xOrigin = GameMenuObject[HealthMenu].xOrigin;
 	GameMenuObject[WaveDisplay].yOrigin = GameMenuObject[HealthMenu].yOrigin + GameMenuObject[HealthMenu].height;
 	GameMenuObject[WaveDisplay].width = GameMenuObject[HealthMenu].width;
-	GameMenuObject[WaveDisplay].height = GameMenuObject[HealthMenu].height;
+	GameMenuObject[WaveDisplay].height = GameMenuObject[HealthMenu].height * 1.25;
 	GameMenuObject[WaveDisplay].objectType = objectRectangle;
 }
 
@@ -360,23 +361,46 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 	CP_Settings_RectMode(CP_POSITION_CORNER);
 	CP_Settings_Fill(COLOR_WHITE);
 	CP_Graphics_DrawRect(menuObjectX.xOrigin, menuObjectX.yOrigin, menuObjectX.width, menuObjectX.height);
-
+		CP_Settings_TextSize(35.0f * scalingFactor);
 	switch (type)
 	{
 	case TurretButtonBasic:
-		RenderNormal(basicTurretSpriteSheet, basicTurretArray[0], menuObjectX.width / 4, (menuObjectX.yOrigin + menuObjectX.height / 2), 128, 128);
+		CP_Image_Draw(turretUIButton, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 2),
+			128 * scalingFactor, 128 * scalingFactor, 255);
+		RenderNormal(basicTurretSpriteSheet, basicTurretArray[0], menuObjectX.width / 2, 
+			(menuObjectX.yOrigin + menuObjectX.height / 2), 128 * scalingFactor, 128 * scalingFactor);
+		sprintf_s(temp, sizeof(temp), "25");
+		CP_Font_DrawText(temp, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 2 + 128/3));
 		break;
+
 	case TurretButtonSlow:
-		CP_Image_DrawAdvanced(menuObjectX.image, menuObjectX.width / 4,
-			(menuObjectX.yOrigin + menuObjectX.height / 2), 128,
-			128, 255, 90);
+		CP_Image_Draw(turretUIButton, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 2),
+			128 * scalingFactor, 128 * scalingFactor, 255);
+		CP_Image_DrawAdvanced(menuObjectX.image, menuObjectX.width / 2,
+			(menuObjectX.yOrigin + menuObjectX.height / 2), 128 * scalingFactor,
+			128 * scalingFactor, 255, 90);
+		sprintf_s(temp, sizeof(temp), "25");
+		CP_Font_DrawText(temp, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3));
 		break;
+
 	case  TurretButtonHoming:
-		RenderNormal(homingMissleTurretSpriteSheet, homingMissleTurretArray[0], menuObjectX.width / 4, (menuObjectX.yOrigin + menuObjectX.height / 2), 128, 128);
+		CP_Image_Draw(turretUIButton, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 2),
+			128 * scalingFactor, 128 * scalingFactor, 255);
+		RenderNormal(homingMissleTurretSpriteSheet, homingMissleTurretArray[0], menuObjectX.width / 2, 
+			(menuObjectX.yOrigin + menuObjectX.height / 2), 128 * scalingFactor, 128 * scalingFactor);
+		sprintf_s(temp, sizeof(temp), "25");
+		CP_Font_DrawText(temp, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3 ));
 		break;
+
 	case TurretButtonMine:
-		RenderNormal(mineSpriteSheet, mineArray[0], menuObjectX.width / 4, (menuObjectX.yOrigin + menuObjectX.height / 2), 128, 128);
+		CP_Image_Draw(turretUIButton, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 2),
+			128 * scalingFactor, 128 * scalingFactor, 255);
+		RenderNormal(mineSpriteSheet, mineArray[0], menuObjectX.width / 2, 
+			(menuObjectX.yOrigin + menuObjectX.height / 2), 128 * scalingFactor, 128 * scalingFactor);
+		sprintf_s(temp, sizeof(temp), "25");
+		CP_Font_DrawText(temp, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3));
 		break;
+
 	case PauseButton:
 		CP_Image_DrawAdvanced(menuObjectX.image, menuObjectX.width / 2,
 			(menuObjectX.yOrigin + menuObjectX.height / 2), 64,
@@ -385,28 +409,34 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 	case SwapButton:
 		break;
 	case GoldQuartzMenu:
-		CP_Settings_Fill(COLOR_BLACK);
-		CP_Settings_TextSize(50.0f * scalingFactor);
-		RenderNormal(currencySpriteSheet, currencyArray[0], menuObjectX.xOrigin + menuObjectX.width / 8,
-			menuObjectX.yOrigin + menuObjectX.height / 2, menuObjectX.height, menuObjectX.height);
+		CP_Settings_Fill(COLOR_WHITE);
+		CP_Settings_TextSize(25.0f * scalingFactor);
+		CP_Image_Draw(currencyUIRectangle, menuObjectX.xOrigin + menuObjectX.width / 1.35, 
+			menuObjectX.yOrigin + menuObjectX.height / 2, 128 * scalingFactor, 36 * scalingFactor, 255);
+		RenderNormal(currencySpriteSheet, currencyArray[0], menuObjectX.xOrigin + menuObjectX.width / 1.7,
+			menuObjectX.yOrigin + menuObjectX.height / 2, 30 * scalingFactor, 30 * scalingFactor);
 		sprintf_s(temp, 100, "x%d", Level[currentGameLevel].goldQuartz);
-		CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 3, menuObjectX.yOrigin + menuObjectX.height / 2);
+		CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width /1.5, menuObjectX.yOrigin + menuObjectX.height / 2);
 		break;
 	case PhantomQuartzMenu:
-		CP_Settings_Fill(COLOR_BLACK);
-		CP_Settings_TextSize(50.0f * scalingFactor);
-		RenderNormal(currencySpriteSheet, currencyArray[1], menuObjectX.xOrigin + menuObjectX.width / 8,
-			menuObjectX.yOrigin + menuObjectX.height / 2, menuObjectX.height, menuObjectX.height);
+		CP_Settings_Fill(COLOR_WHITE);
+		CP_Settings_TextSize(25.0f * scalingFactor);
+		CP_Image_Draw(currencyUIRectangle, menuObjectX.xOrigin + menuObjectX.width / 1.35,
+			menuObjectX.yOrigin + menuObjectX.height / 2, 128 * scalingFactor, 36 * scalingFactor, 255);
+		RenderNormal(currencySpriteSheet, currencyArray[1], menuObjectX.xOrigin + menuObjectX.width / 1.7,
+			menuObjectX.yOrigin + menuObjectX.height / 2, 30 * scalingFactor, 30 * scalingFactor);
 		sprintf_s(temp, 100, "x%d", Level[currentGameLevel].phantomQuartz);
-		CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 2.75, menuObjectX.yOrigin + menuObjectX.height / 2);
+		CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 1.45, menuObjectX.yOrigin + menuObjectX.height / 2);
 		break;
 	case HealthMenu:
-		CP_Settings_Fill(COLOR_BLACK);
-		CP_Settings_TextSize(50.0f * scalingFactor);
+		CP_Settings_Fill(COLOR_WHITE);
+		CP_Settings_TextSize(25.0f * scalingFactor);
 		sprintf_s(temp, 100, "x%d", Level[currentGameLevel].health);
-		RenderNormal(currencySpriteSheet, currencyArray[2], menuObjectX.xOrigin + menuObjectX.width / 8,
-			menuObjectX.yOrigin + menuObjectX.height / 2, menuObjectX.height, menuObjectX.height);
-		CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 2.5, menuObjectX.yOrigin + menuObjectX.height / 2);
+		CP_Image_Draw(currencyUIRectangle, menuObjectX.xOrigin + menuObjectX.width / 1.35,
+			menuObjectX.yOrigin + menuObjectX.height / 2, 128 * scalingFactor, 36 * scalingFactor, 255);
+		RenderNormal(currencySpriteSheet, currencyArray[2], menuObjectX.xOrigin + menuObjectX.width / 1.7,
+			menuObjectX.yOrigin + menuObjectX.height / 2, 30 * scalingFactor, 30 * scalingFactor);
+		CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 1.42, menuObjectX.yOrigin + menuObjectX.height / 2);
 		break;
 	case WaveDisplay:
 		CP_Settings_Fill(COLOR_BLACK);

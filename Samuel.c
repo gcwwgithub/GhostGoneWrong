@@ -39,6 +39,7 @@ void turret_init(void)
 		turret[i].turret_img = slowTurretImageArray[0];
 		turret[i].currentAnimState = INACTIVE;
 		turret[i].animCounter = 0;
+		turret[i].price = 25;
 	}
 	//init the lcoations of turret placed
 	for (int i = 0; i < GAME_GRID_ROWS; ++i)
