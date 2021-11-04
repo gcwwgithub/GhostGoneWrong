@@ -81,6 +81,8 @@ void place_turret(TurretType type, int index_x, int index_y)
 			turret[i].dir.pos_y = -1;
 			break;
 		case T_MINE:
+			if (Level[currentGameLevel].grid[index_y][index_x].type != Path)
+				return;
 			turret[i].mod.range = Game.gridWidth * 2;
 			turret[i].mod.damage = 2;
 			turret[i].data.width = Game.gridWidth * 0.7f;
