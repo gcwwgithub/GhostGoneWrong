@@ -21,17 +21,18 @@ typedef enum EnemyState {
 	Hurt,
 	Death,
 	Reached
-	
+
 }EnemyState;
 
 typedef struct Enemy {
-	int CurrentWaypoint, health,alpha,points;
-	float xOrigin, yOrigin, enemy_width, enemy_height, 
+	int CurrentWaypoint, health, alpha, points;
+	float xOrigin, yOrigin, enemy_width, enemy_height,
 		max_health, angle, speed, slow_amt, slow_timer;
 	Coordinates data;
 	EnemyState state;
 	EnemyTypes type;
 	CP_Image Render_Enemy;
+	int currentAnimState;
 
 	float timer;
 }enemy;
@@ -46,7 +47,7 @@ int Check_state(enemy* r);
 
 void EnemyDeath(enemy* r, LevelData* Level);
 void Basic_Ghost(enemy* r);
-void Enemies_init(int Basic_enemy_count, int Fast_enemy_count, int Fat_enemy_count,LevelData* Level);
+void Enemies_init(int Basic_enemy_count, int Fast_enemy_count, int Fat_enemy_count, LevelData* Level);
 void update_enemy(void);
 void draw_multiple_enemies(void);
 void Fast_Ghost_init(enemy* r);

@@ -136,7 +136,7 @@ void render_turret(void)
 		switch (turret[i].type)
 		{
 		case T_BASIC:
-			RenderTurret(basicTurretSpriteSheet, basicTurretArray[turret[i].animCounter],
+			RenderNormal(basicTurretSpriteSheet, basicTurretArray[turret[i].animCounter],
 				turret[i].data.xOrigin, turret[i].data.yOrigin, turret[i].size, turret[i].size);
 			break;
 		case T_SLOW:
@@ -144,11 +144,11 @@ void render_turret(void)
 				turret[i].size, turret[i].size, 255, turret[i].angle + 90.f);//the +90 degree is to offset the atan2
 			break;
 		case T_HOMING:
-			RenderTurret(homingMissleTurretSpriteSheet, homingMissleTurretArray[turret[i].animCounter],
+			RenderNormal(homingMissleTurretSpriteSheet, homingMissleTurretArray[turret[i].animCounter],
 				turret[i].data.xOrigin, turret[i].data.yOrigin, turret[i].size, turret[i].size);
 			break;
 		case T_MINE:
-			RenderTurret(mineSpriteSheet, mineArray[turret[i].animCounter],
+			RenderNormal(mineSpriteSheet, mineArray[turret[i].animCounter],
 				turret[i].data.xOrigin, turret[i].data.yOrigin, turret[i].size, turret[i].size);
 			break;
 		default:

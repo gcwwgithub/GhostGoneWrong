@@ -106,9 +106,8 @@ void init_spritesheet_array(void);
 
 void SpriteSheetCalculation(struct SpriteSheetImage* s, CP_Image image, int pixelWidth, int pixelHeight, int stopPoint);
 void RenderPortal(struct SpriteSheetImage s, struct PortalVariables* pv, CP_Image image);
-void RenderTurret(CP_Image image, struct SpriteSheetImage s, float xPos, float yPos, float sizeOfImageX, float sizeOfImageY);
 void RenderNormal(CP_Image image, struct SpriteSheetImage s, float xPos, float yPos, float sizeOfImageX, float sizeOfImageY);
 void RenderWithAlphaChanged(CP_Image image, struct SpriteSheetImage s, float xPos, float yPos, float sizeOfImageX, float sizeOfImageY, int alphaValue);
 void UpdatePortal(void);
-
+void render_game_background(void);
 

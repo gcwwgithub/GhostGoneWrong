@@ -221,14 +221,6 @@ void RenderPortal(struct SpriteSheetImage s, struct PortalVariables* pv, CP_Imag
 		s.leftXPixel, s.topYPixel, s.rightXPixel, s.bottomYPixel, 255);
 }
 
-
-void RenderTurret(CP_Image image, struct SpriteSheetImage s, float xPos, float yPos, float sizeOfImageX, float sizeOfImageY)
-{
-	//put size of image as the turret size
-	CP_Image_DrawSubImage(image, xPos, yPos, sizeOfImageX, sizeOfImageY,
-		s.leftXPixel, s.topYPixel, s.rightXPixel, s.bottomYPixel, 255);
-}
-
 void RenderWithAlphaChanged(CP_Image image, struct SpriteSheetImage s, float xPos, float yPos, float sizeOfImageX, float sizeOfImageY, int alphaValue)
 {
 	//put size of image as the turret size
@@ -360,7 +352,6 @@ void render_all_portal_effects(void)
 	render_portal_effect(portalSpawnFirstNode, isPortalEffectSpawn);
 }
 
-
 void UpdatePortal(void)
 {
 	if (portalTimer >= 0.25)
@@ -381,4 +372,9 @@ void UpdatePortal(void)
 	RenderPortal(bluePortalArray[portalCounter], &portalVariablesArray[0], bluePortalSpriteSheet);
 	RenderPortal(redPortalArray[portalCounter], &portalVariablesArray[1], redPortalSpriteSheet);
 
+}
+
+void render_game_background(void)
+{
+	RenderNormal(backgroundSpriteSheet, backgroundArray[4], CP_System_GetWindowWidth() * 0.5, CP_System_GetWindowHeight() * 0.5, CP_System_GetWindowWidth(), CP_System_GetWindowHeight());
 }

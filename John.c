@@ -28,17 +28,8 @@ void EnemyAnimationState(enemy* r)
 			r->state = Moving;
 		}
 	}
-	switch (r->type) {
-	case Basic:
-		r->Render_Enemy = basicGhostImageArray[i];
-		break;
-	case Fast_Ghost:
-		r->Render_Enemy = fastGhostImageArray[i];
-		break;
-	case Fat_Ghost:
-		r->Render_Enemy = fatGhostImageArray[i];
-		break;
-	}
+	r->currentAnimState = i;
+
 }
 int Check_state(enemy* r) {
 	switch (r->state) {
@@ -143,7 +134,7 @@ void EnemyDeath(enemy* r, LevelData* Level) {  //function updates and checks for
 						r->state = Hurt;
 						r->timer = 0;
 					}
-					
+
 					insert_new_node(&bulletRadiusFirstNode, r->data.xOrigin, r->data.yOrigin, proj[i].type);
 				}
 
@@ -183,7 +174,7 @@ void EnemyDeath(enemy* r, LevelData* Level) {  //function updates and checks for
 	}
 }
 
-void Enemies_init(int Basic_enemy_count, int Fast_enemy_count, int Fat_enemy_count,LevelData* Level) {
+void Enemies_init(int Basic_enemy_count, int Fast_enemy_count, int Fat_enemy_count, LevelData* Level) {
 	timer = 0;
 	count = 0;
 	Enemy_node = NULL;
@@ -198,7 +189,7 @@ void Enemies_init(int Basic_enemy_count, int Fast_enemy_count, int Fat_enemy_cou
 	basicEnemyNum = Basic_enemy_count;
 	fastEnemyNum = Fast_enemy_count;
 	fatEnemyNum = Fat_enemy_count;
-	
+
 	//test path
 	for (int i = 0; i < MAX_ENEMIES && i < Basic_enemy_count; i++) {
 		Basic_Ghost(&Enemy[i]);
@@ -232,7 +223,7 @@ void Basic_Ghost(enemy* r) { // setup variable for basic ghost enemy
 	//for the freeze turret & enemy interaction
 	r->slow_amt = 1;
 	r->slow_timer = 0;
-
+	r->currentAnimState = 0;
 }
 
 void Fast_Ghost_init(enemy* r) { // setup variable for fast ghost enemy
@@ -256,7 +247,7 @@ void Fast_Ghost_init(enemy* r) { // setup variable for fast ghost enemy
 	//for the freeze turret & enemy interaction
 	r->slow_amt = 1;
 	r->slow_timer = 0;
-
+	r->currentAnimState = 0;
 }
 
 void Fat_Ghost_init(enemy* r) {
@@ -280,6 +271,7 @@ void Fat_Ghost_init(enemy* r) {
 	//for the freeze turret & enemy interaction
 	r->slow_amt = 1;
 	r->slow_timer = 0;
+	r->currentAnimState = 0;
 }
 
 void update_enemy(void) {
@@ -287,7 +279,7 @@ void update_enemy(void) {
 	if (timer >= 1) {
 		count++;
 		timer = 0;
-		
+
 	}
 	for (int i = 0; i < MAX_ENEMIES; i++) {
 		if ((Enemy[i].state == Inactive) && (Enemy[i].health >= 1) && (count / 3 <= MAX_ENEMIES)) {
@@ -296,9 +288,9 @@ void update_enemy(void) {
 			if (b - wave_timer >= 3) {
 				Enemy[i].state = Moving;
 				wave_timer = count;
-					insert_new_node_portal(&portalSpawnFirstNode, Enemy[i].data.xOrigin,
-						Enemy[i].data.yOrigin, 0);
-				
+				insert_new_node_portal(&portalSpawnFirstNode, Enemy[i].data.xOrigin,
+					Enemy[i].data.yOrigin, 0);
+
 
 			}
 		}
@@ -313,7 +305,7 @@ void update_enemy(void) {
 		}
 
 		Update_Path_Array(Level[0]);
-		enemy_move(&Enemy[i], Xarray, Yarray,Number_of_points, &Level[0]);
+		enemy_move(&Enemy[i], Xarray, Yarray, Number_of_points, &Level[0]);
 		EnemyDeath(&Enemy[i], &Level[0]);
 	}
 	enemy* En = &Enemy[0];
@@ -326,15 +318,19 @@ void draw_multiple_enemies(void) {
 		EnemyAnimationState(&Enemy[i]);
 		switch (Enemy[i].type) {
 		case Basic:
-			CP_Image_DrawAdvanced(Enemy[i].Render_Enemy, Enemy[i].data.xOrigin, Enemy[i].data.yOrigin, Enemy[i].enemy_width, Enemy[i].enemy_height, Enemy[i].alpha, Enemy[i].angle);
+			RenderWithAlphaChanged(basicGhostSpriteSheet, basicGhostSpriteArray[Enemy[i].currentAnimState],
+				Enemy[i].data.xOrigin, Enemy[i].data.yOrigin, Enemy[i].enemy_width, Enemy[i].enemy_height, Enemy[i].alpha);
+
 			Enemy[i].timer += CP_System_GetDt();
 			break;
 		case Fast_Ghost:
-			CP_Image_DrawAdvanced(Enemy[i].Render_Enemy, Enemy[i].data.xOrigin, Enemy[i].data.yOrigin, Enemy[i].enemy_width, Enemy[i].enemy_height, Enemy[i].alpha, Enemy[i].angle);
+			RenderWithAlphaChanged(fastGhostSpriteSheet, fastGhostSpriteArray[Enemy[i].currentAnimState],
+				Enemy[i].data.xOrigin, Enemy[i].data.yOrigin, Enemy[i].enemy_width, Enemy[i].enemy_height, Enemy[i].alpha);
 			Enemy[i].timer += CP_System_GetDt();
 			break;
 		case Fat_Ghost:
-			CP_Image_DrawAdvanced(Enemy[i].Render_Enemy, Enemy[i].data.xOrigin, Enemy[i].data.yOrigin, Enemy[i].enemy_width, Enemy[i].enemy_height, Enemy[i].alpha, Enemy[i].angle);
+			RenderWithAlphaChanged(fatGhostSpriteSheet, fatGhostSpriteArray[Enemy[i].currentAnimState],
+				Enemy[i].data.xOrigin, Enemy[i].data.yOrigin, Enemy[i].enemy_width, Enemy[i].enemy_height, Enemy[i].alpha);
 			Enemy[i].timer += CP_System_GetDt();
 			break;
 		}
@@ -362,7 +358,7 @@ void Update_Path_Array(LevelData Level) {
 	for (int currentCost = 1; currentCost <= Level.grid[Level.exitRow][Level.exitCol].cost; currentCost++) {
 		for (int currentRow = 0; currentRow < GAME_GRID_ROWS; currentRow++) {
 			for (int currentCol = 0; currentCol < GAME_GRID_COLS; currentCol++) {
-				if (Level.grid[currentRow][currentCol].cost == currentCost && (Level.grid[currentRow][currentCol].type == Path|| Level.grid[currentRow][currentCol].type == Exit)) {
+				if (Level.grid[currentRow][currentCol].cost == currentCost && (Level.grid[currentRow][currentCol].type == Path || Level.grid[currentRow][currentCol].type == Exit)) {
 					nextPathRow = currentRow;
 					nextPathCol = currentCol;
 					break;

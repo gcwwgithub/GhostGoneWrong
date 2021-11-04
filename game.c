@@ -92,6 +92,7 @@ void game_update(void)
 
 	if (currentGameState == Wave)
 	{
+		render_game_background();
 		//do enemy update first
 		update_enemy();
 
@@ -124,6 +125,7 @@ void game_update(void)
 	}
 	else if (currentGameState == Building)
 	{
+		render_game_background();
 		reduce_building_phase_time();
 
 		//do turret & projectile update next
