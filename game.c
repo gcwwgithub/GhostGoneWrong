@@ -43,6 +43,7 @@ void game_init(void)
 	phantomQuartz_init();
 	goldQuartz_init();
 	
+	
 	health_init();
 	currency_swap_init();
 	wave_number_display_init();
@@ -60,8 +61,8 @@ void game_init(void)
 	Level[0].exitRow = GAME_GRID_ROWS - 1;
 	Level[0].exitCol = (GAME_GRID_COLS - 1) / 2;
 	Level[0].health = 100;
-	Level[0].goldQuartz = 50;
-	Level[0].phantomQuartz = 0;
+	Level[0].phantomQuartz = 50;
+	Level[0].goldQuartz = 0;
 	Level[0].currentWave = 0;
 	Level[0].currentEffect = 0;
 	

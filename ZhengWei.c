@@ -244,9 +244,15 @@ void render_environment(void) {
 }
 
 
-void phantomQuartz_init(void) {
-	
+void goldQuartz_init(void) {
+	GameMenuObject[GoldQuartzMenu].xOrigin = GameMenuObject[PhantomQuartzMenu].xOrigin;
+	GameMenuObject[GoldQuartzMenu].yOrigin = GameMenuObject[PhantomQuartzMenu].yOrigin + GameMenuObject[PhantomQuartzMenu].height;
+	GameMenuObject[GoldQuartzMenu].width = GameMenuObject[PhantomQuartzMenu].width;
+	GameMenuObject[GoldQuartzMenu].height = GameMenuObject[PhantomQuartzMenu].height;
+	GameMenuObject[GoldQuartzMenu].objectType = objectRectangle;	
+}
 
+void phantomQuartz_init(void) {
 	GameMenuObject[PhantomQuartzMenu].yOrigin = 0.0f;
 	GameMenuObject[PhantomQuartzMenu].width = ((float)CP_System_GetWindowWidth() - Game.xOrigin - Game.width) / 2;
 	GameMenuObject[PhantomQuartzMenu].height = (float)CP_System_GetWindowHeight() / 10;
@@ -254,17 +260,9 @@ void phantomQuartz_init(void) {
 	GameMenuObject[PhantomQuartzMenu].objectType = objectRectangle;
 }
 
-void goldQuartz_init(void) {
-	GameMenuObject[GoldQuartzMenu].xOrigin = GameMenuObject[PhantomQuartzMenu].xOrigin;
-	GameMenuObject[GoldQuartzMenu].yOrigin = GameMenuObject[PhantomQuartzMenu].yOrigin + GameMenuObject[PhantomQuartzMenu].height;
-	GameMenuObject[GoldQuartzMenu].width = GameMenuObject[PhantomQuartzMenu].width;
-	GameMenuObject[GoldQuartzMenu].height = GameMenuObject[PhantomQuartzMenu].height;
-	GameMenuObject[GoldQuartzMenu].objectType = objectRectangle;
-}
-
 void health_init(void) {
 	GameMenuObject[HealthMenu].xOrigin = GameMenuObject[GoldQuartzMenu].xOrigin;
-	GameMenuObject[HealthMenu].yOrigin = GameMenuObject[GoldQuartzMenu].yOrigin + GameMenuObject[PhantomQuartzMenu].height;
+	GameMenuObject[HealthMenu].yOrigin = GameMenuObject[GoldQuartzMenu].yOrigin + GameMenuObject[GoldQuartzMenu].height;
 	GameMenuObject[HealthMenu].width = GameMenuObject[GoldQuartzMenu].width;
 	GameMenuObject[HealthMenu].height = GameMenuObject[GoldQuartzMenu].height;
 	GameMenuObject[HealthMenu].objectType = objectRectangle;
@@ -329,9 +327,9 @@ void render_button_pressed(void) {
 		break;
 	case SwapButton:
 		isPlacingTurret = NOT_PLACING_TURRET;
-		if (Level[currentGameLevel].goldQuartz >= 10) {
-			Level[currentGameLevel].goldQuartz -= 10;
-			Level[currentGameLevel].phantomQuartz += 1;
+		if (Level[currentGameLevel].phantomQuartz >= 10) {
+			Level[currentGameLevel].phantomQuartz -= 10;
+			Level[currentGameLevel].goldQuartz += 1;
 		}
 		MouseInput.xOrigin = (float)CP_System_GetWindowWidth() / 2;
 		MouseInput.yOrigin = (float)CP_System_GetWindowHeight() / 2;
@@ -386,20 +384,20 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 		break;
 	case SwapButton:
 		break;
-	case PhantomQuartzMenu:
-		CP_Settings_Fill(COLOR_BLACK);
-		CP_Settings_TextSize(50.0f);
-		RenderNormal(currencySpriteSheet, currencyArray[1], menuObjectX.xOrigin + menuObjectX.width / 8,
-			menuObjectX.yOrigin + menuObjectX.height / 2, menuObjectX.height, menuObjectX.height);
-		sprintf_s(temp, 100, "x%d", Level[currentGameLevel].phantomQuartz);
-		CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 3, menuObjectX.yOrigin + menuObjectX.height / 2);
-		break;
 	case GoldQuartzMenu:
 		CP_Settings_Fill(COLOR_BLACK);
 		CP_Settings_TextSize(50.0f);
 		RenderNormal(currencySpriteSheet, currencyArray[0], menuObjectX.xOrigin + menuObjectX.width / 8,
 			menuObjectX.yOrigin + menuObjectX.height / 2, menuObjectX.height, menuObjectX.height);
 		sprintf_s(temp, 100, "x%d", Level[currentGameLevel].goldQuartz);
+		CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 3, menuObjectX.yOrigin + menuObjectX.height / 2);
+		break;
+	case PhantomQuartzMenu:
+		CP_Settings_Fill(COLOR_BLACK);
+		CP_Settings_TextSize(50.0f);
+		RenderNormal(currencySpriteSheet, currencyArray[1], menuObjectX.xOrigin + menuObjectX.width / 8,
+			menuObjectX.yOrigin + menuObjectX.height / 2, menuObjectX.height, menuObjectX.height);
+		sprintf_s(temp, 100, "x%d", Level[currentGameLevel].phantomQuartz);
 		CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 2.75, menuObjectX.yOrigin + menuObjectX.height / 2);
 		break;
 	case HealthMenu:
@@ -467,9 +465,11 @@ void render_new_turret(LevelData* LevelX) {
 		drawX = (int)((CP_Input_GetMouseX() - Game.xOrigin) / Game.gridWidth);
 		drawY = (int)((CP_Input_GetMouseY() - Game.yOrigin) / Game.gridHeight);
 		if (LevelX->grid[drawY][drawX].type == Clear || LevelX->grid[drawY][drawX].type == Path) {
-			LevelX->grid[drawY][drawX].type = Blocked;
-			pathfinding_reset(LevelX);
-			pathfinding_calculate_cost(LevelX);
+			if (isPlacingTurret != T_MINE) {
+				LevelX->grid[drawY][drawX].type = Blocked;
+				pathfinding_reset(LevelX);
+				pathfinding_calculate_cost(LevelX);
+			}
 			if (!is_destination_updated(LevelX)) {
 				LevelX->grid[drawY][drawX].type = Clear;
 				pathfinding_reset(LevelX);

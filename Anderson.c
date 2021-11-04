@@ -344,20 +344,20 @@ void GameWinLoseCheck(void)
 
 #pragma endregion
 
-void phantom_quartz_change(int changeInQuartz)
-{
-	Level[0].phantomQuartz += changeInQuartz;
-}
-
-void gold_quartz_add(int changeInQuartz)
+void gold_quartz_change(int changeInQuartz)
 {
 	Level[0].goldQuartz += changeInQuartz;
 }
 
-void phantom_gold_quartz_conversion(int phantomAmtToConvert, int conversionRate)
+void phantom_quartz_add(int changeInQuartz)
 {
-	Level[0].phantomQuartz -= phantomAmtToConvert;
-	Level[0].goldQuartz += phantomAmtToConvert / conversionRate;
+	Level[0].phantomQuartz += changeInQuartz;
+}
+
+void gold_phantom_quartz_conversion(int goldAmtToConvert, int conversionRate)
+{
+	Level[0].goldQuartz -= goldAmtToConvert;
+	Level[0].phantomQuartz += goldAmtToConvert / conversionRate;
 }
 
 void restart_level(int gameLevelToRestart)
@@ -369,8 +369,8 @@ void restart_level(int gameLevelToRestart)
 	Level[gameLevelToRestart].exitRow = GAME_GRID_ROWS - 1;
 	Level[gameLevelToRestart].exitCol = (GAME_GRID_COLS - 1) / 2;
 	Level[gameLevelToRestart].health = 100;
-	Level[gameLevelToRestart].goldQuartz = 0;
-	Level[gameLevelToRestart].phantomQuartz = 50;
+	Level[gameLevelToRestart].phantomQuartz = 0;
+	Level[gameLevelToRestart].goldQuartz = 50;
 
 	pathfinding_init(&Level[gameLevelToRestart]);
 	environment_init(&Level[gameLevelToRestart]);

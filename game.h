@@ -72,8 +72,8 @@ typedef struct LevelData {
 	int exitRow;
 	int exitCol;
 	Grids grid[GAME_GRID_ROWS][GAME_GRID_COLS];
-	int goldQuartz;
 	int phantomQuartz;
+	int goldQuartz;
 	int health;
 	int currentWave;
 	enum EnvironmentalEffects currentEffect;
@@ -112,8 +112,8 @@ enum MenuObjectType {
 	TurretButtonHoming,
 	TurretButtonMine,
 	SwapButton,
-	GoldQuartzMenu,
 	PhantomQuartzMenu,
+	GoldQuartzMenu,
 	HealthMenu,
 	WaveDisplay,
 	BattlefieldEffects,
