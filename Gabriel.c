@@ -174,10 +174,10 @@ int isEmpty(struct node* currentNode) {
 
 void init_spritesheet_array(void)
 {
-	/*SpriteSheetCalculation(basicGhostSpriteSheet, basicGhostSpriteArray, 128, 128, 1);
-	SpriteSheetCalculation(fastGhostSpriteSheet, fastGhostSpriteArray, 128, 128, 1);
-	SpriteSheetCalculation(fatGhostSpriteSheet, fatGhostSpriteArray, 128, 128, 1);
-	SpriteSheetCalculation(grimReaperSpriteSheet, grimReaperSpriteArray, 128, 128, 1);*/
+	SpriteSheetCalculation(basicGhostSpriteArray, basicGhostSpriteSheet, 128, 128, 1);
+	SpriteSheetCalculation(fastGhostSpriteArray, fastGhostSpriteSheet, 128, 128, 1);
+	SpriteSheetCalculation(fatGhostSpriteArray, fatGhostSpriteSheet, 128, 128, 1);
+	SpriteSheetCalculation(grimReaperSpriteArray, grimReaperSpriteSheet, 128, 128, 1);
 	SpriteSheetCalculation(bluePortalArray, bluePortalSpriteSheet, 128, 128, 1);
 	SpriteSheetCalculation(redPortalArray, redPortalSpriteSheet, 128, 128, 1);
 	SpriteSheetCalculation(basicTurretArray, basicTurretSpriteSheet, 128, 128, 0);
@@ -199,7 +199,7 @@ void SpriteSheetCalculation(struct SpriteSheetImage* s, CP_Image image, int pixe
 	int width = CP_Image_GetWidth(image);
 	int height = CP_Image_GetHeight(image);
 	int counter = 0;
-
+	printf("test\n");
 	for (int j = 0; j < height / pixelHeight; j++)
 	{
 
