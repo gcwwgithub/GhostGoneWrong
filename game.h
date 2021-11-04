@@ -134,3 +134,7 @@ Coordinates Environment[MAX_ENVIRONMENT_OBJECT];
 int Collision_Detection(Coordinates object1, Coordinates object2);
 int btn_is_pressed(Coordinates object1);
 void render_turret_menu_object(Coordinates ButtonX, enum MenuObjectType type);
+
+//graphics
+
+float scalingFactor;
