@@ -66,10 +66,10 @@ CP_Image backgroundSpriteSheet;
 CP_Image portalEnterEffectSpriteSheet;
 CP_Image portalSpawnEffectSpriteSheet;
 
-struct SpriteSheetImage basicGhostSpriteArray[4];
-struct SpriteSheetImage fastGhostSpriteArray[4];
-struct SpriteSheetImage fatGhostSpriteArray[4];
-struct SpriteSheetImage grimReaperSpriteArray[4];
+struct SpriteSheetImage basicGhostSpriteArray[3];
+struct SpriteSheetImage fastGhostSpriteArray[3];
+struct SpriteSheetImage fatGhostSpriteArray[3];
+struct SpriteSheetImage grimReaperSpriteArray[3];
 struct SpriteSheetImage bluePortalArray[3];
 struct SpriteSheetImage redPortalArray[3];
 struct SpriteSheetImage basicTurretArray[6];

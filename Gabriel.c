@@ -174,10 +174,10 @@ int isEmpty(struct node* currentNode) {
 
 void init_spritesheet_array(void)
 {
-	SpriteSheetCalculation(basicGhostSpriteSheet, basicGhostSpriteArray, 128, 128, 1);
+	/*SpriteSheetCalculation(basicGhostSpriteSheet, basicGhostSpriteArray, 128, 128, 1);
 	SpriteSheetCalculation(fastGhostSpriteSheet, fastGhostSpriteArray, 128, 128, 1);
 	SpriteSheetCalculation(fatGhostSpriteSheet, fatGhostSpriteArray, 128, 128, 1);
-	SpriteSheetCalculation(grimReaperSpriteSheet, grimReaperSpriteArray, 128, 128, 1);
+	SpriteSheetCalculation(grimReaperSpriteSheet, grimReaperSpriteArray, 128, 128, 1);*/
 	SpriteSheetCalculation(bluePortalArray, bluePortalSpriteSheet, 128, 128, 1);
 	SpriteSheetCalculation(redPortalArray, redPortalSpriteSheet, 128, 128, 1);
 	SpriteSheetCalculation(basicTurretArray, basicTurretSpriteSheet, 128, 128, 0);
