@@ -32,11 +32,6 @@ struct PortalVariables
 
 CP_Image slowTurretImageArray[6];
 
-CP_Image basicGhostImageArray[3];
-CP_Image fastGhostImageArray[3];
-CP_Image fatGhostImageArray[3];
-CP_Image grimReaperImageArray[3];
-
 CP_Image dirtTileImage;
 CP_Image pauseButtonImage;
 CP_Image titleWordImage;

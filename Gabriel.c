@@ -9,21 +9,6 @@ void init_all_images(void)
 	slowTurretImageArray[4] = CP_Image_Load("./Assets/SlowTurret4.png");
 	slowTurretImageArray[5] = CP_Image_Load("./Assets/SlowTurret5.png");
 
-	basicGhostImageArray[0] = CP_Image_Load("./Assets/BasicGhost1.png");
-	basicGhostImageArray[1] = CP_Image_Load("./Assets/BasicGhost2.png");
-	basicGhostImageArray[2] = CP_Image_Load("./Assets/BasicGhost3.png");
-
-	fastGhostImageArray[0] = CP_Image_Load("./Assets/FastGhost1.png");
-	fastGhostImageArray[1] = CP_Image_Load("./Assets/FastGhost2.png");
-	fastGhostImageArray[2] = CP_Image_Load("./Assets/FastGhost3.png");
-
-	fatGhostImageArray[0] = CP_Image_Load("./Assets/FatGhost1.png");
-	fatGhostImageArray[1] = CP_Image_Load("./Assets/FatGhost2.png");
-	fatGhostImageArray[2] = CP_Image_Load("./Assets/FatGhost3.png");
-
-	grimReaperImageArray[0] = CP_Image_Load("./Assets/GrimReaper1.png");
-	grimReaperImageArray[1] = CP_Image_Load("./Assets/GrimReaper2.png");
-	grimReaperImageArray[2] = CP_Image_Load("./Assets/GrimReaper3.png");
 
 	dirtTileImage = CP_Image_Load("./Assets/Dirt.png");
 	pauseButtonImage = CP_Image_Load("./Assets/Pause.png");

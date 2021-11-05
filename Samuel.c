@@ -68,18 +68,24 @@ void place_turret(TurretType type, int index_x, int index_y)
 		case T_BASIC:
 			turret[i].mod.range = Game.gridWidth * 2;
 			turret[i].mod.damage = 1;
+			turret[i].animCounter = 0;
+			turret[i].turretAnimTimer = 0;
 			break;
 		case T_SLOW: // FREEZE TURRET
 			turret[i].mod.range = Game.gridWidth * 2;
 			turret[i].mod.damage = 0.5f;
 			turret[i].mod.slow_amt = 0.6f; //leaving it at 1 means no slow if slow_amt < 1 then slow
 			turret[i].mod.slow_timer = 2.f;
+			turret[i].animCounter = 0;
+			turret[i].turretAnimTimer = 0;
 			break;
 		case T_HOMING:
 			turret[i].mod.range = Game.gridWidth * 2;
 			turret[i].mod.damage = 1;
 			turret[i].dir.pos_x = -1;
 			turret[i].dir.pos_y = -1;
+			turret[i].animCounter = 0;
+			turret[i].turretAnimTimer = 0;
 			break;
 		case T_MINE:
 			if (Level[currentGameLevel].grid[index_y][index_x].type != Path)
@@ -89,6 +95,8 @@ void place_turret(TurretType type, int index_x, int index_y)
 			turret[i].data.width = Game.gridWidth * 0.7f;
 			turret[i].data.width = Game.gridHeight * 0.7f;
 			turret[i].data.objectType = objectCircle;
+			turret[i].animCounter = 0;
+			turret[i].turretAnimTimer = 0;
 			break;
 		default:
 			break;

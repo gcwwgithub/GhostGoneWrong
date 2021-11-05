@@ -465,18 +465,18 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 		CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 2.5, menuObjectX.yOrigin + menuObjectX.height / 10);
 
 		CP_Settings_TextSize(50.0f * scalingFactor);
-		CP_Image_Draw(basicGhostImageArray[0], menuObjectX.xOrigin + menuObjectX.width / 6,
-			menuObjectX.yOrigin + menuObjectX.height / 10 * 3, menuObjectX.height / 4, menuObjectX.height / 4, 255);
+		RenderNormal(basicGhostSpriteSheet, basicGhostSpriteArray[0], menuObjectX.xOrigin + menuObjectX.width / 6,
+			menuObjectX.yOrigin + menuObjectX.height / 10 * 3, menuObjectX.height / 4, menuObjectX.height / 4);
 		sprintf_s(temp, sizeof(temp), "x%d", basicEnemyNum);
 		CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 2.25, menuObjectX.yOrigin + menuObjectX.height / 10 * 3);
-
-		CP_Image_Draw(fastGhostImageArray[0], menuObjectX.xOrigin + menuObjectX.width / 6,
-			menuObjectX.yOrigin + menuObjectX.height / 10 * 5.5, menuObjectX.height / 4, menuObjectX.height / 4, 255);
+		
+		RenderNormal(fastGhostSpriteSheet, fastGhostSpriteArray[0], menuObjectX.xOrigin + menuObjectX.width / 6,
+			menuObjectX.yOrigin + menuObjectX.height / 10 * 5.5, menuObjectX.height / 4, menuObjectX.height / 4);
 		sprintf_s(temp, sizeof(temp), "x%d", fastEnemyNum);
 		CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 2.25, menuObjectX.yOrigin + menuObjectX.height / 10 * 5.5);
 
-		CP_Image_Draw(fatGhostImageArray[0], menuObjectX.xOrigin + menuObjectX.width / 6,
-			menuObjectX.yOrigin + menuObjectX.height / 10 * 8, menuObjectX.height / 4, menuObjectX.height / 4, 255);
+		RenderNormal(fatGhostSpriteSheet, fatGhostSpriteArray[0], menuObjectX.xOrigin + menuObjectX.width / 6,
+			menuObjectX.yOrigin + menuObjectX.height / 10 * 8, menuObjectX.height / 4, menuObjectX.height / 4);
 		sprintf_s(temp, sizeof(temp), "x%d", fatEnemyNum);
 		CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 2.25, menuObjectX.yOrigin + menuObjectX.height / 10 * 8);
 		break;
