@@ -3,6 +3,7 @@
 #include "Anderson.h"
 #include "ZhengWei.h"
 #include "John.h"
+#include "Samuel.h"
 
 // text currently aligned to horizontal_center, vertical_center of text box.
 // init_play_button(...)
@@ -14,67 +15,9 @@ int whiteSquareClicked = 0;
 int turretButton0Clicked = 0;
 float buildingTime = BUILDING_PHASE_TIME;
 
-// This should output the color of the square that is clicked.
-// This is dependent on the level set input.
-void detect_grid_square_color(LevelData level)
-{
-	int color = 4; // max value of GridState + 1
-	if (CP_Input_MouseTriggered(MOUSE_BUTTON_1))
-	{
-		whiteSquareClicked = 0;
-
-		turretButton0Clicked = 0;
-
-		float distFromXOriginToMouseX = CP_Input_GetMouseX() - Game.xOrigin;
-		float distFromYOriginToMouseY = CP_Input_GetMouseY() - Game.yOrigin;
-
-		float clickedCol = distFromXOriginToMouseX / Game.gridWidth;
-		float clickedRow = distFromYOriginToMouseY / Game.gridHeight;
-
-		// clicked within the grid
-		if ((clickedCol >= 0 && clickedCol < GAME_GRID_COLS) && (clickedRow >= 0 && clickedRow < GAME_GRID_ROWS))
-		{
-			color = level.grid[(int)clickedRow][(int)clickedCol].type;
-			switch (color)
-			{
-			case (Clear):
-			{
-				whiteSquareClicked = 1;
-				break;
-			}
-			}
-		}
-	}
-
-	pixelFont = GAME_FONT;
-	CP_Font_Set(pixelFont);
-	CP_Settings_Fill(COLOR_RED);
-	CP_Settings_TextSize(FONT_SIZE);
-	if (whiteSquareClicked)
-	{
-		CP_Font_DrawText("White square", CP_System_GetWindowWidth() * 0.9f, CP_System_GetWindowHeight() * 0.1f);
-	}
-	if (turretButton0Clicked)
-	{
-		CP_Font_DrawText("Turret button 0", CP_System_GetWindowWidth() * 0.9f, CP_System_GetWindowHeight() * 0.1f);
-	}
-}
-
-void reduce_building_phase_time()
-{
-	if (buildingTime < 0.05f)
-	{
-		buildingTime = 0.0f;
-		Level[currentGameLevel].currentWave += 1;
-		currentGameState = Wave;
-	}
-	else
-	{
-		buildingTime -= CP_System_GetDt();
-	}
-}
-
 #pragma region UI
+
+#pragma region Initialisations
 
 // Assuming all buttons are rectangles
 // Attempted soft coding of UI button initialisation - somewhat didn't work so is now just used for reference.
@@ -183,15 +126,27 @@ void init_win_screen(void)
 
 }
 
-void init_lose_screen(void)
+void init_end_screen(void)
 {
+	// Back to Main Menu
+	endScreenButtons[0].buttonData.xOrigin = CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH / 2;
+	endScreenButtons[0].buttonData.yOrigin = CP_System_GetWindowHeight() * 0.4f - BUTTON_HEIGHT / 2;
+	endScreenButtons[0].buttonData.width = BUTTON_WIDTH;
+	endScreenButtons[0].buttonData.height = BUTTON_HEIGHT;
 
-}
+	endScreenButtons[0].textPositionX = endScreenButtons[0].buttonData.xOrigin + BUTTON_WIDTH / 2;
+	endScreenButtons[0].textPositionY = endScreenButtons[0].buttonData.yOrigin + BUTTON_HEIGHT / 2;
+	strcpy_s(endScreenButtons[0].textString, sizeof(endScreenButtons[0].textString), "Back");
 
-void render_title_screen(void)
-{
-	RenderWithAlphaChanged(backgroundSpriteSheet, backgroundArray[0], CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.5f, CP_System_GetWindowWidth(), CP_System_GetWindowHeight(), 150);
-	CP_Image_Draw(titleWordImage, CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.2f, 256, 256, 255);
+	// Quit to Desktop
+	endScreenButtons[1].buttonData.xOrigin = CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH / 2;
+	endScreenButtons[1].buttonData.yOrigin = CP_System_GetWindowHeight() * 0.5f - BUTTON_HEIGHT / 2;
+	endScreenButtons[1].buttonData.width = BUTTON_WIDTH;
+	endScreenButtons[1].buttonData.height = BUTTON_HEIGHT;
+
+	endScreenButtons[1].textPositionX = endScreenButtons[1].buttonData.xOrigin + BUTTON_WIDTH / 2;
+	endScreenButtons[1].textPositionY = endScreenButtons[1].buttonData.yOrigin + BUTTON_HEIGHT / 2;
+	strcpy_s(endScreenButtons[1].textString, sizeof(endScreenButtons[1].textString), "Quit");
 }
 
 void init_game_font(void)
@@ -199,6 +154,17 @@ void init_game_font(void)
 	pixelFont = GAME_FONT;
 	CP_Font_Set(pixelFont);
 	CP_Settings_TextSize(FONT_SIZE);
+}
+
+#pragma endregion
+
+#pragma region Rendering
+
+// Draws a background image, background is drawn with code, rest with pixel art
+void render_title_screen(void)
+{
+	RenderWithAlphaChanged(backgroundSpriteSheet, backgroundArray[0], CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.5f, CP_System_GetWindowWidth(), CP_System_GetWindowHeight(), 150);
+	CP_Image_Draw(titleWordImage, CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.2f, 256, 256, 255);
 }
 
 void render_ui_button(Button button)
@@ -238,6 +204,7 @@ void render_pause_screen(void)
 
 }
 
+#pragma endregion
 
 // Terminates game.
 void exit_to_desktop(void)
@@ -255,11 +222,10 @@ void init_skip_wave_button(void)
 	// Init skip wave button's position.
 }
 
-
 void render_wave_timer_text(void)
 {
 	CP_Settings_TextSize(FONT_SIZE);
-
+	CP_Settings_Fill(COLOR_BLACK);
 	char buffer[25] = { 0 };
 	sprintf_s(buffer, sizeof(buffer), "Time Left: %.1f", buildingTime);
 	CP_Font_DrawText(buffer, CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.05f);
@@ -276,6 +242,20 @@ void wave_system_enemy_check(void)
 	// TODO
 	// If no enemies left on screen, return to building phase
 	// but make sure this doesn't happen on the first frame of the wave phase!
+}
+
+void reduce_building_phase_time()
+{
+	if (buildingTime < 0.05f)
+	{
+		buildingTime = 0.0f;
+		Level[currentGameLevel].currentWave += 1;
+		currentGameState = Wave;
+	}
+	else
+	{
+		buildingTime -= CP_System_GetDt();
+	}
 }
 
 void skip_to_wave_phase(void)
@@ -304,41 +284,41 @@ void display_enemies_left(void)
 
 #pragma region Win / Lose Conditions
 
-void render_win_screen(void)
-{
-	// should have: statistics (e.g. enemies defeated, waves cleared, bonus(es) etc.) 
-	//				next level button | main menu button | quit button
-	//				score display (high score if time permits)
-
-
-
-
-}
-
-void render_lose_screen(void)
+void render_end_screen(void)
 {
 	// should have: statistics
 	//				restart button | main menu button | quit button
 	//				score display (high score if time permits)
-//	CP_Settings_RectMode(CP_POSITION_CENTER);
+	CP_Settings_RectMode(CP_POSITION_CENTER);
+	CP_Settings_Fill(COLOR_GREY);
+	CP_Graphics_DrawRect(CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.4f, CP_System_GetWindowWidth() * 0.2f, CP_System_GetWindowHeight() * 0.3f);
 
-//	CP_Graphics_DrawRect(CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.5f, CP_System_GetWindowWidth() * 0.2f, CP_System_GetWindowHeight() * 0.3f);
+	CP_Settings_Fill(COLOR_BLACK);
+	if (gameLost)
+	{
+		CP_Font_DrawText("Game Lost!", CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.3f);
+	}
+	else if (gameWon)
+	{
+		CP_Font_DrawText("Game Won!", CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.3f);
+	}
+	CP_Settings_RectMode(CP_POSITION_CORNER);
 
-
+	render_ui_button(endScreenButtons[0]);
+	render_ui_button(endScreenButtons[1]);
 }
 
-void GameWinLoseCheck(void)
+void game_win_lose_check(void)
 {
 	// checks portal health && number of enemies left.
-	if (!Level[currentGameLevel].health)
+	if (Level[currentGameLevel].health <= 0)
 	{
 		// game lost
-		render_lose_screen();
+		gameLost = 1;
 	}
 	else if (0 == enemiesLeft)
 	{
-		// wave x won || game level won
-		render_win_screen();
+		gameWon = 1;
 	}
 }
 
@@ -360,7 +340,7 @@ void gold_phantom_quartz_conversion(int goldAmtToConvert, int conversionRate)
 	Level[0].phantomQuartz += goldAmtToConvert / conversionRate;
 }
 
-void restart_level(int gameLevelToRestart)
+void init_level(int gameLevelToRestart)
 {
 	//Level Data (presumed to be level 1)
 	currentGameLevel = gameLevelToRestart;
@@ -371,12 +351,15 @@ void restart_level(int gameLevelToRestart)
 	Level[gameLevelToRestart].health = 100;
 	Level[gameLevelToRestart].phantomQuartz = 0;
 	Level[gameLevelToRestart].goldQuartz = 50;
+	Level[gameLevelToRestart].currentWave = 0;
+	Level[gameLevelToRestart].currentEffect = 0;
+
 
 	pathfinding_init(&Level[gameLevelToRestart]);
 	environment_init(&Level[gameLevelToRestart]);
 
 	turret_init();
-	Enemies_init(2, 2, 2, &Level[0]);
+	Enemies_init(2, 2, 2, &Level[gameLevelToRestart]);
 	buildingTime = BUILDING_PHASE_TIME;
 
 	pathfinding_reset(&Level[gameLevelToRestart]);

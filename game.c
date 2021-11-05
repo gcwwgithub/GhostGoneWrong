@@ -8,20 +8,20 @@
 
 void game_init(void)
 {
-	
+
 	//CP_System_ShowConsole(); //pls dont delete this cause scrub me uses printf to debug -gabriel
 	//CP_System_Fullscreen();
 	int gameWindowWidth = 1280;
 	int gameWindowHeight = (int)(gameWindowWidth * 1080.0f / 1920.0f);//To apply uniform scaling
 	scalingFactor = gameWindowWidth / 1280.0f;//Game is scaled according to 1280 width being 1;
 	CP_System_SetWindowSize(gameWindowWidth, gameWindowHeight);//Please change the variables ot change th escreen size
-	
+
 	init_all_images();
 	init_spritesheet_array();
 	init_linkedlist_variables();
 	init_game_font();
 	currentGameState = MainMenu;
-	
+
 	//Main menu, level select
 	init_play_button();
 	init_quit_button();
@@ -29,7 +29,7 @@ void game_init(void)
 	init_back_button();
 
 	init_pause_screen();
-
+	init_end_screen();
 
 	//game grid 
 	game_grid_init();
@@ -45,8 +45,8 @@ void game_init(void)
 	turret_mine_button_init();
 	phantomQuartz_init();
 	goldQuartz_init();
-	
-	
+
+
 	health_init();
 	currency_swap_init();
 	wave_number_display_init();
@@ -68,12 +68,12 @@ void game_init(void)
 	Level[0].goldQuartz = 0;
 	Level[0].currentWave = 0;
 	Level[0].currentEffect = 0;
-	
+
 	pathfinding_init(&Level[0]);
 	environment_init(&Level[0]);
 
 	turret_init();
-	Enemies_init(2,2,2,&Level[0]);
+	Enemies_init(2,2,2, &Level[0]);
 
 	pathfinding_reset(&Level[0]);
 	pathfinding_calculate_cost(&Level[0]);
@@ -92,36 +92,54 @@ void game_update(void)
 
 	if (currentGameState == Wave)
 	{
-		render_game_background();
-		//do enemy update first
-		update_enemy();
-
-		//do turret & projectile update next
-		update_turret();
-		update_projectile();
-
-		//render all the stuff
-		render_game_grid();
-		render_path(&Level[currentGameLevel]);
-		for (int i = 0; i < NUMBER_OF_MENU_OBJECTS; i++) {
-			render_turret_menu_object(GameMenuObject[i], i);
+		if (gameWon || gameLost)
+		{
+			render_end_screen(); // this should pause the game by way of gameLost.
+			if (btn_is_pressed(endScreenButtons[0].buttonData))
+			{
+				currentGameState = MainMenu;
+				init_level(currentGameLevel);
+				gameLost = gameWon = 0;
+			}
+			else if (btn_is_pressed(endScreenButtons[1].buttonData))
+			{
+				exit_to_desktop();
+			}
 		}
-		//display_enemies_left(); //Already done by my code render turret menu object
-		UpdatePortal();
-		
-		draw_multiple_enemies();
-		render_all_portal_effects();
-		render_turret();
-		render_projectile();
+		else
+		{
+			game_win_lose_check();
+			//do enemy update first
+			update_enemy();
 
-		render_bullet_circles();
-		
-		render_new_turret(&Level[currentGameLevel]);
-		render_button_pressed();//Must be after render_new_turret
+			//do turret & projectile update next
+			update_turret();
+			update_projectile();
 
 
-		render_environment();
-		
+			//render all the stuff
+			render_game_background();
+			render_game_grid();
+			render_path(&Level[currentGameLevel]);
+			for (int i = 0; i < NUMBER_OF_MENU_OBJECTS; i++) {
+				render_turret_menu_object(GameMenuObject[i], i);
+			}
+			//display_enemies_left(); //Already done by my code render turret menu object
+			UpdatePortal();
+
+			draw_multiple_enemies();
+			render_all_portal_effects();
+			render_turret();
+			render_projectile();
+
+			render_bullet_circles();
+
+			render_new_turret(&Level[currentGameLevel]);
+			render_button_pressed();//Must be after render_new_turret
+
+
+			render_environment();
+		}
 	}
 	else if (currentGameState == Building)
 	{
@@ -137,7 +155,7 @@ void game_update(void)
 		render_path(&Level[currentGameLevel]);
 
 		render_wave_timer_text();
-		
+
 		for (int i = 0; i < NUMBER_OF_MENU_OBJECTS; i++) {
 			render_turret_menu_object(GameMenuObject[i], i);
 		}
@@ -189,9 +207,9 @@ void game_update(void)
 		render_level_select_buttons();
 		render_ui_button(BackButton);
 	}
-	else if (currentGameState == Pause) 
+	else if (currentGameState == Pause)
 	{
-		if (check_game_button_pressed() == PauseButton) 
+		if (check_game_button_pressed() == PauseButton)
 		{
 			if (currentGameState == Pause)
 			{
