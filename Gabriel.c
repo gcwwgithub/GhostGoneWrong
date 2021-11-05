@@ -166,7 +166,7 @@ void init_spritesheet_array(void)
 	SpriteSheetCalculation(homingMissleTurretArray, homingMissleTurretSpriteSheet, 128, 128, 0);
 	SpriteSheetCalculation(bulletArray, bulletSpriteSheet, 128, 128, 1);
 	SpriteSheetCalculation(bulletRadiusArray, bulletRadiusSpriteSheet, 128, 128, 0);
-	SpriteSheetCalculation(currencyArray, currencySpriteSheet, 128, 128, 1);
+	SpriteSheetCalculation(currencyArray, currencySpriteSheet, 128, 128, 0);
 	SpriteSheetCalculation(environmentObjectArray, environmentObjectsSpriteSheet, 128, 128, 1);
 	SpriteSheetCalculation(backgroundArray, backgroundSpriteSheet,1920,1080, 1);
 	SpriteSheetCalculation(portalEnterEffectArray, portalEnterEffectSpriteSheet, 128, 128, 0);

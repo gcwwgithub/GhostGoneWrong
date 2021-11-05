@@ -244,29 +244,37 @@ void render_environment(void) {
 	}
 }
 
-
-void goldQuartz_init(void) {
-	GameMenuObject[GoldQuartzMenu].xOrigin = GameMenuObject[PhantomQuartzMenu].xOrigin;
-	GameMenuObject[GoldQuartzMenu].yOrigin = GameMenuObject[PhantomQuartzMenu].yOrigin + GameMenuObject[PhantomQuartzMenu].height;
-	GameMenuObject[GoldQuartzMenu].width = GameMenuObject[PhantomQuartzMenu].width;
-	GameMenuObject[GoldQuartzMenu].height = GameMenuObject[PhantomQuartzMenu].height;
-	GameMenuObject[GoldQuartzMenu].objectType = objectRectangle;
-}
-
 void phantomQuartz_init(void) {
 	GameMenuObject[PhantomQuartzMenu].yOrigin = 0.0f;
-	GameMenuObject[PhantomQuartzMenu].width = ((float)CP_System_GetWindowWidth() - Game.xOrigin - Game.width) / 2;
+	GameMenuObject[PhantomQuartzMenu].width = ((float)CP_System_GetWindowWidth() - Game.xOrigin - Game.width) / 4;
 	GameMenuObject[PhantomQuartzMenu].height = (float)CP_System_GetWindowHeight() / 15;
-	GameMenuObject[PhantomQuartzMenu].xOrigin = (float)CP_System_GetWindowWidth() - GameMenuObject[PhantomQuartzMenu].width;
+	GameMenuObject[PhantomQuartzMenu].xOrigin = (float)CP_System_GetWindowWidth() - 2*GameMenuObject[PhantomQuartzMenu].width;
 	GameMenuObject[PhantomQuartzMenu].objectType = objectRectangle;
 }
 
+
+void goldQuartz_init(void) {
+	GameMenuObject[GoldQuartzMenu].width = GameMenuObject[PhantomQuartzMenu].width;
+	GameMenuObject[GoldQuartzMenu].height = GameMenuObject[PhantomQuartzMenu].height;
+	GameMenuObject[GoldQuartzMenu].xOrigin = (float)CP_System_GetWindowWidth() - GameMenuObject[PhantomQuartzMenu].width;
+	GameMenuObject[GoldQuartzMenu].yOrigin = GameMenuObject[PhantomQuartzMenu].yOrigin;
+	GameMenuObject[GoldQuartzMenu].objectType = objectRectangle;
+}
+
+
 void health_init(void) {
-	GameMenuObject[HealthMenu].xOrigin = GameMenuObject[GoldQuartzMenu].xOrigin;
+	GameMenuObject[HealthMenu].xOrigin = GameMenuObject[PhantomQuartzMenu].xOrigin;
+	GameMenuObject[HealthMenu].yOrigin = GameMenuObject[PhantomQuartzMenu].yOrigin + GameMenuObject[PhantomQuartzMenu].height;
+	GameMenuObject[HealthMenu].width = GameMenuObject[PhantomQuartzMenu].width;
+	GameMenuObject[HealthMenu].height = GameMenuObject[PhantomQuartzMenu].height;
+	GameMenuObject[HealthMenu].objectType = objectRectangle;
+
+
+	/*GameMenuObject[HealthMenu].xOrigin = GameMenuObject[GoldQuartzMenu].xOrigin;
 	GameMenuObject[HealthMenu].yOrigin = GameMenuObject[GoldQuartzMenu].yOrigin + GameMenuObject[GoldQuartzMenu].height;
 	GameMenuObject[HealthMenu].width = GameMenuObject[GoldQuartzMenu].width;
 	GameMenuObject[HealthMenu].height = GameMenuObject[GoldQuartzMenu].height;
-	GameMenuObject[HealthMenu].objectType = objectRectangle;
+	GameMenuObject[HealthMenu].objectType = objectRectangle;*/
 }
 
 void currency_swap_init(void) {
@@ -279,22 +287,29 @@ void currency_swap_init(void) {
 }
 
 void wave_number_display_init(void) {
-	GameMenuObject[WaveDisplay].xOrigin = GameMenuObject[HealthMenu].xOrigin;
-	GameMenuObject[WaveDisplay].yOrigin = GameMenuObject[HealthMenu].yOrigin + GameMenuObject[HealthMenu].height;
-	GameMenuObject[WaveDisplay].width = GameMenuObject[HealthMenu].width;
-	GameMenuObject[WaveDisplay].height = GameMenuObject[HealthMenu].height * 1.25;
+	GameMenuObject[WaveDisplay].xOrigin = GameMenuObject[GoldQuartzMenu].xOrigin;
+	GameMenuObject[WaveDisplay].yOrigin = GameMenuObject[HealthMenu].yOrigin;
+	GameMenuObject[WaveDisplay].width = GameMenuObject[GoldQuartzMenu].width;
+	GameMenuObject[WaveDisplay].height = GameMenuObject[GoldQuartzMenu].height;
 	GameMenuObject[WaveDisplay].objectType = objectRectangle;
 }
 
 void battlefield_effects_display_init(void) {
-	GameMenuObject[BattlefieldEffects].xOrigin = GameMenuObject[WaveDisplay].xOrigin;
+	GameMenuObject[BattlefieldEffects].yOrigin = GameMenuObject[WaveDisplay].yOrigin + GameMenuObject[WaveDisplay].height;
+	GameMenuObject[BattlefieldEffects].width = ((float)CP_System_GetWindowWidth() - Game.xOrigin - Game.width) / 2;
+	GameMenuObject[BattlefieldEffects].height = GameMenuObject[GoldQuartzMenu].height;
+	GameMenuObject[BattlefieldEffects].xOrigin = (float)CP_System_GetWindowWidth() - GameMenuObject[BattlefieldEffects].width;
+	GameMenuObject[BattlefieldEffects].objectType = objectRectangle;
+
+	/*GameMenuObject[BattlefieldEffects].xOrigin = GameMenuObject[WaveDisplay].xOrigin;
 	GameMenuObject[BattlefieldEffects].yOrigin = GameMenuObject[WaveDisplay].yOrigin + GameMenuObject[WaveDisplay].height;
 	GameMenuObject[BattlefieldEffects].width = GameMenuObject[WaveDisplay].width;
 	GameMenuObject[BattlefieldEffects].height = GameMenuObject[WaveDisplay].height;
-	GameMenuObject[BattlefieldEffects].objectType = objectRectangle;
+	GameMenuObject[BattlefieldEffects].objectType = objectRectangle;*/
 }
 
 void monster_remaining_display_init(void) {
+
 	GameMenuObject[MonsterRemainingDisplay].xOrigin = GameMenuObject[BattlefieldEffects].xOrigin;
 	GameMenuObject[MonsterRemainingDisplay].yOrigin = GameMenuObject[BattlefieldEffects].yOrigin + GameMenuObject[BattlefieldEffects].height;
 	GameMenuObject[MonsterRemainingDisplay].width = GameMenuObject[BattlefieldEffects].width;
@@ -411,38 +426,42 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 	case GoldQuartzMenu:
 		CP_Settings_Fill(COLOR_WHITE);
 		CP_Settings_TextSize(25.0f * scalingFactor);
-		CP_Image_Draw(currencyUIRectangle, menuObjectX.xOrigin + menuObjectX.width / 1.35, 
+		CP_Image_Draw(currencyUIRectangle, menuObjectX.xOrigin + menuObjectX.width / 2, 
 			menuObjectX.yOrigin + menuObjectX.height / 2, 128 * scalingFactor, 36 * scalingFactor, 255);
-		RenderNormal(currencySpriteSheet, currencyArray[0], menuObjectX.xOrigin + menuObjectX.width / 1.7,
+		RenderNormal(currencySpriteSheet, currencyArray[0], menuObjectX.xOrigin + menuObjectX.width / 5.5,
 			menuObjectX.yOrigin + menuObjectX.height / 2, 30 * scalingFactor, 30 * scalingFactor);
-		sprintf_s(temp, 100, "x%d", Level[currentGameLevel].goldQuartz);
-		CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width /1.5, menuObjectX.yOrigin + menuObjectX.height / 2);
+		sprintf_s(temp, 100, "x%-10d", Level[currentGameLevel].goldQuartz);
+		CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width /1.55, menuObjectX.yOrigin + menuObjectX.height / 2);
 		break;
 	case PhantomQuartzMenu:
 		CP_Settings_Fill(COLOR_WHITE);
 		CP_Settings_TextSize(25.0f * scalingFactor);
-		CP_Image_Draw(currencyUIRectangle, menuObjectX.xOrigin + menuObjectX.width / 1.35,
+		CP_Image_Draw(currencyUIRectangle, menuObjectX.xOrigin + menuObjectX.width / 2,
 			menuObjectX.yOrigin + menuObjectX.height / 2, 128 * scalingFactor, 36 * scalingFactor, 255);
-		RenderNormal(currencySpriteSheet, currencyArray[1], menuObjectX.xOrigin + menuObjectX.width / 1.7,
+		RenderNormal(currencySpriteSheet, currencyArray[1], menuObjectX.xOrigin + menuObjectX.width / 5,
 			menuObjectX.yOrigin + menuObjectX.height / 2, 30 * scalingFactor, 30 * scalingFactor);
-		sprintf_s(temp, 100, "x%d", Level[currentGameLevel].phantomQuartz);
+		sprintf_s(temp, 100, "x%-10d", Level[currentGameLevel].phantomQuartz);
 		CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 1.45, menuObjectX.yOrigin + menuObjectX.height / 2);
 		break;
 	case HealthMenu:
 		CP_Settings_Fill(COLOR_WHITE);
 		CP_Settings_TextSize(25.0f * scalingFactor);
-		sprintf_s(temp, 100, "x%d", Level[currentGameLevel].health);
-		CP_Image_Draw(currencyUIRectangle, menuObjectX.xOrigin + menuObjectX.width / 1.35,
+		sprintf_s(temp, 100, "x%-10d", Level[currentGameLevel].health);
+		CP_Image_Draw(currencyUIRectangle, menuObjectX.xOrigin + menuObjectX.width / 2,
 			menuObjectX.yOrigin + menuObjectX.height / 2, 128 * scalingFactor, 36 * scalingFactor, 255);
-		RenderNormal(currencySpriteSheet, currencyArray[2], menuObjectX.xOrigin + menuObjectX.width / 1.7,
+		RenderNormal(currencySpriteSheet, currencyArray[2], menuObjectX.xOrigin + menuObjectX.width / 5,
 			menuObjectX.yOrigin + menuObjectX.height / 2, 30 * scalingFactor, 30 * scalingFactor);
-		CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 1.42, menuObjectX.yOrigin + menuObjectX.height / 2);
+		CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 1.45, menuObjectX.yOrigin + menuObjectX.height / 2);
 		break;
 	case WaveDisplay:
-		CP_Settings_Fill(COLOR_BLACK);
-		CP_Settings_TextSize(50.0f * scalingFactor);
-		sprintf_s(temp, 100, "Wave: %d", Level[currentGameLevel].currentWave);
-		CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 3.5, menuObjectX.yOrigin + menuObjectX.height / 2);
+		CP_Settings_Fill(COLOR_WHITE);
+		CP_Settings_TextSize(25.0f * scalingFactor);
+		sprintf_s(temp, 100, "%2d/20", Level[currentGameLevel].currentWave);
+		CP_Image_Draw(currencyUIRectangle, menuObjectX.xOrigin + menuObjectX.width / 2,
+			menuObjectX.yOrigin + menuObjectX.height / 2, 128 * scalingFactor, 36 * scalingFactor, 255);
+		RenderNormal(currencySpriteSheet, currencyArray[3], menuObjectX.xOrigin + menuObjectX.width / 5,
+			menuObjectX.yOrigin + menuObjectX.height / 2, 30 * scalingFactor, 30 * scalingFactor);
+		CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 2.5, menuObjectX.yOrigin + menuObjectX.height / 2);
 		break;
 	case BattlefieldEffects:
 		CP_Settings_Fill(COLOR_BLACK);

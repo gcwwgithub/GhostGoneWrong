@@ -68,7 +68,7 @@ struct SpriteSheetImage mineArray[2];
 struct SpriteSheetImage energyWallArray[2];
 struct SpriteSheetImage bulletArray[3];
 struct SpriteSheetImage bulletRadiusArray[4];
-struct SpriteSheetImage currencyArray[3];
+struct SpriteSheetImage currencyArray[4];
 struct SpriteSheetImage environmentObjectArray[8];
 struct SpriteSheetImage backgroundArray[5];
 struct SpriteSheetImage portalEnterEffectArray[4];
