@@ -352,7 +352,7 @@ void render_all_portal_effects(void)
 	render_portal_effect(portalSpawnFirstNode, isPortalEffectSpawn);
 }
 
-void UpdatePortal(void)
+void update_portal(void)
 {
 	if (portalTimer >= 0.25)
 	{

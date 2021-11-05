@@ -125,7 +125,7 @@ void game_update(void)
 				render_turret_menu_object(GameMenuObject[i], i);
 			}
 			//display_enemies_left(); //Already done by my code render turret menu object
-			UpdatePortal();
+			update_portal();
 
 			draw_multiple_enemies();
 			render_all_portal_effects();
@@ -171,7 +171,7 @@ void game_update(void)
 		//test enemy
 
 		render_environment();
-		UpdatePortal();
+		update_portal();
 	}
 
 	else if (currentGameState == MainMenu)
