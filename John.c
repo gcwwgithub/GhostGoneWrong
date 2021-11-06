@@ -44,7 +44,7 @@ int Check_state(enemy* r) {
 }
 
 void enemy_move(enemy* r, float Enemy_PathpointsX[], float Enemy_PathpointsY[], int number_of_points, LevelData* Level) { //Enemy movement
-	float Speed = (r->speed) * CP_System_GetDt();
+	float Speed = (r->speed) * r->slow_amt * CP_System_GetDt();
 	update_point_num(Enemy_PathpointsX, Enemy_PathpointsY, r);
 	if (r->CurrentWaypoint + 1 == number_of_points) {
 		if (r->state != Death && r->state != Inactive && r->state != Reached) {
@@ -126,6 +126,7 @@ void EnemyDeath(enemy* r, LevelData* Level) {  //function updates and checks for
 			a.height *= 0.7f;
 			if (Collision_Detection(a, proj[i].data) == 1) {
 				proj[i].isActive = 0;
+				col_type_projectile(&proj[i]);
 				if (r->state != Death)
 				{
 					if (proj[i].type != T_SLOW)

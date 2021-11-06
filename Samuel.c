@@ -28,7 +28,8 @@ void turret_init(void)
 		turret[i].isActive = FALSE;
 		turret[i].size = Game.gridHeight;
 		turret[i].angle = 0.f;
-		turret[i].mod.cooldown = 0.f;
+		//turret[i].mod.cooldown = 0.f;
+		turret[i].mod.shoot_rate = 0.6f;
 		turret[i].mod.damage = 1.f;
 		turret[i].mod.slow_amt = 1.f; //leaving it at 1 means no slow if slow_amt < 1 then slow
 		turret[i].mod.slow_timer = 0.f;
@@ -40,6 +41,7 @@ void turret_init(void)
 		turret[i].currentAnimState = INACTIVE;
 		turret[i].animCounter = 0;
 		turret[i].price = 25;
+		turret[i].upgrade_price = 40;
 	}
 	//init the lcoations of turret placed
 	for (int i = 0; i < GAME_GRID_ROWS; ++i)
@@ -52,11 +54,14 @@ void turret_init(void)
 	//Level[0].grid[4][0].type = Blocked;//Hard coded to set turret spot to blocked
 }
 
-//call this function to palce turret (pass in the grid index)
+//call this function to place turret (pass in the grid index)
 void place_turret(TurretType type, int index_x, int index_y)
 {
 	for (int i = 0; i < MAX_TURRET; ++i)
 	{
+		//break from loop if not enough money
+		if (Level[currentGameLevel].phantomQuartz < turret[i].price)
+			break;
 		if (turret[i].isActive || turret_on_grid[index_x][index_y] >= 0)
 			continue;
 
@@ -110,7 +115,8 @@ void place_turret(TurretType type, int index_x, int index_y)
 		turret_on_grid[index_x][index_y] = i;
 		//where u place u block
 		Level[currentGameLevel].grid[index_y][index_x].type = Blocked;
-
+		//reduce currency with price
+		Level[currentGameLevel].phantomQuartz -= turret[i].price;
 		//escape from loop once done
 		break;
 	}
@@ -129,6 +135,42 @@ void remove_turret(int index_x, int index_y)
 	if(Level[currentGameLevel].grid[index_y][index_x].type == Blocked)
 		Level[currentGameLevel].grid[index_y][index_x].type = Clear;
 
+}
+
+//upgrade system (for now using index will change depending on usage)
+void upgrade_turret(int t_index)
+{
+	if (Level[currentGameLevel].phantomQuartz < turret[t_index].upgrade_price)
+		return;
+
+	//pquartz or gquartz decide ltr
+	Level[currentGameLevel].phantomQuartz -= turret[t_index].upgrade_price;
+	//increase the price for another upgrade
+	turret[t_index].upgrade_price *= 2;
+	switch (turret[t_index].type)
+	{
+	case T_BASIC:
+		turret[t_index].mod.damage += 1.f;
+		turret[t_index].mod.range *= 1.5f;
+		turret[t_index].mod.shoot_rate -= 0.05f;
+		break;
+	case T_SLOW:
+		turret[t_index].mod.damage += 1.f;
+		turret[t_index].mod.range *= 1.5f;
+		turret[t_index].mod.slow_amt -= 0.1f;
+		turret[t_index].mod.shoot_rate -= 0.05f;
+		break;
+	case T_HOMING:
+		turret[t_index].mod.damage += 1.f;
+		turret[t_index].mod.range *= 1.5f;
+		turret[t_index].mod.shoot_rate -= 0.05f;
+		break;
+	case T_MINE:
+		turret[t_index].mod.damage += 1.f;
+		break;
+	default:
+		break;
+	}
 }
 
 void render_turret(void)
@@ -260,7 +302,7 @@ void update_turret(void)
 			}
 
 			//turret[i].mod.cooldown -= 1.f * CP_System_GetDt();
-			if (/*turret[i].mod.cooldown <= 0 &&*/ turret[i].turretAnimTimer >= 0.60 && turret[i].animCounter >= 5)
+			if (/*turret[i].mod.cooldown <= 0 &&*/ turret[i].turretAnimTimer >= turret[i].mod.shoot_rate && turret[i].animCounter >= 5)
 			{
 				turret[i].mod.tracked_index = e_index;
 				//printf("index: %d\n", e_index);
@@ -304,7 +346,10 @@ void shoot(float x, float y, Modifiers mod, ProjectileType type, Vector2 dir)
 			proj[i].data.xOrigin = x;
 			proj[i].data.yOrigin = y;
 			break;
-
+		case P_HOMING:
+			proj[i].data.xOrigin = x + (float)(PROJ_OFFSET * dir.pos_x);
+			proj[i].data.yOrigin = y + (float)(PROJ_OFFSET * dir.pos_y);
+			break;
 		default:
 			proj[i].data.xOrigin = x;
 			proj[i].data.yOrigin = y;
@@ -515,7 +560,8 @@ void update_turretAnimation(Turret* t)
 
 			break;
 		case SHOOTING:
-			if (t->turretAnimTimer >= 0.60)
+			//if (t->turretAnimTimer >= 0.60)
+			if (t->turretAnimTimer >= t->mod.shoot_rate)
 			{
 				if (t->animCounter >= 5)
 				{

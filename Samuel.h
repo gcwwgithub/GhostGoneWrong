@@ -39,7 +39,7 @@ typedef enum TriangleAnimState
 typedef struct
 {
 	int tracked_index;
-	float damage, speed, range, cooldown,
+	float damage, speed, range, shoot_rate,
 		slow_amt, slow_timer;
 } Modifiers;
 
@@ -57,7 +57,7 @@ typedef struct Turret
 	float turretAnimTimer;
 	CP_Image turret_img;
 	int animCounter;
-	int price;
+	int price, upgrade_price;
 } Turret;
 
 typedef struct Projectile
@@ -83,6 +83,9 @@ void place_turret(TurretType type, int index_x, int index_y);
 
 //remove a turret from grid ()
 void remove_turret(int index_x, int index_y);
+
+//upgrade system (for now using index will change depending how to access this easier)
+void upgrade_turret(int t_index);
 
 //void render_turret(Turret* t);
 void render_turret(void);
