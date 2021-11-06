@@ -7,6 +7,11 @@
 //Tools
 
 //Return positive value of float
+void mouse_reset(void) {
+	MouseInput.xOrigin = -1;
+	MouseInput.yOrigin = -1;
+}
+
 float myabs(float x) {
 	return x < 0 ? x * -1 : x;
 }
@@ -165,8 +170,7 @@ void mouse_init(void) {
 	MouseInput.width = 0.0f;
 	MouseInput.height = 0.0f;
 	MouseInput.objectType = objectCircle;
-	MouseInput.xOrigin = (float)CP_System_GetWindowWidth() / 2;
-	MouseInput.yOrigin = (float)CP_System_GetWindowHeight() / 2;
+	mouse_reset();
 }
 
 void game_grid_init(void) {
@@ -248,7 +252,7 @@ void phantomQuartz_init(void) {
 	GameMenuObject[PhantomQuartzMenu].yOrigin = 0.0f;
 	GameMenuObject[PhantomQuartzMenu].width = ((float)CP_System_GetWindowWidth() - Game.xOrigin - Game.width) / 4;
 	GameMenuObject[PhantomQuartzMenu].height = (float)CP_System_GetWindowHeight() / 15;
-	GameMenuObject[PhantomQuartzMenu].xOrigin = (float)CP_System_GetWindowWidth() - 2*GameMenuObject[PhantomQuartzMenu].width;
+	GameMenuObject[PhantomQuartzMenu].xOrigin = (float)CP_System_GetWindowWidth() - 2 * GameMenuObject[PhantomQuartzMenu].width;
 	GameMenuObject[PhantomQuartzMenu].objectType = objectRectangle;
 }
 
@@ -317,13 +321,25 @@ void monster_remaining_display_init(void) {
 	GameMenuObject[MonsterRemainingDisplay].objectType = objectRectangle;
 }
 
+void level1_init(void) {
+	currentGameLevel = 0;
+	Level[0].spawnRow = 0;
+	Level[0].spawnCol = (GAME_GRID_COLS - 1) / 2;
+	Level[0].exitRow = GAME_GRID_ROWS - 1;
+	Level[0].exitCol = (GAME_GRID_COLS - 1) / 2;
+	Level[0].health = 100;
+	Level[0].phantomQuartz = 50;
+	Level[0].goldQuartz = 0;
+	Level[0].currentWave = 0;
+	Level[0].currentEffect = 0;
+}
+
 void render_button_pressed(void) {
 	switch (check_game_button_pressed())
 	{
 	case PauseButton:
 		currentGameState = currentGameState == Pause ? Wave : Pause;
-		MouseInput.xOrigin = (float)CP_System_GetWindowWidth() / 2;
-		MouseInput.yOrigin = (float)CP_System_GetWindowHeight() / 2;
+		mouse_reset();
 		break;
 	case TurretButtonBasic:
 		isPlacingTurret = T_BASIC;
@@ -347,8 +363,7 @@ void render_button_pressed(void) {
 			Level[currentGameLevel].phantomQuartz -= 10;
 			Level[currentGameLevel].goldQuartz += 1;
 		}
-		MouseInput.xOrigin = (float)CP_System_GetWindowWidth() / 2;
-		MouseInput.yOrigin = (float)CP_System_GetWindowHeight() / 2;
+		mouse_reset();
 		break;
 	case NoButton:
 		isPlacingTurret = NOT_PLACING_TURRET;
@@ -376,16 +391,16 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 	CP_Settings_RectMode(CP_POSITION_CORNER);
 	CP_Settings_Fill(COLOR_WHITE);
 	CP_Graphics_DrawRect(menuObjectX.xOrigin, menuObjectX.yOrigin, menuObjectX.width, menuObjectX.height);
-		CP_Settings_TextSize(35.0f * scalingFactor);
+	CP_Settings_TextSize(35.0f * scalingFactor);
 	switch (type)
 	{
 	case TurretButtonBasic:
 		CP_Image_Draw(turretUIButton, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 2),
 			128 * scalingFactor, 128 * scalingFactor, 255);
-		RenderNormal(basicTurretSpriteSheet, basicTurretArray[0], menuObjectX.width / 2, 
+		RenderNormal(basicTurretSpriteSheet, basicTurretArray[0], menuObjectX.width / 2,
 			(menuObjectX.yOrigin + menuObjectX.height / 2), 128 * scalingFactor, 128 * scalingFactor);
 		sprintf_s(temp, sizeof(temp), "25");
-		CP_Font_DrawText(temp, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 2 + 128/3));
+		CP_Font_DrawText(temp, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3));
 		break;
 
 	case TurretButtonSlow:
@@ -401,16 +416,16 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 	case  TurretButtonHoming:
 		CP_Image_Draw(turretUIButton, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 2),
 			128 * scalingFactor, 128 * scalingFactor, 255);
-		RenderNormal(homingMissleTurretSpriteSheet, homingMissleTurretArray[0], menuObjectX.width / 2, 
+		RenderNormal(homingMissleTurretSpriteSheet, homingMissleTurretArray[0], menuObjectX.width / 2,
 			(menuObjectX.yOrigin + menuObjectX.height / 2), 128 * scalingFactor, 128 * scalingFactor);
 		sprintf_s(temp, sizeof(temp), "25");
-		CP_Font_DrawText(temp, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3 ));
+		CP_Font_DrawText(temp, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3));
 		break;
 
 	case TurretButtonMine:
 		CP_Image_Draw(turretUIButton, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 2),
 			128 * scalingFactor, 128 * scalingFactor, 255);
-		RenderNormal(mineSpriteSheet, mineArray[0], menuObjectX.width / 2, 
+		RenderNormal(mineSpriteSheet, mineArray[0], menuObjectX.width / 2,
 			(menuObjectX.yOrigin + menuObjectX.height / 2), 128 * scalingFactor, 128 * scalingFactor);
 		sprintf_s(temp, sizeof(temp), "25");
 		CP_Font_DrawText(temp, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3));
@@ -426,12 +441,12 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 	case GoldQuartzMenu:
 		CP_Settings_Fill(COLOR_WHITE);
 		CP_Settings_TextSize(25.0f * scalingFactor);
-		CP_Image_Draw(currencyUIRectangle, menuObjectX.xOrigin + menuObjectX.width / 2, 
+		CP_Image_Draw(currencyUIRectangle, menuObjectX.xOrigin + menuObjectX.width / 2,
 			menuObjectX.yOrigin + menuObjectX.height / 2, 128 * scalingFactor, 36 * scalingFactor, 255);
 		RenderNormal(currencySpriteSheet, currencyArray[0], menuObjectX.xOrigin + menuObjectX.width / 5.5,
 			menuObjectX.yOrigin + menuObjectX.height / 2, 30 * scalingFactor, 30 * scalingFactor);
 		sprintf_s(temp, 100, "x%-10d", Level[currentGameLevel].goldQuartz);
-		CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width /1.55, menuObjectX.yOrigin + menuObjectX.height / 2);
+		CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 1.55, menuObjectX.yOrigin + menuObjectX.height / 2);
 		break;
 	case PhantomQuartzMenu:
 		CP_Settings_Fill(COLOR_WHITE);
@@ -488,7 +503,7 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 			menuObjectX.yOrigin + menuObjectX.height / 10 * 3, menuObjectX.height / 4, menuObjectX.height / 4);
 		sprintf_s(temp, sizeof(temp), "x%d", basicEnemyNum);
 		CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 2.25, menuObjectX.yOrigin + menuObjectX.height / 10 * 3);
-		
+
 		RenderNormal(fastGhostSpriteSheet, fastGhostSpriteArray[0], menuObjectX.xOrigin + menuObjectX.width / 6,
 			menuObjectX.yOrigin + menuObjectX.height / 10 * 5.5, menuObjectX.height / 4, menuObjectX.height / 4);
 		sprintf_s(temp, sizeof(temp), "x%d", fastEnemyNum);
@@ -505,32 +520,49 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 
 }
 
-void render_new_turret(LevelData* LevelX) {
+void render_game_grid_press(LevelData* LevelX) {
 	Coordinates GameTemp;
 	GameTemp.xOrigin = Game.xOrigin;
 	GameTemp.yOrigin = Game.yOrigin;
 	GameTemp.width = Game.width;
 	GameTemp.height = Game.height;
-	if (btn_is_pressed(GameTemp) && isPlacingTurret != NOT_PLACING_TURRET) {
-		int drawX, drawY;
-		drawX = (int)((CP_Input_GetMouseX() - Game.xOrigin) / Game.gridWidth);
-		drawY = (int)((CP_Input_GetMouseY() - Game.yOrigin) / Game.gridHeight);
-		if (LevelX->grid[drawY][drawX].type == Clear || LevelX->grid[drawY][drawX].type == Path) {
-			if (isPlacingTurret != T_MINE) {
-				LevelX->grid[drawY][drawX].type = Blocked;
-				pathfinding_reset(LevelX);
-				pathfinding_calculate_cost(LevelX);
+	int drawX, drawY;
+	drawX = (int)((MouseInput.xOrigin - Game.xOrigin) / Game.gridWidth);
+	drawY = (int)((MouseInput.yOrigin - Game.yOrigin) / Game.gridHeight);
+	if (btn_is_pressed(GameTemp)) {
+		if (isPlacingTurret != NOT_PLACING_TURRET) {
+			if (LevelX->grid[drawY][drawX].type == Clear || LevelX->grid[drawY][drawX].type == Path) {
+				if (isPlacingTurret != T_MINE) {
+					LevelX->grid[drawY][drawX].type = Blocked;
+					pathfinding_reset(LevelX);
+					pathfinding_calculate_cost(LevelX);
+				}
+				if (!is_destination_updated(LevelX)) {
+					LevelX->grid[drawY][drawX].type = Clear;
+					pathfinding_reset(LevelX);
+					pathfinding_calculate_cost(LevelX);
+				}
+				else {
+					place_turret(isPlacingTurret, drawX, drawY);
+					isPlacingTurret = NOT_PLACING_TURRET;
+				}
+				pathfinding_update(LevelX);
 			}
-			if (!is_destination_updated(LevelX)) {
-				LevelX->grid[drawY][drawX].type = Clear;
-				pathfinding_reset(LevelX);
-				pathfinding_calculate_cost(LevelX);
+			mouse_reset();
+		}
+		else {
+			Coordinates GridTemp;
+			GridTemp.width = Game.gridWidth;
+			GridTemp.height = Game.gridHeight;
+			GridTemp.xOrigin = Game.xOrigin + (drawX + 0.5f) * Game.gridWidth;
+			GridTemp.yOrigin = Game.yOrigin + (drawY + 0.5f) * Game.gridHeight;
+			for (int i = 0; i < MAX_TURRET; i++) {
+				if (turret[i].data.xOrigin == GridTemp.xOrigin && turret[i].data.yOrigin == GridTemp.yOrigin && turret[i].isActive == TRUE) {
+					/*CP_Settings_Fill(COLOR_BLACK);
+					CP_Settings_TextSize(20.0f);
+					CP_Font_DrawText("Upgrade", GridTemp.xOrigin + 10.0f, GridTemp.yOrigin + 10.0f);*/
+				}
 			}
-			else {
-				place_turret(isPlacingTurret, drawX, drawY);
-				isPlacingTurret = NOT_PLACING_TURRET;
-			}
-			pathfinding_update(LevelX);
 		}
 	}
 }

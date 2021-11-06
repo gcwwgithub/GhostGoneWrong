@@ -58,16 +58,7 @@ void game_init(void)
 	isPlacingTurret = NOT_PLACING_TURRET;
 
 	//Level Data
-	currentGameLevel = 0;
-	Level[0].spawnRow = 0;
-	Level[0].spawnCol = (GAME_GRID_COLS - 1) / 2;
-	Level[0].exitRow = GAME_GRID_ROWS - 1;
-	Level[0].exitCol = (GAME_GRID_COLS - 1) / 2;
-	Level[0].health = 100;
-	Level[0].phantomQuartz = 50;
-	Level[0].goldQuartz = 0;
-	Level[0].currentWave = 0;
-	Level[0].currentEffect = 0;
+	level1_init();
 
 	pathfinding_init(&Level[0]);
 	environment_init(&Level[0]);
@@ -118,7 +109,7 @@ void game_update(void)
 
 
 			//render all the stuff
-			render_game_background();
+			//render_game_background();
 			render_game_grid();
 			render_path(&Level[currentGameLevel]);
 			for (int i = 0; i < NUMBER_OF_MENU_OBJECTS; i++) {
@@ -134,8 +125,8 @@ void game_update(void)
 
 			render_bullet_circles();
 
-			render_new_turret(&Level[currentGameLevel]);
-			render_button_pressed();//Must be after render_new_turret
+			render_game_grid_press(&Level[currentGameLevel]);
+			render_button_pressed();//Must be after render_game_grid_press
 
 
 			render_environment();
@@ -165,8 +156,8 @@ void game_update(void)
 
 		render_bullet_circles();
 
-		render_new_turret(&Level[currentGameLevel]);
-		render_button_pressed();//Must be after render_new_turret
+		render_game_grid_press(&Level[currentGameLevel]);
+		render_button_pressed();//Must be after render_game_grid_press
 
 		//test enemy
 
@@ -219,8 +210,7 @@ void game_update(void)
 			{
 				currentGameState = Pause;
 			}
-			MouseInput.xOrigin = (float)CP_System_GetWindowWidth() / 2;
-			MouseInput.yOrigin = (float)CP_System_GetWindowHeight() / 2;
+			mouse_reset();
 		}
 		else if (btn_is_pressed(PauseBackButton.buttonData))
 		{

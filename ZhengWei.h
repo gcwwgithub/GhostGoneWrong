@@ -20,6 +20,7 @@ void currency_swap_init(void);
 void wave_number_display_init(void);
 void battlefield_effects_display_init(void);
 void monster_remaining_display_init(void);
+void level1_init(void);
 
 void pathfinding_reset(LevelData* LevelX);
 void pathfinding_calculate_cost(LevelData* LevelX);
@@ -27,7 +28,7 @@ void render_environment(void);
 void render_game_grid(void);
 void render_path(LevelData* LevelX);
 void render_button_pressed(void);
-void render_new_turret(LevelData* LevelX);
+void render_game_grid_press(LevelData* LevelX);
 void pathfinding_update(LevelData* LevelX);
 
 int isPlacingTurret;
