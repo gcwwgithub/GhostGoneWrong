@@ -110,7 +110,7 @@ void game_update(void)
 
 
 			//render all the stuff
-			//render_game_background();
+			render_game_background();
 			render_game_grid();
 			render_path(&Level[currentGameLevel]);
 			for (int i = 0; i < NUMBER_OF_MENU_OBJECTS-1; i++) {// Last object will double render game grid
@@ -186,6 +186,7 @@ void game_update(void)
 		if (btn_is_pressed(levelButtons[0].buttonData))
 		{
 			currentGameState = Building;
+			set_building_time(BUILDING_PHASE_TIME);
 		}
 		else if (btn_is_pressed(BackButton.buttonData))
 		{

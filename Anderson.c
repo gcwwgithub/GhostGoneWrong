@@ -258,10 +258,10 @@ void reduce_building_phase_time()
 	}
 }
 
-void skip_to_wave_phase(void)
+void set_building_time(float newBuildingTime)
 {
 	// set building phase time to 0.0f
-	buildingTime = 0.0f;
+	buildingTime = newBuildingTime;
 }
 
 void display_enemies_left(void)
@@ -360,7 +360,7 @@ void init_level(int gameLevelToRestart)
 
 	turret_init();
 	Enemies_init(2, 2, 2, &Level[gameLevelToRestart]);
-	buildingTime = BUILDING_PHASE_TIME;
+	set_building_time(BUILDING_PHASE_TIME);
 
 	pathfinding_reset(&Level[gameLevelToRestart]);
 	pathfinding_calculate_cost(&Level[gameLevelToRestart]);

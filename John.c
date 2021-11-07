@@ -201,6 +201,8 @@ void Enemies_init(int Basic_enemy_count, int Fast_enemy_count, int Fat_enemy_cou
 	for (int i = Basic_enemy_count + Fast_enemy_count; i < MAX_ENEMIES && i < Basic_enemy_count + Fast_enemy_count + Fat_enemy_count; i++) {
 		Fat_Ghost_init(&Enemy[i]);
 	}
+	grimReaper_init(&Enemy[6]);
+
 }
 
 void Basic_Ghost(enemy* r) { // setup variable for basic ghost enemy
@@ -283,10 +285,10 @@ void update_enemy(void) {
 
 	}
 	for (int i = 0; i < MAX_ENEMIES; i++) {
-		if ((Enemy[i].state == Inactive) && (Enemy[i].health >= 1) && (count / 3 <= MAX_ENEMIES)) {
+		if ((Enemy[i].state == Inactive) && (Enemy[i].health >= 1) && (count / 5 <= MAX_ENEMIES)) {
 
 			int b = count;
-			if (b - wave_timer >= 3) {
+			if (b - wave_timer >= 5) {
 				Enemy[i].state = Moving;
 				wave_timer = count;
 				insert_new_node_portal(&portalSpawnFirstNode, Enemy[i].data.xOrigin,
@@ -308,6 +310,8 @@ void update_enemy(void) {
 		Update_Path_Array(Level[0]);
 		enemy_move(&Enemy[i], Xarray, Yarray, Number_of_points, &Level[0]);
 		EnemyDeath(&Enemy[i], &Level[0]);
+		Reaper_ability(&Enemy[i]);
+
 	}
 	enemy* En = &Enemy[0];
 }
@@ -334,8 +338,14 @@ void draw_multiple_enemies(void) {
 				Enemy[i].data.xOrigin, Enemy[i].data.yOrigin, Enemy[i].enemy_width, Enemy[i].enemy_height, Enemy[i].alpha);
 			Enemy[i].timer += CP_System_GetDt();
 			break;
+		case grimReaper:
+			RenderWithAlphaChanged(grimReaperSpriteSheet, grimReaperSpriteArray[Enemy[i].currentAnimState],
+				Enemy[i].data.xOrigin, Enemy[i].data.yOrigin, Enemy[i].enemy_width, Enemy[i].enemy_height, Enemy[i].alpha);
+			Enemy[i].timer += CP_System_GetDt();
+			break;
 		}
 		update_enemy_health_bar(&Enemy[i]);
+
 	}
 }
 
@@ -374,4 +384,116 @@ void Update_Path_Array(LevelData Level) {
 	Array_count = 1;
 }
 
+void grimReaper_init(enemy* r) {
+	r->health = 20;
+	r->max_health = 20;
+	r->speed = 10;
+	r->CurrentWaypoint = 0;
+	r->data.xOrigin = Xarray[0];
+	r->data.yOrigin = Yarray[0];
+	r->enemy_width = Game.gridWidth;
+	r->enemy_height = Game.gridHeight;
+	r->angle = 0;
+	r->type = grimReaper;
+	r->alpha = 255;
+	r->data.objectType = objectCircle;
+	r->data.width = Game.gridWidth;
+	r->data.height = Game.gridWidth;
+	r->state = Inactive;
+	r->timer = 0;
+	r->points = 300;
+	//for the freeze turret & enemy interaction
+	r->slow_amt = 1;
+	r->slow_timer = 0;
+	r->currentAnimState = 0;
+	r->charges = charges_1;
+}
 
+void Reaper_minion_init(enemy* r) {
+	int a = 0;
+	for (int i = MAX_SPAWNING_ENEMIES; i < MAX_ENEMIES; i++) {
+		if (a == 0) {
+			if (Enemy[i].state == Inactive) {
+				Basic_Ghost(&Enemy[i]);
+				Enemy[i].data.xOrigin = Xarray[r->CurrentWaypoint - 1];
+				Enemy[i].data.yOrigin = Yarray[r->CurrentWaypoint - 1];
+				Enemy[i].CurrentWaypoint = r->CurrentWaypoint - 1;
+				Enemy[i].state = Moving;
+				a++;
+			}
+		}
+		else if (a == 1) {
+			if (Enemy[i].state == Inactive) {
+				Basic_Ghost(&Enemy[i]);
+				Enemy[i].data.xOrigin = Xarray[r->CurrentWaypoint + 1];
+				Enemy[i].data.yOrigin = Yarray[r->CurrentWaypoint + 1];
+				Enemy[i].CurrentWaypoint = r->CurrentWaypoint + 1;
+				Enemy[i].state = Moving;
+				a++;
+			}
+		}
+		else if (a == 2) {
+			r->charges = Used;
+			return;
+		}
+	}
+}
+
+
+void Reaper_ability(enemy* r) {
+	if (r->type == grimReaper) {
+		if (r->health == 0.5 * r->max_health) {
+			if (r->charges == charges_1) {
+				Reaper_minion_init(r);
+			}
+		}
+	}
+}
+
+void empty_enemy_init(enemy* r) {
+	r->health = 0;
+	r->max_health = 0;
+	r->speed = 0;
+	r->CurrentWaypoint = 0;
+	r->data.xOrigin = 0;
+	r->data.yOrigin = 0;
+	r->enemy_width = Game.gridWidth;
+	r->enemy_height = Game.gridHeight;
+	r->angle = 0;
+	r->type = Basic;
+	r->alpha = 255;
+	r->data.objectType = objectCircle;
+	r->data.width = Game.gridWidth;
+	r->data.height = Game.gridWidth;
+	r->state = Inactive;
+	r->timer = 0;
+	r->points = 0;
+	//for the freeze turret & enemy interaction
+	r->slow_amt = 1;
+	r->slow_timer = 0;
+	r->currentAnimState = 0;
+	r->charges = Used;
+}
+
+
+
+
+void wave_enemy_init(int Basic_Ghost_count, int Fast_Ghost_count, int Fat_Ghost_count, int Grim_Reaper_count, LevelData Level) {
+	int a = Basic_Ghost_count + Fast_Ghost_count;
+	int b = a + Fast_Ghost_count;
+	int c = b + Grim_Reaper_count;
+	Xarray[0] = (Game.xOrigin + Game.gridWidth * (0.5 + Level.spawnCol));
+	Yarray[0] = (Game.yOrigin + Game.gridHeight * (0.5 + Level.spawnRow));
+	for (int i = 0; i < Basic_Ghost_count; i++) {
+		Basic_Ghost(&Enemy[i]);
+	}
+	for (int i = Basic_Ghost_count; i < a&&i<MAX_SPAWNING_ENEMIES; i++) {
+		Fast_Ghost_init(&Enemy[i]);
+	}
+	for (int i = a; i < b && i < MAX_SPAWNING_ENEMIES; i++) {
+		Fat_Ghost_init(&Enemy[i]);
+	}
+	for (int i = b; i < MAX_SPAWNING_ENEMIES&&i<c; i++) {
+		grimReaper_init(&Enemy[i]);
+	}
+}
