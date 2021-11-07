@@ -1,6 +1,7 @@
+#include <math.h>
+
 #include "cprocessing.h"
 #include "Samuel.h"
-#include <math.h>
 #include "John.h"
 #include "Gabriel.h"
 
@@ -18,7 +19,7 @@ void turret_init(void)
 		proj[i].data.xOrigin = 0;
 		proj[i].data.yOrigin = 0;
 		proj[i].mod.damage = 1.f;
-		proj[i].mod.speed = 100.f;
+		proj[i].mod.speed = 200.f;
 		proj[i].size = 48;
 		proj[i].mod.slow_amt = 1.f;
 		proj[i].mod.slow_timer = 0.f;
@@ -48,6 +49,12 @@ void turret_init(void)
 		for (int j = 0; j < GAME_GRID_COLS; ++j)
 			turret_on_grid[i][j] = -1;
 
+	//set price of turrets and stuff
+	turret_price[T_BASIC] = 25;
+	turret_price[T_SLOW] = 30;
+	turret_price[T_HOMING] = 50;
+	turret_price[T_MINE] = 45;
+	turret_price[T_WALL] = 10;
 	//place_turret(T_SLOW, 2, 1);
 	//Level[0].grid[1][2].type = Blocked;//Hard coded to set turret spot to blocked
 	//place_turret(T_BASIC, 0, 4);
@@ -60,8 +67,8 @@ void place_turret(TurretType type, int index_x, int index_y)
 	for (int i = 0; i < MAX_TURRET; ++i)
 	{
 		//break from loop if not enough money
-		if (Level[currentGameLevel].phantomQuartz < turret[i].price)
-			break;
+		//if (Level[currentGameLevel].phantomQuartz < turret[i].price)
+		//	break;
 		if (turret[i].isActive || turret_on_grid[index_x][index_y] >= 0)
 			continue;
 
@@ -75,6 +82,7 @@ void place_turret(TurretType type, int index_x, int index_y)
 			turret[i].mod.damage = 1;
 			turret[i].animCounter = 0;
 			turret[i].turretAnimTimer = 0;
+			turret[i].mod.speed = 200.f;
 			break;
 		case T_SLOW: // FREEZE TURRET
 			turret[i].mod.range = Game.gridWidth * 2;
@@ -83,6 +91,7 @@ void place_turret(TurretType type, int index_x, int index_y)
 			turret[i].mod.slow_timer = 2.f;
 			turret[i].animCounter = 0;
 			turret[i].turretAnimTimer = 0;
+			turret[i].mod.speed = 200.f;
 			break;
 		case T_HOMING:
 			turret[i].mod.range = Game.gridWidth * 2;
@@ -91,6 +100,7 @@ void place_turret(TurretType type, int index_x, int index_y)
 			turret[i].dir.pos_y = -1;
 			turret[i].animCounter = 0;
 			turret[i].turretAnimTimer = 0;
+			turret[i].mod.speed = 100.f;
 			break;
 		case T_MINE:
 			if (Level[currentGameLevel].grid[index_y][index_x].type != Path)
@@ -116,7 +126,7 @@ void place_turret(TurretType type, int index_x, int index_y)
 		//where u place u block
 		Level[currentGameLevel].grid[index_y][index_x].type = Blocked;
 		//reduce currency with price
-		Level[currentGameLevel].phantomQuartz -= turret[i].price;
+		//Level[currentGameLevel].phantomQuartz -= turret_price[type];
 		//escape from loop once done
 		break;
 	}
@@ -140,11 +150,12 @@ void remove_turret(int index_x, int index_y)
 //upgrade system (for now using index will change depending on usage)
 void upgrade_turret(int t_index)
 {
-	if (Level[currentGameLevel].phantomQuartz < turret[t_index].upgrade_price)
-		return;
+	//if (Level[currentGameLevel].phantomQuartz < turret[t_index].upgrade_price)
+	//	return; 
+	
+	// Minus the price
+	Level[currentGameLevel].phantomQuartz -= turret_price[turret[t_index].type];
 
-	//pquartz or gquartz decide ltr
-	Level[currentGameLevel].phantomQuartz -= turret[t_index].upgrade_price;
 	//increase the price for another upgrade
 	turret[t_index].upgrade_price *= 2;
 	switch (turret[t_index].type)
@@ -364,6 +375,7 @@ void shoot(float x, float y, Modifiers mod, ProjectileType type, Vector2 dir)
 		proj[i].mod.slow_timer = mod.slow_timer;
 		proj[i].type = type;
 		proj[i].mod.tracked_index = mod.tracked_index;
+		proj[i].mod.speed = mod.speed;
 		break;
 	}
 
@@ -402,10 +414,10 @@ void update_projectile(void)
 				proj[i].dir = normalise(proj[i].dir);
 				//printf("x:%f y:%f\n", proj[i].dir.pos_x, proj[i].dir.pos_y);
 			}
-			else //update the projectile targeting
+			else//update the projectile targeting
 			{
 				Vector2 v;
-				int dist = Game.width * Game.height, tmp = 0; //abritrary large number
+				int dist = Game.width * 10, tmp = 0; //abritrary large number
 				for (int j = 0; j < MAX_ENEMIES; ++j)
 				{
 					if (Enemy[j].state == Death || Enemy[j].state == Inactive)
@@ -414,7 +426,8 @@ void update_projectile(void)
 					v.pos_x = proj[i].data.xOrigin - Enemy[j].data.xOrigin;
 					v.pos_y = proj[i].data.yOrigin - Enemy[j].data.yOrigin;
 					tmp = magnitude_sq(v);
-					if (tmp < dist * dist)
+					float sqrdst = dist * dist;
+					if (tmp < sqrdst)
 					{
 						dist = tmp;
 						proj[i].mod.tracked_index = j;

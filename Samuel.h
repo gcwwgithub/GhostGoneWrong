@@ -17,7 +17,8 @@ typedef enum TurretType
 	T_SLOW,
 	T_HOMING,
 	T_MINE,
-	T_WALL
+	T_WALL,
+	T_MAX
 } TurretType;
 
 //enum of projectile types
@@ -111,3 +112,4 @@ void update_turretAnimation(Turret* t);
 Projectile proj[MAX_PROJECTILE];
 Turret turret[MAX_TURRET];
 int turret_on_grid[GAME_GRID_ROWS][GAME_GRID_COLS];
+int turret_price[T_MAX];
