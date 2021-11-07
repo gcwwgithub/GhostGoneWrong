@@ -13,7 +13,7 @@ CP_Font pixelFont;
 int whiteSquareClicked = 0;
 
 int turretButton0Clicked = 0;
-float buildingTime = BUILDING_PHASE_TIME;
+buildingTime = BUILDING_PHASE_TIME;
 
 #pragma region UI
 
@@ -376,13 +376,17 @@ void init_level(int gameLevelToRestart)
 	pathfinding_init(&Level[gameLevelToRestart]);
 	environment_init(&Level[gameLevelToRestart]);
 
-	turret_init();
+	// this only frees the top right 3 turret tiles --> (0,2) (1,2) (2,2)
+	// placing a turret on (4,0) and restarting level changes the enemy path.
+	for (int i = 0; i < GAME_GRID_ROWS; i++)
+	{
+		for (int j = 0; j < GAME_GRID_COLS; j++)
+		{
+			remove_turret(j,i);
+		}
+	}
 
-	//for (int i = 0; i < MAX_TURRET; i++)
-	//{
-	//	if (turret[i].isActive)
-	//		remove_turret(turret[i].data.xOrigin, turret[i].data.yOrigin);
-	//}
+	turret_init();
 
 	Enemies_init(2, 2, 2, &Level[gameLevelToRestart]);
 	set_building_time(BUILDING_PHASE_TIME);

@@ -43,6 +43,7 @@ int fatEnemyNum;
 int gameWon;
 int gameLost;
 
+float buildingTime;
 
 void init_text_button(Button button, float buttonPosX, float buttonPosY, float buttonWidth, float buttonHeight, float textPosX, float textPosY, char string[]);
 

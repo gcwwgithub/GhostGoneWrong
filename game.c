@@ -193,7 +193,6 @@ void game_update(void)
 		{
 			currentGameState = Building;
 			init_level(0);
-			set_building_time(BUILDING_PHASE_TIME);
 		}
 		else if (btn_is_pressed(BackButton.buttonData))
 		{
@@ -211,7 +210,7 @@ void game_update(void)
 		{
 			if (currentGameState == Pause)
 			{
-				currentGameState = Wave;
+				currentGameState = (buildingTime) ? Building : Wave;
 			}
 			else // if the game is not paused
 			{
