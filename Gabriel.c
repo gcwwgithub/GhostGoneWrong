@@ -14,7 +14,8 @@ void init_all_images(void)
 	pauseButtonImage = CP_Image_Load("./Assets/Pause.png");
 	titleWordImage = CP_Image_Load("./Assets/Title.png");
 	turretUIButton = CP_Image_Load("./Assets/TurretIcon.png");
-	currencyUIRectangle = CP_Image_Load("./Assets/CurrencyIcon.png");
+	backgroundUIThin = CP_Image_Load("./Assets/CurrencyIcon.png");
+	backgroundUIFat = CP_Image_Load("./Assets/BigUIDisplay.png");
 
 	basicGhostSpriteSheet = CP_Image_Load("./Assets/BasicGhost.png");
 	fastGhostSpriteSheet = CP_Image_Load("./Assets/FastGhost.png");
@@ -33,6 +34,8 @@ void init_all_images(void)
 	backgroundSpriteSheet = CP_Image_Load("./Assets/Background.png");
 	portalEnterEffectSpriteSheet = CP_Image_Load("./Assets/PortalEnterEffect.png");
 	portalSpawnEffectSpriteSheet = CP_Image_Load("./Assets/EnemySpawnEffect.png");
+	powerUpIconSpriteSheet = CP_Image_Load("./Assets/Powerup.png");
+	battlefieldEffectIconSpriteSheet = CP_Image_Load("./Assets/BattlefieldEffects.png");
 
 }
 
@@ -171,6 +174,8 @@ void init_spritesheet_array(void)
 	SpriteSheetCalculation(backgroundArray, backgroundSpriteSheet,1920,1080, 1);
 	SpriteSheetCalculation(portalEnterEffectArray, portalEnterEffectSpriteSheet, 128, 128, 0);
 	SpriteSheetCalculation(portalSpawnEffectArray, portalSpawnEffectSpriteSheet, 128, 128, 0);
+	SpriteSheetCalculation(powerUpIconArray, powerUpIconSpriteSheet, 128, 128, 1);
+	SpriteSheetCalculation(battlefieldEffectIconArray, battlefieldEffectIconSpriteSheet, 128, 128, 0);
 }
 
 void SpriteSheetCalculation(struct SpriteSheetImage* s, CP_Image image, int pixelWidth, int pixelHeight, int stopPoint)

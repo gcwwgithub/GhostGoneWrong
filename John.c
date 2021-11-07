@@ -187,6 +187,7 @@ void Enemies_init(int Basic_enemy_count, int Fast_enemy_count, int Fat_enemy_cou
 
 	// For initialisation of enemyLeft text
 	enemiesLeft = Basic_enemy_count + Fast_enemy_count + Fat_enemy_count;
+	enemiesInLevel = enemiesLeft;
 	basicEnemyNum = Basic_enemy_count;
 	fastEnemyNum = Fast_enemy_count;
 	fatEnemyNum = Fat_enemy_count;

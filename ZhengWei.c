@@ -350,26 +350,33 @@ void wave_number_display_init(void) {
 }
 
 void battlefield_effects_display_init(void) {
-	GameMenuObject[BattlefieldEffects].yOrigin = GameMenuObject[WaveDisplay].yOrigin + GameMenuObject[WaveDisplay].height;
-	GameMenuObject[BattlefieldEffects].width = ((float)CP_System_GetWindowWidth() - Game.xOrigin - Game.width) / 2;
-	GameMenuObject[BattlefieldEffects].height = GameMenuObject[GoldQuartzMenu].height;
-	GameMenuObject[BattlefieldEffects].xOrigin = (float)CP_System_GetWindowWidth() - GameMenuObject[BattlefieldEffects].width;
+	GameMenuObject[BattlefieldEffects].xOrigin = GameMenuObject[HealthMenu].xOrigin;
+	GameMenuObject[BattlefieldEffects].yOrigin = GameMenuObject[HealthMenu].yOrigin + GameMenuObject[HealthMenu].height;
+	GameMenuObject[BattlefieldEffects].width = GameMenuObject[HealthMenu].width;
+	GameMenuObject[BattlefieldEffects].height = GameMenuObject[HealthMenu].height * 3;
 	GameMenuObject[BattlefieldEffects].objectType = objectRectangle;
 
-	/*GameMenuObject[BattlefieldEffects].xOrigin = GameMenuObject[WaveDisplay].xOrigin;
-	GameMenuObject[BattlefieldEffects].yOrigin = GameMenuObject[WaveDisplay].yOrigin + GameMenuObject[WaveDisplay].height;
-	GameMenuObject[BattlefieldEffects].width = GameMenuObject[WaveDisplay].width;
-	GameMenuObject[BattlefieldEffects].height = GameMenuObject[WaveDisplay].height;
+	/*GameMenuObject[BattlefieldEffects].yOrigin = GameMenuObject[WaveDisplay].yOrigin + GameMenuObject[WaveDisplay].height;
+	GameMenuObject[BattlefieldEffects].width = ((float)CP_System_GetWindowWidth() - Game.xOrigin - Game.width) / 2;
+	GameMenuObject[BattlefieldEffects].height = GameMenuObject[GoldQuartzMenu].height * 2;
+	GameMenuObject[BattlefieldEffects].xOrigin = (float)CP_System_GetWindowWidth() - GameMenuObject[BattlefieldEffects].width;
 	GameMenuObject[BattlefieldEffects].objectType = objectRectangle;*/
+
 }
 
 void monster_remaining_display_init(void) {
+	GameMenuObject[MonsterRemainingDisplay].xOrigin = GameMenuObject[WaveDisplay].xOrigin;
+	GameMenuObject[MonsterRemainingDisplay].yOrigin = GameMenuObject[WaveDisplay].yOrigin + GameMenuObject[WaveDisplay].height;
+	GameMenuObject[MonsterRemainingDisplay].width = GameMenuObject[WaveDisplay].width;
+	GameMenuObject[MonsterRemainingDisplay].height = GameMenuObject[WaveDisplay].height * 3;
+	GameMenuObject[MonsterRemainingDisplay].objectType = objectRectangle;
 
-	GameMenuObject[MonsterRemainingDisplay].xOrigin = GameMenuObject[BattlefieldEffects].xOrigin;
+
+	/*GameMenuObject[MonsterRemainingDisplay].xOrigin = GameMenuObject[BattlefieldEffects].xOrigin;
 	GameMenuObject[MonsterRemainingDisplay].yOrigin = GameMenuObject[BattlefieldEffects].yOrigin + GameMenuObject[BattlefieldEffects].height;
 	GameMenuObject[MonsterRemainingDisplay].width = GameMenuObject[BattlefieldEffects].width;
-	GameMenuObject[MonsterRemainingDisplay].height = GameMenuObject[BattlefieldEffects].height * 5;
-	GameMenuObject[MonsterRemainingDisplay].objectType = objectRectangle;
+	GameMenuObject[MonsterRemainingDisplay].height = GameMenuObject[BattlefieldEffects].height;
+	GameMenuObject[MonsterRemainingDisplay].objectType = objectRectangle;*/
 }
 
 void level1_init(void) {
@@ -509,7 +516,7 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 	case GoldQuartzMenu:
 		CP_Settings_Fill(COLOR_WHITE);
 		CP_Settings_TextSize(25.0f * scalingFactor);
-		CP_Image_Draw(currencyUIRectangle, menuObjectX.xOrigin + menuObjectX.width / 2,
+		CP_Image_Draw(backgroundUIThin, menuObjectX.xOrigin + menuObjectX.width / 2,
 			menuObjectX.yOrigin + menuObjectX.height / 2, 128 * scalingFactor, 36 * scalingFactor, 255);
 		RenderNormal(currencySpriteSheet, currencyArray[0], menuObjectX.xOrigin + menuObjectX.width / 5.5,
 			menuObjectX.yOrigin + menuObjectX.height / 2, 30 * scalingFactor, 30 * scalingFactor);
@@ -519,7 +526,7 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 	case PhantomQuartzMenu:
 		CP_Settings_Fill(COLOR_WHITE);
 		CP_Settings_TextSize(25.0f * scalingFactor);
-		CP_Image_Draw(currencyUIRectangle, menuObjectX.xOrigin + menuObjectX.width / 2,
+		CP_Image_Draw(backgroundUIThin, menuObjectX.xOrigin + menuObjectX.width / 2,
 			menuObjectX.yOrigin + menuObjectX.height / 2, 128 * scalingFactor, 36 * scalingFactor, 255);
 		RenderNormal(currencySpriteSheet, currencyArray[1], menuObjectX.xOrigin + menuObjectX.width / 5,
 			menuObjectX.yOrigin + menuObjectX.height / 2, 30 * scalingFactor, 30 * scalingFactor);
@@ -530,7 +537,7 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 		CP_Settings_Fill(COLOR_WHITE);
 		CP_Settings_TextSize(25.0f * scalingFactor);
 		sprintf_s(temp, 100, "x%-10d", Level[currentGameLevel].health);
-		CP_Image_Draw(currencyUIRectangle, menuObjectX.xOrigin + menuObjectX.width / 2,
+		CP_Image_Draw(backgroundUIThin, menuObjectX.xOrigin + menuObjectX.width / 2,
 			menuObjectX.yOrigin + menuObjectX.height / 2, 128 * scalingFactor, 36 * scalingFactor, 255);
 		RenderNormal(currencySpriteSheet, currencyArray[2], menuObjectX.xOrigin + menuObjectX.width / 5,
 			menuObjectX.yOrigin + menuObjectX.height / 2, 30 * scalingFactor, 30 * scalingFactor);
@@ -539,52 +546,36 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 	case WaveDisplay:
 		CP_Settings_Fill(COLOR_WHITE);
 		CP_Settings_TextSize(25.0f * scalingFactor);
-		sprintf_s(temp, 100, "%2d/20", Level[currentGameLevel].currentWave);
-		CP_Image_Draw(currencyUIRectangle, menuObjectX.xOrigin + menuObjectX.width / 2,
+		sprintf_s(temp, 100, "%2d/%d", Level[currentGameLevel].currentWave, MAX_NUMBER_OF_WAVES);
+		CP_Image_Draw(backgroundUIThin, menuObjectX.xOrigin + menuObjectX.width / 2,
 			menuObjectX.yOrigin + menuObjectX.height / 2, 128 * scalingFactor, 36 * scalingFactor, 255);
 		RenderNormal(currencySpriteSheet, currencyArray[3], menuObjectX.xOrigin + menuObjectX.width / 5,
 			menuObjectX.yOrigin + menuObjectX.height / 2, 30 * scalingFactor, 30 * scalingFactor);
 		CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 2.5, menuObjectX.yOrigin + menuObjectX.height / 2);
 		break;
 	case BattlefieldEffects:
-		CP_Settings_Fill(COLOR_BLACK);
-		CP_Settings_TextSize(30.0f * scalingFactor);
-		switch (Level[currentGameLevel].currentEffect) {
-		case MoreHP:
-			CP_Font_DrawText("Environment Effect:", menuObjectX.xOrigin + menuObjectX.width / 2, menuObjectX.yOrigin + menuObjectX.height / 3);
-			CP_Font_DrawText("Enemies have more HP", menuObjectX.xOrigin + menuObjectX.width / 2, menuObjectX.yOrigin + menuObjectX.height / 3 * 2);
-			break;
-		case FasterEnemies:
-			CP_Font_DrawText("Environment Effect:", menuObjectX.xOrigin + menuObjectX.width / 2, menuObjectX.yOrigin + menuObjectX.height / 3);
-			CP_Font_DrawText("Enemies move Faster", menuObjectX.xOrigin + menuObjectX.width / 2, menuObjectX.yOrigin + menuObjectX.height / 3 * 2);
-			break;
-		}
+		CP_Image_Draw(backgroundUIFat, menuObjectX.xOrigin + menuObjectX.width / 2,
+			menuObjectX.yOrigin + menuObjectX.height / 2, 132 * scalingFactor, 132* scalingFactor, 255);
+		CP_Settings_TextSize(35.0f * scalingFactor);
+		CP_Settings_Fill(COLOR_WHITE);
+		sprintf_s(temp, sizeof(temp), "Effects");
+		CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 2, menuObjectX.yOrigin + menuObjectX.height / 5);
+		RenderNormal(battlefieldEffectIconSpriteSheet, battlefieldEffectIconArray[Level[currentGameLevel].currentEffect],
+			menuObjectX.xOrigin + menuObjectX.width / 2, menuObjectX.yOrigin + menuObjectX.height /2,
+			110 * scalingFactor, 110 * scalingFactor);
 		break;
 	case MonsterRemainingDisplay:
-		CP_Settings_Fill(COLOR_BLACK);
+		CP_Image_Draw(backgroundUIFat, menuObjectX.xOrigin + menuObjectX.width / 2,
+			menuObjectX.yOrigin + menuObjectX.height / 2, 132 * scalingFactor, 132 * scalingFactor, 255);
+		CP_Settings_Fill(COLOR_WHITE);
 		CP_Settings_TextSize(35.0f * scalingFactor);
-		sprintf_s(temp, sizeof(temp), "Enemies Left: %d", enemiesLeft);
-		CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 2.5, menuObjectX.yOrigin + menuObjectX.height / 10);
-
-		CP_Settings_TextSize(50.0f * scalingFactor);
-		RenderNormal(basicGhostSpriteSheet, basicGhostSpriteArray[0], menuObjectX.xOrigin + menuObjectX.width / 6,
-			menuObjectX.yOrigin + menuObjectX.height / 10 * 3, menuObjectX.height / 4, menuObjectX.height / 4);
-		sprintf_s(temp, sizeof(temp), "x%d", basicEnemyNum);
-		CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 2.25, menuObjectX.yOrigin + menuObjectX.height / 10 * 3);
-
-		RenderNormal(fastGhostSpriteSheet, fastGhostSpriteArray[0], menuObjectX.xOrigin + menuObjectX.width / 6,
-			menuObjectX.yOrigin + menuObjectX.height / 10 * 5.5, menuObjectX.height / 4, menuObjectX.height / 4);
-		sprintf_s(temp, sizeof(temp), "x%d", fastEnemyNum);
-		CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 2.25, menuObjectX.yOrigin + menuObjectX.height / 10 * 5.5);
-
-		RenderNormal(fatGhostSpriteSheet, fatGhostSpriteArray[0], menuObjectX.xOrigin + menuObjectX.width / 6,
-			menuObjectX.yOrigin + menuObjectX.height / 10 * 8, menuObjectX.height / 4, menuObjectX.height / 4);
-		sprintf_s(temp, sizeof(temp), "x%d", fatEnemyNum);
-		CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 2.25, menuObjectX.yOrigin + menuObjectX.height / 10 * 8);
+		sprintf_s(temp, sizeof(temp), "Enemies");
+		CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 2, menuObjectX.yOrigin + menuObjectX.height / 5);
+		CP_Settings_TextSize(45.0f * scalingFactor);
+		sprintf_s(temp, sizeof(temp), "%d/%d", enemiesLeft,enemiesInLevel);
+		CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 2, menuObjectX.yOrigin + menuObjectX.height / 2);
 		break;
 	}
-
-
 
 }
 

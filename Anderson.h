@@ -36,6 +36,7 @@ Button EndScreenButtons[2];
 
 
 int enemiesLeft;
+int enemiesInLevel;
 int basicEnemyNum;
 int fastEnemyNum;
 int fatEnemyNum;
