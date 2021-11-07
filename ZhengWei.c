@@ -154,6 +154,53 @@ int Collision_Detection(Coordinates object1, Coordinates object2) {
 	}
 }
 
+//Function for doing all the stuff when clicking on game grid
+void render_game_grid_press(LevelData* LevelX) {
+	int drawX, drawY;
+	drawX = (int)((MouseInput.xOrigin - Game.xOrigin) / Game.gridWidth);
+	drawY = (int)((MouseInput.yOrigin - Game.yOrigin) / Game.gridHeight);
+	if (isPlacingTurret != NOT_PLACING_TURRET) {
+		if (LevelX->grid[drawY][drawX].type == Clear || LevelX->grid[drawY][drawX].type == Path) {
+			if (isPlacingTurret != T_MINE) {
+				LevelX->grid[drawY][drawX].type = Blocked;
+				pathfinding_reset(LevelX);
+				pathfinding_calculate_cost(LevelX);
+			}
+			if (!is_destination_updated(LevelX)) {
+				LevelX->grid[drawY][drawX].type = Clear;
+				pathfinding_reset(LevelX);
+				pathfinding_calculate_cost(LevelX);
+			}
+			else {
+				place_turret(isPlacingTurret, drawX, drawY);
+				isPlacingTurret = NOT_PLACING_TURRET;
+			}
+			pathfinding_update(LevelX);
+		}
+		mouse_reset();
+	}
+	else {
+		Coordinates GridTemp;
+		GridTemp.width = Game.gridWidth;
+		GridTemp.height = Game.gridHeight;
+		GridTemp.xOrigin = Game.xOrigin + (drawX + 0.5f) * Game.gridWidth;
+		GridTemp.yOrigin = Game.yOrigin + (drawY + 0.5f) * Game.gridHeight;
+		for (int i = 0; i < MAX_TURRET; i++) {
+			if (turret[i].data.xOrigin == GridTemp.xOrigin && turret[i].data.yOrigin == GridTemp.yOrigin && isUpgradingTurret == TRUE && CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
+				isUpgradingTurret = FALSE;
+				mouse_reset();
+			}
+			else if (turret[i].data.xOrigin == GridTemp.xOrigin && turret[i].data.yOrigin == GridTemp.yOrigin && turret[i].isActive == TRUE) {
+				CP_Settings_Fill(COLOR_BLACK);
+				CP_Settings_TextSize(20.0f);
+				CP_Font_DrawText("Upgrade", GridTemp.xOrigin + 10.0f, GridTemp.yOrigin + 10.0f);
+				isUpgradingTurret = TRUE;
+			}
+		}
+	}
+
+}
+
 //Check which button is pressed
 int check_game_button_pressed(void) {
 	for (int i = 0; i < NUMBER_OF_MENU_OBJECTS; i++) {
@@ -183,7 +230,11 @@ void game_grid_init(void) {
 	unusableScreenWidth = (float)CP_System_GetWindowWidth() - Game.width;
 	Game.xOrigin = unusableScreenWidth / 2; //To centralise the Grid
 	Game.yOrigin = unusableScreenHeight / 2; //Centre the game
-
+	GameMenuObject[GameGrid].xOrigin = Game.xOrigin;
+	GameMenuObject[GameGrid].yOrigin = Game.yOrigin;
+	GameMenuObject[GameGrid].width = Game.width;
+	GameMenuObject[GameGrid].height = Game.height;
+	GameMenuObject[GameGrid].objectType = objectRectangle;
 }
 
 void pause_button_init(void) {
@@ -337,36 +388,53 @@ void level1_init(void) {
 void render_button_pressed(void) {
 	switch (check_game_button_pressed())
 	{
+	case GameGrid:
+		render_game_grid_press(&Level[currentGameLevel]);
+		break;
 	case PauseButton:
 		currentGameState = currentGameState == Pause ? Wave : Pause;
 		mouse_reset();
 		break;
 	case TurretButtonBasic:
-		isPlacingTurret = T_BASIC;
-		RenderNormal(basicTurretSpriteSheet, basicTurretArray[0], CP_Input_GetMouseX(), CP_Input_GetMouseY(), Game.gridWidth, Game.gridHeight);
+		if (turret[0].price <= Level[currentGameLevel].phantomQuartz) { // Currently hardcoded 
+			isPlacingTurret = T_BASIC;
+			isUpgradingTurret = FALSE;
+			RenderNormal(basicTurretSpriteSheet, basicTurretArray[0], CP_Input_GetMouseX(), CP_Input_GetMouseY(), Game.gridWidth, Game.gridHeight);
+		}
 		break;
 	case TurretButtonSlow:
-		isPlacingTurret = T_SLOW;
-		CP_Image_DrawAdvanced(GameMenuObject[check_game_button_pressed()].image, CP_Input_GetMouseX(), CP_Input_GetMouseY(), Game.gridWidth, Game.gridHeight, 255, 0);
+		if (turret[0].price <= Level[currentGameLevel].phantomQuartz) {
+			isPlacingTurret = T_SLOW;
+			isUpgradingTurret = FALSE;
+			CP_Image_DrawAdvanced(GameMenuObject[check_game_button_pressed()].image, CP_Input_GetMouseX(), CP_Input_GetMouseY(), Game.gridWidth, Game.gridHeight, 255, 0);
+		}
 		break;
 	case TurretButtonHoming:
-		isPlacingTurret = T_HOMING;
-		RenderNormal(homingMissleTurretSpriteSheet, homingMissleTurretArray[0], CP_Input_GetMouseX(), CP_Input_GetMouseY(), Game.gridWidth, Game.gridHeight);
+		if (turret[0].price <= Level[currentGameLevel].phantomQuartz) {
+			isPlacingTurret = T_HOMING;
+			isUpgradingTurret = FALSE;
+			RenderNormal(homingMissleTurretSpriteSheet, homingMissleTurretArray[0], CP_Input_GetMouseX(), CP_Input_GetMouseY(), Game.gridWidth, Game.gridHeight);
+		}
 		break;
 	case TurretButtonMine:
-		isPlacingTurret = T_MINE;
-		RenderNormal(mineSpriteSheet, mineArray[0], CP_Input_GetMouseX(), CP_Input_GetMouseY(), Game.gridWidth, Game.gridHeight);
+		if (turret[0].price <= Level[currentGameLevel].phantomQuartz) {
+			isPlacingTurret = T_MINE;
+			isUpgradingTurret = FALSE;
+			RenderNormal(mineSpriteSheet, mineArray[0], CP_Input_GetMouseX(), CP_Input_GetMouseY(), Game.gridWidth, Game.gridHeight);
+		}
 		break;
 	case SwapButton:
 		isPlacingTurret = NOT_PLACING_TURRET;
+		isUpgradingTurret = FALSE;
 		if (Level[currentGameLevel].phantomQuartz >= 10) {
 			Level[currentGameLevel].phantomQuartz -= 10;
 			Level[currentGameLevel].goldQuartz += 1;
 		}
 		mouse_reset();
 		break;
-	case NoButton:
+	default:
 		isPlacingTurret = NOT_PLACING_TURRET;
+		isUpgradingTurret = FALSE;
 		break;
 	}
 }
@@ -520,52 +588,6 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 
 }
 
-void render_game_grid_press(LevelData* LevelX) {
-	Coordinates GameTemp;
-	GameTemp.xOrigin = Game.xOrigin;
-	GameTemp.yOrigin = Game.yOrigin;
-	GameTemp.width = Game.width;
-	GameTemp.height = Game.height;
-	int drawX, drawY;
-	drawX = (int)((MouseInput.xOrigin - Game.xOrigin) / Game.gridWidth);
-	drawY = (int)((MouseInput.yOrigin - Game.yOrigin) / Game.gridHeight);
-	if (btn_is_pressed(GameTemp)) {
-		if (isPlacingTurret != NOT_PLACING_TURRET) {
-			if (LevelX->grid[drawY][drawX].type == Clear || LevelX->grid[drawY][drawX].type == Path) {
-				if (isPlacingTurret != T_MINE) {
-					LevelX->grid[drawY][drawX].type = Blocked;
-					pathfinding_reset(LevelX);
-					pathfinding_calculate_cost(LevelX);
-				}
-				if (!is_destination_updated(LevelX)) {
-					LevelX->grid[drawY][drawX].type = Clear;
-					pathfinding_reset(LevelX);
-					pathfinding_calculate_cost(LevelX);
-				}
-				else {
-					place_turret(isPlacingTurret, drawX, drawY);
-					isPlacingTurret = NOT_PLACING_TURRET;
-				}
-				pathfinding_update(LevelX);
-			}
-			mouse_reset();
-		}
-		else {
-			Coordinates GridTemp;
-			GridTemp.width = Game.gridWidth;
-			GridTemp.height = Game.gridHeight;
-			GridTemp.xOrigin = Game.xOrigin + (drawX + 0.5f) * Game.gridWidth;
-			GridTemp.yOrigin = Game.yOrigin + (drawY + 0.5f) * Game.gridHeight;
-			for (int i = 0; i < MAX_TURRET; i++) {
-				if (turret[i].data.xOrigin == GridTemp.xOrigin && turret[i].data.yOrigin == GridTemp.yOrigin && turret[i].isActive == TRUE) {
-					/*CP_Settings_Fill(COLOR_BLACK);
-					CP_Settings_TextSize(20.0f);
-					CP_Font_DrawText("Upgrade", GridTemp.xOrigin + 10.0f, GridTemp.yOrigin + 10.0f);*/
-				}
-			}
-		}
-	}
-}
 
 //Level
 

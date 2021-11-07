@@ -56,6 +56,7 @@ void game_init(void)
 	//Initialize Objects
 	mouse_init();
 	isPlacingTurret = NOT_PLACING_TURRET;
+	isUpgradingTurret = FALSE;
 
 	//Level Data
 	level1_init();
@@ -112,7 +113,7 @@ void game_update(void)
 			//render_game_background();
 			render_game_grid();
 			render_path(&Level[currentGameLevel]);
-			for (int i = 0; i < NUMBER_OF_MENU_OBJECTS; i++) {
+			for (int i = 0; i < NUMBER_OF_MENU_OBJECTS-1; i++) {// Last object will double render game grid
 				render_turret_menu_object(GameMenuObject[i], i);
 			}
 			//display_enemies_left(); //Already done by my code render turret menu object
@@ -125,8 +126,7 @@ void game_update(void)
 
 			render_bullet_circles();
 
-			render_game_grid_press(&Level[currentGameLevel]);
-			render_button_pressed();//Must be after render_game_grid_press
+			render_button_pressed();
 
 
 			render_environment();
@@ -147,7 +147,7 @@ void game_update(void)
 
 		render_wave_timer_text();
 
-		for (int i = 0; i < NUMBER_OF_MENU_OBJECTS; i++) {
+		for (int i = 0; i < NUMBER_OF_MENU_OBJECTS-1; i++) {// Last object will double render game grid
 			render_turret_menu_object(GameMenuObject[i], i);
 		}
 
@@ -155,9 +155,8 @@ void game_update(void)
 		render_projectile();
 
 		render_bullet_circles();
-
-		render_game_grid_press(&Level[currentGameLevel]);
-		render_button_pressed();//Must be after render_game_grid_press
+		
+		render_button_pressed();
 
 		//test enemy
 

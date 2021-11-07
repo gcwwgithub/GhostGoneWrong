@@ -107,7 +107,7 @@ typedef struct Coordinates {
 Coordinates TurretMenu;
 
 //Buttons
-#define NUMBER_OF_MENU_OBJECTS 12
+#define NUMBER_OF_MENU_OBJECTS 13
 
 enum MenuObjectType {
 	PauseButton,
@@ -122,6 +122,7 @@ enum MenuObjectType {
 	WaveDisplay,
 	BattlefieldEffects,
 	MonsterRemainingDisplay,
+	GameGrid,
 	NoButton
 };
 
