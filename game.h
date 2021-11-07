@@ -45,7 +45,8 @@ GameState currentGameState;
 
 //Level
 #define MAX_NUMBER_OF_LEVEL 5
-#define MAX_NUMBER_OF_WAVES 5 
+#define MAX_NUMBER_OF_WAVES 5
+#define MAX_ENEMY_TYPE 3
 typedef enum PathType {
 	Clear = 0,
 	Blocked = 1,
@@ -77,7 +78,7 @@ typedef struct LevelData {
 	int goldQuartz;
 	int health;
 	int currentWave;
-	int waveEmemies[MAX_NUMBER_OF_WAVES];
+	int waveEmemies[MAX_NUMBER_OF_WAVES][MAX_ENEMY_TYPE];
 	EnvironmentalEffects currentEffect;
 
 }LevelData;
