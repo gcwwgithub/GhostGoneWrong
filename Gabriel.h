@@ -110,5 +110,5 @@ void RenderPortal(struct SpriteSheetImage s, struct PortalVariables* pv, CP_Imag
 void RenderNormal(CP_Image image, struct SpriteSheetImage s, float xPos, float yPos, float sizeOfImageX, float sizeOfImageY);
 void RenderWithAlphaChanged(CP_Image image, struct SpriteSheetImage s, float xPos, float yPos, float sizeOfImageX, float sizeOfImageY, int alphaValue);
 void update_portal(void);
-void render_game_background(void);
+void render_game_background(int currentLevel);
 

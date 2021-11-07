@@ -364,7 +364,26 @@ void update_portal(void)
 
 }
 
-void render_game_background(void)
+void render_game_background(int currentLevel)
 {
-	RenderNormal(backgroundSpriteSheet, backgroundArray[4], CP_System_GetWindowWidth() * 0.5, CP_System_GetWindowHeight() * 0.5, CP_System_GetWindowWidth(), CP_System_GetWindowHeight());
+	switch (currentLevel)
+	{
+	case 0:
+		RenderWithAlphaChanged(backgroundSpriteSheet, backgroundArray[1], CP_System_GetWindowWidth() * 0.5,
+			CP_System_GetWindowHeight() * 0.5, CP_System_GetWindowWidth(), CP_System_GetWindowHeight(), 255);
+		break;
+	case 1:
+		RenderWithAlphaChanged(backgroundSpriteSheet, backgroundArray[2], CP_System_GetWindowWidth() * 0.5,
+			CP_System_GetWindowHeight() * 0.5, CP_System_GetWindowWidth(), CP_System_GetWindowHeight(), 255);
+		break;
+	case 2:
+		RenderWithAlphaChanged(backgroundSpriteSheet, backgroundArray[3], CP_System_GetWindowWidth() * 0.5,
+			CP_System_GetWindowHeight() * 0.5, CP_System_GetWindowWidth(), CP_System_GetWindowHeight(), 200);
+		break;
+	case 3:
+		RenderWithAlphaChanged(backgroundSpriteSheet, backgroundArray[4], CP_System_GetWindowWidth() * 0.5,
+			CP_System_GetWindowHeight() * 0.5, CP_System_GetWindowWidth(), CP_System_GetWindowHeight(), 200);
+		break;
+	}
+	
 }
