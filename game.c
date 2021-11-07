@@ -30,6 +30,7 @@ void game_init(void)
 
 	init_pause_screen();
 	init_end_screen();
+	init_skip_wave_button();
 
 	//game grid 
 	game_grid_init();
@@ -65,7 +66,7 @@ void game_init(void)
 	environment_init(&Level[0]);
 
 	turret_init();
-	Enemies_init(2,2,2, &Level[0]);
+	Enemies_init(2, 2, 2, &Level[0]);
 
 	pathfinding_reset(&Level[0]);
 	pathfinding_calculate_cost(&Level[0]);
@@ -87,13 +88,13 @@ void game_update(void)
 		if (gameWon || gameLost)
 		{
 			render_end_screen(); // this should pause the game by way of gameLost.
-			if (btn_is_pressed(endScreenButtons[0].buttonData))
+			if (btn_is_pressed(EndScreenButtons[0].buttonData))
 			{
 				currentGameState = MainMenu;
 				init_level(currentGameLevel);
 				gameLost = gameWon = 0;
 			}
-			else if (btn_is_pressed(endScreenButtons[1].buttonData))
+			else if (btn_is_pressed(EndScreenButtons[1].buttonData))
 			{
 				exit_to_desktop();
 			}
@@ -134,18 +135,23 @@ void game_update(void)
 	}
 	else if (currentGameState == Building)
 	{
-		render_game_background();
 		reduce_building_phase_time();
+		if (btn_is_pressed(SkipWaveButton.buttonData))
+		{
+			set_building_time(0.0f);
+		}
 
 		//do turret & projectile update next
 		update_turret();
 		update_projectile();
 
 		//render all the stuff
+		render_game_background();
 		render_game_grid();
 		render_path(&Level[currentGameLevel]);
 
 		render_wave_timer_text();
+		render_ui_button(SkipWaveButton);
 
 		for (int i = 0; i < NUMBER_OF_MENU_OBJECTS-1; i++) {// Last object will double render game grid
 			render_turret_menu_object(GameMenuObject[i], i);
@@ -186,6 +192,7 @@ void game_update(void)
 		if (btn_is_pressed(levelButtons[0].buttonData))
 		{
 			currentGameState = Building;
+			init_level(0);
 			set_building_time(BUILDING_PHASE_TIME);
 		}
 		else if (btn_is_pressed(BackButton.buttonData))

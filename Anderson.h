@@ -2,8 +2,8 @@
 #include "game.h"
 #include "Gabriel.h"
 
-// scaled to factor for different resolutions to an extent
-// admittedly hardcoded the anchored resolution
+// scaled for different resolutions
+// hardcoded resolution
 #define BUTTON_WIDTH CP_System_GetWindowWidth() / 400 * 55.0f
 #define BUTTON_HEIGHT CP_System_GetWindowHeight() / 400 * 35.0f
 #define FONT_SIZE CP_System_GetWindowWidth() / 400 * 15.0f
@@ -30,7 +30,10 @@ Button levelButtons[5];
 Button PauseQuitButton;
 Button PauseBackButton;
 
-Button endScreenButtons[2];
+Button SkipWaveButton;
+
+Button EndScreenButtons[2];
+
 
 int enemiesLeft;
 int basicEnemyNum;
@@ -58,9 +61,12 @@ void render_pause_screen(void);
 void render_wave_timer_text(void);
 void reduce_building_phase_time(void);
 void set_building_time(float newBuildingTime);
+void init_skip_wave_button(void);
 
 void init_game_font(void);
 void init_pause_screen(void);
+
+void gold_to_phantom_quartz_conversion(int goldAmtToConvert, int conversionRate);
 
 void game_win_lose_check(void);
 void init_end_screen(void);
