@@ -10,6 +10,7 @@
 #define EXPLOSION_RANGE Game.gridWidth * 2
 #define TRUE 1
 #define FALSE 0
+
 //enum of turret types
 typedef enum TurretType
 {
@@ -37,7 +38,15 @@ typedef enum TriangleAnimState
 	ACTIVE
 } TriangleAnimState;
 
-typedef struct
+typedef enum TurretPurchase
+{
+	TP_PRICE,
+	TP_UPGARDE_PRICE,
+	TP_UPGRADE_MAX_LEVEL,
+	TP_MAX
+}TurretPurchase;
+
+typedef struct Modifiers
 {
 	int tracked_index;
 	float damage, speed, range, shoot_rate,
@@ -85,8 +94,11 @@ void place_turret(TurretType type, int index_x, int index_y);
 //remove a turret from grid ()
 void remove_turret(int index_x, int index_y);
 
+//sell them turrets
+void sell_turret(int index_x, int index_y);
+
 //upgrade system (for now using index will change depending how to access this easier)
-void upgrade_turret(int t_index);
+void upgrade_turret(int index_x, int index_y);
 
 //void render_turret(Turret* t);
 void render_turret(void);
@@ -112,4 +124,4 @@ void update_turretAnimation(Turret* t);
 Projectile proj[MAX_PROJECTILE];
 Turret turret[MAX_TURRET];
 int turret_on_grid[GAME_GRID_ROWS][GAME_GRID_COLS];
-int turret_price[T_MAX];
+int turret_purchasing[TP_MAX][T_MAX];

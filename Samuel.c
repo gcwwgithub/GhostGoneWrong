@@ -42,7 +42,6 @@ void turret_init(void)
 		turret[i].currentAnimState = INACTIVE;
 		turret[i].animCounter = 0;
 		turret[i].price = 25;
-		turret[i].upgrade_price = 40;
 	}
 	//init the lcoations of turret placed
 	for (int i = 0; i < GAME_GRID_ROWS; ++i)
@@ -50,11 +49,22 @@ void turret_init(void)
 			turret_on_grid[i][j] = -1;
 
 	//set price of turrets and stuff
-	turret_price[T_BASIC] = 25;
-	turret_price[T_SLOW] = 30;
-	turret_price[T_HOMING] = 50;
-	turret_price[T_MINE] = 45;
-	turret_price[T_WALL] = 10;
+	turret_purchasing[TP_PRICE][T_BASIC] = 25;
+	turret_purchasing[TP_PRICE][T_SLOW] = 30;
+	turret_purchasing[TP_PRICE][T_HOMING] = 50;
+	turret_purchasing[TP_PRICE][T_MINE] = 45;
+	turret_purchasing[TP_PRICE][T_WALL] = 10;
+
+	turret_purchasing[TP_UPGARDE_PRICE][T_BASIC] = 20;
+	turret_purchasing[TP_UPGARDE_PRICE][T_SLOW] = 25;
+	turret_purchasing[TP_UPGARDE_PRICE][T_HOMING] = 40;
+	turret_purchasing[TP_UPGARDE_PRICE][T_MINE] = 15;
+	turret_purchasing[TP_UPGARDE_PRICE][T_WALL] = 10;
+
+	//set all to 5 level only first change later
+		for (int i = 0; i < T_MAX; ++i)
+			turret_purchasing[TP_UPGRADE_MAX_LEVEL][i] = 5;
+
 	//place_turret(T_SLOW, 2, 1);
 	//Level[0].grid[1][2].type = Blocked;//Hard coded to set turret spot to blocked
 	//place_turret(T_BASIC, 0, 4);
@@ -69,8 +79,10 @@ void place_turret(TurretType type, int index_x, int index_y)
 		//break from loop if not enough money
 		//if (Level[currentGameLevel].phantomQuartz < turret[i].price)
 		//	break;
-		if (turret[i].isActive || turret_on_grid[index_x][index_y] >= 0)
+		if (turret[i].isActive)
 			continue;
+		if (turret_on_grid[index_x][index_y] >= 0)
+			break; // come out of loop cause space occupied
 
 		turret[i].type = type;
 
@@ -116,6 +128,10 @@ void place_turret(TurretType type, int index_x, int index_y)
 		default:
 			break;
 		}
+		//upgrade price back to 0
+		turret[i].upgrade_price = 0;
+		//shooting rate set
+		turret[i].mod.shoot_rate = 0.6f;
 		//set to active and the turret type
 		turret[i].isActive = TRUE;
 		//origin + gridwidth * (index + 0.5); (to place the turret on the grid box)
@@ -125,8 +141,7 @@ void place_turret(TurretType type, int index_x, int index_y)
 		turret_on_grid[index_x][index_y] = i;
 		//where u place u block
 		Level[currentGameLevel].grid[index_y][index_x].type = Blocked;
-		//reduce currency with price
-		//Level[currentGameLevel].phantomQuartz -= turret_price[type];
+
 		//escape from loop once done
 		break;
 	}
@@ -147,37 +162,51 @@ void remove_turret(int index_x, int index_y)
 
 }
 
-//upgrade system (for now using index will change depending on usage)
-void upgrade_turret(int t_index)
+//sell them turrets
+void sell_turret(int index_x, int index_y)
 {
-	//if (Level[currentGameLevel].phantomQuartz < turret[t_index].upgrade_price)
-	//	return; 
-	
-	// Minus the price
-	Level[currentGameLevel].phantomQuartz -= turret_price[turret[t_index].type];
+	int index = turret_on_grid[index_x][index_y];
+	Level[currentGameLevel].phantomQuartz += (turret[index].upgrade_price +
+		turret_purchasing[TP_PRICE][turret[index].type]) / 2;
+	remove_turret(index_x, index_y);
+}
 
-	//increase the price for another upgrade
-	turret[t_index].upgrade_price *= 2;
+//upgrade system (for now using index will change depending on usage)
+void upgrade_turret(int index_x, int index_y)
+{	
+	int t_index = turret_on_grid[index_x][index_y];
+	// Minus the price
+	Level[currentGameLevel].phantomQuartz -= turret_purchasing[TP_UPGARDE_PRICE][turret[t_index].type] +
+		turret[t_index].upgrade_price;
+
 	switch (turret[t_index].type)
 	{
 	case T_BASIC:
 		turret[t_index].mod.damage += 1.f;
 		turret[t_index].mod.range *= 1.5f;
 		turret[t_index].mod.shoot_rate -= 0.05f;
+		//increase the price for another upgrade
+		turret[t_index].upgrade_price += 25;
 		break;
 	case T_SLOW:
 		turret[t_index].mod.damage += 1.f;
 		turret[t_index].mod.range *= 1.5f;
 		turret[t_index].mod.slow_amt -= 0.1f;
 		turret[t_index].mod.shoot_rate -= 0.05f;
+		//increase the price for another upgrade
+		turret[t_index].upgrade_price += 25;
 		break;
 	case T_HOMING:
 		turret[t_index].mod.damage += 1.f;
 		turret[t_index].mod.range *= 1.5f;
 		turret[t_index].mod.shoot_rate -= 0.05f;
+		//increase the price for another upgrade
+		turret[t_index].upgrade_price += 50;
 		break;
 	case T_MINE:
 		turret[t_index].mod.damage += 1.f;
+		//increase the price for another upgrade
+		turret[t_index].upgrade_price += 25;
 		break;
 	default:
 		break;
