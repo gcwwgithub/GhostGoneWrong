@@ -30,6 +30,7 @@ void game_init(void)
 
 	init_pause_screen();
 	init_end_screen();
+	init_skip_wave_button();
 
 	//game grid 
 	game_grid_init();
@@ -48,14 +49,18 @@ void game_init(void)
 
 
 	health_init();
-	currency_swap_init();
+	menu_swap_init();
 	wave_number_display_init();
 	battlefield_effects_display_init();
 	monster_remaining_display_init();
+	upgrade_button_init();
+	sell_button_init();
 
 	//Initialize Objects
 	mouse_init();
 	isPlacingTurret = NOT_PLACING_TURRET;
+	isUpgradingTurret = FALSE;
+	powerUpMenu = FALSE;
 
 	//Level Data
 	level1_init();
@@ -64,7 +69,7 @@ void game_init(void)
 	environment_init(&Level[0]);
 
 	turret_init();
-	Enemies_init(2,2,2, &Level[0]);
+	Enemies_init(2, 2, 2, &Level[0]);
 
 	pathfinding_reset(&Level[0]);
 	pathfinding_calculate_cost(&Level[0]);
@@ -86,13 +91,13 @@ void game_update(void)
 		if (gameWon || gameLost)
 		{
 			render_end_screen(); // this should pause the game by way of gameLost.
-			if (btn_is_pressed(endScreenButtons[0].buttonData))
+			if (btn_is_pressed(EndScreenButtons[0].buttonData))
 			{
 				currentGameState = MainMenu;
 				init_level(currentGameLevel);
 				gameLost = gameWon = 0;
 			}
-			else if (btn_is_pressed(endScreenButtons[1].buttonData))
+			else if (btn_is_pressed(EndScreenButtons[1].buttonData))
 			{
 				exit_to_desktop();
 			}
@@ -109,10 +114,10 @@ void game_update(void)
 
 
 			//render all the stuff
-			render_game_background();
+			render_game_background(currentGameLevel);
 			render_game_grid();
 			render_path(&Level[currentGameLevel]);
-			for (int i = 0; i < NUMBER_OF_MENU_OBJECTS; i++) {
+			for (int i = 0; i < NUMBER_OF_MENU_OBJECTS-1; i++) {// Last object will double render game grid
 				render_turret_menu_object(GameMenuObject[i], i);
 			}
 			//display_enemies_left(); //Already done by my code render turret menu object
@@ -125,8 +130,7 @@ void game_update(void)
 
 			render_bullet_circles();
 
-			render_game_grid_press(&Level[currentGameLevel]);
-			render_button_pressed();//Must be after render_game_grid_press
+			render_button_pressed();
 
 
 			render_environment();
@@ -134,20 +138,25 @@ void game_update(void)
 	}
 	else if (currentGameState == Building)
 	{
-		render_game_background();
 		reduce_building_phase_time();
+		if (btn_is_pressed(SkipWaveButton.buttonData))
+		{
+			set_building_time(0.0f);
+		}
 
 		//do turret & projectile update next
 		update_turret();
 		update_projectile();
 
 		//render all the stuff
+		render_game_background(currentGameLevel);
 		render_game_grid();
 		render_path(&Level[currentGameLevel]);
 
 		render_wave_timer_text();
+		render_ui_button(SkipWaveButton);
 
-		for (int i = 0; i < NUMBER_OF_MENU_OBJECTS; i++) {
+		for (int i = 0; i < NUMBER_OF_MENU_OBJECTS-1; i++) {// Last object will double render game grid
 			render_turret_menu_object(GameMenuObject[i], i);
 		}
 
@@ -155,9 +164,8 @@ void game_update(void)
 		render_projectile();
 
 		render_bullet_circles();
-
-		render_game_grid_press(&Level[currentGameLevel]);
-		render_button_pressed();//Must be after render_game_grid_press
+		
+		render_button_pressed();
 
 		//test enemy
 
@@ -187,7 +195,7 @@ void game_update(void)
 		if (btn_is_pressed(levelButtons[0].buttonData))
 		{
 			currentGameState = Building;
-			set_building_time(BUILDING_PHASE_TIME);
+			init_level(0);
 		}
 		else if (btn_is_pressed(BackButton.buttonData))
 		{
@@ -205,7 +213,7 @@ void game_update(void)
 		{
 			if (currentGameState == Pause)
 			{
-				currentGameState = Wave;
+				currentGameState = (buildingTime) ? Building : Wave;
 			}
 			else // if the game is not paused
 			{

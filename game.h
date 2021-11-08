@@ -45,7 +45,7 @@ GameState currentGameState;
 
 //Level
 #define MAX_NUMBER_OF_LEVEL 5
-#define MAX_NUMBER_OF_WAVES 5
+#define MAX_NUMBER_OF_WAVES 10
 #define MAX_ENEMY_TYPE 3
 typedef enum PathType {
 	Clear = 0,
@@ -64,8 +64,18 @@ typedef struct Grids {
 }Grids;
 
 typedef enum Environmentaleffects {
+	IncreasedPhantomQuartz,
+	DecreasedPhantomQuartz,
+	FasterEnemies,
+	SlowerEnemies,
+	IncreasedTurretDamage,
+	DecreasedTurretDamage,
 	MoreHP,
-	FasterEnemies
+	LessHP,
+	IncreasedTurretAttackSpeed,
+	DecreasedTurretAttackSpeed,
+	NoPhantomQuartz
+
 }EnvironmentalEffects;
 
 typedef struct LevelData {
@@ -107,8 +117,6 @@ typedef struct Coordinates {
 Coordinates TurretMenu;
 
 //Buttons
-#define NUMBER_OF_MENU_OBJECTS 12
-
 enum MenuObjectType {
 	PauseButton,
 	TurretButtonBasic,
@@ -122,8 +130,13 @@ enum MenuObjectType {
 	WaveDisplay,
 	BattlefieldEffects,
 	MonsterRemainingDisplay,
+	UpgradeButton,
+	SellButton,
+	GameGrid,//needs to be second last variable
 	NoButton
 };
+
+#define NUMBER_OF_MENU_OBJECTS NoButton
 
 int check_game_button_pressed(void);
 

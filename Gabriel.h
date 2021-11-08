@@ -36,7 +36,8 @@ CP_Image dirtTileImage;
 CP_Image pauseButtonImage;
 CP_Image titleWordImage;
 CP_Image turretUIButton;
-CP_Image currencyUIRectangle;
+CP_Image backgroundUIThin;
+CP_Image backgroundUIFat;
 
 CP_Image basicGhostSpriteSheet;
 CP_Image fastGhostSpriteSheet;
@@ -55,6 +56,9 @@ CP_Image environmentObjectsSpriteSheet;
 CP_Image backgroundSpriteSheet;
 CP_Image portalEnterEffectSpriteSheet;
 CP_Image portalSpawnEffectSpriteSheet;
+CP_Image powerUpIconSpriteSheet;
+CP_Image battlefieldEffectIconSpriteSheet;
+
 
 struct SpriteSheetImage basicGhostSpriteArray[3];
 struct SpriteSheetImage fastGhostSpriteArray[3];
@@ -73,6 +77,8 @@ struct SpriteSheetImage environmentObjectArray[8];
 struct SpriteSheetImage backgroundArray[5];
 struct SpriteSheetImage portalEnterEffectArray[4];
 struct SpriteSheetImage portalSpawnEffectArray[4];
+struct SpriteSheetImage powerUpIconArray[3];
+struct SpriteSheetImage battlefieldEffectIconArray[12];
 struct PortalVariables portalVariablesArray[2];
 
 struct node* bulletRadiusFirstNode;
@@ -104,5 +110,5 @@ void RenderPortal(struct SpriteSheetImage s, struct PortalVariables* pv, CP_Imag
 void RenderNormal(CP_Image image, struct SpriteSheetImage s, float xPos, float yPos, float sizeOfImageX, float sizeOfImageY);
 void RenderWithAlphaChanged(CP_Image image, struct SpriteSheetImage s, float xPos, float yPos, float sizeOfImageX, float sizeOfImageY, int alphaValue);
 void update_portal(void);
-void render_game_background(void);
+void render_game_background(int currentLevel);
 
