@@ -49,15 +49,18 @@ void game_init(void)
 
 
 	health_init();
-	currency_swap_init();
+	menu_swap_init();
 	wave_number_display_init();
 	battlefield_effects_display_init();
 	monster_remaining_display_init();
+	upgrade_button_init();
+	sell_button_init();
 
 	//Initialize Objects
 	mouse_init();
 	isPlacingTurret = NOT_PLACING_TURRET;
 	isUpgradingTurret = FALSE;
+	powerUpMenu = FALSE;
 
 	//Level Data
 	level1_init();

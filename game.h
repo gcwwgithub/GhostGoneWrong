@@ -117,8 +117,6 @@ typedef struct Coordinates {
 Coordinates TurretMenu;
 
 //Buttons
-#define NUMBER_OF_MENU_OBJECTS 13
-
 enum MenuObjectType {
 	PauseButton,
 	TurretButtonBasic,
@@ -132,9 +130,13 @@ enum MenuObjectType {
 	WaveDisplay,
 	BattlefieldEffects,
 	MonsterRemainingDisplay,
-	GameGrid,
+	UpgradeButton,
+	SellButton,
+	GameGrid,//needs to be second last variable
 	NoButton
 };
+
+#define NUMBER_OF_MENU_OBJECTS NoButton
 
 int check_game_button_pressed(void);
 

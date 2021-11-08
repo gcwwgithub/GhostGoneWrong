@@ -174,6 +174,7 @@ void render_game_grid_press(LevelData* LevelX) {
 			else {
 				place_turret(isPlacingTurret, drawX, drawY);
 				isPlacingTurret = NOT_PLACING_TURRET;
+				Level[currentGameLevel].phantomQuartz -= turret[0].price;
 			}
 			pathfinding_update(LevelX);
 		}
@@ -191,9 +192,6 @@ void render_game_grid_press(LevelData* LevelX) {
 				mouse_reset();
 			}
 			else if (turret[i].data.xOrigin == GridTemp.xOrigin && turret[i].data.yOrigin == GridTemp.yOrigin && turret[i].isActive == TRUE) {
-				CP_Settings_Fill(COLOR_BLACK);
-				CP_Settings_TextSize(20.0f);
-				CP_Font_DrawText("Upgrade", GridTemp.xOrigin + 10.0f, GridTemp.yOrigin + 10.0f);
 				isUpgradingTurret = TRUE;
 			}
 		}
@@ -332,7 +330,7 @@ void health_init(void) {
 	GameMenuObject[HealthMenu].objectType = objectRectangle;*/
 }
 
-void currency_swap_init(void) {
+void menu_swap_init(void) {
 	GameMenuObject[SwapButton].xOrigin = GameMenuObject[TurretButtonMine].xOrigin;
 	GameMenuObject[SwapButton].yOrigin = GameMenuObject[TurretButtonMine].yOrigin + GameMenuObject[TurretButtonMine].height;
 	GameMenuObject[SwapButton].width = GameMenuObject[TurretButtonMine].width;
@@ -379,6 +377,22 @@ void monster_remaining_display_init(void) {
 	GameMenuObject[MonsterRemainingDisplay].objectType = objectRectangle;*/
 }
 
+void upgrade_button_init(void) {
+	GameMenuObject[UpgradeButton].xOrigin = GameMenuObject[BattlefieldEffects].xOrigin;
+	GameMenuObject[UpgradeButton].yOrigin = GameMenuObject[BattlefieldEffects].yOrigin + GameMenuObject[BattlefieldEffects].height;
+	GameMenuObject[UpgradeButton].width = GameMenuObject[BattlefieldEffects].width + GameMenuObject[MonsterRemainingDisplay].width;
+	GameMenuObject[UpgradeButton].height = (CP_System_GetWindowHeight() - GameMenuObject[UpgradeButton].yOrigin) / 2;
+	GameMenuObject[UpgradeButton].objectType = objectRectangle;
+}
+
+void sell_button_init(void) {
+	GameMenuObject[SellButton].xOrigin = GameMenuObject[UpgradeButton].xOrigin;
+	GameMenuObject[SellButton].yOrigin = GameMenuObject[UpgradeButton].yOrigin + GameMenuObject[UpgradeButton].height;
+	GameMenuObject[SellButton].width = GameMenuObject[UpgradeButton].width;
+	GameMenuObject[SellButton].height = GameMenuObject[UpgradeButton].height;
+	GameMenuObject[SellButton].objectType = objectRectangle;
+}
+
 void level1_init(void) {
 	currentGameLevel = 0;
 	Level[0].spawnRow = 0;
@@ -403,28 +417,28 @@ void render_button_pressed(void) {
 		mouse_reset();
 		break;
 	case TurretButtonBasic:
-		if (turret[0].price <= Level[currentGameLevel].phantomQuartz) { // Currently hardcoded 
+		if (turret[0].price <= Level[currentGameLevel].phantomQuartz && powerUpMenu==FALSE) { // Currently hardcoded 
 			isPlacingTurret = T_BASIC;
 			isUpgradingTurret = FALSE;
 			RenderNormal(basicTurretSpriteSheet, basicTurretArray[0], CP_Input_GetMouseX(), CP_Input_GetMouseY(), Game.gridWidth, Game.gridHeight);
 		}
 		break;
 	case TurretButtonSlow:
-		if (turret[0].price <= Level[currentGameLevel].phantomQuartz) {
+		if (turret[0].price <= Level[currentGameLevel].phantomQuartz && powerUpMenu == FALSE) {
 			isPlacingTurret = T_SLOW;
 			isUpgradingTurret = FALSE;
 			CP_Image_DrawAdvanced(GameMenuObject[check_game_button_pressed()].image, CP_Input_GetMouseX(), CP_Input_GetMouseY(), Game.gridWidth, Game.gridHeight, 255, 0);
 		}
 		break;
 	case TurretButtonHoming:
-		if (turret[0].price <= Level[currentGameLevel].phantomQuartz) {
+		if (turret[0].price <= Level[currentGameLevel].phantomQuartz && powerUpMenu == FALSE) {
 			isPlacingTurret = T_HOMING;
 			isUpgradingTurret = FALSE;
 			RenderNormal(homingMissleTurretSpriteSheet, homingMissleTurretArray[0], CP_Input_GetMouseX(), CP_Input_GetMouseY(), Game.gridWidth, Game.gridHeight);
 		}
 		break;
 	case TurretButtonMine:
-		if (turret[0].price <= Level[currentGameLevel].phantomQuartz) {
+		if (turret[0].price <= Level[currentGameLevel].phantomQuartz && powerUpMenu == FALSE) {
 			isPlacingTurret = T_MINE;
 			isUpgradingTurret = FALSE;
 			RenderNormal(mineSpriteSheet, mineArray[0], CP_Input_GetMouseX(), CP_Input_GetMouseY(), Game.gridWidth, Game.gridHeight);
@@ -433,12 +447,43 @@ void render_button_pressed(void) {
 	case SwapButton:
 		isPlacingTurret = NOT_PLACING_TURRET;
 		isUpgradingTurret = FALSE;
+		powerUpMenu = !powerUpMenu;
+		mouse_reset();
+		break;
+
+	case GoldQuartzMenu:
+		isPlacingTurret = NOT_PLACING_TURRET;
+		isUpgradingTurret = FALSE;
 		if (Level[currentGameLevel].phantomQuartz >= 10) {
 			Level[currentGameLevel].phantomQuartz -= 10;
 			Level[currentGameLevel].goldQuartz += 1;
 		}
 		mouse_reset();
 		break;
+	case UpgradeButton:
+		if (isUpgradingTurret == TRUE) {
+			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT) && Level[currentGameLevel].phantomQuartz >= 50) {
+				Level[currentGameLevel].phantomQuartz -= 50;//hard coded to cost 50 for upgrade
+				//call upgrade function
+			}
+		}
+		else {
+			isPlacingTurret = NOT_PLACING_TURRET;
+			isUpgradingTurret = FALSE;
+		}
+		break;
+	case SellButton:
+		if (isUpgradingTurret == TRUE) {
+			Level[currentGameLevel].phantomQuartz += 10;//hard coded to sell for 10
+			mouse_reset();
+			//call upgrade function
+		}
+		else {
+			isPlacingTurret = NOT_PLACING_TURRET;
+			isUpgradingTurret = FALSE;
+		}
+		break;
+
 	default:
 		isPlacingTurret = NOT_PLACING_TURRET;
 		isUpgradingTurret = FALSE;
@@ -463,47 +508,60 @@ void render_game_grid(void)
 
 void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type) {
 	char temp[100];
-	CP_Settings_RectMode(CP_POSITION_CORNER);
-	CP_Settings_Fill(COLOR_WHITE);
-	CP_Graphics_DrawRect(menuObjectX.xOrigin, menuObjectX.yOrigin, menuObjectX.width, menuObjectX.height);
+	if (isUpgradingTurret == FALSE && (type == UpgradeButton || type == SellButton)) {// only render upgrade and sell button when turret selected
+	//empty by design
+	}
+	else {
+		CP_Settings_RectMode(CP_POSITION_CORNER);
+		CP_Settings_Fill(COLOR_WHITE);
+		CP_Graphics_DrawRect(menuObjectX.xOrigin, menuObjectX.yOrigin, menuObjectX.width, menuObjectX.height);
+	}
 	CP_Settings_TextSize(35.0f * scalingFactor);
 	switch (type)
 	{
 	case TurretButtonBasic:
-		CP_Image_Draw(turretUIButton, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 2),
-			128 * scalingFactor, 128 * scalingFactor, 255);
-		RenderNormal(basicTurretSpriteSheet, basicTurretArray[0], menuObjectX.width / 2,
-			(menuObjectX.yOrigin + menuObjectX.height / 2), 128 * scalingFactor, 128 * scalingFactor);
-		sprintf_s(temp, sizeof(temp), "25");
-		CP_Font_DrawText(temp, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3));
+		if (powerUpMenu == FALSE) {
+			CP_Image_Draw(turretUIButton, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 2),
+				128 * scalingFactor, 128 * scalingFactor, 255);
+			RenderNormal(basicTurretSpriteSheet, basicTurretArray[0], menuObjectX.width / 2,
+				(menuObjectX.yOrigin + menuObjectX.height / 2), 128 * scalingFactor, 128 * scalingFactor);
+			sprintf_s(temp, sizeof(temp), "25");
+			CP_Font_DrawText(temp, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3));
+		}
 		break;
 
 	case TurretButtonSlow:
-		CP_Image_Draw(turretUIButton, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 2),
-			128 * scalingFactor, 128 * scalingFactor, 255);
-		CP_Image_DrawAdvanced(menuObjectX.image, menuObjectX.width / 2,
-			(menuObjectX.yOrigin + menuObjectX.height / 2), 128 * scalingFactor,
-			128 * scalingFactor, 255, 90);
-		sprintf_s(temp, sizeof(temp), "25");
-		CP_Font_DrawText(temp, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3));
+		if (powerUpMenu == FALSE) {
+			CP_Image_Draw(turretUIButton, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 2),
+				128 * scalingFactor, 128 * scalingFactor, 255);
+			CP_Image_DrawAdvanced(menuObjectX.image, menuObjectX.width / 2,
+				(menuObjectX.yOrigin + menuObjectX.height / 2), 128 * scalingFactor,
+				128 * scalingFactor, 255, 90);
+			sprintf_s(temp, sizeof(temp), "25");
+			CP_Font_DrawText(temp, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3));
+		}
 		break;
 
 	case  TurretButtonHoming:
-		CP_Image_Draw(turretUIButton, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 2),
-			128 * scalingFactor, 128 * scalingFactor, 255);
-		RenderNormal(homingMissleTurretSpriteSheet, homingMissleTurretArray[0], menuObjectX.width / 2,
-			(menuObjectX.yOrigin + menuObjectX.height / 2), 128 * scalingFactor, 128 * scalingFactor);
-		sprintf_s(temp, sizeof(temp), "25");
-		CP_Font_DrawText(temp, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3));
+		if (powerUpMenu == FALSE) {
+			CP_Image_Draw(turretUIButton, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 2),
+				128 * scalingFactor, 128 * scalingFactor, 255);
+			RenderNormal(homingMissleTurretSpriteSheet, homingMissleTurretArray[0], menuObjectX.width / 2,
+				(menuObjectX.yOrigin + menuObjectX.height / 2), 128 * scalingFactor, 128 * scalingFactor);
+			sprintf_s(temp, sizeof(temp), "25");
+			CP_Font_DrawText(temp, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3));
+		}
 		break;
 
 	case TurretButtonMine:
-		CP_Image_Draw(turretUIButton, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 2),
-			128 * scalingFactor, 128 * scalingFactor, 255);
-		RenderNormal(mineSpriteSheet, mineArray[0], menuObjectX.width / 2,
-			(menuObjectX.yOrigin + menuObjectX.height / 2), 128 * scalingFactor, 128 * scalingFactor);
-		sprintf_s(temp, sizeof(temp), "25");
-		CP_Font_DrawText(temp, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3));
+		if (powerUpMenu == FALSE) {
+			CP_Image_Draw(turretUIButton, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 2),
+				128 * scalingFactor, 128 * scalingFactor, 255);
+			RenderNormal(mineSpriteSheet, mineArray[0], menuObjectX.width / 2,
+				(menuObjectX.yOrigin + menuObjectX.height / 2), 128 * scalingFactor, 128 * scalingFactor);
+			sprintf_s(temp, sizeof(temp), "25");
+			CP_Font_DrawText(temp, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3));
+		}
 		break;
 
 	case PauseButton:
@@ -555,13 +613,13 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 		break;
 	case BattlefieldEffects:
 		CP_Image_Draw(backgroundUIFat, menuObjectX.xOrigin + menuObjectX.width / 2,
-			menuObjectX.yOrigin + menuObjectX.height / 2, 132 * scalingFactor, 132* scalingFactor, 255);
+			menuObjectX.yOrigin + menuObjectX.height / 2, 132 * scalingFactor, 132 * scalingFactor, 255);
 		CP_Settings_TextSize(35.0f * scalingFactor);
 		CP_Settings_Fill(COLOR_WHITE);
 		sprintf_s(temp, sizeof(temp), "Effects");
 		CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 2, menuObjectX.yOrigin + menuObjectX.height / 5);
 		RenderNormal(battlefieldEffectIconSpriteSheet, battlefieldEffectIconArray[Level[currentGameLevel].currentEffect],
-			menuObjectX.xOrigin + menuObjectX.width / 2, menuObjectX.yOrigin + menuObjectX.height /2,
+			menuObjectX.xOrigin + menuObjectX.width / 2, menuObjectX.yOrigin + menuObjectX.height / 2,
 			110 * scalingFactor, 110 * scalingFactor);
 		break;
 	case MonsterRemainingDisplay:
@@ -572,8 +630,20 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 		sprintf_s(temp, sizeof(temp), "Enemies");
 		CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 2, menuObjectX.yOrigin + menuObjectX.height / 5);
 		CP_Settings_TextSize(45.0f * scalingFactor);
-		sprintf_s(temp, sizeof(temp), "%d/%d", enemiesLeft,enemiesInLevel);
+		sprintf_s(temp, sizeof(temp), "%d/%d", enemiesLeft, enemiesInLevel);
 		CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 2, menuObjectX.yOrigin + menuObjectX.height / 2);
+		break;
+	case UpgradeButton:
+		if (isUpgradingTurret == TRUE) { //Only render when upgrading
+			CP_Settings_TextSize(35.0f * scalingFactor);
+			CP_Font_DrawText("Upgrade", menuObjectX.xOrigin + menuObjectX.width / 2, menuObjectX.yOrigin + menuObjectX.height / 2);
+		}
+		break;
+	case SellButton:
+		if (isUpgradingTurret == TRUE) {//Only render when upgrading
+			CP_Settings_TextSize(35.0f * scalingFactor);
+			CP_Font_DrawText("Sell", menuObjectX.xOrigin + menuObjectX.width / 2, menuObjectX.yOrigin + menuObjectX.height / 2);
+		}
 		break;
 	}
 
