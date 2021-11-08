@@ -7,8 +7,8 @@
 
 typedef struct Vector2
 {
-	float pos_x;
-	float pos_y;
+	float x;
+	float y;
 } Vector2;
 
 Vector2 addition(Vector2 v1, Vector2 v2);
