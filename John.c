@@ -473,12 +473,16 @@ void empty_enemy_init(enemy* r) {
 	r->slow_timer = 0;
 	r->currentAnimState = 0;
 	r->charges = Used;
+	r->env_eff = Applying;
 }
 
 
 
 
 void wave_enemy_init(int Basic_Ghost_count, int Fast_Ghost_count, int Fat_Ghost_count, int Grim_Reaper_count, LevelData Level) {
+	for (int i = 0; i < MAX_ENEMIES; i++) {
+		empty_enemy_init(&Enemy[i]);
+	}
 	int a = Basic_Ghost_count + Fast_Ghost_count;
 	int b = a + Fast_Ghost_count;
 	int c = b + Grim_Reaper_count;
@@ -487,13 +491,23 @@ void wave_enemy_init(int Basic_Ghost_count, int Fast_Ghost_count, int Fat_Ghost_
 	for (int i = 0; i < Basic_Ghost_count; i++) {
 		Basic_Ghost(&Enemy[i]);
 	}
-	for (int i = Basic_Ghost_count; i < a&&i<MAX_SPAWNING_ENEMIES; i++) {
+	for (int i = Basic_Ghost_count; i < a && i < MAX_SPAWNING_ENEMIES; i++) {
 		Fast_Ghost_init(&Enemy[i]);
 	}
 	for (int i = a; i < b && i < MAX_SPAWNING_ENEMIES; i++) {
 		Fat_Ghost_init(&Enemy[i]);
 	}
-	for (int i = b; i < MAX_SPAWNING_ENEMIES&&i<c; i++) {
+	for (int i = b; i < MAX_SPAWNING_ENEMIES && i < c; i++) {
 		grimReaper_init(&Enemy[i]);
+	}
+}
+
+void Env_eff_More_HP(void) {
+	for (int i = 0; i < MAX_ENEMIES; i++) {
+		if (Enemy[i].env_eff = Applying && Enemy[i].health > 1) {
+			Enemy[i].max_health *= 1.2;
+			Enemy[i].health *= 1.2;
+			Enemy[i].env_eff = Effected;
+		}
 	}
 }

@@ -1,7 +1,7 @@
 #include"cprocessing.h"
 #include"game.h"
-#define MAX_ENEMIES 10
-#define MAX_SPAWNING_ENEMIES MAX_ENEMIES-2
+#define MAX_ENEMIES 20
+#define MAX_SPAWNING_ENEMIES MAX_ENEMIES-4
 
 typedef enum Direction {
 	NoMove,
@@ -33,6 +33,18 @@ typedef enum AbilityUsed{
 	charges_2
 }Ability_charge;
 
+typedef enum EnvironmentEffectEmemy {
+	Effected,
+	Applying
+}EnvironmentEffectEnemy;
+
+typedef struct EnemyPowerUps {
+	//Please insert any additional powerups
+	int SpeedDown;
+	int Less_HP;
+	int More_Points;
+}EnemyPowerUps;
+
 typedef struct Enemy {
 	int CurrentWaypoint, health, alpha, points;
 	float xOrigin, yOrigin, enemy_width, enemy_height,
@@ -42,6 +54,9 @@ typedef struct Enemy {
 	EnemyTypes type;
 	CP_Image Render_Enemy;
 	Ability_charge charges;
+	EnvironmentEffectEnemy env_eff;
+	EnemyPowerUps Enemy_pow_up;
+
 	int currentAnimState;
 
 	float timer;
