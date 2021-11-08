@@ -511,3 +511,23 @@ void Env_eff_More_HP(void) {
 		}
 	}
 }
+
+void Env_eff_Faster_Enemies(void) {
+	for (int i = 0; i < MAX_ENEMIES; i++) {
+		if (Enemy[i].env_eff = Applying && Enemy[i].health > 1) {
+			Enemy[i].speed *= 1.2;
+			Enemy[i].env_eff = Effected;
+		}
+	}
+}
+void Environment_check(LevelData Level) {
+	switch (Level.currentEffect) {
+	MoreHP:
+		Env_eff_More_HP();
+		break;
+	FasterEnemies:
+		Env_eff_Faster_Enemies();
+		break;
+	}
+}
+
