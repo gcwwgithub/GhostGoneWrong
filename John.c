@@ -540,6 +540,7 @@ void Reset_enemies(int current_level) {
 			int FatCount = Level[current_level].waveEmemies[Level[current_level].currentWave + 1][Fat_Ghost];
 			int ReaperCount = Level[current_level].waveEmemies[Level[current_level].currentWave + 1][grimReaper];
 			wave_enemy_init(BasicCount, FastCount, FatCount, ReaperCount, Level[current_level]);
+			enemiesLeft = BasicCount + FastCount + FatCount + ReaperCount;
 		}
 	}
 }
