@@ -69,7 +69,7 @@ void game_init(void)
 	environment_init(&Level[0]);
 
 	turret_init();
-	Enemies_init(2, 2, 2, &Level[0]);
+	Enemies_init(2, 2, 2);
 
 	pathfinding_reset(&Level[0]);
 	pathfinding_calculate_cost(&Level[0]);
@@ -167,7 +167,8 @@ void game_update(void)
 		
 		render_button_pressed();
 
-		//test enemy
+		//reinitialise enemies based on wave
+		Reset_enemies(currentGameLevel);
 
 		render_environment();
 		update_portal();

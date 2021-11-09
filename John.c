@@ -157,7 +157,9 @@ void EnemyDeath(enemy* r, LevelData* Level) {  //function updates and checks for
 		if (r->alpha <= 0) {
 			r->state = Inactive;
 			r->health = 0; //do not delete this line
-			enemiesLeft--;
+			if (!r->isToken) {
+				enemiesLeft--;
+			}
 			switch (r->type)
 			{
 			case Basic:
@@ -175,15 +177,14 @@ void EnemyDeath(enemy* r, LevelData* Level) {  //function updates and checks for
 	}
 }
 
-void Enemies_init(int Basic_enemy_count, int Fast_enemy_count, int Fat_enemy_count, LevelData* Level) {
+void Enemies_init(int Basic_enemy_count, int Fast_enemy_count, int Fat_enemy_count) {
 	timer = 0;
 	count = 0;
 	Enemy_node = NULL;
 	wave_timer = 0;
 	Array_count = 1;
 	Number_of_points = 0;
-	Xarray[0] = (Game.xOrigin + Game.gridWidth * (0.5 + Level->spawnCol));
-	Yarray[0] = (Game.yOrigin + Game.gridHeight * (0.5 + Level->spawnRow));
+
 
 	// For initialisation of enemyLeft text
 	enemiesLeft = Basic_enemy_count + Fast_enemy_count + Fat_enemy_count;
@@ -193,17 +194,9 @@ void Enemies_init(int Basic_enemy_count, int Fast_enemy_count, int Fat_enemy_cou
 	fatEnemyNum = Fat_enemy_count;
 
 	//test path
-	for (int i = 0; i < MAX_ENEMIES && i < Basic_enemy_count; i++) {
-		Basic_Ghost(&Enemy[i]);
+	for (int i = 0; i < MAX_ENEMIES; i++) {
+		empty_enemy_init(&Enemy[i]);
 	}
-	for (int i = Basic_enemy_count; i < MAX_ENEMIES && i < Basic_enemy_count + Fast_enemy_count; i++) {
-		Fast_Ghost_init(&Enemy[i]);
-	}
-	for (int i = Basic_enemy_count + Fast_enemy_count; i < MAX_ENEMIES && i < Basic_enemy_count + Fast_enemy_count + Fat_enemy_count; i++) {
-		Fat_Ghost_init(&Enemy[i]);
-	}
-	grimReaper_init(&Enemy[6]);
-
 }
 
 void Basic_Ghost(enemy* r) { // setup variable for basic ghost enemy
@@ -420,6 +413,7 @@ void Reaper_minion_init(enemy* r) {
 				Enemy[i].data.yOrigin = Yarray[r->CurrentWaypoint - 1];
 				Enemy[i].CurrentWaypoint = r->CurrentWaypoint - 1;
 				Enemy[i].state = Moving;
+				Enemy[i].isToken = 1;
 				a++;
 			}
 		}
@@ -430,6 +424,7 @@ void Reaper_minion_init(enemy* r) {
 				Enemy[i].data.yOrigin = Yarray[r->CurrentWaypoint + 1];
 				Enemy[i].CurrentWaypoint = r->CurrentWaypoint + 1;
 				Enemy[i].state = Moving;
+				Enemy[i].isToken = 1;
 				a++;
 			}
 		}
@@ -470,17 +465,29 @@ void empty_enemy_init(enemy* r) {
 	r->timer = 0;
 	r->points = 0;
 	//for the freeze turret & enemy interaction
-	r->slow_amt = 1;
+	r->slow_amt = 0;
 	r->slow_timer = 0;
 	r->currentAnimState = 0;
 	r->charges = Used;
 	r->env_eff = Applying;
+	r->Enemy_pow_up.Less_HP = 0;
+	r->Enemy_pow_up.More_Points = 0;
+	r->Enemy_pow_up.SpeedDown = 0;
+	r->WavePowUp_isActive = 0;
+	r->isToken = 0;
 }
 
 
 
 
 void wave_enemy_init(int Basic_Ghost_count, int Fast_Ghost_count, int Fat_Ghost_count, int Grim_Reaper_count, LevelData Level) {
+	timer = 0;
+	count = 0;
+	Enemy_node = NULL;
+	wave_timer = 0;
+	Xarray[0] = (Game.xOrigin + Game.gridWidth * (0.5 + Level.spawnCol));
+	Yarray[0] = (Game.yOrigin + Game.gridHeight * (0.5 + Level.spawnRow));
+
 	for (int i = 0; i < MAX_ENEMIES; i++) {
 		empty_enemy_init(&Enemy[i]);
 	}
@@ -532,3 +539,38 @@ void Environment_check(LevelData Level) {
 	}
 }
 
+void Reset_enemies(int current_level) {
+	if (buildingTime > 0.05f&&Level[current_level].currentWave+1<MAX_NUMBER_OF_WAVES) {
+		int BasicCount = Level[current_level].waveEnemies[Level[current_level].currentWave + 1][Basic];
+		int FastCount = Level[current_level].waveEnemies[Level[current_level].currentWave + 1][Fast_Ghost];
+		int FatCount = Level[current_level].waveEnemies[Level[current_level].currentWave + 1][Fat_Ghost];
+		int ReaperCount = Level[current_level].waveEnemies[Level[current_level].currentWave + 1][grimReaper];
+		wave_enemy_init(BasicCount, FastCount, FatCount, ReaperCount,Level[current_level]);
+	}
+}
+
+/*
+void Level0_waveEnemies_init(void) {
+	Level[0].waveEnemies[0][0] = 10;
+	Level[0].waveEnemies[1][0] = 10;
+	Level[0].waveEnemies[2][0] = 15;
+	Level[0].waveEnemies[3][0] = 15;
+	Level[0].waveEnemies[4][0] = 20;
+	Level[0].waveEnemies[5][0] = 20;
+	Level[0].waveEnemies[6][0] = 25;
+	Level[0].waveEnemies[7][0] = 25;
+	Level[0].waveEnemies[8][0] = 30;
+	Level[0].waveEnemies[9][0] = 30;
+}
+
+
+Basic_Ghost(&Enemy[i]);
+	}
+	for (int i = Basic_enemy_count; i < MAX_ENEMIES && i < Basic_enemy_count + Fast_enemy_count; i++) {
+		Fast_Ghost_init(&Enemy[i]);
+	}
+	for (int i = Basic_enemy_count + Fast_enemy_count; i < MAX_ENEMIES && i < Basic_enemy_count + Fast_enemy_count + Fat_enemy_count; i++) {
+		Fat_Ghost_init(&Enemy[i]);
+	}
+	grimReaper_init(&Enemy[6]);
+	*/

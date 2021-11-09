@@ -1,7 +1,7 @@
 #include"cprocessing.h"
 #include"game.h"
-#define MAX_ENEMIES 20
-#define MAX_SPAWNING_ENEMIES MAX_ENEMIES-4
+#define MAX_ENEMIES 60
+#define MAX_SPAWNING_ENEMIES MAX_ENEMIES-10
 
 typedef enum Direction {
 	NoMove,
@@ -57,6 +57,9 @@ typedef struct Enemy {
 	EnvironmentEffectEnemy env_eff;
 	EnemyPowerUps Enemy_pow_up;
 
+	int isToken;
+
+	int WavePowUp_isActive;
 	int currentAnimState;
 
 	float timer;
@@ -74,7 +77,7 @@ void Reaper_ability(enemy* r);
 
 void EnemyDeath(enemy* r, LevelData* Level);
 void Basic_Ghost(enemy* r);
-void Enemies_init(int Basic_enemy_count, int Fast_enemy_count, int Fat_enemy_count, LevelData* Level);
+void Enemies_init(int Basic_enemy_count, int Fast_enemy_count, int Fat_enemy_count);
 void update_enemy(void);
 void draw_multiple_enemies(void);
 void Fast_Ghost_init(enemy* r);
@@ -82,6 +85,12 @@ void Fat_Ghost_init(enemy* r);
 void grimReaper_init(enemy* r);
 void Reaper_minion_init(enemy* r);
 void empty_enemy_init(enemy* r);
+//void Level0_waveEnemies_init(void);
+void Reset_enemies(int current_level);
+void Environment_check(LevelData Level);
+void Env_eff_Faster_Enemies(void);
+void Env_eff_More_HP(void);
+void wave_enemy_init(int Basic_Ghost_count, int Fast_Ghost_count, int Fat_Ghost_count, int Grim_Reaper_count, LevelData Level);
 
 void Update_Path_Array(LevelData Level);
 
