@@ -55,11 +55,11 @@ void turret_init(void)
 	turret_purchasing[TP_PRICE][T_MINE] = 45;
 	turret_purchasing[TP_PRICE][T_WALL] = 10;
 
-	turret_purchasing[TP_UPGARDE_PRICE][T_BASIC] = 20;
-	turret_purchasing[TP_UPGARDE_PRICE][T_SLOW] = 25;
-	turret_purchasing[TP_UPGARDE_PRICE][T_HOMING] = 40;
-	turret_purchasing[TP_UPGARDE_PRICE][T_MINE] = 15;
-	turret_purchasing[TP_UPGARDE_PRICE][T_WALL] = 10;
+	turret_purchasing[TP_UPGRADE_PRICE][T_BASIC] = 20;
+	turret_purchasing[TP_UPGRADE_PRICE][T_SLOW] = 25;
+	turret_purchasing[TP_UPGRADE_PRICE][T_HOMING] = 40;
+	turret_purchasing[TP_UPGRADE_PRICE][T_MINE] = 15;
+	turret_purchasing[TP_UPGRADE_PRICE][T_WALL] = 10;
 
 	//set all to 5 level only first change later
 		for (int i = 0; i < T_MAX; ++i)
@@ -176,7 +176,7 @@ void upgrade_turret(int index_x, int index_y)
 {	
 	int t_index = turret_on_grid[index_x][index_y];
 	// Minus the price
-	Level[currentGameLevel].phantomQuartz -= turret_purchasing[TP_UPGARDE_PRICE][turret[t_index].type] +
+	Level[currentGameLevel].phantomQuartz -= turret_purchasing[TP_UPGRADE_PRICE][turret[t_index].type] +
 		turret[t_index].upgrade_price;
 
 	switch (turret[t_index].type)

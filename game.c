@@ -58,8 +58,8 @@ void game_init(void)
 
 	//Initialize Objects
 	mouse_init();
-	isPlacingTurret = NOT_PLACING_TURRET;
-	isUpgradingTurret = FALSE;
+	isPlacingTurret = T_MAX;
+	isUpgradingTurret = T_MAX;
 	powerUpMenu = FALSE;
 
 	//Level Data

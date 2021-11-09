@@ -2,7 +2,6 @@
 #include"game.h"
 
 // Max Number of Turret Type
-#define NOT_PLACING_TURRET 4
 
 void game_grid_init(void);
 void pathfinding_init(LevelData* LevelX);
