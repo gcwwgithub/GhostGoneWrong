@@ -23,6 +23,10 @@ void upgrade_menu_init(void);
 void upgrade_button_init(void);
 void sell_button_init(void);
 void level1_init(void);
+void level2_init(void);
+void level3_init(void);
+void level4_init(void);
+void level5_init(void);
 
 void pathfinding_reset(LevelData* LevelX);
 void pathfinding_calculate_cost(LevelData* LevelX);

@@ -59,22 +59,7 @@ void game_init(void)
 
 	//Initialize Objects
 	mouse_init();
-	isPlacingTurret = T_MAX;
-	isUpgradingTurret = T_MAX;
-	powerUpMenu = FALSE;
-
-	//Level Data
-	level1_init();
-
-	pathfinding_init(&Level[0]);
-	environment_init(&Level[0]);
-
 	turret_init();
-	Enemies_init(2, 2, 2, &Level[0]);
-
-	pathfinding_reset(&Level[0]);
-	pathfinding_calculate_cost(&Level[0]);
-	pathfinding_update(&Level[0]);
 }
 
 
@@ -225,9 +210,85 @@ void game_update(void)
 		// Level 1
 		if (btn_is_pressed(levelButtons[0].buttonData))
 		{
+			level1_init();
+			isPlacingTurret = T_MAX;
+			isUpgradingTurret = T_MAX;
+			powerUpMenu = FALSE;
+			pathfinding_init(&Level[currentGameLevel]);
+			environment_init(&Level[currentGameLevel]);
+
+			Enemies_init(2, 2, 2, &Level[currentGameLevel]);
+
+			pathfinding_reset(&Level[currentGameLevel]);
+			pathfinding_calculate_cost(&Level[currentGameLevel]);
+			pathfinding_update(&Level[currentGameLevel]);
 			currentGameState = Building;
-			init_level(0);
+			//init_level(0);
 		}
+		else if (btn_is_pressed(levelButtons[1].buttonData)) {
+			level2_init();
+			isPlacingTurret = T_MAX;
+			isUpgradingTurret = T_MAX;
+			powerUpMenu = FALSE;
+			pathfinding_init(&Level[currentGameLevel]);
+			environment_init(&Level[currentGameLevel]);
+
+			Enemies_init(2, 2, 2, &Level[currentGameLevel]);
+
+			pathfinding_reset(&Level[currentGameLevel]);
+			pathfinding_calculate_cost(&Level[currentGameLevel]);
+			pathfinding_update(&Level[currentGameLevel]);
+			currentGameState = Building;
+		}
+
+		else if (btn_is_pressed(levelButtons[2].buttonData)) {
+			level3_init();
+			isPlacingTurret = T_MAX;
+			isUpgradingTurret = T_MAX;
+			powerUpMenu = FALSE;
+			pathfinding_init(&Level[currentGameLevel]);
+			environment_init(&Level[currentGameLevel]);
+
+			Enemies_init(2, 2, 2, &Level[currentGameLevel]);
+
+			pathfinding_reset(&Level[currentGameLevel]);
+			pathfinding_calculate_cost(&Level[currentGameLevel]);
+			pathfinding_update(&Level[currentGameLevel]);
+			currentGameState = Building;
+		}
+
+		else if (btn_is_pressed(levelButtons[3].buttonData)) {
+			level4_init();
+			isPlacingTurret = T_MAX;
+			isUpgradingTurret = T_MAX;
+			powerUpMenu = FALSE;
+			pathfinding_init(&Level[currentGameLevel]);
+			environment_init(&Level[currentGameLevel]);
+
+			Enemies_init(2, 2, 2, &Level[currentGameLevel]);
+
+			pathfinding_reset(&Level[currentGameLevel]);
+			pathfinding_calculate_cost(&Level[currentGameLevel]);
+			pathfinding_update(&Level[currentGameLevel]);
+			currentGameState = Building;
+		}
+
+		else if (btn_is_pressed(levelButtons[4].buttonData)) {
+			level5_init();
+			isPlacingTurret = T_MAX;
+			isUpgradingTurret = T_MAX;
+			powerUpMenu = FALSE;
+			pathfinding_init(&Level[currentGameLevel]);
+			environment_init(&Level[currentGameLevel]);
+
+			Enemies_init(2, 2, 2, &Level[currentGameLevel]);
+
+			pathfinding_reset(&Level[currentGameLevel]);
+			pathfinding_calculate_cost(&Level[currentGameLevel]);
+			pathfinding_update(&Level[currentGameLevel]);
+			currentGameState = Building;
+		}
+
 		else if (btn_is_pressed(BackButton.buttonData))
 		{
 			currentGameState = MainMenu;
