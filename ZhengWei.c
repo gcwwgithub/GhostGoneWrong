@@ -4,6 +4,7 @@
 #include "Gabriel.h"
 #include"Samuel.h"
 #include "Anderson.h"
+#include "John.h"
 //Tools
 
 //Return positive value of float
@@ -425,7 +426,166 @@ void level1_init(void) {
 	Level[0].phantomQuartz = 50;
 	Level[0].goldQuartz = 0;
 	Level[0].currentWave = -1;// starts with building phase which increment wave by 1
-	Level[0].currentEffect = 0;
+	Level[0].currentEffect = NoEnvironmentalEffects;
+
+	Level[0].waveEmemies[0][Basic] = 10;
+	Level[0].waveEmemies[1][Basic] = 10;
+	Level[0].waveEmemies[2][Basic] = 15;
+	Level[0].waveEmemies[3][Basic] = 15;
+	Level[0].waveEmemies[4][Basic] = 20;
+	Level[0].waveEmemies[5][Basic] = 20;
+	Level[0].waveEmemies[6][Basic] = 25;
+	Level[0].waveEmemies[7][Basic] = 25;
+	Level[0].waveEmemies[8][Basic] = 30;
+	Level[0].waveEmemies[9][Basic] = 30;
+
+	Level[0].waveEmemies[0][Fast_Ghost] = 0;
+	Level[0].waveEmemies[1][Fast_Ghost] = 0;
+	Level[0].waveEmemies[2][Fast_Ghost] = 0;
+	Level[0].waveEmemies[3][Fast_Ghost] = 0;
+	Level[0].waveEmemies[4][Fast_Ghost] = 0;
+	Level[0].waveEmemies[5][Fast_Ghost] = 0;
+	Level[0].waveEmemies[6][Fast_Ghost] = 0;
+	Level[0].waveEmemies[7][Fast_Ghost] = 0;
+	Level[0].waveEmemies[8][Fast_Ghost] = 0;
+	Level[0].waveEmemies[9][Fast_Ghost] = 0;
+
+	Level[0].waveEmemies[0][Fat_Ghost] = 0;
+	Level[0].waveEmemies[1][Fat_Ghost] = 0;
+	Level[0].waveEmemies[2][Fat_Ghost] = 0;
+	Level[0].waveEmemies[3][Fat_Ghost] = 0;
+	Level[0].waveEmemies[4][Fat_Ghost] = 0;
+	Level[0].waveEmemies[5][Fat_Ghost] = 0;
+	Level[0].waveEmemies[6][Fat_Ghost] = 0;
+	Level[0].waveEmemies[7][Fat_Ghost] = 0;
+	Level[0].waveEmemies[8][Fat_Ghost] = 0;
+	Level[0].waveEmemies[9][Fat_Ghost] = 0;
+
+	Level[0].waveEmemies[0][grimReaper] = 0;
+	Level[0].waveEmemies[1][grimReaper] = 0;
+	Level[0].waveEmemies[2][grimReaper] = 0;
+	Level[0].waveEmemies[3][grimReaper] = 0;
+	Level[0].waveEmemies[4][grimReaper] = 0;
+	Level[0].waveEmemies[5][grimReaper] = 0;
+	Level[0].waveEmemies[6][grimReaper] = 0;
+	Level[0].waveEmemies[7][grimReaper] = 0;
+	Level[0].waveEmemies[8][grimReaper] = 0;
+	Level[0].waveEmemies[9][grimReaper] = 0;
+}
+
+void level2_init(void) {
+	currentGameLevel = 1;
+	Level[0].spawnRow = 0;
+	Level[0].spawnCol = (GAME_GRID_COLS - 1) / 2;
+	Level[0].exitRow = GAME_GRID_ROWS - 1;
+	Level[0].exitCol = (GAME_GRID_COLS - 1) / 2;
+	Level[0].health = 100;
+	Level[0].phantomQuartz = 50;
+	Level[0].goldQuartz = 0;
+	Level[0].currentWave = -1;// starts with building phase which increment wave by 1
+	Level[0].currentEffect = NoEnvironmentalEffects;
+
+	Level[0].waveEmemies[0][Basic] = 10;
+	Level[0].waveEmemies[1][Basic] = 10;
+	Level[0].waveEmemies[2][Basic] = 15;
+	Level[0].waveEmemies[3][Basic] = 15;
+	Level[0].waveEmemies[4][Basic] = 20;
+	Level[0].waveEmemies[5][Basic] = 20;
+	Level[0].waveEmemies[6][Basic] = 25;
+	Level[0].waveEmemies[7][Basic] = 25;
+	Level[0].waveEmemies[8][Basic] = 30;
+	Level[0].waveEmemies[9][Basic] = 25;
+	
+	Level[0].waveEmemies[0][Fat_Ghost] = 0;
+	Level[0].waveEmemies[1][Fat_Ghost] = 0;
+	Level[0].waveEmemies[2][Fast_Ghost] = 1;
+	Level[0].waveEmemies[3][Fast_Ghost] = 5;
+	Level[0].waveEmemies[4][Fast_Ghost] = 5;
+	Level[0].waveEmemies[5][Fast_Ghost] = 10;
+	Level[0].waveEmemies[6][Fast_Ghost] = 10;
+	Level[0].waveEmemies[7][Fast_Ghost] = 10;
+	Level[0].waveEmemies[8][Fast_Ghost] = 10;
+	Level[0].waveEmemies[9][Fast_Ghost] = 15;
+
+	Level[0].waveEmemies[0][Fat_Ghost] = 0;
+	Level[0].waveEmemies[1][Fat_Ghost] = 0;
+	Level[0].waveEmemies[2][Fat_Ghost] = 0;
+	Level[0].waveEmemies[3][Fat_Ghost] = 0;
+	Level[0].waveEmemies[4][Fat_Ghost] = 0;
+	Level[0].waveEmemies[5][Fat_Ghost] = 0;
+	Level[0].waveEmemies[6][Fat_Ghost] = 0;
+	Level[0].waveEmemies[7][Fat_Ghost] = 0;
+	Level[0].waveEmemies[8][Fat_Ghost] = 0;
+	Level[0].waveEmemies[9][Fat_Ghost] = 0;
+
+	Level[0].waveEmemies[0][grimReaper] = 0;
+	Level[0].waveEmemies[1][grimReaper] = 0;
+	Level[0].waveEmemies[2][grimReaper] = 0;
+	Level[0].waveEmemies[3][grimReaper] = 0;
+	Level[0].waveEmemies[4][grimReaper] = 0;
+	Level[0].waveEmemies[5][grimReaper] = 0;
+	Level[0].waveEmemies[6][grimReaper] = 0;
+	Level[0].waveEmemies[7][grimReaper] = 0;
+	Level[0].waveEmemies[8][grimReaper] = 0;
+	Level[0].waveEmemies[9][grimReaper] = 0;
+}
+
+void level3_init(void) {
+	
+	currentGameLevel = 0;
+	Level[0].spawnRow = 0;
+	Level[0].spawnCol = (GAME_GRID_COLS - 1) / 2;
+	Level[0].exitRow = GAME_GRID_ROWS - 1;
+	Level[0].exitCol = (GAME_GRID_COLS - 1) / 2;
+	Level[0].health = 100;
+	Level[0].phantomQuartz = 50;
+	Level[0].goldQuartz = 0;
+	Level[0].currentWave = -1;// starts with building phase which increment wave by 1
+	Level[0].currentEffect = NoEnvironmentalEffects;
+
+	Level[0].waveEmemies[0][Basic] = 10;
+	Level[0].waveEmemies[1][Basic] = 10;
+	Level[0].waveEmemies[2][Basic] = 15;
+	Level[0].waveEmemies[3][Basic] = 15;
+	Level[0].waveEmemies[4][Basic] = 20;
+	Level[0].waveEmemies[5][Basic] = 20;
+	Level[0].waveEmemies[6][Basic] = 25;
+	Level[0].waveEmemies[7][Basic] = 25;
+	Level[0].waveEmemies[8][Basic] = 30;
+	Level[0].waveEmemies[9][Basic] = 30;
+
+	Level[0].waveEmemies[0][Fast_Ghost] = 0;
+	Level[0].waveEmemies[1][Fast_Ghost] = 0;
+	Level[0].waveEmemies[2][Fast_Ghost] = 0;
+	Level[0].waveEmemies[3][Fast_Ghost] = 0;
+	Level[0].waveEmemies[4][Fast_Ghost] = 0;
+	Level[0].waveEmemies[5][Fast_Ghost] = 0;
+	Level[0].waveEmemies[6][Fast_Ghost] = 0;
+	Level[0].waveEmemies[7][Fast_Ghost] = 0;
+	Level[0].waveEmemies[8][Fast_Ghost] = 0;
+	Level[0].waveEmemies[9][Fast_Ghost] = 0;
+
+	Level[0].waveEmemies[0][Fat_Ghost] = 0;
+	Level[0].waveEmemies[1][Fat_Ghost] = 0;
+	Level[0].waveEmemies[2][Fat_Ghost] = 0;
+	Level[0].waveEmemies[3][Fat_Ghost] = 0;
+	Level[0].waveEmemies[4][Fat_Ghost] = 0;
+	Level[0].waveEmemies[5][Fat_Ghost] = 0;
+	Level[0].waveEmemies[6][Fat_Ghost] = 0;
+	Level[0].waveEmemies[7][Fat_Ghost] = 0;
+	Level[0].waveEmemies[8][Fat_Ghost] = 0;
+	Level[0].waveEmemies[9][Fat_Ghost] = 0;
+
+	Level[0].waveEmemies[0][grimReaper] = 0;
+	Level[0].waveEmemies[1][grimReaper] = 0;
+	Level[0].waveEmemies[2][grimReaper] = 0;
+	Level[0].waveEmemies[3][grimReaper] = 0;
+	Level[0].waveEmemies[4][grimReaper] = 0;
+	Level[0].waveEmemies[5][grimReaper] = 0;
+	Level[0].waveEmemies[6][grimReaper] = 0;
+	Level[0].waveEmemies[7][grimReaper] = 0;
+	Level[0].waveEmemies[8][grimReaper] = 0;
+	Level[0].waveEmemies[9][grimReaper] = 0;
 }
 
 void render_button_pressed(void) {
@@ -657,7 +817,7 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 	case WaveDisplay:
 		CP_Settings_Fill(COLOR_WHITE);
 		CP_Settings_TextSize(25.0f * scalingFactor);
-		sprintf_s(temp, 100, "%2d/%d", Level[currentGameLevel].currentWave, MAX_NUMBER_OF_WAVES);
+		sprintf_s(temp, 100, "%2d/%d", Level[currentGameLevel].currentWave+1, MAX_NUMBER_OF_WAVES);
 		CP_Image_Draw(backgroundUIThin, menuObjectX.xOrigin + menuObjectX.width / 2,
 			menuObjectX.yOrigin + menuObjectX.height / 2, 128 * scalingFactor, 36 * scalingFactor, 255);
 		RenderNormal(currencySpriteSheet, currencyArray[3], menuObjectX.xOrigin + menuObjectX.width / 5,

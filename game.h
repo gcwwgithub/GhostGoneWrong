@@ -46,7 +46,7 @@ GameState currentGameState;
 //Level
 #define MAX_NUMBER_OF_LEVEL 5
 #define MAX_NUMBER_OF_WAVES 10
-#define MAX_ENEMY_TYPE 3
+#define MAX_ENEMY_TYPE 4
 typedef enum PathType {
 	Clear = 0,
 	Blocked = 1,
@@ -64,6 +64,7 @@ typedef struct Grids {
 }Grids;
 
 typedef enum Environmentaleffects {
+	NoEnvironmentalEffects,
 	IncreasedPhantomQuartz,
 	DecreasedPhantomQuartz,
 	FasterEnemies,
