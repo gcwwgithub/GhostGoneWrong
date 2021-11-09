@@ -151,7 +151,7 @@ void game_update(void)
 		if (btn_is_pressed(EndScreenButtons[0].buttonData))
 		{
 			currentGameState = MainMenu;
-			init_level(currentGameLevel);
+			//init_level(currentGameLevel);
 		}
 		else if (btn_is_pressed(EndScreenButtons[1].buttonData))
 		{
@@ -162,7 +162,6 @@ void game_update(void)
 		{
 			exit_to_desktop();
 		}
-		game_win_lose_check();
 		//do enemy update first
 		update_enemy();
 
@@ -324,7 +323,7 @@ void game_update(void)
 		}
 		else if (btn_is_pressed(PauseQuitButton.buttonData))
 		{
-			exit_to_desktop(); // placing a button in the bottom half of the screen automatically activates it.
+			exit_to_desktop();
 		}
 		render_pause_screen();
 	}
