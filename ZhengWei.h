@@ -34,3 +34,4 @@ void pathfinding_update(LevelData* LevelX);
 int isPlacingTurret;
 int isUpgradingTurret;
 int powerUpMenu;
+int turretSelectedToSell;

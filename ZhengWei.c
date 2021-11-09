@@ -193,6 +193,7 @@ void render_game_grid_press(LevelData* LevelX) {
 			}
 			else if (turret[i].data.xOrigin == GridTemp.xOrigin && turret[i].data.yOrigin == GridTemp.yOrigin && turret[i].isActive == TRUE) {
 				isUpgradingTurret = turret[i].type;
+				turretSelectedToSell = i;
 			}
 		}
 	}
@@ -487,7 +488,15 @@ void render_button_pressed(void) {
 		break;
 	case SellButton:
 		if (isUpgradingTurret != T_MAX) {
+			int drawX, drawY;
+			turret[turretSelectedToSell].isActive = FALSE;
+			drawX = (int)((turret[turretSelectedToSell].data.xOrigin - Game.xOrigin) / Game.gridWidth);
+			drawY = (int)((turret[turretSelectedToSell].data.yOrigin - Game.yOrigin) / Game.gridHeight);
 			Level[currentGameLevel].phantomQuartz += 10;//hard coded to sell for 10
+			Level[currentGameLevel].grid[drawY][drawX].type = Clear;
+			pathfinding_reset(&Level[currentGameLevel]);
+			pathfinding_calculate_cost(&Level[currentGameLevel]);
+			pathfinding_update(&Level[currentGameLevel]);
 			mouse_reset();
 			//call upgrade function
 		}
