@@ -64,6 +64,7 @@ typedef struct Grids {
 }Grids;
 
 typedef enum Environmentaleffects {
+	NoEnvironmentalEffects,
 	IncreasedPhantomQuartz,
 	DecreasedPhantomQuartz,
 	FasterEnemies,
@@ -130,6 +131,7 @@ enum MenuObjectType {
 	WaveDisplay,
 	BattlefieldEffects,
 	MonsterRemainingDisplay,
+	UpgradeMenu,
 	UpgradeButton,
 	SellButton,
 	GameGrid,//needs to be second last variable

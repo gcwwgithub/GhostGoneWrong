@@ -2,7 +2,6 @@
 #include"game.h"
 
 // Max Number of Turret Type
-#define NOT_PLACING_TURRET 4
 
 void game_grid_init(void);
 void pathfinding_init(LevelData* LevelX);
@@ -20,9 +19,14 @@ void menu_swap_init(void);
 void wave_number_display_init(void);
 void battlefield_effects_display_init(void);
 void monster_remaining_display_init(void);
+void upgrade_menu_init(void);
 void upgrade_button_init(void);
 void sell_button_init(void);
 void level1_init(void);
+void level2_init(void);
+void level3_init(void);
+void level4_init(void);
+void level5_init(void);
 
 void pathfinding_reset(LevelData* LevelX);
 void pathfinding_calculate_cost(LevelData* LevelX);
@@ -35,3 +39,4 @@ void pathfinding_update(LevelData* LevelX);
 int isPlacingTurret;
 int isUpgradingTurret;
 int powerUpMenu;
+int turretSelectedToSell;

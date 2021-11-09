@@ -41,7 +41,7 @@ typedef enum TriangleAnimState
 typedef enum TurretPurchase
 {
 	TP_PRICE,
-	TP_UPGARDE_PRICE,
+	TP_UPGRADE_PRICE,
 	TP_UPGRADE_MAX_LEVEL,
 	TP_MAX
 }TurretPurchase;
