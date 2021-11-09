@@ -32,7 +32,7 @@ Button PauseBackButton;
 
 Button SkipWaveButton;
 
-Button EndScreenButtons[2];
+Button EndScreenButtons[3];
 
 
 int enemiesLeft;
