@@ -151,7 +151,7 @@ void game_update(void)
 		if (btn_is_pressed(EndScreenButtons[0].buttonData))
 		{
 			currentGameState = MainMenu;
-			//init_level(currentGameLevel);
+		//	init_level(currentGameLevel);
 		}
 		else if (btn_is_pressed(EndScreenButtons[1].buttonData))
 		{
@@ -323,7 +323,7 @@ void game_update(void)
 		}
 		else if (btn_is_pressed(PauseQuitButton.buttonData))
 		{
-			exit_to_desktop();
+			exit_to_desktop(); 
 		}
 		render_pause_screen();
 	}

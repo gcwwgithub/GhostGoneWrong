@@ -40,7 +40,7 @@ void init_play_button(void)
 	PlayButton.buttonData.yOrigin = CP_System_GetWindowHeight() / 2.0f;
 	PlayButton.buttonData.width = BUTTON_WIDTH;
 	PlayButton.buttonData.height = BUTTON_HEIGHT;
-
+	PlayButton.buttonData.objectType = objectRectangle;
 	PlayButton.textPositionX = PlayButton.buttonData.xOrigin + BUTTON_WIDTH / 2;
 	PlayButton.textPositionY = PlayButton.buttonData.yOrigin + BUTTON_HEIGHT / 2;
 	strcpy_s(PlayButton.textString, sizeof(PlayButton.textString), "Play");
@@ -52,7 +52,7 @@ void init_quit_button(void)
 	QuitButton.buttonData.yOrigin = CP_System_GetWindowHeight() / 2.0f;
 	QuitButton.buttonData.width = BUTTON_WIDTH;
 	QuitButton.buttonData.height = BUTTON_HEIGHT;
-
+	QuitButton.buttonData.objectType = objectRectangle;
 	QuitButton.textPositionX = QuitButton.buttonData.xOrigin + BUTTON_WIDTH / 2;
 	QuitButton.textPositionY = QuitButton.buttonData.yOrigin + BUTTON_HEIGHT / 2;
 	strcpy_s(QuitButton.textString, sizeof(QuitButton.textString), "Quit");
@@ -64,7 +64,7 @@ void init_back_button(void)
 	BackButton.buttonData.yOrigin = CP_System_GetWindowHeight() * 0.75f;
 	BackButton.buttonData.width = BUTTON_WIDTH;
 	BackButton.buttonData.height = BUTTON_HEIGHT;
-
+	BackButton.buttonData.objectType = objectRectangle;
 	BackButton.textPositionX = BackButton.buttonData.xOrigin + BUTTON_WIDTH / 2;
 	BackButton.textPositionY = BackButton.buttonData.yOrigin + BUTTON_HEIGHT / 2;
 	strcpy_s(BackButton.textString, sizeof(BackButton.textString), "Back");
@@ -76,7 +76,7 @@ void init_pause_quit_button(void)
 	PauseQuitButton.buttonData.yOrigin = CP_System_GetWindowHeight() * 0.4f - BUTTON_HEIGHT / 2;
 	PauseQuitButton.buttonData.width = BUTTON_WIDTH;
 	PauseQuitButton.buttonData.height = BUTTON_HEIGHT;
-
+	PauseQuitButton.buttonData.objectType = objectRectangle;
 	PauseQuitButton.textPositionX = PauseQuitButton.buttonData.xOrigin + BUTTON_WIDTH / 2;
 	PauseQuitButton.textPositionY = PauseQuitButton.buttonData.yOrigin + BUTTON_HEIGHT / 2;
 	strcpy_s(PauseQuitButton.textString, sizeof(PauseQuitButton.textString), "Quit");
@@ -88,7 +88,7 @@ void init_pause_back_button(void)
 	PauseBackButton.buttonData.yOrigin = CP_System_GetWindowHeight() * 0.3f - BUTTON_HEIGHT / 2;
 	PauseBackButton.buttonData.width = BUTTON_WIDTH;
 	PauseBackButton.buttonData.height = BUTTON_HEIGHT;
-
+	PauseBackButton.buttonData.objectType = objectRectangle;
 	PauseBackButton.textPositionX = PauseBackButton.buttonData.xOrigin + BUTTON_WIDTH / 2;
 	PauseBackButton.textPositionY = PauseBackButton.buttonData.yOrigin + BUTTON_HEIGHT / 2;
 	strcpy_s(PauseBackButton.textString, sizeof(PauseBackButton.textString), "Back");
@@ -105,7 +105,7 @@ void init_level_select_buttons(void)
 		levelButtons[i].buttonData.yOrigin = CP_System_GetWindowHeight() / 3 + i * (BUTTON_HEIGHT + 25.0f);
 		levelButtons[i].buttonData.width = BUTTON_WIDTH;
 		levelButtons[i].buttonData.height = BUTTON_HEIGHT;
-
+		levelButtons[i].buttonData.objectType = objectRectangle;
 		levelButtons[i].textPositionX = levelButtons[i].buttonData.xOrigin + BUTTON_WIDTH / 2.0f;
 		levelButtons[i].textPositionY = levelButtons[i].buttonData.yOrigin + BUTTON_HEIGHT / 2.0f;
 		char levelNumberText[8];
@@ -120,11 +120,6 @@ void init_pause_screen(void)
 	init_pause_quit_button();
 }
 
-void init_win_screen(void)
-{
-
-}
-
 void init_end_screen(void)
 {
 	// Back to Main Menu
@@ -132,7 +127,7 @@ void init_end_screen(void)
 	EndScreenButtons[0].buttonData.yOrigin = CP_System_GetWindowHeight() * 0.5f - BUTTON_HEIGHT / 2;
 	EndScreenButtons[0].buttonData.width = BUTTON_WIDTH;
 	EndScreenButtons[0].buttonData.height = BUTTON_HEIGHT;
-
+	EndScreenButtons[0].buttonData.objectType = objectRectangle;
 	EndScreenButtons[0].textPositionX = EndScreenButtons[0].buttonData.xOrigin + BUTTON_WIDTH / 2;
 	EndScreenButtons[0].textPositionY = EndScreenButtons[0].buttonData.yOrigin + BUTTON_HEIGHT / 2;
 	strcpy_s(EndScreenButtons[0].textString, sizeof(EndScreenButtons[0].textString), "Back");
@@ -142,7 +137,7 @@ void init_end_screen(void)
 	EndScreenButtons[1].buttonData.yOrigin = CP_System_GetWindowHeight() * 0.6f - BUTTON_HEIGHT / 2;
 	EndScreenButtons[1].buttonData.width = BUTTON_WIDTH;
 	EndScreenButtons[1].buttonData.height = BUTTON_HEIGHT;
-
+	EndScreenButtons[1].buttonData.objectType = objectRectangle;
 	EndScreenButtons[1].textPositionX = EndScreenButtons[1].buttonData.xOrigin + BUTTON_WIDTH / 2;
 	EndScreenButtons[1].textPositionY = EndScreenButtons[1].buttonData.yOrigin + BUTTON_HEIGHT / 2;
 	strcpy_s(EndScreenButtons[1].textString, sizeof(EndScreenButtons[1].textString), "Restart");
@@ -152,7 +147,7 @@ void init_end_screen(void)
 	EndScreenButtons[2].buttonData.yOrigin = CP_System_GetWindowHeight() * 0.7f - BUTTON_HEIGHT / 2;
 	EndScreenButtons[2].buttonData.width = BUTTON_WIDTH;
 	EndScreenButtons[2].buttonData.height = BUTTON_HEIGHT;
-
+	EndScreenButtons[2].buttonData.objectType = objectRectangle;
 	EndScreenButtons[2].textPositionX = EndScreenButtons[2].buttonData.xOrigin + BUTTON_WIDTH / 2;
 	EndScreenButtons[2].textPositionY = EndScreenButtons[2].buttonData.yOrigin + BUTTON_HEIGHT / 2;
 	strcpy_s(EndScreenButtons[2].textString, sizeof(EndScreenButtons[2].textString), "Quit");
@@ -338,10 +333,9 @@ void game_win_lose_check(void)
 		else
 		{
 			Level[currentGameLevel].currentWave++;
+			set_building_time(BUILDING_PHASE_TIME);
+			currentGameState = Building;
 		}
-
-		set_building_time(BUILDING_PHASE_TIME);
-		currentGameState = Building;
 	}
 }
 
