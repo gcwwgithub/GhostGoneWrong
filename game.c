@@ -60,6 +60,9 @@ void game_init(void)
 	//Initialize Objects
 	mouse_init();
 	turret_init();
+
+	//Initialise Enemies
+	Enemies_init();
 }
 
 
@@ -136,7 +139,9 @@ void game_update(void)
 
 		render_button_pressed();
 
-		//test enemy
+		//setting enemies
+		Reset_enemies(currentGameLevel);
+
 
 		render_environment();
 		update_portal();

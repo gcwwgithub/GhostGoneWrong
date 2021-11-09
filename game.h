@@ -89,7 +89,7 @@ typedef struct LevelData {
 	int goldQuartz;
 	int health;
 	int currentWave;
-	int waveEnemies[MAX_NUMBER_OF_WAVES][MAX_ENEMY_TYPE];
+	int waveEmemies[MAX_NUMBER_OF_WAVES][MAX_ENEMY_TYPE];
 	EnvironmentalEffects currentEffect;
 
 }LevelData;

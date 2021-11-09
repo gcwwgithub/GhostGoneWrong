@@ -177,7 +177,7 @@ void EnemyDeath(enemy* r, LevelData* Level) {  //function updates and checks for
 	}
 }
 
-void Enemies_init(int Basic_enemy_count, int Fast_enemy_count, int Fat_enemy_count) {
+void Enemies_init(void) {
 	timer = 0;
 	count = 0;
 	Enemy_node = NULL;
@@ -185,13 +185,6 @@ void Enemies_init(int Basic_enemy_count, int Fast_enemy_count, int Fat_enemy_cou
 	Array_count = 1;
 	Number_of_points = 0;
 
-
-	// For initialisation of enemyLeft text
-	enemiesLeft = Basic_enemy_count + Fast_enemy_count + Fat_enemy_count;
-	enemiesInLevel = enemiesLeft;
-	basicEnemyNum = Basic_enemy_count;
-	fastEnemyNum = Fast_enemy_count;
-	fatEnemyNum = Fat_enemy_count;
 
 	//test path
 	for (int i = 0; i < MAX_ENEMIES; i++) {
@@ -540,12 +533,14 @@ void Environment_check(LevelData Level) {
 }
 
 void Reset_enemies(int current_level) {
-	if (buildingTime > 0.05f&&Level[current_level].currentWave+1<MAX_NUMBER_OF_WAVES) {
-		int BasicCount = Level[current_level].waveEnemies[Level[current_level].currentWave + 1][Basic];
-		int FastCount = Level[current_level].waveEnemies[Level[current_level].currentWave + 1][Fast_Ghost];
-		int FatCount = Level[current_level].waveEnemies[Level[current_level].currentWave + 1][Fat_Ghost];
-		int ReaperCount = Level[current_level].waveEnemies[Level[current_level].currentWave + 1][grimReaper];
-		wave_enemy_init(BasicCount, FastCount, FatCount, ReaperCount,Level[current_level]);
+	if (currentGameState == Building) {
+		if (buildingTime > 0.05f && Level[current_level].currentWave + 1 < MAX_NUMBER_OF_WAVES) {
+			int BasicCount = Level[current_level].waveEmemies[Level[current_level].currentWave + 1][Basic];
+			int FastCount = Level[current_level].waveEmemies[Level[current_level].currentWave + 1][Fast_Ghost];
+			int FatCount = Level[current_level].waveEmemies[Level[current_level].currentWave + 1][Fat_Ghost];
+			int ReaperCount = Level[current_level].waveEmemies[Level[current_level].currentWave + 1][grimReaper];
+			wave_enemy_init(BasicCount, FastCount, FatCount, ReaperCount, Level[current_level]);
+		}
 	}
 }
 
