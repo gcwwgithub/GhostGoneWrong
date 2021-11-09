@@ -89,53 +89,36 @@ void game_update(void)
 
 	if (currentGameState == Wave)
 	{
-		if (gameWon || gameLost)
-		{
-			render_end_screen(); // this should pause the game by way of gameLost.
-			if (btn_is_pressed(EndScreenButtons[0].buttonData))
-			{
-				currentGameState = MainMenu;
-				init_level(currentGameLevel);
-				gameLost = gameWon = 0;
-			}
-			else if (btn_is_pressed(EndScreenButtons[1].buttonData))
-			{
-				exit_to_desktop();
-			}
+		game_win_lose_check();
+		//do enemy update first
+		update_enemy();
+
+		//do turret & projectile update next
+		update_turret();
+		update_projectile();
+
+
+		//render all the stuff
+		render_game_background(currentGameLevel);
+		render_game_grid();
+		render_path(&Level[currentGameLevel]);
+		for (int i = 0; i < NUMBER_OF_MENU_OBJECTS - 1; i++) {// Last object will double render game grid
+			render_turret_menu_object(GameMenuObject[i], i);
 		}
-		else
-		{
-			game_win_lose_check();
-			//do enemy update first
-			update_enemy();
+		//display_enemies_left(); //Already done by my code render turret menu object
+		update_portal();
 
-			//do turret & projectile update next
-			update_turret();
-			update_projectile();
+		draw_multiple_enemies();
+		render_all_portal_effects();
+		render_turret();
+		render_projectile();
 
+		render_bullet_circles();
 
-			//render all the stuff
-			render_game_background(currentGameLevel);
-			render_game_grid();
-			render_path(&Level[currentGameLevel]);
-			for (int i = 0; i < NUMBER_OF_MENU_OBJECTS-1; i++) {// Last object will double render game grid
-				render_turret_menu_object(GameMenuObject[i], i);
-			}
-			//display_enemies_left(); //Already done by my code render turret menu object
-			update_portal();
-
-			draw_multiple_enemies();
-			render_all_portal_effects();
-			render_turret();
-			render_projectile();
-
-			render_bullet_circles();
-
-			render_button_pressed();
+		render_button_pressed();
 
 
-			render_environment();
-		}
+		render_environment();
 	}
 	else if (currentGameState == Building)
 	{
@@ -157,7 +140,7 @@ void game_update(void)
 		render_wave_timer_text();
 		render_ui_button(SkipWaveButton);
 
-		for (int i = 0; i < NUMBER_OF_MENU_OBJECTS-1; i++) {// Last object will double render game grid
+		for (int i = 0; i < NUMBER_OF_MENU_OBJECTS - 1; i++) {// Last object will double render game grid
 			render_turret_menu_object(GameMenuObject[i], i);
 		}
 
@@ -165,7 +148,7 @@ void game_update(void)
 		render_projectile();
 
 		render_bullet_circles();
-		
+
 		render_button_pressed();
 
 		//test enemy
@@ -173,7 +156,54 @@ void game_update(void)
 		render_environment();
 		update_portal();
 	}
+	else if (currentGameState == Win || currentGameState == Lose)
+	{
+		if (btn_is_pressed(EndScreenButtons[0].buttonData))
+		{
+			currentGameState = MainMenu;
+			init_level(currentGameLevel);
+		}
+		else if (btn_is_pressed(EndScreenButtons[1].buttonData))
+		{
+			init_level(currentGameLevel);
+			currentGameState = Building;
+		}
+		else if (btn_is_pressed(EndScreenButtons[2].buttonData))
+		{
+			exit_to_desktop();
+		}
+		game_win_lose_check();
+		//do enemy update first
+		update_enemy();
 
+		//do turret & projectile update next
+		update_turret();
+		update_projectile();
+
+
+		//render all the stuff
+		render_game_background(currentGameLevel);
+		render_game_grid();
+		render_path(&Level[currentGameLevel]);
+		for (int i = 0; i < NUMBER_OF_MENU_OBJECTS - 1; i++) {// Last object will double render game grid
+			render_turret_menu_object(GameMenuObject[i], i);
+		}
+		update_portal();
+
+		draw_multiple_enemies();
+		render_all_portal_effects();
+		render_turret();
+		render_projectile();
+
+		render_bullet_circles();
+
+		render_button_pressed();
+
+
+		render_environment();
+
+		render_end_screen(); // this should pause the game by way of gameLost.
+	}
 	else if (currentGameState == MainMenu)
 	{
 		if (btn_is_pressed(PlayButton.buttonData))
