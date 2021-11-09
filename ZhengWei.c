@@ -387,9 +387,9 @@ void upgrade_menu_init(void) {
 }
 
 void upgrade_button_init(void) {
-	GameMenuObject[UpgradeButton].xOrigin = GameMenuObject[UpgradeMenu].xOrigin;
-	GameMenuObject[UpgradeButton].yOrigin = GameMenuObject[SwapButton].yOrigin;
-	GameMenuObject[UpgradeButton].width = GameMenuObject[UpgradeMenu].width / 2;
+	GameMenuObject[UpgradeButton].xOrigin = GameMenuObject[BattlefieldEffects].xOrigin + GameMenuObject[BattlefieldEffects].width / 5;
+	GameMenuObject[UpgradeButton].yOrigin = GameMenuObject[SwapButton].yOrigin - GameMenuObject[SwapButton].height / 5;
+	GameMenuObject[UpgradeButton].width = GameMenuObject[UpgradeMenu].width / 3;
 	GameMenuObject[UpgradeButton].height = GameMenuObject[SwapButton].height;
 	GameMenuObject[UpgradeButton].objectType = objectRectangle;
 
@@ -402,9 +402,9 @@ void upgrade_button_init(void) {
 }
 
 void sell_button_init(void) {
-	GameMenuObject[SellButton].xOrigin = GameMenuObject[UpgradeMenu].xOrigin + GameMenuObject[UpgradeButton].width;
-	GameMenuObject[SellButton].yOrigin = GameMenuObject[SwapButton].yOrigin;
-	GameMenuObject[SellButton].width = GameMenuObject[UpgradeMenu].width / 2;
+	GameMenuObject[SellButton].xOrigin = GameMenuObject[MonsterRemainingDisplay].xOrigin + GameMenuObject[MonsterRemainingDisplay].width / 5;
+	GameMenuObject[SellButton].yOrigin = GameMenuObject[SwapButton].yOrigin - GameMenuObject[SwapButton].height / 5;
+	GameMenuObject[SellButton].width = GameMenuObject[UpgradeMenu].width / 3;
 	GameMenuObject[SellButton].height = GameMenuObject[SwapButton].height;
 	GameMenuObject[SellButton].objectType = objectRectangle;
 
@@ -811,7 +811,7 @@ void render_game_grid(void)
 
 void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type) {
 	char temp[100];
-	if (isUpgradingTurret == T_MAX && (type == UpgradeButton || type == SellButton)) {// only render upgrade and sell button when turret selected
+	if (isUpgradingTurret == T_MAX && (type == UpgradeButton || type == SellButton || type == UpgradeMenu)) {// only render upgrade and sell button when turret selected
 	//empty by design
 	}
 	else {
@@ -822,14 +822,17 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 	CP_Settings_TextSize(35.0f * scalingFactor);
 	switch (type)
 	{
+
 	case TurretButtonBasic:
 		CP_Image_Draw(turretUIButton, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 2),
-			128 * scalingFactor, 128 * scalingFactor, 255);
+			136 * scalingFactor, 136 * scalingFactor, 255);
 		if (powerUpMenu == FALSE) {
 			RenderNormal(basicTurretSpriteSheet, basicTurretArray[0], menuObjectX.width / 2,
 				(menuObjectX.yOrigin + menuObjectX.height / 2), 128 * scalingFactor, 128 * scalingFactor);
-			sprintf_s(temp, sizeof(temp), "25");
-			CP_Font_DrawText(temp, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3));
+			sprintf_s(temp, sizeof(temp), "%d", turret_purchasing[TP_PRICE][T_BASIC]);
+			CP_Font_DrawText(temp, menuObjectX.width / 2.5, (menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3));
+			RenderNormal(currencySpriteSheet, currencyArray[1], menuObjectX.width / 1.65,
+				(menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3), 45 * scalingFactor, 45 * scalingFactor);
 		}
 
 		else
@@ -843,13 +846,15 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 
 	case TurretButtonSlow:
 		CP_Image_Draw(turretUIButton, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 2),
-			128 * scalingFactor, 128 * scalingFactor, 255);
+			136 * scalingFactor, 136 * scalingFactor, 255);
 		if (powerUpMenu == FALSE) {
 			CP_Image_DrawAdvanced(menuObjectX.image, menuObjectX.width / 2,
 				(menuObjectX.yOrigin + menuObjectX.height / 2), 128 * scalingFactor,
 				128 * scalingFactor, 255, 90);
-			sprintf_s(temp, sizeof(temp), "25");
-			CP_Font_DrawText(temp, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3));
+			sprintf_s(temp, sizeof(temp), "%d", turret_purchasing[TP_PRICE][T_SLOW]);
+			CP_Font_DrawText(temp, menuObjectX.width / 2.5, (menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3));
+			RenderNormal(currencySpriteSheet, currencyArray[1], menuObjectX.width / 1.65,
+				(menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3), 45 * scalingFactor, 45 * scalingFactor);
 		}
 		else
 		{
@@ -862,12 +867,14 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 
 	case  TurretButtonHoming:
 		CP_Image_Draw(turretUIButton, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 2),
-			128 * scalingFactor, 128 * scalingFactor, 255);
+			136 * scalingFactor, 136 * scalingFactor, 255);
 		if (powerUpMenu == FALSE) {
 			RenderNormal(homingMissleTurretSpriteSheet, homingMissleTurretArray[0], menuObjectX.width / 2,
 				(menuObjectX.yOrigin + menuObjectX.height / 2), 128 * scalingFactor, 128 * scalingFactor);
-			sprintf_s(temp, sizeof(temp), "25");
-			CP_Font_DrawText(temp, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3));
+			sprintf_s(temp, sizeof(temp), "%d", turret_purchasing[TP_PRICE][T_HOMING]);
+			CP_Font_DrawText(temp, menuObjectX.width / 2.5, (menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3));
+			RenderNormal(currencySpriteSheet, currencyArray[1], menuObjectX.width / 1.65,
+				(menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3), 45 * scalingFactor, 45 * scalingFactor);
 		}
 		else
 		{
@@ -881,11 +888,13 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 	case TurretButtonMine:
 		if (powerUpMenu == FALSE) {
 			CP_Image_Draw(turretUIButton, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 2),
-				128 * scalingFactor, 128 * scalingFactor, 255);
+				136 * scalingFactor, 136 * scalingFactor, 255);
 			RenderNormal(mineSpriteSheet, mineArray[0], menuObjectX.width / 2,
 				(menuObjectX.yOrigin + menuObjectX.height / 2), 128 * scalingFactor, 128 * scalingFactor);
-			sprintf_s(temp, sizeof(temp), "25");
-			CP_Font_DrawText(temp, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3));
+			sprintf_s(temp, sizeof(temp), "%d", turret_purchasing[TP_PRICE][T_MINE]);
+			CP_Font_DrawText(temp, menuObjectX.width / 2.5, (menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3));
+			RenderNormal(currencySpriteSheet, currencyArray[1], menuObjectX.width / 1.65,
+				(menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3), 45 * scalingFactor, 45 * scalingFactor);
 		}
 		break;
 
@@ -895,6 +904,9 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 			64, 255, 0);
 		break;
 	case SwapButton:
+		RenderNormal(interactableButtonsImageSpriteSheet, interactableButtonsImageArray[2],
+			menuObjectX.xOrigin + menuObjectX.width / 2,
+			menuObjectX.yOrigin + menuObjectX.height / 2, 137, 72);
 		break;
 	case GoldQuartzMenu:
 		CP_Settings_Fill(COLOR_WHITE);
@@ -961,27 +973,79 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 			if (currentGameState == Wave) {
 				totalEnemies += Level[currentGameLevel].waveEmemies[Level[currentGameLevel].currentWave][i];
 			}
-			else if(currentGameState == Building) { // Forecast for next wave instead of current empty wave
-				totalEnemies += Level[currentGameLevel].waveEmemies[Level[currentGameLevel].currentWave+1][i];
+			else if (currentGameState == Building) { // Forecast for next wave instead of current empty wave
+				totalEnemies += Level[currentGameLevel].waveEmemies[Level[currentGameLevel].currentWave + 1][i];
 			}
 		}
 		sprintf_s(temp, sizeof(temp), "%d/%d", enemiesLeft, totalEnemies);
 		CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 2, menuObjectX.yOrigin + menuObjectX.height / 2);
 		break;
+	case UpgradeMenu:
+		if (isUpgradingTurret != T_MAX) { //Only render when upgrading
+			CP_Image_Draw(turretUpgradeBackground, menuObjectX.xOrigin + menuObjectX.width / 2,
+				menuObjectX.yOrigin + menuObjectX.height / 3, 275 * scalingFactor, 475 * scalingFactor, 255);
+			CP_Settings_Fill(COLOR_WHITE);
+			CP_Settings_TextSize(50.0f * scalingFactor);
+
+			switch (turret[turretSelectedToSell].type)
+			{
+			case T_BASIC:
+				sprintf_s(temp, sizeof(temp), "Basic");
+				CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 2, menuObjectX.yOrigin + menuObjectX.height / 18);
+				RenderNormal(basicTurretSpriteSheet, basicTurretArray[0],
+					menuObjectX.xOrigin + menuObjectX.width / 2,
+					menuObjectX.yOrigin + menuObjectX.height / 6, 128 * scalingFactor, 128 * scalingFactor);
+				break;
+			case T_SLOW:
+				sprintf_s(temp, sizeof(temp), "Slow");
+				CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 2, menuObjectX.yOrigin + menuObjectX.height / 18);
+				CP_Image_Draw(slowTurretImageArray[0], menuObjectX.xOrigin + menuObjectX.width / 2,
+					menuObjectX.yOrigin + menuObjectX.height / 6, 128 * scalingFactor, 128 * scalingFactor, 255);
+				break;
+			case T_HOMING:
+				sprintf_s(temp, sizeof(temp), "Homing");
+				CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 2, menuObjectX.yOrigin + menuObjectX.height / 18);
+				RenderNormal(homingMissleTurretSpriteSheet, homingMissleTurretArray[0],
+					menuObjectX.xOrigin + menuObjectX.width / 2,
+					menuObjectX.yOrigin + menuObjectX.height / 6, 128 * scalingFactor, 128 * scalingFactor);
+				break;
+			case T_MINE:
+				sprintf_s(temp, sizeof(temp), "Mine");
+				CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 2, menuObjectX.yOrigin + menuObjectX.height / 18);
+				RenderNormal(mineSpriteSheet, mineArray[0],
+					menuObjectX.xOrigin + menuObjectX.width / 2,
+					menuObjectX.yOrigin + menuObjectX.height / 6, 128 * scalingFactor, 128 * scalingFactor);
+				break;
+			}
+
+			sprintf_s(temp, sizeof(temp), "Level:%d", turret[turretSelectedToSell].level);
+			CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 2, menuObjectX.yOrigin + menuObjectX.height / 3);
+			sprintf_s(temp, sizeof(temp), "%d", turret_purchasing[TP_UPGRADE_PRICE][turret[turretSelectedToSell].type]);
+			CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 5.5, menuObjectX.yOrigin + menuObjectX.height / 1.95);
+			RenderNormal(currencySpriteSheet, currencyArray[1], menuObjectX.xOrigin + menuObjectX.width / 3,
+				menuObjectX.yOrigin + menuObjectX.height / 1.95, 64 * scalingFactor, 64 * scalingFactor);
+
+			sprintf_s(temp, sizeof(temp), "10");
+			CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 1.45, menuObjectX.yOrigin + menuObjectX.height / 1.95);
+			RenderNormal(currencySpriteSheet, currencyArray[1], menuObjectX.xOrigin + menuObjectX.width / 1.2,
+				menuObjectX.yOrigin + menuObjectX.height / 1.95, 64 * scalingFactor, 64 * scalingFactor);
+		}
+		break;
 	case UpgradeButton:
 		if (isUpgradingTurret != T_MAX) { //Only render when upgrading
-			RenderNormal(backgroundUIFatSpriteSheet, backgroundUIFatArray[1], menuObjectX.xOrigin + menuObjectX.width / 2,
-				menuObjectX.yOrigin + menuObjectX.height / 2, 132 * scalingFactor, 132 * scalingFactor, 255);
-			CP_Settings_TextSize(35.0f * scalingFactor);
-			CP_Font_DrawText("Upgrade", menuObjectX.xOrigin + menuObjectX.width / 2, menuObjectX.yOrigin + menuObjectX.height / 2);
+
+			RenderNormal(interactableButtonsImageSpriteSheet, interactableButtonsImageArray[1],
+				menuObjectX.xOrigin + menuObjectX.width / 2,
+				menuObjectX.yOrigin + menuObjectX.height / 2, 95 * scalingFactor, 72 * scalingFactor);
+
 		}
 		break;
 	case SellButton:
 		if (isUpgradingTurret != T_MAX) {//Only render when upgrading
-			RenderNormal(backgroundUIFatSpriteSheet, backgroundUIFatArray[1], menuObjectX.xOrigin + menuObjectX.width / 2,
-				menuObjectX.yOrigin + menuObjectX.height / 2, 132 * scalingFactor, 132 * scalingFactor, 255);
-			CP_Settings_TextSize(35.0f * scalingFactor);
-			CP_Font_DrawText("Sell", menuObjectX.xOrigin + menuObjectX.width / 2, menuObjectX.yOrigin + menuObjectX.height / 2);
+
+			RenderNormal(interactableButtonsImageSpriteSheet, interactableButtonsImageArray[0],
+				menuObjectX.xOrigin + menuObjectX.width / 2,
+				menuObjectX.yOrigin + menuObjectX.height / 2, 95 * scalingFactor, 72 * scalingFactor);
 		}
 		break;
 	}

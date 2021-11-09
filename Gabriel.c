@@ -14,6 +14,7 @@ void init_all_images(void)
 	titleWordImage = CP_Image_Load("./Assets/Title.png");
 	turretUIButton = CP_Image_Load("./Assets/TurretIcon.png");
 	backgroundUIThin = CP_Image_Load("./Assets/CurrencyIcon.png");
+	turretUpgradeBackground = CP_Image_Load("./Assets/UpgradeMenu.png");
 
 	basicGhostSpriteSheet = CP_Image_Load("./Assets/BasicGhost.png");
 	fastGhostSpriteSheet = CP_Image_Load("./Assets/FastGhost.png");
@@ -35,6 +36,7 @@ void init_all_images(void)
 	powerUpIconSpriteSheet = CP_Image_Load("./Assets/Powerup.png");
 	battlefieldEffectIconSpriteSheet = CP_Image_Load("./Assets/BattlefieldEffects.png");
 	backgroundUIFatSpriteSheet = CP_Image_Load("./Assets/BigUIDisplay.png");
+	interactableButtonsImageSpriteSheet = CP_Image_Load("./Assets/InteractableButtons.png");
 }
 
 
@@ -175,6 +177,7 @@ void init_spritesheet_array(void)
 	SpriteSheetCalculation(powerUpIconArray, powerUpIconSpriteSheet, 128, 128, 1);
 	SpriteSheetCalculation(battlefieldEffectIconArray, battlefieldEffectIconSpriteSheet, 128, 128, 0);
 	SpriteSheetCalculation(backgroundUIFatArray, backgroundUIFatSpriteSheet, 128, 128, 0);
+	SpriteSheetCalculation(interactableButtonsImageArray, interactableButtonsImageSpriteSheet, 128, 72, 1);
 }
 
 void SpriteSheetCalculation(struct SpriteSheetImage* s, CP_Image image, int pixelWidth, int pixelHeight, int stopPoint)

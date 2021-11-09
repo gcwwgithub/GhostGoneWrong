@@ -42,6 +42,7 @@ void turret_init(void)
 		turret[i].currentAnimState = INACTIVE;
 		turret[i].animCounter = 0;
 		turret[i].price = 25;
+		turret[i].level = 1;
 	}
 	//init the lcoations of turret placed
 	for (int i = 0; i < GAME_GRID_ROWS; ++i)
@@ -62,8 +63,8 @@ void turret_init(void)
 	turret_purchasing[TP_UPGRADE_PRICE][T_WALL] = 10;
 
 	//set all to 5 level only first change later
-		for (int i = 0; i < T_MAX; ++i)
-			turret_purchasing[TP_UPGRADE_MAX_LEVEL][i] = 5;
+	for (int i = 0; i < T_MAX; ++i)
+		turret_purchasing[TP_UPGRADE_MAX_LEVEL][i] = 5;
 
 	//place_turret(T_SLOW, 2, 1);
 	//Level[0].grid[1][2].type = Blocked;//Hard coded to set turret spot to blocked
@@ -141,7 +142,7 @@ void place_turret(TurretType type, int index_x, int index_y)
 		turret_on_grid[index_x][index_y] = i;
 		//where u place u block
 		Level[currentGameLevel].grid[index_y][index_x].type = Blocked;
-
+		turret[i].level = 1;
 		//escape from loop once done
 		break;
 	}
@@ -157,7 +158,7 @@ void remove_turret(int index_x, int index_y)
 	turret_on_grid[index_x][index_y] = -1;
 	turret[index].isActive = FALSE;
 	//set to clear if is blocked
-	if(Level[currentGameLevel].grid[index_y][index_x].type == Blocked)
+	if (Level[currentGameLevel].grid[index_y][index_x].type == Blocked)
 		Level[currentGameLevel].grid[index_y][index_x].type = Clear;
 
 }
@@ -173,12 +174,12 @@ void sell_turret(int index_x, int index_y)
 
 //upgrade system (for now using index will change depending on usage)
 void upgrade_turret(int index_x, int index_y)
-{	
+{
 	int t_index = turret_on_grid[index_x][index_y];
 	// Minus the price
 	Level[currentGameLevel].phantomQuartz -= turret_purchasing[TP_UPGRADE_PRICE][turret[t_index].type] +
 		turret[t_index].upgrade_price;
-
+	turret[t_index].level++;
 	switch (turret[t_index].type)
 	{
 	case T_BASIC:
@@ -303,7 +304,7 @@ void update_turret(void)
 					e_index = j;
 					//set the targeted enemy dir
 					targeted_dir.x = v1.x;
-					targeted_dir.y = v1.y;			
+					targeted_dir.y = v1.y;
 				}
 				else
 					continue;
@@ -327,7 +328,7 @@ void update_turret(void)
 			}
 
 			//get angle to roate sprite for slow turret only
-			if(turret[i].type == T_SLOW)
+			if (turret[i].type == T_SLOW)
 				turret[i].angle = atan2f(turret[i].dir.y, turret[i].dir.x) * 180.f / (float)PI;
 
 			//mine specific updates
@@ -373,7 +374,7 @@ void shoot(float x, float y, Modifiers mod, ProjectileType type, Vector2 dir)
 		switch (type)
 		{
 		case P_BASIC:
-			proj[i].data.xOrigin = x ;
+			proj[i].data.xOrigin = x;
 			proj[i].data.yOrigin = y - 10.f;
 			break;
 		case P_SLOW:
