@@ -53,6 +53,7 @@ void game_init(void)
 	wave_number_display_init();
 	battlefield_effects_display_init();
 	monster_remaining_display_init();
+	upgrade_menu_init();
 	upgrade_button_init();
 	sell_button_init();
 

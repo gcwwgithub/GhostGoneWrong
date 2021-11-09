@@ -130,6 +130,7 @@ enum MenuObjectType {
 	WaveDisplay,
 	BattlefieldEffects,
 	MonsterRemainingDisplay,
+	UpgradeMenu,
 	UpgradeButton,
 	SellButton,
 	GameGrid,//needs to be second last variable

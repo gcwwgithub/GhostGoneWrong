@@ -377,14 +377,22 @@ void monster_remaining_display_init(void) {
 	GameMenuObject[MonsterRemainingDisplay].objectType = objectRectangle;*/
 }
 
+void upgrade_menu_init(void) {
+	GameMenuObject[UpgradeMenu].xOrigin = GameMenuObject[BattlefieldEffects].xOrigin;
+	GameMenuObject[UpgradeMenu].yOrigin = GameMenuObject[BattlefieldEffects].yOrigin + GameMenuObject[BattlefieldEffects].height;
+	GameMenuObject[UpgradeMenu].width = GameMenuObject[BattlefieldEffects].width + GameMenuObject[MonsterRemainingDisplay].width;
+	GameMenuObject[UpgradeMenu].height = (CP_System_GetWindowHeight() - GameMenuObject[UpgradeButton].yOrigin);
+	GameMenuObject[UpgradeMenu].objectType = objectRectangle;
+}
+
 void upgrade_button_init(void) {
-	GameMenuObject[UpgradeButton].xOrigin = GameMenuObject[BattlefieldEffects].xOrigin;
-	GameMenuObject[UpgradeButton].yOrigin = GameMenuObject[BattlefieldEffects].yOrigin + GameMenuObject[BattlefieldEffects].height * 3.35;
-	GameMenuObject[UpgradeButton].width = GameMenuObject[BattlefieldEffects].width;
-	GameMenuObject[UpgradeButton].height = GameMenuObject[BattlefieldEffects].height;
+	GameMenuObject[UpgradeButton].xOrigin = GameMenuObject[UpgradeMenu].xOrigin;
+	GameMenuObject[UpgradeButton].yOrigin = GameMenuObject[SwapButton].yOrigin;
+	GameMenuObject[UpgradeButton].width = GameMenuObject[UpgradeMenu].width / 2;
+	GameMenuObject[UpgradeButton].height = GameMenuObject[SwapButton].height;
 	GameMenuObject[UpgradeButton].objectType = objectRectangle;
-	
-	
+
+
 	/*GameMenuObject[UpgradeButton].xOrigin = GameMenuObject[BattlefieldEffects].xOrigin;
 	GameMenuObject[UpgradeButton].yOrigin = GameMenuObject[BattlefieldEffects].yOrigin + GameMenuObject[BattlefieldEffects].height;
 	GameMenuObject[UpgradeButton].width = GameMenuObject[BattlefieldEffects].width + GameMenuObject[MonsterRemainingDisplay].width;
@@ -393,13 +401,13 @@ void upgrade_button_init(void) {
 }
 
 void sell_button_init(void) {
-	GameMenuObject[SellButton].xOrigin = GameMenuObject[MonsterRemainingDisplay].xOrigin;
-	GameMenuObject[SellButton].yOrigin = GameMenuObject[MonsterRemainingDisplay].yOrigin + GameMenuObject[MonsterRemainingDisplay].height * 3.35;
-	GameMenuObject[SellButton].width = GameMenuObject[MonsterRemainingDisplay].width;
-	GameMenuObject[SellButton].height = GameMenuObject[MonsterRemainingDisplay].height;
+	GameMenuObject[SellButton].xOrigin = GameMenuObject[UpgradeMenu].xOrigin + GameMenuObject[UpgradeButton].width;
+	GameMenuObject[SellButton].yOrigin = GameMenuObject[SwapButton].yOrigin;
+	GameMenuObject[SellButton].width = GameMenuObject[UpgradeMenu].width / 2;
+	GameMenuObject[SellButton].height = GameMenuObject[SwapButton].height;
 	GameMenuObject[SellButton].objectType = objectRectangle;
-	
-	
+
+
 	/*GameMenuObject[SellButton].xOrigin = GameMenuObject[UpgradeButton].xOrigin;
 	GameMenuObject[SellButton].yOrigin = GameMenuObject[UpgradeButton].yOrigin + GameMenuObject[UpgradeButton].height;
 	GameMenuObject[SellButton].width = GameMenuObject[UpgradeButton].width;
@@ -416,7 +424,7 @@ void level1_init(void) {
 	Level[0].health = 100;
 	Level[0].phantomQuartz = 50;
 	Level[0].goldQuartz = 0;
-	Level[0].currentWave = 0;
+	Level[0].currentWave = -1;// starts with building phase which increment wave by 1
 	Level[0].currentEffect = 0;
 }
 
@@ -431,7 +439,7 @@ void render_button_pressed(void) {
 		mouse_reset();
 		break;
 	case TurretButtonBasic:
-		if (turret_purchasing[TP_PRICE][T_BASIC] <= Level[currentGameLevel].phantomQuartz && powerUpMenu==FALSE) { // Currently hardcoded 
+		if (turret_purchasing[TP_PRICE][T_BASIC] <= Level[currentGameLevel].phantomQuartz && powerUpMenu == FALSE) { // Currently hardcoded 
 			isPlacingTurret = T_BASIC;
 			isUpgradingTurret = T_MAX;
 			RenderNormal(basicTurretSpriteSheet, basicTurretArray[0], CP_Input_GetMouseX(), CP_Input_GetMouseY(), Game.gridWidth, Game.gridHeight);
@@ -498,7 +506,6 @@ void render_button_pressed(void) {
 			pathfinding_calculate_cost(&Level[currentGameLevel]);
 			pathfinding_update(&Level[currentGameLevel]);
 			mouse_reset();
-			//call upgrade function
 		}
 		else {
 			isPlacingTurret = T_MAX;
@@ -554,7 +561,7 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 		else
 		{
 			RenderNormal(powerUpIconSpriteSheet, powerUpIconArray[0], menuObjectX.width / 2,
-				(menuObjectX.yOrigin + menuObjectX.height / 2), 100* scalingFactor, 100 * scalingFactor);
+				(menuObjectX.yOrigin + menuObjectX.height / 2), 100 * scalingFactor, 100 * scalingFactor);
 			sprintf_s(temp, sizeof(temp), "25");
 			CP_Font_DrawText(temp, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3));
 		}

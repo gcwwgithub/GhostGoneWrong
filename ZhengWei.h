@@ -19,6 +19,7 @@ void menu_swap_init(void);
 void wave_number_display_init(void);
 void battlefield_effects_display_init(void);
 void monster_remaining_display_init(void);
+void upgrade_menu_init(void);
 void upgrade_button_init(void);
 void sell_button_init(void);
 void level1_init(void);
