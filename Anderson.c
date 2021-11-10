@@ -10,10 +10,8 @@
 
 CP_Font pixelFont;
 
-int whiteSquareClicked = 0;
-
-int turretButton0Clicked = 0;
 buildingTime = BUILDING_PHASE_TIME;
+score = 0;
 
 #pragma region UI
 
@@ -42,7 +40,7 @@ void init_play_button(void)
 	PlayButton.buttonData.yOrigin = CP_System_GetWindowHeight() / 2.0f;
 	PlayButton.buttonData.width = BUTTON_WIDTH;
 	PlayButton.buttonData.height = BUTTON_HEIGHT;
-
+	PlayButton.buttonData.objectType = objectRectangle;
 	PlayButton.textPositionX = PlayButton.buttonData.xOrigin + BUTTON_WIDTH / 2;
 	PlayButton.textPositionY = PlayButton.buttonData.yOrigin + BUTTON_HEIGHT / 2;
 	strcpy_s(PlayButton.textString, sizeof(PlayButton.textString), "Play");
@@ -54,7 +52,7 @@ void init_quit_button(void)
 	QuitButton.buttonData.yOrigin = CP_System_GetWindowHeight() / 2.0f;
 	QuitButton.buttonData.width = BUTTON_WIDTH;
 	QuitButton.buttonData.height = BUTTON_HEIGHT;
-
+	QuitButton.buttonData.objectType = objectRectangle;
 	QuitButton.textPositionX = QuitButton.buttonData.xOrigin + BUTTON_WIDTH / 2;
 	QuitButton.textPositionY = QuitButton.buttonData.yOrigin + BUTTON_HEIGHT / 2;
 	strcpy_s(QuitButton.textString, sizeof(QuitButton.textString), "Quit");
@@ -66,7 +64,7 @@ void init_back_button(void)
 	BackButton.buttonData.yOrigin = CP_System_GetWindowHeight() * 0.75f;
 	BackButton.buttonData.width = BUTTON_WIDTH;
 	BackButton.buttonData.height = BUTTON_HEIGHT;
-
+	BackButton.buttonData.objectType = objectRectangle;
 	BackButton.textPositionX = BackButton.buttonData.xOrigin + BUTTON_WIDTH / 2;
 	BackButton.textPositionY = BackButton.buttonData.yOrigin + BUTTON_HEIGHT / 2;
 	strcpy_s(BackButton.textString, sizeof(BackButton.textString), "Back");
@@ -78,7 +76,7 @@ void init_pause_quit_button(void)
 	PauseQuitButton.buttonData.yOrigin = CP_System_GetWindowHeight() * 0.4f - BUTTON_HEIGHT / 2;
 	PauseQuitButton.buttonData.width = BUTTON_WIDTH;
 	PauseQuitButton.buttonData.height = BUTTON_HEIGHT;
-
+	PauseQuitButton.buttonData.objectType = objectRectangle;
 	PauseQuitButton.textPositionX = PauseQuitButton.buttonData.xOrigin + BUTTON_WIDTH / 2;
 	PauseQuitButton.textPositionY = PauseQuitButton.buttonData.yOrigin + BUTTON_HEIGHT / 2;
 	strcpy_s(PauseQuitButton.textString, sizeof(PauseQuitButton.textString), "Quit");
@@ -90,7 +88,7 @@ void init_pause_back_button(void)
 	PauseBackButton.buttonData.yOrigin = CP_System_GetWindowHeight() * 0.3f - BUTTON_HEIGHT / 2;
 	PauseBackButton.buttonData.width = BUTTON_WIDTH;
 	PauseBackButton.buttonData.height = BUTTON_HEIGHT;
-
+	PauseBackButton.buttonData.objectType = objectRectangle;
 	PauseBackButton.textPositionX = PauseBackButton.buttonData.xOrigin + BUTTON_WIDTH / 2;
 	PauseBackButton.textPositionY = PauseBackButton.buttonData.yOrigin + BUTTON_HEIGHT / 2;
 	strcpy_s(PauseBackButton.textString, sizeof(PauseBackButton.textString), "Back");
@@ -107,7 +105,7 @@ void init_level_select_buttons(void)
 		levelButtons[i].buttonData.yOrigin = CP_System_GetWindowHeight() / 3 + i * (BUTTON_HEIGHT + 25.0f);
 		levelButtons[i].buttonData.width = BUTTON_WIDTH;
 		levelButtons[i].buttonData.height = BUTTON_HEIGHT;
-
+		levelButtons[i].buttonData.objectType = objectRectangle;
 		levelButtons[i].textPositionX = levelButtons[i].buttonData.xOrigin + BUTTON_WIDTH / 2.0f;
 		levelButtons[i].textPositionY = levelButtons[i].buttonData.yOrigin + BUTTON_HEIGHT / 2.0f;
 		char levelNumberText[8];
@@ -122,19 +120,14 @@ void init_pause_screen(void)
 	init_pause_quit_button();
 }
 
-void init_win_screen(void)
-{
-
-}
-
 void init_end_screen(void)
 {
 	// Back to Main Menu
 	EndScreenButtons[0].buttonData.xOrigin = CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH / 2;
-	EndScreenButtons[0].buttonData.yOrigin = CP_System_GetWindowHeight() * 0.4f - BUTTON_HEIGHT / 2;
+	EndScreenButtons[0].buttonData.yOrigin = CP_System_GetWindowHeight() * 0.5f - BUTTON_HEIGHT / 2;
 	EndScreenButtons[0].buttonData.width = BUTTON_WIDTH;
 	EndScreenButtons[0].buttonData.height = BUTTON_HEIGHT;
-
+	EndScreenButtons[0].buttonData.objectType = objectRectangle;
 	EndScreenButtons[0].textPositionX = EndScreenButtons[0].buttonData.xOrigin + BUTTON_WIDTH / 2;
 	EndScreenButtons[0].textPositionY = EndScreenButtons[0].buttonData.yOrigin + BUTTON_HEIGHT / 2;
 	strcpy_s(EndScreenButtons[0].textString, sizeof(EndScreenButtons[0].textString), "Back");
@@ -144,17 +137,17 @@ void init_end_screen(void)
 	EndScreenButtons[1].buttonData.yOrigin = CP_System_GetWindowHeight() * 0.6f - BUTTON_HEIGHT / 2;
 	EndScreenButtons[1].buttonData.width = BUTTON_WIDTH;
 	EndScreenButtons[1].buttonData.height = BUTTON_HEIGHT;
-
+	EndScreenButtons[1].buttonData.objectType = objectRectangle;
 	EndScreenButtons[1].textPositionX = EndScreenButtons[1].buttonData.xOrigin + BUTTON_WIDTH / 2;
 	EndScreenButtons[1].textPositionY = EndScreenButtons[1].buttonData.yOrigin + BUTTON_HEIGHT / 2;
 	strcpy_s(EndScreenButtons[1].textString, sizeof(EndScreenButtons[1].textString), "Restart");
 
 	// Quit to Desktop
 	EndScreenButtons[2].buttonData.xOrigin = CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH / 2;
-	EndScreenButtons[2].buttonData.yOrigin = CP_System_GetWindowHeight() * 0.5f - BUTTON_HEIGHT / 2;
+	EndScreenButtons[2].buttonData.yOrigin = CP_System_GetWindowHeight() * 0.7f - BUTTON_HEIGHT / 2;
 	EndScreenButtons[2].buttonData.width = BUTTON_WIDTH;
 	EndScreenButtons[2].buttonData.height = BUTTON_HEIGHT;
-
+	EndScreenButtons[2].buttonData.objectType = objectRectangle;
 	EndScreenButtons[2].textPositionX = EndScreenButtons[2].buttonData.xOrigin + BUTTON_WIDTH / 2;
 	EndScreenButtons[2].textPositionY = EndScreenButtons[2].buttonData.yOrigin + BUTTON_HEIGHT / 2;
 	strcpy_s(EndScreenButtons[2].textString, sizeof(EndScreenButtons[2].textString), "Quit");
@@ -198,7 +191,6 @@ void render_level_select_buttons(void)
 	}
 }
 
-// Currently intended to be just text. Though I do have plans for this to be more than that. - anderson
 void render_credits_screen(void)
 {
 	// just render text and other things here
@@ -206,17 +198,11 @@ void render_credits_screen(void)
 
 void render_pause_screen(void)
 {
-	// The following shall be rendered here:
-	//	Restart button tbd
-
 	CP_Settings_Fill(COLOR_GREY);
-	CP_Graphics_DrawRect(CP_System_GetWindowWidth() * 0.4f, CP_System_GetWindowHeight() * 0.25f, CP_System_GetWindowWidth() * 0.2f, CP_System_GetWindowHeight() * 0.3f);
+	CP_Graphics_DrawRect(CP_System_GetWindowWidth() * 0.4f, CP_System_GetWindowHeight() * 0.25f, CP_System_GetWindowWidth() * 0.2f, CP_System_GetWindowHeight() * 0.2f);
 	render_ui_button(PauseBackButton);
 	render_ui_button(PauseQuitButton);
-
 }
-
-
 
 #pragma endregion
 
@@ -258,6 +244,10 @@ void reduce_building_phase_time()
 	{
 		set_building_time(0.0f);
 		Level[currentGameLevel].currentWave += 1;
+		for (int i = 0; i < MAX_ENEMY_TYPE; i++)
+		{
+			enemiesLeft += Level[currentGameLevel].waveEmemies[Level[currentGameLevel].currentWave][i];
+		}
 		currentGameState = Wave;
 	}
 	else
@@ -272,20 +262,25 @@ void set_building_time(float newBuildingTime)
 	buildingTime = newBuildingTime;
 }
 
-void display_enemies_left(void)
+//void display_enemies_left(void)
+//{
+//	// render text, go through list of enemies, check each if active.
+//	// if so, increment no. of active enemies.
+//	CP_Settings_TextSize(24.0f);
+//	char buffer[55] = { 0 };
+//	sprintf_s(buffer, sizeof(buffer), "Enemies Left: %d", enemiesLeft);
+//	CP_Font_DrawText(buffer, CP_System_GetWindowWidth() * 0.9f, CP_System_GetWindowHeight() * 0.5f);
+//	sprintf_s(buffer, sizeof(buffer), "Basic: %d", basicEnemyNum);
+//	CP_Font_DrawText(buffer, CP_System_GetWindowWidth() * 0.9f, CP_System_GetWindowHeight() * 0.6f);
+//	sprintf_s(buffer, sizeof(buffer), "Fast: %d", fastEnemyNum);
+//	CP_Font_DrawText(buffer, CP_System_GetWindowWidth() * 0.9f, CP_System_GetWindowHeight() * 0.7f);
+//	sprintf_s(buffer, sizeof(buffer), "Fat: %d", fatEnemyNum);
+//	CP_Font_DrawText(buffer, CP_System_GetWindowWidth() * 0.9f, CP_System_GetWindowHeight() * 0.8f);
+//}
+
+void add_score_bonus(int bonus)
 {
-	// render text, go through list of enemies, check each if active.
-	// if so, increment no. of active enemies.
-	CP_Settings_TextSize(24.0f);
-	char buffer[55] = { 0 };
-	sprintf_s(buffer, sizeof(buffer), "Enemies Left: %d", enemiesLeft);
-	CP_Font_DrawText(buffer, CP_System_GetWindowWidth() * 0.9f, CP_System_GetWindowHeight() * 0.5f);
-	sprintf_s(buffer, sizeof(buffer), "Basic: %d", basicEnemyNum);
-	CP_Font_DrawText(buffer, CP_System_GetWindowWidth() * 0.9f, CP_System_GetWindowHeight() * 0.6f);
-	sprintf_s(buffer, sizeof(buffer), "Fast: %d", fastEnemyNum);
-	CP_Font_DrawText(buffer, CP_System_GetWindowWidth() * 0.9f, CP_System_GetWindowHeight() * 0.7f);
-	sprintf_s(buffer, sizeof(buffer), "Fat: %d", fatEnemyNum);
-	CP_Font_DrawText(buffer, CP_System_GetWindowWidth() * 0.9f, CP_System_GetWindowHeight() * 0.8f);
+	score += bonus;
 }
 
 #pragma endregion
@@ -295,26 +290,30 @@ void display_enemies_left(void)
 void render_end_screen(void)
 {
 	// should have: statistics
-	//				restart button | main menu button | quit button
 	//				score display (high score if time permits)
 	CP_Settings_RectMode(CP_POSITION_CENTER);
 	CP_Settings_Fill(COLOR_GREY);
-	CP_Graphics_DrawRect(CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.4f, CP_System_GetWindowWidth() * 0.2f, CP_System_GetWindowHeight() * 0.3f);
+	CP_Graphics_DrawRect(CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.5f, CP_System_GetWindowWidth() * 0.2f, CP_System_GetWindowHeight() * 0.5f);
 
 	CP_Settings_Fill(COLOR_BLACK);
-	if (gameLost)
+	if (currentGameState == Lose)
 	{
-		CP_Font_DrawText("Game Lost!", CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.3f);
+		CP_Font_DrawText("Game Lost!", CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.4f);
 	}
-	else if (gameWon)
+	else if (currentGameState == Win)
 	{
-		CP_Font_DrawText("Game Won!", CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.3f);
+		CP_Font_DrawText("Game Won!", CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.4f);
 	}
 	CP_Settings_RectMode(CP_POSITION_CORNER);
 
 	render_ui_button(EndScreenButtons[0]);
 	render_ui_button(EndScreenButtons[1]);
 	render_ui_button(EndScreenButtons[2]);
+}
+
+void set_enemies_left(int newNumberofEnemies)
+{
+	enemiesLeft = newNumberofEnemies;
 }
 
 void game_win_lose_check(void)
@@ -327,38 +326,39 @@ void game_win_lose_check(void)
 	}
 	else if (0 == enemiesLeft)
 	{
-		//if (Level[currentGameLevel].currentWave == MAX_NUMBER_OF_WAVES)
+		if (Level[currentGameLevel].currentWave == MAX_NUMBER_OF_WAVES)
 		{
 			currentGameState = Win;
 		}
-		//else
+		else
 		{
-			//	Level[currentGameLevel].currentWave++;
-			// 	currentGameState = Building;
+			Level[currentGameLevel].currentWave++;
+			set_building_time(BUILDING_PHASE_TIME);
+			currentGameState = Building;
 		}
 	}
 }
 
 #pragma endregion
 
-void gold_quartz_change(int changeInQuartz)
-{
-	Level[0].goldQuartz += changeInQuartz;
-}
-
-void gold_to_phantom_quartz_conversion(int goldAmtToConvert, int conversionRate)
-{
-	Level[0].goldQuartz -= goldAmtToConvert;
-	Level[0].phantomQuartz += goldAmtToConvert / conversionRate;
-}
+//void gold_quartz_change(int changeInQuartz)
+//{
+//	Level[0].goldQuartz += changeInQuartz;
+//}
+//
+//void gold_to_phantom_quartz_conversion(int goldAmtToConvert, int conversionRate)
+//{
+//	Level[0].goldQuartz -= goldAmtToConvert;
+//	Level[0].phantomQuartz += goldAmtToConvert / conversionRate;
+//}
 
 void init_level(int gameLevelToRestart)
 {
 	//Level Data (presumed to be level 1)
 	currentGameLevel = gameLevelToRestart;
 
-	switch (gameLevelToRestart)
-	{
+	switch (gameLevelToRestart) {
+		{
 	case 0:
 		level1_init();
 		//default:
@@ -371,27 +371,27 @@ void init_level(int gameLevelToRestart)
 			//Level[gameLevelToRestart].goldQuartz = 100;
 			//Level[gameLevelToRestart].currentWave = 0;
 			//Level[gameLevelToRestart].currentEffect = 0;
-	}
+		}
 
-	pathfinding_init(&Level[gameLevelToRestart]);
-	environment_init(&Level[gameLevelToRestart]);
+		pathfinding_init(&Level[gameLevelToRestart]);
+		environment_init(&Level[gameLevelToRestart]);
 
-	// this only frees the top right 3 turret tiles --> (0,2) (1,2) (2,2)
-	// placing a turret on (4,0) and restarting level changes the enemy path.
-	for (int i = 0; i < GAME_GRID_ROWS; i++)
+		// this only frees the top right 3 turret tiles --> (0,2) (1,2) (2,2)
+		// placing a turret on (4,0) and restarting level changes the enemy path.
+	}for (int i = 0; i < GAME_GRID_ROWS; i++)
 	{
 		for (int j = 0; j < GAME_GRID_COLS; j++)
 		{
-			remove_turret(j, i);
+			remove_turret(i, j);
 		}
 	}
 
 	turret_init();
 
-	Enemies_init(2, 2, 2, &Level[gameLevelToRestart]);
-	set_building_time(BUILDING_PHASE_TIME);
+	//Enemies_init(2, 2, 2, &Level[gameLevelToRestart]);
+	//set_building_time(BUILDING_PHASE_TIME);
 
-	pathfinding_reset(&Level[gameLevelToRestart]);
-	pathfinding_calculate_cost(&Level[gameLevelToRestart]);
-	pathfinding_update(&Level[gameLevelToRestart]);
+	//pathfinding_reset(&Level[gameLevelToRestart]);
+	//pathfinding_calculate_cost(&Level[gameLevelToRestart]);
+	//pathfinding_update(&Level[gameLevelToRestart]);
 }
