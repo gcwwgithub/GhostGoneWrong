@@ -38,12 +38,7 @@ typedef enum EnvironmentEffectEmemy {
 	Applying
 }EnvironmentEffectEnemy;
 
-typedef struct EnemyPowerUps {
-	//Please insert any additional powerups
-	int SpeedDown;
-	int Less_HP;
-	int More_Points;
-}EnemyPowerUps;
+
 
 typedef struct Enemy {
 	int CurrentWaypoint, health, alpha, points;
@@ -55,7 +50,7 @@ typedef struct Enemy {
 	CP_Image Render_Enemy;
 	Ability_charge charges;
 	EnvironmentEffectEnemy env_eff;
-	EnemyPowerUps Enemy_pow_up;
+	int Enemy_pow_up[3];//Update to number of power ups
 
 	int isToken;
 
