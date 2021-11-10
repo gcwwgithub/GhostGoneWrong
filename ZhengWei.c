@@ -188,13 +188,12 @@ void render_game_grid_press(LevelData* LevelX) {
 		GridTemp.xOrigin = Game.xOrigin + (drawX + 0.5f) * Game.gridWidth;
 		GridTemp.yOrigin = Game.yOrigin + (drawY + 0.5f) * Game.gridHeight;
 		for (int i = 0; i < MAX_TURRET; i++) {
-			if (turret[i].data.xOrigin == GridTemp.xOrigin && turret[i].data.yOrigin == GridTemp.yOrigin && isUpgradingTurret != T_MAX && CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
-				isUpgradingTurret = T_MAX;
+			if (turret[i].data.xOrigin == GridTemp.xOrigin && turret[i].data.yOrigin == GridTemp.yOrigin && turretSelectedToUpgrade != NO_TURRET_SELECTED && CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
+				turretSelectedToUpgrade = NO_TURRET_SELECTED;
 				mouse_reset();
 			}
 			else if (turret[i].data.xOrigin == GridTemp.xOrigin && turret[i].data.yOrigin == GridTemp.yOrigin && turret[i].isActive == TRUE) {
-				isUpgradingTurret = turret[i].type;
-				turretSelectedToSell = i;
+				turretSelectedToUpgrade = i;
 			}
 		}
 	}
@@ -716,41 +715,41 @@ void render_button_pressed(void) {
 	case TurretButtonBasic:
 		if (turret_purchasing[TP_PRICE][T_BASIC] <= Level[currentGameLevel].phantomQuartz && powerUpMenu == FALSE) { // Currently hardcoded 
 			isPlacingTurret = T_BASIC;
-			isUpgradingTurret = T_MAX;
+			turretSelectedToUpgrade = NO_TURRET_SELECTED;
 			RenderNormal(basicTurretSpriteSheet, basicTurretArray[0], CP_Input_GetMouseX(), CP_Input_GetMouseY(), Game.gridWidth, Game.gridHeight);
 		}
 		break;
 	case TurretButtonSlow:
 		if (turret_purchasing[TP_PRICE][T_SLOW] <= Level[currentGameLevel].phantomQuartz && powerUpMenu == FALSE) {
 			isPlacingTurret = T_SLOW;
-			isUpgradingTurret = T_MAX;
+			turretSelectedToUpgrade = NO_TURRET_SELECTED;
 			CP_Image_DrawAdvanced(GameMenuObject[check_game_button_pressed()].image, CP_Input_GetMouseX(), CP_Input_GetMouseY(), Game.gridWidth, Game.gridHeight, 255, 0);
 		}
 		break;
 	case TurretButtonHoming:
 		if (turret_purchasing[TP_PRICE][T_HOMING] <= Level[currentGameLevel].phantomQuartz && powerUpMenu == FALSE) {
 			isPlacingTurret = T_HOMING;
-			isUpgradingTurret = T_MAX;
+			turretSelectedToUpgrade = NO_TURRET_SELECTED;
 			RenderNormal(homingMissleTurretSpriteSheet, homingMissleTurretArray[0], CP_Input_GetMouseX(), CP_Input_GetMouseY(), Game.gridWidth, Game.gridHeight);
 		}
 		break;
 	case TurretButtonMine:
 		if (turret_purchasing[TP_PRICE][T_MINE] <= Level[currentGameLevel].phantomQuartz && powerUpMenu == FALSE) {
 			isPlacingTurret = T_MINE;
-			isUpgradingTurret = T_MAX;
+			turretSelectedToUpgrade = NO_TURRET_SELECTED;
 			RenderNormal(mineSpriteSheet, mineArray[0], CP_Input_GetMouseX(), CP_Input_GetMouseY(), Game.gridWidth, Game.gridHeight);
 		}
 		break;
 	case SwapButton:
 		isPlacingTurret = T_MAX;
-		isUpgradingTurret = T_MAX;
+		turretSelectedToUpgrade = NO_TURRET_SELECTED;
 		powerUpMenu = !powerUpMenu;
 		mouse_reset();
 		break;
 
 	case GoldQuartzMenu:
 		isPlacingTurret = T_MAX;
-		isUpgradingTurret = T_MAX;
+		turretSelectedToUpgrade = NO_TURRET_SELECTED;
 		if (Level[currentGameLevel].phantomQuartz >= 10) {
 			Level[currentGameLevel].phantomQuartz -= 10;
 			Level[currentGameLevel].goldQuartz += 1;
@@ -758,24 +757,24 @@ void render_button_pressed(void) {
 		mouse_reset();
 		break;
 	case UpgradeButton:
-		if (isUpgradingTurret != T_MAX) {
-			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT) && Level[currentGameLevel].phantomQuartz >= turret_purchasing[TP_UPGRADE_PRICE][T_SLOW]) {
-				Level[currentGameLevel].phantomQuartz -= turret_purchasing[TP_UPGRADE_PRICE][isUpgradingTurret];
+		if (turretSelectedToUpgrade != NO_TURRET_SELECTED) {
+			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT) && Level[currentGameLevel].phantomQuartz >= turret[turretSelectedToUpgrade].upgrade_price) {
+				Level[currentGameLevel].phantomQuartz -= turret[turretSelectedToUpgrade].upgrade_price;
+				upgrade_turret(turretSelectedToUpgrade);
 				//call upgrade function
 			}
 		}
 		else {
 			isPlacingTurret = T_MAX;
-			isUpgradingTurret = T_MAX;
+			turretSelectedToUpgrade = NO_TURRET_SELECTED;
 		}
 		break;
 	case SellButton:
-		if (isUpgradingTurret != T_MAX) {
+		if (turretSelectedToUpgrade != NO_TURRET_SELECTED) {
 			int drawX, drawY;
-			turret[turretSelectedToSell].isActive = FALSE;
-			drawX = (int)((turret[turretSelectedToSell].data.xOrigin - Game.xOrigin) / Game.gridWidth);
-			drawY = (int)((turret[turretSelectedToSell].data.yOrigin - Game.yOrigin) / Game.gridHeight);
-			Level[currentGameLevel].phantomQuartz += 10;//hard coded to sell for 10
+			drawX = (int)((turret[turretSelectedToUpgrade].data.xOrigin - Game.xOrigin) / Game.gridWidth);
+			drawY = (int)((turret[turretSelectedToUpgrade].data.yOrigin - Game.yOrigin) / Game.gridHeight);
+			sell_turret(turretSelectedToUpgrade);
 			Level[currentGameLevel].grid[drawY][drawX].type = Clear;
 			pathfinding_reset(&Level[currentGameLevel]);
 			pathfinding_calculate_cost(&Level[currentGameLevel]);
@@ -784,13 +783,13 @@ void render_button_pressed(void) {
 		}
 		else {
 			isPlacingTurret = T_MAX;
-			isUpgradingTurret = T_MAX;
+			turretSelectedToUpgrade = NO_TURRET_SELECTED;
 		}
 		break;
 
 	default:
 		isPlacingTurret = T_MAX;
-		isUpgradingTurret = T_MAX;
+		turretSelectedToUpgrade = NO_TURRET_SELECTED;
 		break;
 	}
 }
@@ -812,7 +811,7 @@ void render_game_grid(void)
 
 void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type) {
 	char temp[100];
-	if (isUpgradingTurret == T_MAX && (type == UpgradeButton || type == SellButton || type == UpgradeMenu)) {// only render upgrade and sell button when turret selected
+	if (turretSelectedToUpgrade == NO_TURRET_SELECTED && (type == UpgradeButton || type == SellButton || type == UpgradeMenu)) {// only render upgrade and sell button when turret selected
 	//empty by design
 	}
 	else {
@@ -982,13 +981,13 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 		CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 2, menuObjectX.yOrigin + menuObjectX.height / 2);
 		break;
 	case UpgradeMenu:
-		if (isUpgradingTurret != T_MAX) { //Only render when upgrading
+		if (turretSelectedToUpgrade != NO_TURRET_SELECTED) { //Only render when upgrading
 			CP_Image_Draw(turretUpgradeBackground, menuObjectX.xOrigin + menuObjectX.width / 2,
 				menuObjectX.yOrigin + menuObjectX.height / 3, 275 * scalingFactor, 475 * scalingFactor, 255);
 			CP_Settings_Fill(COLOR_WHITE);
 			CP_Settings_TextSize(50.0f * scalingFactor);
 
-			switch (turret[turretSelectedToSell].type)
+			switch (turret[turretSelectedToUpgrade].type)
 			{
 			case T_BASIC:
 				sprintf_s(temp, sizeof(temp), "Basic");
@@ -1019,9 +1018,9 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 				break;
 			}
 
-			sprintf_s(temp, sizeof(temp), "Level:%d", turret[turretSelectedToSell].level);
+			sprintf_s(temp, sizeof(temp), "Level:%d", turret[turretSelectedToUpgrade].level);
 			CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 2, menuObjectX.yOrigin + menuObjectX.height / 3);
-			sprintf_s(temp, sizeof(temp), "%d", turret_purchasing[TP_UPGRADE_PRICE][turret[turretSelectedToSell].type]);
+			sprintf_s(temp, sizeof(temp), "%d", turret_purchasing[TP_UPGRADE_PRICE][turret[turretSelectedToUpgrade].type]);
 			CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 5.5, menuObjectX.yOrigin + menuObjectX.height / 1.95);
 			RenderNormal(currencySpriteSheet, currencyArray[1], menuObjectX.xOrigin + menuObjectX.width / 3,
 				menuObjectX.yOrigin + menuObjectX.height / 1.95, 64 * scalingFactor, 64 * scalingFactor);
@@ -1033,7 +1032,7 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 		}
 		break;
 	case UpgradeButton:
-		if (isUpgradingTurret != T_MAX) { //Only render when upgrading
+		if (turretSelectedToUpgrade != NO_TURRET_SELECTED) { //Only render when upgrading
 
 			RenderNormal(interactableButtonsImageSpriteSheet, interactableButtonsImageArray[1],
 				menuObjectX.xOrigin + menuObjectX.width / 2,
@@ -1042,7 +1041,7 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 		}
 		break;
 	case SellButton:
-		if (isUpgradingTurret != T_MAX) {//Only render when upgrading
+		if (turretSelectedToUpgrade != NO_TURRET_SELECTED) {//Only render when upgrading
 
 			RenderNormal(interactableButtonsImageSpriteSheet, interactableButtonsImageArray[0],
 				menuObjectX.xOrigin + menuObjectX.width / 2,

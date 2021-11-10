@@ -37,6 +37,6 @@ void render_button_pressed(void);
 void pathfinding_update(LevelData* LevelX);
 
 int isPlacingTurret;
-int isUpgradingTurret;
 int powerUpMenu;
-int turretSelectedToSell;
+#define NO_TURRET_SELECTED -1
+int turretSelectedToUpgrade;

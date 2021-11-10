@@ -216,7 +216,7 @@ void game_update(void)
 		{
 			level1_init();
 			isPlacingTurret = T_MAX;
-			isUpgradingTurret = T_MAX;
+			turretSelectedToUpgrade = NO_TURRET_SELECTED;
 			powerUpMenu = FALSE;
 			pathfinding_init(&Level[currentGameLevel]);
 			environment_init(&Level[currentGameLevel]);
@@ -232,7 +232,7 @@ void game_update(void)
 		else if (btn_is_pressed(levelButtons[1].buttonData)) {
 			level2_init();
 			isPlacingTurret = T_MAX;
-			isUpgradingTurret = T_MAX;
+			turretSelectedToUpgrade = NO_TURRET_SELECTED;
 			powerUpMenu = FALSE;
 			pathfinding_init(&Level[currentGameLevel]);
 			environment_init(&Level[currentGameLevel]);
@@ -248,7 +248,7 @@ void game_update(void)
 		else if (btn_is_pressed(levelButtons[2].buttonData)) {
 			level3_init();
 			isPlacingTurret = T_MAX;
-			isUpgradingTurret = T_MAX;
+			turretSelectedToUpgrade = NO_TURRET_SELECTED;
 			powerUpMenu = FALSE;
 			pathfinding_init(&Level[currentGameLevel]);
 			environment_init(&Level[currentGameLevel]);
@@ -264,7 +264,7 @@ void game_update(void)
 		else if (btn_is_pressed(levelButtons[3].buttonData)) {
 			level4_init();
 			isPlacingTurret = T_MAX;
-			isUpgradingTurret = T_MAX;
+			turretSelectedToUpgrade = NO_TURRET_SELECTED;
 			powerUpMenu = FALSE;
 			pathfinding_init(&Level[currentGameLevel]);
 			environment_init(&Level[currentGameLevel]);
@@ -280,7 +280,7 @@ void game_update(void)
 		else if (btn_is_pressed(levelButtons[4].buttonData)) {
 			level5_init();
 			isPlacingTurret = T_MAX;
-			isUpgradingTurret = T_MAX;
+			turretSelectedToUpgrade = NO_TURRET_SELECTED;
 			powerUpMenu = FALSE;
 			pathfinding_init(&Level[currentGameLevel]);
 			environment_init(&Level[currentGameLevel]);
