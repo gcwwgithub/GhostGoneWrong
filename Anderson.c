@@ -244,10 +244,6 @@ void reduce_building_phase_time()
 	{
 		set_building_time(0.0f);
 		Level[currentGameLevel].currentWave += 1;
-		for (int i = 0; i < MAX_ENEMY_TYPE; i++)
-		{
-			enemiesLeft += Level[currentGameLevel].waveEmemies[Level[currentGameLevel].currentWave][i];
-		}
 		currentGameState = Wave;
 	}
 	else
@@ -309,11 +305,6 @@ void render_end_screen(void)
 	render_ui_button(EndScreenButtons[0]);
 	render_ui_button(EndScreenButtons[1]);
 	render_ui_button(EndScreenButtons[2]);
-}
-
-void set_enemies_left(int newNumberofEnemies)
-{
-	enemiesLeft = newNumberofEnemies;
 }
 
 void game_win_lose_check(void)

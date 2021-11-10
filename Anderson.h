@@ -63,7 +63,6 @@ void render_wave_timer_text(void);
 void reduce_building_phase_time(void);
 void set_building_time(float newBuildingTime);
 void init_skip_wave_button(void);
-void set_enemies_left(int newNumberofEnemies);
 
 void init_game_font(void);
 void init_pause_screen(void);
