@@ -129,8 +129,8 @@ void place_turret(TurretType type, int index_x, int index_y)
 		default:
 			break;
 		}
-		//upgrade price back to 0
-		turret[i].upgrade_price = 0;
+		//upgrade price back to default
+		turret[i].upgrade_price = turret_purchasing[TP_UPGRADE_PRICE][type];
 		//shooting rate set
 		turret[i].mod.shoot_rate = 0.6f;
 		//set to active and the turret type
@@ -183,7 +183,6 @@ void upgrade_turret(int t_index)
 	
 	// Minus the price
 	//Level[currentGameLevel].phantomQuartz -= turret_purchasing[TP_UPGRADE_PRICE][turret[t_index].type] +
-	//	turret[t_index].upgrade_price;
 
 	turret[t_index].level++;
 	switch (turret[t_index].type)
