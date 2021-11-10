@@ -96,10 +96,10 @@ void place_turret(TurretType type, int index_x, int index_y);
 void remove_turret(int index_x, int index_y);
 
 //sell them turrets
-void sell_turret(int index_x, int index_y);
+void sell_turret(int t_index);
 
 //upgrade system (for now using index will change depending how to access this easier)
-void upgrade_turret(int index_x, int index_y);
+void upgrade_turret(int t_index);
 
 //void render_turret(Turret* t);
 void render_turret(void);

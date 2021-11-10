@@ -463,9 +463,9 @@ void empty_enemy_init(enemy* r) {
 	r->currentAnimState = 0;
 	r->charges = Used;
 	r->env_eff = Applying;
-	r->Enemy_pow_up.Less_HP = 0;
-	r->Enemy_pow_up.More_Points = 0;
-	r->Enemy_pow_up.SpeedDown = 0;
+	//r->Enemy_pow_up.Less_HP = 0;
+	//r->Enemy_pow_up.More_Points = 0;
+	//r->Enemy_pow_up.SpeedDown = 0;
 	r->WavePowUp_isActive = 0;
 	r->isToken = 0;
 }

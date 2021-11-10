@@ -164,21 +164,27 @@ void remove_turret(int index_x, int index_y)
 }
 
 //sell them turrets
-void sell_turret(int index_x, int index_y)
+void sell_turret(int t_index)
 {
-	int index = turret_on_grid[index_x][index_y];
+	int x = (int)((turret[t_index].data.xOrigin - Game.xOrigin) / Game.gridWidth);
+	int y = (int)((turret[t_index].data.yOrigin - Game.yOrigin) / Game.gridHeight);
+	int index = turret_on_grid[x][y];
 	Level[currentGameLevel].phantomQuartz += (turret[index].upgrade_price +
 		turret_purchasing[TP_PRICE][turret[index].type]) / 2;
-	remove_turret(index_x, index_y);
+	remove_turret(x, y);
 }
 
 //upgrade system (for now using index will change depending on usage)
-void upgrade_turret(int index_x, int index_y)
+void upgrade_turret(int t_index)
 {
-	int t_index = turret_on_grid[index_x][index_y];
+	int x = (int)((turret[t_index].data.xOrigin - Game.xOrigin) / Game.gridWidth);
+	int y = (int)((turret[t_index].data.yOrigin - Game.yOrigin) / Game.gridHeight);
+	//int t_index = turret_on_grid[x][y];
+	
 	// Minus the price
-	Level[currentGameLevel].phantomQuartz -= turret_purchasing[TP_UPGRADE_PRICE][turret[t_index].type] +
-		turret[t_index].upgrade_price;
+	//Level[currentGameLevel].phantomQuartz -= turret_purchasing[TP_UPGRADE_PRICE][turret[t_index].type] +
+	//	turret[t_index].upgrade_price;
+
 	turret[t_index].level++;
 	switch (turret[t_index].type)
 	{
