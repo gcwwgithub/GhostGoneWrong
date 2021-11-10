@@ -205,6 +205,7 @@ void render_game_grid_press(LevelData* LevelX) {
 int check_game_button_pressed(void) {
 	for (int i = 0; i < NUMBER_OF_MENU_OBJECTS; i++) {
 		if (btn_is_pressed(GameMenuObject[i])) {
+			if(i!=UpgradeMenu)//Upgrade Menu should be cnsidered no button
 			return i;
 		}
 	}
