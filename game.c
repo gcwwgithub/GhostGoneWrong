@@ -103,10 +103,13 @@ void game_update(void)
 
 		render_bullet_circles();
 
+		if (!turret[turretSelectedToUpgrade].isActive) { // Close mine menu when it explodes
+			turretSelectedToUpgrade = NO_TURRET_SELECTED;
+		}
 		render_button_pressed();
 
-
 		render_environment();
+
 	}
 	else if (currentGameState == Building)
 	{
@@ -151,7 +154,7 @@ void game_update(void)
 		if (btn_is_pressed(EndScreenButtons[0].buttonData))
 		{
 			currentGameState = MainMenu;
-		//	init_level(currentGameLevel);
+			//	init_level(currentGameLevel);
 		}
 		else if (btn_is_pressed(EndScreenButtons[1].buttonData))
 		{
@@ -323,7 +326,7 @@ void game_update(void)
 		}
 		else if (btn_is_pressed(PauseQuitButton.buttonData))
 		{
-			exit_to_desktop(); 
+			exit_to_desktop();
 		}
 		render_pause_screen();
 	}
