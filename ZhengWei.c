@@ -204,8 +204,8 @@ void render_game_grid_press(LevelData* LevelX) {
 int check_game_button_pressed(void) {
 	for (int i = 0; i < NUMBER_OF_MENU_OBJECTS; i++) {
 		if (btn_is_pressed(GameMenuObject[i])) {
-			if(i!=UpgradeMenu)//Upgrade Menu should be cnsidered no button
-			return i;
+			if (i != UpgradeMenu)//Upgrade Menu should be cnsidered no button
+				return i;
 		}
 	}
 	return NoButton;
@@ -1025,7 +1025,7 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 			RenderNormal(currencySpriteSheet, currencyArray[1], menuObjectX.xOrigin + menuObjectX.width / 3,
 				menuObjectX.yOrigin + menuObjectX.height / 1.95, 64 * scalingFactor, 64 * scalingFactor);
 
-			sprintf_s(temp, sizeof(temp), "%d" , (turret[turretSelectedToUpgrade].upgrade_price +
+			sprintf_s(temp, sizeof(temp), "%d", (turret[turretSelectedToUpgrade].upgrade_price +
 				turret_purchasing[TP_PRICE][turret[turretSelectedToUpgrade].type]) / 2);
 			CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 1.45, menuObjectX.yOrigin + menuObjectX.height / 1.95);
 			RenderNormal(currencySpriteSheet, currencyArray[1], menuObjectX.xOrigin + menuObjectX.width / 1.2,
