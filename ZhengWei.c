@@ -428,49 +428,49 @@ void level1_init(void) {
 	Level[0].currentWave = -1;// starts with building phase which increment wave by 1
 	Level[0].currentEffect = NoEnvironmentalEffects;
 
-	Level[0].waveEmemies[0][Basic] = 10;
-	Level[0].waveEmemies[1][Basic] = 10;
-	Level[0].waveEmemies[2][Basic] = 15;
-	Level[0].waveEmemies[3][Basic] = 15;
-	Level[0].waveEmemies[4][Basic] = 20;
-	Level[0].waveEmemies[5][Basic] = 20;
-	Level[0].waveEmemies[6][Basic] = 25;
-	Level[0].waveEmemies[7][Basic] = 25;
-	Level[0].waveEmemies[8][Basic] = 30;
-	Level[0].waveEmemies[9][Basic] = 30;
+	Level[0].waveEnemies[0][Basic] = 10;
+	Level[0].waveEnemies[1][Basic] = 10;
+	Level[0].waveEnemies[2][Basic] = 15;
+	Level[0].waveEnemies[3][Basic] = 15;
+	Level[0].waveEnemies[4][Basic] = 20;
+	Level[0].waveEnemies[5][Basic] = 20;
+	Level[0].waveEnemies[6][Basic] = 25;
+	Level[0].waveEnemies[7][Basic] = 25;
+	Level[0].waveEnemies[8][Basic] = 30;
+	Level[0].waveEnemies[9][Basic] = 30;
 
-	Level[0].waveEmemies[0][Fast_Ghost] = 0;
-	Level[0].waveEmemies[1][Fast_Ghost] = 0;
-	Level[0].waveEmemies[2][Fast_Ghost] = 0;
-	Level[0].waveEmemies[3][Fast_Ghost] = 0;
-	Level[0].waveEmemies[4][Fast_Ghost] = 0;
-	Level[0].waveEmemies[5][Fast_Ghost] = 0;
-	Level[0].waveEmemies[6][Fast_Ghost] = 0;
-	Level[0].waveEmemies[7][Fast_Ghost] = 0;
-	Level[0].waveEmemies[8][Fast_Ghost] = 0;
-	Level[0].waveEmemies[9][Fast_Ghost] = 0;
+	Level[0].waveEnemies[0][Fast_Ghost] = 0;
+	Level[0].waveEnemies[1][Fast_Ghost] = 0;
+	Level[0].waveEnemies[2][Fast_Ghost] = 0;
+	Level[0].waveEnemies[3][Fast_Ghost] = 0;
+	Level[0].waveEnemies[4][Fast_Ghost] = 0;
+	Level[0].waveEnemies[5][Fast_Ghost] = 0;
+	Level[0].waveEnemies[6][Fast_Ghost] = 0;
+	Level[0].waveEnemies[7][Fast_Ghost] = 0;
+	Level[0].waveEnemies[8][Fast_Ghost] = 0;
+	Level[0].waveEnemies[9][Fast_Ghost] = 0;
 
-	Level[0].waveEmemies[0][Fat_Ghost] = 0;
-	Level[0].waveEmemies[1][Fat_Ghost] = 0;
-	Level[0].waveEmemies[2][Fat_Ghost] = 0;
-	Level[0].waveEmemies[3][Fat_Ghost] = 0;
-	Level[0].waveEmemies[4][Fat_Ghost] = 0;
-	Level[0].waveEmemies[5][Fat_Ghost] = 0;
-	Level[0].waveEmemies[6][Fat_Ghost] = 0;
-	Level[0].waveEmemies[7][Fat_Ghost] = 0;
-	Level[0].waveEmemies[8][Fat_Ghost] = 0;
-	Level[0].waveEmemies[9][Fat_Ghost] = 0;
+	Level[0].waveEnemies[0][Fat_Ghost] = 0;
+	Level[0].waveEnemies[1][Fat_Ghost] = 0;
+	Level[0].waveEnemies[2][Fat_Ghost] = 0;
+	Level[0].waveEnemies[3][Fat_Ghost] = 0;
+	Level[0].waveEnemies[4][Fat_Ghost] = 0;
+	Level[0].waveEnemies[5][Fat_Ghost] = 0;
+	Level[0].waveEnemies[6][Fat_Ghost] = 0;
+	Level[0].waveEnemies[7][Fat_Ghost] = 0;
+	Level[0].waveEnemies[8][Fat_Ghost] = 0;
+	Level[0].waveEnemies[9][Fat_Ghost] = 0;
 
-	Level[0].waveEmemies[0][grimReaper] = 0;
-	Level[0].waveEmemies[1][grimReaper] = 0;
-	Level[0].waveEmemies[2][grimReaper] = 0;
-	Level[0].waveEmemies[3][grimReaper] = 0;
-	Level[0].waveEmemies[4][grimReaper] = 0;
-	Level[0].waveEmemies[5][grimReaper] = 0;
-	Level[0].waveEmemies[6][grimReaper] = 0;
-	Level[0].waveEmemies[7][grimReaper] = 0;
-	Level[0].waveEmemies[8][grimReaper] = 0;
-	Level[0].waveEmemies[9][grimReaper] = 0;
+	Level[0].waveEnemies[0][grimReaper] = 0;
+	Level[0].waveEnemies[1][grimReaper] = 0;
+	Level[0].waveEnemies[2][grimReaper] = 0;
+	Level[0].waveEnemies[3][grimReaper] = 0;
+	Level[0].waveEnemies[4][grimReaper] = 0;
+	Level[0].waveEnemies[5][grimReaper] = 0;
+	Level[0].waveEnemies[6][grimReaper] = 0;
+	Level[0].waveEnemies[7][grimReaper] = 0;
+	Level[0].waveEnemies[8][grimReaper] = 0;
+	Level[0].waveEnemies[9][grimReaper] = 0;
 }
 
 void level2_init(void) {
@@ -485,49 +485,49 @@ void level2_init(void) {
 	Level[0].currentWave = -1;// starts with building phase which increment wave by 1
 	Level[0].currentEffect = NoEnvironmentalEffects;
 
-	Level[0].waveEmemies[0][Basic] = 10;
-	Level[0].waveEmemies[1][Basic] = 10;
-	Level[0].waveEmemies[2][Basic] = 15;
-	Level[0].waveEmemies[3][Basic] = 15;
-	Level[0].waveEmemies[4][Basic] = 20;
-	Level[0].waveEmemies[5][Basic] = 20;
-	Level[0].waveEmemies[6][Basic] = 25;
-	Level[0].waveEmemies[7][Basic] = 25;
-	Level[0].waveEmemies[8][Basic] = 30;
-	Level[0].waveEmemies[9][Basic] = 25;
+	Level[0].waveEnemies[0][Basic] = 10;
+	Level[0].waveEnemies[1][Basic] = 10;
+	Level[0].waveEnemies[2][Basic] = 15;
+	Level[0].waveEnemies[3][Basic] = 15;
+	Level[0].waveEnemies[4][Basic] = 20;
+	Level[0].waveEnemies[5][Basic] = 20;
+	Level[0].waveEnemies[6][Basic] = 25;
+	Level[0].waveEnemies[7][Basic] = 25;
+	Level[0].waveEnemies[8][Basic] = 30;
+	Level[0].waveEnemies[9][Basic] = 25;
 
-	Level[0].waveEmemies[0][Fat_Ghost] = 0;
-	Level[0].waveEmemies[1][Fat_Ghost] = 0;
-	Level[0].waveEmemies[2][Fast_Ghost] = 1;
-	Level[0].waveEmemies[3][Fast_Ghost] = 5;
-	Level[0].waveEmemies[4][Fast_Ghost] = 5;
-	Level[0].waveEmemies[5][Fast_Ghost] = 10;
-	Level[0].waveEmemies[6][Fast_Ghost] = 10;
-	Level[0].waveEmemies[7][Fast_Ghost] = 10;
-	Level[0].waveEmemies[8][Fast_Ghost] = 10;
-	Level[0].waveEmemies[9][Fast_Ghost] = 15;
+	Level[0].waveEnemies[0][Fat_Ghost] = 0;
+	Level[0].waveEnemies[1][Fat_Ghost] = 0;
+	Level[0].waveEnemies[2][Fast_Ghost] = 1;
+	Level[0].waveEnemies[3][Fast_Ghost] = 5;
+	Level[0].waveEnemies[4][Fast_Ghost] = 5;
+	Level[0].waveEnemies[5][Fast_Ghost] = 10;
+	Level[0].waveEnemies[6][Fast_Ghost] = 10;
+	Level[0].waveEnemies[7][Fast_Ghost] = 10;
+	Level[0].waveEnemies[8][Fast_Ghost] = 10;
+	Level[0].waveEnemies[9][Fast_Ghost] = 15;
 
-	Level[0].waveEmemies[0][Fat_Ghost] = 0;
-	Level[0].waveEmemies[1][Fat_Ghost] = 0;
-	Level[0].waveEmemies[2][Fat_Ghost] = 0;
-	Level[0].waveEmemies[3][Fat_Ghost] = 0;
-	Level[0].waveEmemies[4][Fat_Ghost] = 0;
-	Level[0].waveEmemies[5][Fat_Ghost] = 0;
-	Level[0].waveEmemies[6][Fat_Ghost] = 0;
-	Level[0].waveEmemies[7][Fat_Ghost] = 0;
-	Level[0].waveEmemies[8][Fat_Ghost] = 0;
-	Level[0].waveEmemies[9][Fat_Ghost] = 0;
+	Level[0].waveEnemies[0][Fat_Ghost] = 0;
+	Level[0].waveEnemies[1][Fat_Ghost] = 0;
+	Level[0].waveEnemies[2][Fat_Ghost] = 0;
+	Level[0].waveEnemies[3][Fat_Ghost] = 0;
+	Level[0].waveEnemies[4][Fat_Ghost] = 0;
+	Level[0].waveEnemies[5][Fat_Ghost] = 0;
+	Level[0].waveEnemies[6][Fat_Ghost] = 0;
+	Level[0].waveEnemies[7][Fat_Ghost] = 0;
+	Level[0].waveEnemies[8][Fat_Ghost] = 0;
+	Level[0].waveEnemies[9][Fat_Ghost] = 0;
 
-	Level[0].waveEmemies[0][grimReaper] = 0;
-	Level[0].waveEmemies[1][grimReaper] = 0;
-	Level[0].waveEmemies[2][grimReaper] = 0;
-	Level[0].waveEmemies[3][grimReaper] = 0;
-	Level[0].waveEmemies[4][grimReaper] = 0;
-	Level[0].waveEmemies[5][grimReaper] = 0;
-	Level[0].waveEmemies[6][grimReaper] = 0;
-	Level[0].waveEmemies[7][grimReaper] = 0;
-	Level[0].waveEmemies[8][grimReaper] = 0;
-	Level[0].waveEmemies[9][grimReaper] = 0;
+	Level[0].waveEnemies[0][grimReaper] = 0;
+	Level[0].waveEnemies[1][grimReaper] = 0;
+	Level[0].waveEnemies[2][grimReaper] = 0;
+	Level[0].waveEnemies[3][grimReaper] = 0;
+	Level[0].waveEnemies[4][grimReaper] = 0;
+	Level[0].waveEnemies[5][grimReaper] = 0;
+	Level[0].waveEnemies[6][grimReaper] = 0;
+	Level[0].waveEnemies[7][grimReaper] = 0;
+	Level[0].waveEnemies[8][grimReaper] = 0;
+	Level[0].waveEnemies[9][grimReaper] = 0;
 }
 
 void level3_init(void) {
@@ -543,49 +543,49 @@ void level3_init(void) {
 	Level[0].currentWave = -1;// starts with building phase which increment wave by 1
 	Level[0].currentEffect = NoEnvironmentalEffects;
 
-	Level[0].waveEmemies[0][Basic] = 10;
-	Level[0].waveEmemies[1][Basic] = 10;
-	Level[0].waveEmemies[2][Basic] = 10;
-	Level[0].waveEmemies[3][Basic] = 15;
-	Level[0].waveEmemies[4][Basic] = 15;
-	Level[0].waveEmemies[5][Basic] = 15;
-	Level[0].waveEmemies[6][Basic] = 15;
-	Level[0].waveEmemies[7][Basic] = 20;
-	Level[0].waveEmemies[8][Basic] = 20;
-	Level[0].waveEmemies[9][Basic] = 25;
+	Level[0].waveEnemies[0][Basic] = 10;
+	Level[0].waveEnemies[1][Basic] = 10;
+	Level[0].waveEnemies[2][Basic] = 10;
+	Level[0].waveEnemies[3][Basic] = 15;
+	Level[0].waveEnemies[4][Basic] = 15;
+	Level[0].waveEnemies[5][Basic] = 15;
+	Level[0].waveEnemies[6][Basic] = 15;
+	Level[0].waveEnemies[7][Basic] = 20;
+	Level[0].waveEnemies[8][Basic] = 20;
+	Level[0].waveEnemies[9][Basic] = 25;
 
-	Level[0].waveEmemies[0][Fast_Ghost] = 0;
-	Level[0].waveEmemies[1][Fast_Ghost] = 5;
-	Level[0].waveEmemies[2][Fast_Ghost] = 5;
-	Level[0].waveEmemies[3][Fast_Ghost] = 5;
-	Level[0].waveEmemies[4][Fast_Ghost] = 10;
-	Level[0].waveEmemies[5][Fast_Ghost] = 10;
-	Level[0].waveEmemies[6][Fast_Ghost] = 10;
-	Level[0].waveEmemies[7][Fast_Ghost] = 10;
-	Level[0].waveEmemies[8][Fast_Ghost] = 10;
-	Level[0].waveEmemies[9][Fast_Ghost] = 10;
+	Level[0].waveEnemies[0][Fast_Ghost] = 0;
+	Level[0].waveEnemies[1][Fast_Ghost] = 5;
+	Level[0].waveEnemies[2][Fast_Ghost] = 5;
+	Level[0].waveEnemies[3][Fast_Ghost] = 5;
+	Level[0].waveEnemies[4][Fast_Ghost] = 10;
+	Level[0].waveEnemies[5][Fast_Ghost] = 10;
+	Level[0].waveEnemies[6][Fast_Ghost] = 10;
+	Level[0].waveEnemies[7][Fast_Ghost] = 10;
+	Level[0].waveEnemies[8][Fast_Ghost] = 10;
+	Level[0].waveEnemies[9][Fast_Ghost] = 10;
 
-	Level[0].waveEmemies[0][Fat_Ghost] = 0;
-	Level[0].waveEmemies[1][Fat_Ghost] = 0;
-	Level[0].waveEmemies[2][Fat_Ghost] = 0;
-	Level[0].waveEmemies[3][Fat_Ghost] = 0;
-	Level[0].waveEmemies[4][Fat_Ghost] = 1;
-	Level[0].waveEmemies[5][Fat_Ghost] = 5;
-	Level[0].waveEmemies[6][Fat_Ghost] = 5;
-	Level[0].waveEmemies[7][Fat_Ghost] = 5;
-	Level[0].waveEmemies[8][Fat_Ghost] = 10;
-	Level[0].waveEmemies[9][Fat_Ghost] = 10;
+	Level[0].waveEnemies[0][Fat_Ghost] = 0;
+	Level[0].waveEnemies[1][Fat_Ghost] = 0;
+	Level[0].waveEnemies[2][Fat_Ghost] = 0;
+	Level[0].waveEnemies[3][Fat_Ghost] = 0;
+	Level[0].waveEnemies[4][Fat_Ghost] = 1;
+	Level[0].waveEnemies[5][Fat_Ghost] = 5;
+	Level[0].waveEnemies[6][Fat_Ghost] = 5;
+	Level[0].waveEnemies[7][Fat_Ghost] = 5;
+	Level[0].waveEnemies[8][Fat_Ghost] = 10;
+	Level[0].waveEnemies[9][Fat_Ghost] = 10;
 
-	Level[0].waveEmemies[0][grimReaper] = 0;
-	Level[0].waveEmemies[1][grimReaper] = 0;
-	Level[0].waveEmemies[2][grimReaper] = 0;
-	Level[0].waveEmemies[3][grimReaper] = 0;
-	Level[0].waveEmemies[4][grimReaper] = 0;
-	Level[0].waveEmemies[5][grimReaper] = 0;
-	Level[0].waveEmemies[6][grimReaper] = 0;
-	Level[0].waveEmemies[7][grimReaper] = 0;
-	Level[0].waveEmemies[8][grimReaper] = 0;
-	Level[0].waveEmemies[9][grimReaper] = 0;
+	Level[0].waveEnemies[0][grimReaper] = 0;
+	Level[0].waveEnemies[1][grimReaper] = 0;
+	Level[0].waveEnemies[2][grimReaper] = 0;
+	Level[0].waveEnemies[3][grimReaper] = 0;
+	Level[0].waveEnemies[4][grimReaper] = 0;
+	Level[0].waveEnemies[5][grimReaper] = 0;
+	Level[0].waveEnemies[6][grimReaper] = 0;
+	Level[0].waveEnemies[7][grimReaper] = 0;
+	Level[0].waveEnemies[8][grimReaper] = 0;
+	Level[0].waveEnemies[9][grimReaper] = 0;
 }
 
 void level4_init(void) {
@@ -600,49 +600,49 @@ void level4_init(void) {
 	Level[0].currentWave = -1;// starts with building phase which increment wave by 1
 	Level[0].currentEffect = NoEnvironmentalEffects;
 
-	Level[0].waveEmemies[0][Basic] = 10;
-	Level[0].waveEmemies[1][Basic] = 10;
-	Level[0].waveEmemies[2][Basic] = 10;
-	Level[0].waveEmemies[3][Basic] = 10;
-	Level[0].waveEmemies[4][Basic] = 15;
-	Level[0].waveEmemies[5][Basic] = 15;
-	Level[0].waveEmemies[6][Basic] = 15;
-	Level[0].waveEmemies[7][Basic] = 10;
-	Level[0].waveEmemies[8][Basic] = 15;
-	Level[0].waveEmemies[9][Basic] = 20;
+	Level[0].waveEnemies[0][Basic] = 10;
+	Level[0].waveEnemies[1][Basic] = 10;
+	Level[0].waveEnemies[2][Basic] = 10;
+	Level[0].waveEnemies[3][Basic] = 10;
+	Level[0].waveEnemies[4][Basic] = 15;
+	Level[0].waveEnemies[5][Basic] = 15;
+	Level[0].waveEnemies[6][Basic] = 15;
+	Level[0].waveEnemies[7][Basic] = 10;
+	Level[0].waveEnemies[8][Basic] = 15;
+	Level[0].waveEnemies[9][Basic] = 20;
 
-	Level[0].waveEmemies[0][Fast_Ghost] = 0;
-	Level[0].waveEmemies[1][Fast_Ghost] = 5;
-	Level[0].waveEmemies[2][Fast_Ghost] = 3;
-	Level[0].waveEmemies[3][Fast_Ghost] = 5;
-	Level[0].waveEmemies[4][Fast_Ghost] = 10;
-	Level[0].waveEmemies[5][Fast_Ghost] = 10;
-	Level[0].waveEmemies[6][Fast_Ghost] = 10;
-	Level[0].waveEmemies[7][Fast_Ghost] = 10;
-	Level[0].waveEmemies[8][Fast_Ghost] = 15;
-	Level[0].waveEmemies[9][Fast_Ghost] = 10;
+	Level[0].waveEnemies[0][Fast_Ghost] = 0;
+	Level[0].waveEnemies[1][Fast_Ghost] = 5;
+	Level[0].waveEnemies[2][Fast_Ghost] = 3;
+	Level[0].waveEnemies[3][Fast_Ghost] = 5;
+	Level[0].waveEnemies[4][Fast_Ghost] = 10;
+	Level[0].waveEnemies[5][Fast_Ghost] = 10;
+	Level[0].waveEnemies[6][Fast_Ghost] = 10;
+	Level[0].waveEnemies[7][Fast_Ghost] = 10;
+	Level[0].waveEnemies[8][Fast_Ghost] = 15;
+	Level[0].waveEnemies[9][Fast_Ghost] = 10;
 
-	Level[0].waveEmemies[0][Fat_Ghost] = 0;
-	Level[0].waveEmemies[1][Fat_Ghost] = 0;
-	Level[0].waveEmemies[2][Fat_Ghost] = 2;
-	Level[0].waveEmemies[3][Fat_Ghost] = 5;
-	Level[0].waveEmemies[4][Fat_Ghost] = 5;
-	Level[0].waveEmemies[5][Fat_Ghost] = 5;
-	Level[0].waveEmemies[6][Fat_Ghost] = 10;
-	Level[0].waveEmemies[7][Fat_Ghost] = 10;
-	Level[0].waveEmemies[8][Fat_Ghost] = 10;
-	Level[0].waveEmemies[9][Fat_Ghost] = 15;
+	Level[0].waveEnemies[0][Fat_Ghost] = 0;
+	Level[0].waveEnemies[1][Fat_Ghost] = 0;
+	Level[0].waveEnemies[2][Fat_Ghost] = 2;
+	Level[0].waveEnemies[3][Fat_Ghost] = 5;
+	Level[0].waveEnemies[4][Fat_Ghost] = 5;
+	Level[0].waveEnemies[5][Fat_Ghost] = 5;
+	Level[0].waveEnemies[6][Fat_Ghost] = 10;
+	Level[0].waveEnemies[7][Fat_Ghost] = 10;
+	Level[0].waveEnemies[8][Fat_Ghost] = 10;
+	Level[0].waveEnemies[9][Fat_Ghost] = 15;
 
-	Level[0].waveEmemies[0][grimReaper] = 0;
-	Level[0].waveEmemies[1][grimReaper] = 0;
-	Level[0].waveEmemies[2][grimReaper] = 0;
-	Level[0].waveEmemies[3][grimReaper] = 0;
-	Level[0].waveEmemies[4][grimReaper] = 0;
-	Level[0].waveEmemies[5][grimReaper] = 0;
-	Level[0].waveEmemies[6][grimReaper] = 0;
-	Level[0].waveEmemies[7][grimReaper] = 1;
-	Level[0].waveEmemies[8][grimReaper] = 2;
-	Level[0].waveEmemies[9][grimReaper] = 3;
+	Level[0].waveEnemies[0][grimReaper] = 0;
+	Level[0].waveEnemies[1][grimReaper] = 0;
+	Level[0].waveEnemies[2][grimReaper] = 0;
+	Level[0].waveEnemies[3][grimReaper] = 0;
+	Level[0].waveEnemies[4][grimReaper] = 0;
+	Level[0].waveEnemies[5][grimReaper] = 0;
+	Level[0].waveEnemies[6][grimReaper] = 0;
+	Level[0].waveEnemies[7][grimReaper] = 1;
+	Level[0].waveEnemies[8][grimReaper] = 2;
+	Level[0].waveEnemies[9][grimReaper] = 3;
 }
 
 void level5_init(void) {
@@ -657,49 +657,49 @@ void level5_init(void) {
 	Level[0].currentWave = -1;// starts with building phase which increment wave by 1
 	Level[0].currentEffect = NoEnvironmentalEffects;
 
-	Level[0].waveEmemies[0][Basic] = 10;
-	Level[0].waveEmemies[1][Basic] = 15;
-	Level[0].waveEmemies[2][Basic] = 15;
-	Level[0].waveEmemies[3][Basic] = 10;
-	Level[0].waveEmemies[4][Basic] = 15;
-	Level[0].waveEmemies[5][Basic] = 10;
-	Level[0].waveEmemies[6][Basic] = 15;
-	Level[0].waveEmemies[7][Basic] = 15;
-	Level[0].waveEmemies[8][Basic] = 15;
-	Level[0].waveEmemies[9][Basic] = 10;
+	Level[0].waveEnemies[0][Basic] = 10;
+	Level[0].waveEnemies[1][Basic] = 15;
+	Level[0].waveEnemies[2][Basic] = 15;
+	Level[0].waveEnemies[3][Basic] = 10;
+	Level[0].waveEnemies[4][Basic] = 15;
+	Level[0].waveEnemies[5][Basic] = 10;
+	Level[0].waveEnemies[6][Basic] = 15;
+	Level[0].waveEnemies[7][Basic] = 15;
+	Level[0].waveEnemies[8][Basic] = 15;
+	Level[0].waveEnemies[9][Basic] = 10;
 
-	Level[0].waveEmemies[0][Fast_Ghost] = 0;
-	Level[0].waveEmemies[1][Fast_Ghost] = 0;
-	Level[0].waveEmemies[2][Fast_Ghost] = 5;
-	Level[0].waveEmemies[3][Fast_Ghost] = 5;
-	Level[0].waveEmemies[4][Fast_Ghost] = 5;
-	Level[0].waveEmemies[5][Fast_Ghost] = 10;
-	Level[0].waveEmemies[6][Fast_Ghost] = 10;
-	Level[0].waveEmemies[7][Fast_Ghost] = 10;
-	Level[0].waveEmemies[8][Fast_Ghost] = 15;
-	Level[0].waveEmemies[9][Fast_Ghost] = 10;
+	Level[0].waveEnemies[0][Fast_Ghost] = 0;
+	Level[0].waveEnemies[1][Fast_Ghost] = 0;
+	Level[0].waveEnemies[2][Fast_Ghost] = 5;
+	Level[0].waveEnemies[3][Fast_Ghost] = 5;
+	Level[0].waveEnemies[4][Fast_Ghost] = 5;
+	Level[0].waveEnemies[5][Fast_Ghost] = 10;
+	Level[0].waveEnemies[6][Fast_Ghost] = 10;
+	Level[0].waveEnemies[7][Fast_Ghost] = 10;
+	Level[0].waveEnemies[8][Fast_Ghost] = 15;
+	Level[0].waveEnemies[9][Fast_Ghost] = 10;
 
-	Level[0].waveEmemies[0][Fat_Ghost] = 0;
-	Level[0].waveEmemies[1][Fat_Ghost] = 0;
-	Level[0].waveEmemies[2][Fat_Ghost] = 0;
-	Level[0].waveEmemies[3][Fat_Ghost] = 5;
-	Level[0].waveEmemies[4][Fat_Ghost] = 5;
-	Level[0].waveEmemies[5][Fat_Ghost] = 10;
-	Level[0].waveEmemies[6][Fat_Ghost] = 10;
-	Level[0].waveEmemies[7][Fat_Ghost] = 10;
-	Level[0].waveEmemies[8][Fat_Ghost] = 15;
-	Level[0].waveEmemies[9][Fat_Ghost] = 10;
+	Level[0].waveEnemies[0][Fat_Ghost] = 0;
+	Level[0].waveEnemies[1][Fat_Ghost] = 0;
+	Level[0].waveEnemies[2][Fat_Ghost] = 0;
+	Level[0].waveEnemies[3][Fat_Ghost] = 5;
+	Level[0].waveEnemies[4][Fat_Ghost] = 5;
+	Level[0].waveEnemies[5][Fat_Ghost] = 10;
+	Level[0].waveEnemies[6][Fat_Ghost] = 10;
+	Level[0].waveEnemies[7][Fat_Ghost] = 10;
+	Level[0].waveEnemies[8][Fat_Ghost] = 15;
+	Level[0].waveEnemies[9][Fat_Ghost] = 10;
 
-	Level[0].waveEmemies[0][grimReaper] = 0;
-	Level[0].waveEmemies[1][grimReaper] = 0;
-	Level[0].waveEmemies[2][grimReaper] = 0;
-	Level[0].waveEmemies[3][grimReaper] = 0;
-	Level[0].waveEmemies[4][grimReaper] = 0;
-	Level[0].waveEmemies[5][grimReaper] = 0;
-	Level[0].waveEmemies[6][grimReaper] = 0;
-	Level[0].waveEmemies[7][grimReaper] = 1;
-	Level[0].waveEmemies[8][grimReaper] = 2;
-	Level[0].waveEmemies[9][grimReaper] = 5;
+	Level[0].waveEnemies[0][grimReaper] = 0;
+	Level[0].waveEnemies[1][grimReaper] = 0;
+	Level[0].waveEnemies[2][grimReaper] = 0;
+	Level[0].waveEnemies[3][grimReaper] = 0;
+	Level[0].waveEnemies[4][grimReaper] = 0;
+	Level[0].waveEnemies[5][grimReaper] = 0;
+	Level[0].waveEnemies[6][grimReaper] = 0;
+	Level[0].waveEnemies[7][grimReaper] = 1;
+	Level[0].waveEnemies[8][grimReaper] = 2;
+	Level[0].waveEnemies[9][grimReaper] = 5;
 }
 
 void render_button_pressed(void) {
@@ -971,10 +971,10 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 		int totalEnemies = 0;
 		for (int i = 0; i < MAX_ENEMY_TYPE; i++) {
 			if (currentGameState == Wave) {
-				totalEnemies += Level[currentGameLevel].waveEmemies[Level[currentGameLevel].currentWave][i];
+				totalEnemies += Level[currentGameLevel].waveEnemies[Level[currentGameLevel].currentWave][i];
 			}
 			else if (currentGameState == Building) { // Forecast for next wave instead of current empty wave
-				totalEnemies += Level[currentGameLevel].waveEmemies[Level[currentGameLevel].currentWave + 1][i];
+				totalEnemies += Level[currentGameLevel].waveEnemies[Level[currentGameLevel].currentWave + 1][i];
 			}
 		}
 		sprintf_s(temp, sizeof(temp), "%d/%d", enemiesLeft, totalEnemies);

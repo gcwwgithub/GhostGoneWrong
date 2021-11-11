@@ -535,10 +535,10 @@ void Environment_check(LevelData Level) {
 void Reset_enemies(int current_level) {
 	if (currentGameState == Building) {
 		if (buildingTime > 0.05f && Level[current_level].currentWave + 1 < MAX_NUMBER_OF_WAVES) {
-			int BasicCount = Level[current_level].waveEmemies[Level[current_level].currentWave + 1][Basic];
-			int FastCount = Level[current_level].waveEmemies[Level[current_level].currentWave + 1][Fast_Ghost];
-			int FatCount = Level[current_level].waveEmemies[Level[current_level].currentWave + 1][Fat_Ghost];
-			int ReaperCount = Level[current_level].waveEmemies[Level[current_level].currentWave + 1][grimReaper];
+			int BasicCount = Level[current_level].waveEnemies[Level[current_level].currentWave + 1][Basic];
+			int FastCount = Level[current_level].waveEnemies[Level[current_level].currentWave + 1][Fast_Ghost];
+			int FatCount = Level[current_level].waveEnemies[Level[current_level].currentWave + 1][Fat_Ghost];
+			int ReaperCount = Level[current_level].waveEnemies[Level[current_level].currentWave + 1][grimReaper];
 			wave_enemy_init(BasicCount, FastCount, FatCount, ReaperCount, Level[current_level]);
 			enemiesLeft = BasicCount + FastCount + FatCount + ReaperCount;
 		}
