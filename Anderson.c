@@ -323,7 +323,6 @@ void game_win_lose_check(void)
 		}
 		else
 		{
-			Level[currentGameLevel].currentWave++;
 			set_building_time(BUILDING_PHASE_TIME);
 			currentGameState = Building;
 		}

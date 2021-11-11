@@ -1020,12 +1020,13 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 
 			sprintf_s(temp, sizeof(temp), "Level:%d", turret[turretSelectedToUpgrade].level);
 			CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 2, menuObjectX.yOrigin + menuObjectX.height / 3);
-			sprintf_s(temp, sizeof(temp), "%d", turret_purchasing[TP_UPGRADE_PRICE][turret[turretSelectedToUpgrade].type]);
+			sprintf_s(temp, sizeof(temp), "%d", turret[turretSelectedToUpgrade].upgrade_price);
 			CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 5.5, menuObjectX.yOrigin + menuObjectX.height / 1.95);
 			RenderNormal(currencySpriteSheet, currencyArray[1], menuObjectX.xOrigin + menuObjectX.width / 3,
 				menuObjectX.yOrigin + menuObjectX.height / 1.95, 64 * scalingFactor, 64 * scalingFactor);
 
-			sprintf_s(temp, sizeof(temp), "10");
+			sprintf_s(temp, sizeof(temp), "%d" , (turret[turretSelectedToUpgrade].upgrade_price +
+				turret_purchasing[TP_PRICE][turret[turretSelectedToUpgrade].type]) / 2);
 			CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 1.45, menuObjectX.yOrigin + menuObjectX.height / 1.95);
 			RenderNormal(currencySpriteSheet, currencyArray[1], menuObjectX.xOrigin + menuObjectX.width / 1.2,
 				menuObjectX.yOrigin + menuObjectX.height / 1.95, 64 * scalingFactor, 64 * scalingFactor);
