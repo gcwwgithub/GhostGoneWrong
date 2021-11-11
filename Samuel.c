@@ -133,6 +133,8 @@ void place_turret(TurretType type, int index_x, int index_y)
 		turret[i].sell_price = (int)(turret_purchasing[TP_PRICE][type] * 0.7f);
 		//upgrade price back to default
 		turret[i].upgrade_price = turret_purchasing[TP_UPGRADE_PRICE][type];
+		//total price accumalated
+		turret[i].total_price = turret_purchasing[TP_PRICE][type];
 		//shooting rate set
 		turret[i].mod.shoot_rate = 0.6f;
 		//set to active and the turret type
@@ -171,10 +173,12 @@ void sell_turret(int t_index)
 	int x = (int)((turret[t_index].data.xOrigin - Game.xOrigin) / Game.gridWidth);
 	int y = (int)((turret[t_index].data.yOrigin - Game.yOrigin) / Game.gridHeight);
 	float sell_price;
-	if (turret[t_index].level != 1)
-		sell_price = (turret[t_index].upgrade_price + turret_purchasing[TP_PRICE][turret[t_index].type]) * 0.7f;
-	else
-		sell_price = turret_purchasing[TP_PRICE][turret[t_index].type] * 0.7f;
+
+	sell_price = (int)(turret[t_index].total_price * 0.7f);
+	//if (turret[t_index].level != 1)
+	//	sell_price = (turret[t_index].upgrade_price + turret_purchasing[TP_PRICE][turret[t_index].type]) * 0.7f;
+	//else
+	//	sell_price = turret_purchasing[TP_PRICE][turret[t_index].type] * 0.7f;
 
 	//printf("sell price: %d", (int)sell_price);
 	Level[currentGameLevel].phantomQuartz += (int)sell_price;
@@ -186,11 +190,10 @@ void upgrade_turret(int t_index)
 {
 	int x = (int)((turret[t_index].data.xOrigin - Game.xOrigin) / Game.gridWidth);
 	int y = (int)((turret[t_index].data.yOrigin - Game.yOrigin) / Game.gridHeight);
-	//int t_index = turret_on_grid[x][y];
-	
-	// Minus the price
-	//Level[currentGameLevel].phantomQuartz -= turret_purchasing[TP_UPGRADE_PRICE][turret[t_index].type] +
-	turret[t_index].sell_price = (int)((turret[t_index].upgrade_price + turret_purchasing[TP_PRICE][turret[t_index].type]) * 0.7f);
+
+
+	turret[t_index].total_price += turret[t_index].upgrade_price;
+	turret[t_index].sell_price = (int)((turret[t_index].total_price) * 0.7f);
 
 	turret[t_index].level++;
 	switch (turret[t_index].type)
