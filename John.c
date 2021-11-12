@@ -340,6 +340,11 @@ void update_enemy_health_bar(enemy* r)
 {
 	if (r->health != 0)
 	{
+		if (r->health <= 0)
+		{
+			r->health = 0;
+		}
+
 		float newWidth = r->health / r->max_health;
 		CP_Settings_Fill(COLOR_RED);
 		CP_Graphics_DrawRect(r->data.xOrigin - r->enemy_width, r->data.yOrigin - r->enemy_height, r->enemy_width * 2, r->enemy_height / 4);

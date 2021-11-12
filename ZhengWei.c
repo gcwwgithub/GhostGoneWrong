@@ -423,7 +423,7 @@ void level1_init(void) {
 	Level[0].exitRow = GAME_GRID_ROWS - 1;
 	Level[0].exitCol = (GAME_GRID_COLS - 1) / 2;
 	Level[0].health = 100;
-	Level[0].phantomQuartz = 50;
+	Level[0].phantomQuartz = 50000;
 	Level[0].goldQuartz = 0;
 	Level[0].currentWave = -1;// starts with building phase which increment wave by 1
 	Level[0].currentEffect = NoEnvironmentalEffects;
@@ -982,10 +982,20 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 		break;
 	case UpgradeMenu:
 		if (turretSelectedToUpgrade != NO_TURRET_SELECTED) { //Only render when upgrading
+
 			CP_Image_Draw(turretUpgradeBackground, menuObjectX.xOrigin + menuObjectX.width / 2,
 				menuObjectX.yOrigin + menuObjectX.height / 3, 275 * scalingFactor, 475 * scalingFactor, 255);
+
 			CP_Settings_Fill(COLOR_WHITE);
 			CP_Settings_TextSize(50.0f * scalingFactor);
+			
+
+			//Level Icon
+			RenderNormal(turretStatsIconSpriteSheet, turretStatsIconArray[0], menuObjectX.xOrigin + menuObjectX.width / 1.75,
+				menuObjectX.yOrigin + menuObjectX.height / 6.5, 64 * scalingFactor, 64 * scalingFactor);
+			sprintf_s(temp, sizeof(temp), "%-2d", turret[turretSelectedToUpgrade].level);
+			CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 1.25,
+				menuObjectX.yOrigin + menuObjectX.height / 6.5);
 
 			switch (turret[turretSelectedToUpgrade].type)
 			{
@@ -993,42 +1003,75 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 				sprintf_s(temp, sizeof(temp), "Basic");
 				CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 2, menuObjectX.yOrigin + menuObjectX.height / 18);
 				RenderNormal(basicTurretSpriteSheet, basicTurretArray[0],
-					menuObjectX.xOrigin + menuObjectX.width / 2,
-					menuObjectX.yOrigin + menuObjectX.height / 6, 128 * scalingFactor, 128 * scalingFactor);
+					menuObjectX.xOrigin + menuObjectX.width / 4,
+					menuObjectX.yOrigin + menuObjectX.height /7, 110 * scalingFactor, 110 * scalingFactor);
+				RenderNormal(turretStatsIconSpriteSheet, turretStatsIconArray[1], menuObjectX.xOrigin + menuObjectX.width / 5,
+					menuObjectX.yOrigin + menuObjectX.height / 3.9, 64 * scalingFactor, 64 * scalingFactor);
+				sprintf_s(temp, sizeof(temp), "%.2f", turret[turretSelectedToUpgrade].mod.damage);
+				CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 1.95, menuObjectX.yOrigin + menuObjectX.height / 3.85);
 				break;
+
 			case T_SLOW:
 				sprintf_s(temp, sizeof(temp), "Slow");
 				CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 2, menuObjectX.yOrigin + menuObjectX.height / 18);
-				CP_Image_Draw(slowTurretImageArray[0], menuObjectX.xOrigin + menuObjectX.width / 2,
-					menuObjectX.yOrigin + menuObjectX.height / 6, 128 * scalingFactor, 128 * scalingFactor, 255);
+				CP_Image_Draw(slowTurretImageArray[0], menuObjectX.xOrigin + menuObjectX.width / 4,
+					menuObjectX.yOrigin + menuObjectX.height / 7, 110 * scalingFactor, 110 * scalingFactor, 255);
+				RenderNormal(turretStatsIconSpriteSheet, turretStatsIconArray[2], menuObjectX.xOrigin + menuObjectX.width / 5,
+					menuObjectX.yOrigin + menuObjectX.height / 3.9, 64 * scalingFactor, 64 * scalingFactor);
+				sprintf_s(temp, sizeof(temp), "%.2f", turret[turretSelectedToUpgrade].mod.slow_amt);
+				CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 1.95, menuObjectX.yOrigin + menuObjectX.height / 3.85);
 				break;
+
 			case T_HOMING:
 				sprintf_s(temp, sizeof(temp), "Homing");
 				CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 2, menuObjectX.yOrigin + menuObjectX.height / 18);
 				RenderNormal(homingMissleTurretSpriteSheet, homingMissleTurretArray[0],
-					menuObjectX.xOrigin + menuObjectX.width / 2,
-					menuObjectX.yOrigin + menuObjectX.height / 6, 128 * scalingFactor, 128 * scalingFactor);
+					menuObjectX.xOrigin + menuObjectX.width / 4,
+					menuObjectX.yOrigin + menuObjectX.height / 7, 110 * scalingFactor, 110 * scalingFactor);
+				RenderNormal(turretStatsIconSpriteSheet, turretStatsIconArray[1], menuObjectX.xOrigin + menuObjectX.width / 5,
+					menuObjectX.yOrigin + menuObjectX.height / 3.9, 64 * scalingFactor, 64 * scalingFactor);
+				sprintf_s(temp, sizeof(temp), "%.2f", turret[turretSelectedToUpgrade].mod.damage);
+				CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 1.95, menuObjectX.yOrigin + menuObjectX.height / 3.85);
 				break;
+
 			case T_MINE:
 				sprintf_s(temp, sizeof(temp), "Mine");
 				CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 2, menuObjectX.yOrigin + menuObjectX.height / 18);
 				RenderNormal(mineSpriteSheet, mineArray[0],
-					menuObjectX.xOrigin + menuObjectX.width / 2,
-					menuObjectX.yOrigin + menuObjectX.height / 6, 128 * scalingFactor, 128 * scalingFactor);
+					menuObjectX.xOrigin + menuObjectX.width / 4,
+					menuObjectX.yOrigin + menuObjectX.height / 7, 110 * scalingFactor, 110 * scalingFactor);
+				RenderNormal(turretStatsIconSpriteSheet, turretStatsIconArray[1], menuObjectX.xOrigin + menuObjectX.width / 5,
+					menuObjectX.yOrigin + menuObjectX.height / 3.9, 64 * scalingFactor, 64 * scalingFactor);
+				sprintf_s(temp, sizeof(temp), "%.2f", turret[turretSelectedToUpgrade].mod.damage);
+				CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 1.95, menuObjectX.yOrigin + menuObjectX.height / 3.85);
 				break;
+
 			}
+			//Range Icon
+			RenderNormal(turretStatsIconSpriteSheet, turretStatsIconArray[3], menuObjectX.xOrigin + menuObjectX.width / 5,
+				menuObjectX.yOrigin + menuObjectX.height / 2.9, 64 * scalingFactor, 64 * scalingFactor);
+			sprintf_s(temp, sizeof(temp), "%-5.2f", turret[turretSelectedToUpgrade].mod.range);
+			CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 1.7, menuObjectX.yOrigin + menuObjectX.height / 2.9);
 
-			sprintf_s(temp, sizeof(temp), "Level:%d", turret[turretSelectedToUpgrade].level);
-			CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 2, menuObjectX.yOrigin + menuObjectX.height / 3);
-			sprintf_s(temp, sizeof(temp), "%d", turret[turretSelectedToUpgrade].upgrade_price);
+			//Attack Speed Icon
+			RenderNormal(turretStatsIconSpriteSheet, turretStatsIconArray[4], menuObjectX.xOrigin + menuObjectX.width /5,
+				menuObjectX.yOrigin + menuObjectX.height / 2.32, 64 * scalingFactor, 64 * scalingFactor);
+			sprintf_s(temp, sizeof(temp), "%.2f", turret[turretSelectedToUpgrade].mod.shoot_rate);
+			CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 1.95, menuObjectX.yOrigin + menuObjectX.height / 2.3);
+
+			CP_Settings_TextSize(35.0f * scalingFactor);
+
+			//Upgrade Price
+			sprintf_s(temp, sizeof(temp), "%4d", turret[turretSelectedToUpgrade].upgrade_price);
 			CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 5.5, menuObjectX.yOrigin + menuObjectX.height / 1.95);
-			RenderNormal(currencySpriteSheet, currencyArray[1], menuObjectX.xOrigin + menuObjectX.width / 3,
-				menuObjectX.yOrigin + menuObjectX.height / 1.95, 64 * scalingFactor, 64 * scalingFactor);
+			RenderNormal(currencySpriteSheet, currencyArray[1], menuObjectX.xOrigin + menuObjectX.width / 2.95,
+				menuObjectX.yOrigin + menuObjectX.height / 1.95, 40 * scalingFactor, 40 * scalingFactor);
 
-			sprintf_s(temp, sizeof(temp), "%d", turret[turretSelectedToUpgrade].sell_price);
+			//Sell Price
+			sprintf_s(temp, sizeof(temp), "%4d", turret[turretSelectedToUpgrade].sell_price);
 			CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 1.45, menuObjectX.yOrigin + menuObjectX.height / 1.95);
-			RenderNormal(currencySpriteSheet, currencyArray[1], menuObjectX.xOrigin + menuObjectX.width / 1.2,
-				menuObjectX.yOrigin + menuObjectX.height / 1.95, 64 * scalingFactor, 64 * scalingFactor);
+			RenderNormal(currencySpriteSheet, currencyArray[1], menuObjectX.xOrigin + menuObjectX.width / 1.15,
+				menuObjectX.yOrigin + menuObjectX.height / 1.95, 40 * scalingFactor, 40* scalingFactor);
 		}
 		break;
 	case UpgradeButton:
