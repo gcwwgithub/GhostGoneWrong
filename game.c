@@ -154,7 +154,6 @@ void game_update(void)
 		if (btn_is_pressed(EndScreenButtons[0].buttonData))
 		{
 			currentGameState = MainMenu;
-			//	init_level(currentGameLevel);
 		}
 		else if (btn_is_pressed(EndScreenButtons[1].buttonData))
 		{
@@ -229,8 +228,8 @@ void game_update(void)
 			pathfinding_reset(&Level[currentGameLevel]);
 			pathfinding_calculate_cost(&Level[currentGameLevel]);
 			pathfinding_update(&Level[currentGameLevel]);
+			set_building_time(BUILDING_PHASE_TIME);
 			currentGameState = Building;
-			//init_level(0);
 		}
 		else if (btn_is_pressed(levelButtons[1].buttonData)) {
 			level2_init();
@@ -245,6 +244,7 @@ void game_update(void)
 			pathfinding_reset(&Level[currentGameLevel]);
 			pathfinding_calculate_cost(&Level[currentGameLevel]);
 			pathfinding_update(&Level[currentGameLevel]);
+			set_building_time(BUILDING_PHASE_TIME);
 			currentGameState = Building;
 		}
 
@@ -261,6 +261,7 @@ void game_update(void)
 			pathfinding_reset(&Level[currentGameLevel]);
 			pathfinding_calculate_cost(&Level[currentGameLevel]);
 			pathfinding_update(&Level[currentGameLevel]);
+			set_building_time(BUILDING_PHASE_TIME);
 			currentGameState = Building;
 		}
 
@@ -277,6 +278,7 @@ void game_update(void)
 			pathfinding_reset(&Level[currentGameLevel]);
 			pathfinding_calculate_cost(&Level[currentGameLevel]);
 			pathfinding_update(&Level[currentGameLevel]);
+			set_building_time(BUILDING_PHASE_TIME);
 			currentGameState = Building;
 		}
 
@@ -293,6 +295,7 @@ void game_update(void)
 			pathfinding_reset(&Level[currentGameLevel]);
 			pathfinding_calculate_cost(&Level[currentGameLevel]);
 			pathfinding_update(&Level[currentGameLevel]);
+			set_building_time(BUILDING_PHASE_TIME);
 			currentGameState = Building;
 		}
 
