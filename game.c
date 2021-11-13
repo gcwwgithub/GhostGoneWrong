@@ -162,7 +162,8 @@ void game_update(void)
 		}
 		else if (btn_is_pressed(EndScreenButtons[2].buttonData))
 		{
-			exit_to_desktop();
+			init_level(currentGameLevel + 1);
+			//exit_to_desktop();
 		}
 		//do enemy update first
 		update_enemy();
@@ -223,7 +224,7 @@ void game_update(void)
 			pathfinding_init(&Level[currentGameLevel]);
 			environment_init(&Level[currentGameLevel]);
 
-			Enemies_init(2, 2, 2, &Level[currentGameLevel]);
+			Enemies_init();
 
 			pathfinding_reset(&Level[currentGameLevel]);
 			pathfinding_calculate_cost(&Level[currentGameLevel]);
@@ -239,7 +240,7 @@ void game_update(void)
 			pathfinding_init(&Level[currentGameLevel]);
 			environment_init(&Level[currentGameLevel]);
 
-			Enemies_init(2, 2, 2, &Level[currentGameLevel]);
+			Enemies_init();
 
 			pathfinding_reset(&Level[currentGameLevel]);
 			pathfinding_calculate_cost(&Level[currentGameLevel]);
@@ -256,7 +257,7 @@ void game_update(void)
 			pathfinding_init(&Level[currentGameLevel]);
 			environment_init(&Level[currentGameLevel]);
 
-			Enemies_init(2, 2, 2, &Level[currentGameLevel]);
+			Enemies_init();
 
 			pathfinding_reset(&Level[currentGameLevel]);
 			pathfinding_calculate_cost(&Level[currentGameLevel]);
@@ -273,7 +274,7 @@ void game_update(void)
 			pathfinding_init(&Level[currentGameLevel]);
 			environment_init(&Level[currentGameLevel]);
 
-			Enemies_init(2, 2, 2, &Level[currentGameLevel]);
+			Enemies_init();
 
 			pathfinding_reset(&Level[currentGameLevel]);
 			pathfinding_calculate_cost(&Level[currentGameLevel]);
@@ -290,7 +291,7 @@ void game_update(void)
 			pathfinding_init(&Level[currentGameLevel]);
 			environment_init(&Level[currentGameLevel]);
 
-			Enemies_init(2, 2, 2, &Level[currentGameLevel]);
+			Enemies_init();
 
 			pathfinding_reset(&Level[currentGameLevel]);
 			pathfinding_calculate_cost(&Level[currentGameLevel]);

@@ -150,7 +150,7 @@ void init_end_screen(void)
 	EndScreenButtons[2].buttonData.objectType = objectRectangle;
 	EndScreenButtons[2].textPositionX = EndScreenButtons[2].buttonData.xOrigin + BUTTON_WIDTH / 2;
 	EndScreenButtons[2].textPositionY = EndScreenButtons[2].buttonData.yOrigin + BUTTON_HEIGHT / 2;
-	strcpy_s(EndScreenButtons[2].textString, sizeof(EndScreenButtons[2].textString), "Next Level");
+	strcpy_s(EndScreenButtons[2].textString, sizeof(EndScreenButtons[2].textString), "Next");
 }
 
 void init_game_font(void)
@@ -303,7 +303,11 @@ void render_end_screen(void)
 
 	render_ui_button(EndScreenButtons[0]);
 	render_ui_button(EndScreenButtons[1]);
-	render_ui_button(EndScreenButtons[2]);
+
+	if (currentGameLevel < 4)
+	{
+		render_ui_button(EndScreenButtons[2]);
+	}
 }
 
 void game_win_lose_check(void)
@@ -341,15 +345,47 @@ void game_win_lose_check(void)
 //	Level[0].phantomQuartz += goldAmtToConvert / conversionRate;
 //}
 
-void init_level(int gameLevelToRestart)
+void init_level(int nextGameLevel)
 {
-	//Level Data (presumed to be level 1)
-	currentGameLevel = gameLevelToRestart;
-
-	switch (gameLevelToRestart)
+	switch (nextGameLevel)
 	{
-		{
-
-		}
+	case 0:
+	{
+		level2_init();
+		break;
 	}
+	case 1:
+	{
+		level2_init();
+		break;
+	}
+	case 2:
+	{
+		level3_init();
+		break;
+	}
+	case 3:
+	{
+		level4_init();
+		break;
+	}
+	case 4:
+	{
+		level5_init();
+		break;
+	}
+	}
+	isPlacingTurret = T_MAX;
+	turretSelectedToUpgrade = NO_TURRET_SELECTED;
+	powerUpMenu = FALSE;
+	pathfinding_init(&Level[nextGameLevel]);
+	environment_init(&Level[nextGameLevel]);
+
+	Enemies_init();
+
+	pathfinding_reset(&Level[nextGameLevel]);
+	pathfinding_calculate_cost(&Level[nextGameLevel]);
+	pathfinding_update(&Level[nextGameLevel]);
+	set_building_time(BUILDING_PHASE_TIME);
+	currentGameState = Building;
 }
