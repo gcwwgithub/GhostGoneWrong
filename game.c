@@ -60,7 +60,13 @@ void game_init(void)
 	//Initialize Objects
 	mouse_init();
 	turret_init();
-
+	
+	// initialize price for powerups
+	powerUpPrice.morePhantomQuartz = 10;
+	powerUpPrice.reduceEnemySpeed = 10;
+	powerUpPrice.reduceEnemyHealth = 10;
+	powerUpPrice.increasedMineDamage = 10;
+	
 	//Initialise Enemies
 	Enemies_init();
 }
@@ -90,7 +96,9 @@ void game_update(void)
 		render_game_background(currentGameLevel);
 		render_game_grid();
 		render_path(&Level[currentGameLevel]);
-		for (int i = 0; i < NUMBER_OF_MENU_OBJECTS - 1; i++) {// Last object will double render game grid
+
+		render_turret_menu_object(GameMenuObject[NUMBER_OF_MENU_OBJECTS - 2], NUMBER_OF_MENU_OBJECTS - 2);// Render Upgrade menu first
+		for (int i = 0; i < NUMBER_OF_MENU_OBJECTS - 2; i++) {// Last object will double render game grid. Second last object is rendered seperately
 			render_turret_menu_object(GameMenuObject[i], i);
 		}
 		//display_enemies_left(); //Already done by my code render turret menu object
@@ -131,7 +139,8 @@ void game_update(void)
 		render_wave_timer_text();
 		render_ui_button(SkipWaveButton);
 
-		for (int i = 0; i < NUMBER_OF_MENU_OBJECTS - 1; i++) {// Last object will double render game grid
+		render_turret_menu_object(GameMenuObject[NUMBER_OF_MENU_OBJECTS - 2], NUMBER_OF_MENU_OBJECTS - 2);// Render Upgrade menu first
+		for (int i = 0; i < NUMBER_OF_MENU_OBJECTS - 2; i++) {// Last object will double render game grid. Second last object is rendered seperately
 			render_turret_menu_object(GameMenuObject[i], i);
 		}
 
@@ -177,7 +186,9 @@ void game_update(void)
 		render_game_background(currentGameLevel);
 		render_game_grid();
 		render_path(&Level[currentGameLevel]);
-		for (int i = 0; i < NUMBER_OF_MENU_OBJECTS - 1; i++) {// Last object will double render game grid
+
+		render_turret_menu_object(GameMenuObject[NUMBER_OF_MENU_OBJECTS - 2], NUMBER_OF_MENU_OBJECTS - 2);// Render Upgrade menu first
+		for (int i = 0; i < NUMBER_OF_MENU_OBJECTS - 2; i++) {// Last object will double render game grid. Second last object is rendered seperately
 			render_turret_menu_object(GameMenuObject[i], i);
 		}
 		update_portal();

@@ -85,8 +85,6 @@ void place_turret(TurretType type, int index_x, int index_y)
 		//	break;
 		if (turret[i].isActive)
 			continue;
-		if (turret_on_grid[index_x][index_y] >= 0)
-			break; // come out of loop cause space occupied
 
 		turret[i].type = type;
 

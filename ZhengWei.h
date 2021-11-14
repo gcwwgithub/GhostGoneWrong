@@ -39,4 +39,4 @@ void pathfinding_update(LevelData* LevelX);
 int isPlacingTurret;
 int powerUpMenu;
 #define NO_TURRET_SELECTED -1
-int turretSelectedToUpgrade;
+int turretSelectedToUpgrade; //Use the turret index of the turret selected
