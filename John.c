@@ -282,10 +282,19 @@ void update_enemy(void) {
 
 	}
 	for (int i = 0; i < MAX_ENEMIES; i++) {
-		if ((Enemy[i].state == Inactive) && (Enemy[i].health >= 1) && (count / 5 <= MAX_ENEMIES)) {
-
+		int spawn_timer = 5;
+		if ((Enemy[i].state == Inactive) && (Enemy[i].health >= 1) && (count / spawn_timer <= MAX_ENEMIES)) {
+			int state_check=0;
 			int b = count;
-			if (b - wave_timer >= 5) {
+			for (int j=0; j < MAX_ENEMIES; j++) {
+				if (Enemy[j].state == Inactive) {
+					state_check++;
+				}
+			}
+			if (state_check == MAX_ENEMIES) {
+				wave_timer = b - spawn_timer;
+			}
+			if (b - wave_timer >= spawn_timer) {
 				Enemy[i].state = Moving;
 				wave_timer = count;
 				insert_new_node_portal(&portalSpawnFirstNode, Enemy[i].data.xOrigin,

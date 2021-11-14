@@ -34,7 +34,7 @@ typedef enum AbilityUsed{
 	charges_2
 }Ability_charge;
 
-typedef enum EnvironmentEffectEmemy {
+typedef enum EnvironmentEffectEnemy {
 	Effected,
 	Applying
 }EnvironmentEffectEnemy;
