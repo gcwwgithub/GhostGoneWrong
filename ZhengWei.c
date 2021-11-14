@@ -204,8 +204,8 @@ void render_game_grid_press(LevelData* LevelX) {
 int check_game_button_pressed(void) {
 	for (int i = 0; i < NUMBER_OF_MENU_OBJECTS; i++) {
 		if (btn_is_pressed(GameMenuObject[i])) {
-			if(i!=UpgradeMenu)//Upgrade Menu should be cnsidered no button
-			return i;
+			if (i != UpgradeMenu)//Upgrade Menu should be cnsidered no button
+				return i;
 		}
 	}
 	return NoButton;
@@ -423,7 +423,7 @@ void level1_init(void) {
 	Level[0].exitRow = GAME_GRID_ROWS - 1;
 	Level[0].exitCol = (GAME_GRID_COLS - 1) / 2;
 	Level[0].health = 100;
-	Level[0].phantomQuartz = 50;
+	Level[0].phantomQuartz = 50000;
 	Level[0].goldQuartz = 0;
 	Level[0].currentWave = -1;// starts with building phase which increment wave by 1
 	Level[0].currentEffect = NoEnvironmentalEffects;
@@ -475,231 +475,231 @@ void level1_init(void) {
 
 void level2_init(void) {
 	currentGameLevel = 1;
-	Level[0].spawnRow = 0;
-	Level[0].spawnCol = (GAME_GRID_COLS - 1) / 2;
-	Level[0].exitRow = GAME_GRID_ROWS - 1;
-	Level[0].exitCol = (GAME_GRID_COLS - 1) / 2;
-	Level[0].health = 100;
-	Level[0].phantomQuartz = 50;
-	Level[0].goldQuartz = 0;
-	Level[0].currentWave = -1;// starts with building phase which increment wave by 1
-	Level[0].currentEffect = NoEnvironmentalEffects;
+	Level[1].spawnRow = 0;
+	Level[1].spawnCol = (GAME_GRID_COLS - 1) / 2;
+	Level[1].exitRow = GAME_GRID_ROWS - 1;
+	Level[1].exitCol = (GAME_GRID_COLS - 1) / 2;
+	Level[1].health = 100;
+	Level[1].phantomQuartz = 50;
+	Level[1].goldQuartz = 0;
+	Level[1].currentWave = -1;// starts with building phase which increment wave by 1
+	Level[1].currentEffect = NoEnvironmentalEffects;
 
-	Level[0].waveEnemies[0][Basic] = 10;
-	Level[0].waveEnemies[1][Basic] = 10;
-	Level[0].waveEnemies[2][Basic] = 15;
-	Level[0].waveEnemies[3][Basic] = 15;
-	Level[0].waveEnemies[4][Basic] = 20;
-	Level[0].waveEnemies[5][Basic] = 20;
-	Level[0].waveEnemies[6][Basic] = 25;
-	Level[0].waveEnemies[7][Basic] = 25;
-	Level[0].waveEnemies[8][Basic] = 30;
-	Level[0].waveEnemies[9][Basic] = 25;
+	Level[1].waveEnemies[0][Basic] = 10;
+	Level[1].waveEnemies[1][Basic] = 10;
+	Level[1].waveEnemies[2][Basic] = 15;
+	Level[1].waveEnemies[3][Basic] = 15;
+	Level[1].waveEnemies[4][Basic] = 20;
+	Level[1].waveEnemies[5][Basic] = 20;
+	Level[1].waveEnemies[6][Basic] = 25;
+	Level[1].waveEnemies[7][Basic] = 25;
+	Level[1].waveEnemies[8][Basic] = 30;
+	Level[1].waveEnemies[9][Basic] = 25;
 
-	Level[0].waveEnemies[0][Fat_Ghost] = 0;
-	Level[0].waveEnemies[1][Fat_Ghost] = 0;
-	Level[0].waveEnemies[2][Fast_Ghost] = 1;
-	Level[0].waveEnemies[3][Fast_Ghost] = 5;
-	Level[0].waveEnemies[4][Fast_Ghost] = 5;
-	Level[0].waveEnemies[5][Fast_Ghost] = 10;
-	Level[0].waveEnemies[6][Fast_Ghost] = 10;
-	Level[0].waveEnemies[7][Fast_Ghost] = 10;
-	Level[0].waveEnemies[8][Fast_Ghost] = 10;
-	Level[0].waveEnemies[9][Fast_Ghost] = 15;
+	Level[1].waveEnemies[0][Fat_Ghost] = 0;
+	Level[1].waveEnemies[1][Fat_Ghost] = 0;
+	Level[1].waveEnemies[2][Fast_Ghost] = 1;
+	Level[1].waveEnemies[3][Fast_Ghost] = 5;
+	Level[1].waveEnemies[4][Fast_Ghost] = 5;
+	Level[1].waveEnemies[5][Fast_Ghost] = 10;
+	Level[1].waveEnemies[6][Fast_Ghost] = 10;
+	Level[1].waveEnemies[7][Fast_Ghost] = 10;
+	Level[1].waveEnemies[8][Fast_Ghost] = 10;
+	Level[1].waveEnemies[9][Fast_Ghost] = 15;
 
-	Level[0].waveEnemies[0][Fat_Ghost] = 0;
-	Level[0].waveEnemies[1][Fat_Ghost] = 0;
-	Level[0].waveEnemies[2][Fat_Ghost] = 0;
-	Level[0].waveEnemies[3][Fat_Ghost] = 0;
-	Level[0].waveEnemies[4][Fat_Ghost] = 0;
-	Level[0].waveEnemies[5][Fat_Ghost] = 0;
-	Level[0].waveEnemies[6][Fat_Ghost] = 0;
-	Level[0].waveEnemies[7][Fat_Ghost] = 0;
-	Level[0].waveEnemies[8][Fat_Ghost] = 0;
-	Level[0].waveEnemies[9][Fat_Ghost] = 0;
+	Level[1].waveEnemies[0][Fat_Ghost] = 0;
+	Level[1].waveEnemies[1][Fat_Ghost] = 0;
+	Level[1].waveEnemies[2][Fat_Ghost] = 0;
+	Level[1].waveEnemies[3][Fat_Ghost] = 0;
+	Level[1].waveEnemies[4][Fat_Ghost] = 0;
+	Level[1].waveEnemies[5][Fat_Ghost] = 0;
+	Level[1].waveEnemies[6][Fat_Ghost] = 0;
+	Level[1].waveEnemies[7][Fat_Ghost] = 0;
+	Level[1].waveEnemies[8][Fat_Ghost] = 0;
+	Level[1].waveEnemies[9][Fat_Ghost] = 0;
 
-	Level[0].waveEnemies[0][grimReaper] = 0;
-	Level[0].waveEnemies[1][grimReaper] = 0;
-	Level[0].waveEnemies[2][grimReaper] = 0;
-	Level[0].waveEnemies[3][grimReaper] = 0;
-	Level[0].waveEnemies[4][grimReaper] = 0;
-	Level[0].waveEnemies[5][grimReaper] = 0;
-	Level[0].waveEnemies[6][grimReaper] = 0;
-	Level[0].waveEnemies[7][grimReaper] = 0;
-	Level[0].waveEnemies[8][grimReaper] = 0;
-	Level[0].waveEnemies[9][grimReaper] = 0;
+	Level[1].waveEnemies[0][grimReaper] = 0;
+	Level[1].waveEnemies[1][grimReaper] = 0;
+	Level[1].waveEnemies[2][grimReaper] = 0;
+	Level[1].waveEnemies[3][grimReaper] = 0;
+	Level[1].waveEnemies[4][grimReaper] = 0;
+	Level[1].waveEnemies[5][grimReaper] = 0;
+	Level[1].waveEnemies[6][grimReaper] = 0;
+	Level[1].waveEnemies[7][grimReaper] = 0;
+	Level[1].waveEnemies[8][grimReaper] = 0;
+	Level[1].waveEnemies[9][grimReaper] = 0;
 }
 
 void level3_init(void) {
 
 	currentGameLevel = 2;
-	Level[0].spawnRow = 0;
-	Level[0].spawnCol = (GAME_GRID_COLS - 1) / 2;
-	Level[0].exitRow = GAME_GRID_ROWS - 1;
-	Level[0].exitCol = (GAME_GRID_COLS - 1) / 2;
-	Level[0].health = 100;
-	Level[0].phantomQuartz = 50;
-	Level[0].goldQuartz = 0;
-	Level[0].currentWave = -1;// starts with building phase which increment wave by 1
-	Level[0].currentEffect = NoEnvironmentalEffects;
+	Level[2].spawnRow = 0;
+	Level[2].spawnCol = (GAME_GRID_COLS - 1) / 2;
+	Level[2].exitRow = GAME_GRID_ROWS - 1;
+	Level[2].exitCol = (GAME_GRID_COLS - 1) / 2;
+	Level[2].health = 100;
+	Level[2].phantomQuartz = 50;
+	Level[2].goldQuartz = 0;
+	Level[2].currentWave = -1;// starts with building phase which increment wave by 1
+	Level[2].currentEffect = NoEnvironmentalEffects;
 
-	Level[0].waveEnemies[0][Basic] = 10;
-	Level[0].waveEnemies[1][Basic] = 10;
-	Level[0].waveEnemies[2][Basic] = 10;
-	Level[0].waveEnemies[3][Basic] = 15;
-	Level[0].waveEnemies[4][Basic] = 15;
-	Level[0].waveEnemies[5][Basic] = 15;
-	Level[0].waveEnemies[6][Basic] = 15;
-	Level[0].waveEnemies[7][Basic] = 20;
-	Level[0].waveEnemies[8][Basic] = 20;
-	Level[0].waveEnemies[9][Basic] = 25;
+	Level[2].waveEnemies[0][Basic] = 10;
+	Level[2].waveEnemies[1][Basic] = 10;
+	Level[2].waveEnemies[2][Basic] = 10;
+	Level[2].waveEnemies[3][Basic] = 15;
+	Level[2].waveEnemies[4][Basic] = 15;
+	Level[2].waveEnemies[5][Basic] = 15;
+	Level[2].waveEnemies[6][Basic] = 15;
+	Level[2].waveEnemies[7][Basic] = 20;
+	Level[2].waveEnemies[8][Basic] = 20;
+	Level[2].waveEnemies[9][Basic] = 25;
 
-	Level[0].waveEnemies[0][Fast_Ghost] = 0;
-	Level[0].waveEnemies[1][Fast_Ghost] = 5;
-	Level[0].waveEnemies[2][Fast_Ghost] = 5;
-	Level[0].waveEnemies[3][Fast_Ghost] = 5;
-	Level[0].waveEnemies[4][Fast_Ghost] = 10;
-	Level[0].waveEnemies[5][Fast_Ghost] = 10;
-	Level[0].waveEnemies[6][Fast_Ghost] = 10;
-	Level[0].waveEnemies[7][Fast_Ghost] = 10;
-	Level[0].waveEnemies[8][Fast_Ghost] = 10;
-	Level[0].waveEnemies[9][Fast_Ghost] = 10;
+	Level[2].waveEnemies[0][Fast_Ghost] = 0;
+	Level[2].waveEnemies[1][Fast_Ghost] = 5;
+	Level[2].waveEnemies[2][Fast_Ghost] = 5;
+	Level[2].waveEnemies[3][Fast_Ghost] = 5;
+	Level[2].waveEnemies[4][Fast_Ghost] = 10;
+	Level[2].waveEnemies[5][Fast_Ghost] = 10;
+	Level[2].waveEnemies[6][Fast_Ghost] = 10;
+	Level[2].waveEnemies[7][Fast_Ghost] = 10;
+	Level[2].waveEnemies[8][Fast_Ghost] = 10;
+	Level[2].waveEnemies[9][Fast_Ghost] = 10;
 
-	Level[0].waveEnemies[0][Fat_Ghost] = 0;
-	Level[0].waveEnemies[1][Fat_Ghost] = 0;
-	Level[0].waveEnemies[2][Fat_Ghost] = 0;
-	Level[0].waveEnemies[3][Fat_Ghost] = 0;
-	Level[0].waveEnemies[4][Fat_Ghost] = 1;
-	Level[0].waveEnemies[5][Fat_Ghost] = 5;
-	Level[0].waveEnemies[6][Fat_Ghost] = 5;
-	Level[0].waveEnemies[7][Fat_Ghost] = 5;
-	Level[0].waveEnemies[8][Fat_Ghost] = 10;
-	Level[0].waveEnemies[9][Fat_Ghost] = 10;
+	Level[2].waveEnemies[0][Fat_Ghost] = 0;
+	Level[2].waveEnemies[1][Fat_Ghost] = 0;
+	Level[2].waveEnemies[2][Fat_Ghost] = 0;
+	Level[2].waveEnemies[3][Fat_Ghost] = 0;
+	Level[2].waveEnemies[4][Fat_Ghost] = 1;
+	Level[2].waveEnemies[5][Fat_Ghost] = 5;
+	Level[2].waveEnemies[6][Fat_Ghost] = 5;
+	Level[2].waveEnemies[7][Fat_Ghost] = 5;
+	Level[2].waveEnemies[8][Fat_Ghost] = 10;
+	Level[2].waveEnemies[9][Fat_Ghost] = 10;
 
-	Level[0].waveEnemies[0][grimReaper] = 0;
-	Level[0].waveEnemies[1][grimReaper] = 0;
-	Level[0].waveEnemies[2][grimReaper] = 0;
-	Level[0].waveEnemies[3][grimReaper] = 0;
-	Level[0].waveEnemies[4][grimReaper] = 0;
-	Level[0].waveEnemies[5][grimReaper] = 0;
-	Level[0].waveEnemies[6][grimReaper] = 0;
-	Level[0].waveEnemies[7][grimReaper] = 0;
-	Level[0].waveEnemies[8][grimReaper] = 0;
-	Level[0].waveEnemies[9][grimReaper] = 0;
+	Level[2].waveEnemies[0][grimReaper] = 0;
+	Level[2].waveEnemies[1][grimReaper] = 0;
+	Level[2].waveEnemies[2][grimReaper] = 0;
+	Level[2].waveEnemies[3][grimReaper] = 0;
+	Level[2].waveEnemies[4][grimReaper] = 0;
+	Level[2].waveEnemies[5][grimReaper] = 0;
+	Level[2].waveEnemies[6][grimReaper] = 0;
+	Level[2].waveEnemies[7][grimReaper] = 0;
+	Level[2].waveEnemies[8][grimReaper] = 0;
+	Level[2].waveEnemies[9][grimReaper] = 0;
 }
 
 void level4_init(void) {
 	currentGameLevel = 3;
-	Level[0].spawnRow = 0;
-	Level[0].spawnCol = (GAME_GRID_COLS - 1) / 2;
-	Level[0].exitRow = GAME_GRID_ROWS - 1;
-	Level[0].exitCol = (GAME_GRID_COLS - 1) / 2;
-	Level[0].health = 100;
-	Level[0].phantomQuartz = 50;
-	Level[0].goldQuartz = 0;
-	Level[0].currentWave = -1;// starts with building phase which increment wave by 1
-	Level[0].currentEffect = NoEnvironmentalEffects;
+	Level[3].spawnRow = 0;
+	Level[3].spawnCol = (GAME_GRID_COLS - 1) / 2;
+	Level[3].exitRow = GAME_GRID_ROWS - 1;
+	Level[3].exitCol = (GAME_GRID_COLS - 1) / 2;
+	Level[3].health = 100;
+	Level[3].phantomQuartz = 50;
+	Level[3].goldQuartz = 0;
+	Level[3].currentWave = -1;// starts with building phase which increment wave by 1
+	Level[3].currentEffect = NoEnvironmentalEffects;
 
-	Level[0].waveEnemies[0][Basic] = 10;
-	Level[0].waveEnemies[1][Basic] = 10;
-	Level[0].waveEnemies[2][Basic] = 10;
-	Level[0].waveEnemies[3][Basic] = 10;
-	Level[0].waveEnemies[4][Basic] = 15;
-	Level[0].waveEnemies[5][Basic] = 15;
-	Level[0].waveEnemies[6][Basic] = 15;
-	Level[0].waveEnemies[7][Basic] = 10;
-	Level[0].waveEnemies[8][Basic] = 15;
-	Level[0].waveEnemies[9][Basic] = 20;
+	Level[3].waveEnemies[0][Basic] = 10;
+	Level[3].waveEnemies[1][Basic] = 10;
+	Level[3].waveEnemies[2][Basic] = 10;
+	Level[3].waveEnemies[3][Basic] = 10;
+	Level[3].waveEnemies[4][Basic] = 15;
+	Level[3].waveEnemies[5][Basic] = 15;
+	Level[3].waveEnemies[6][Basic] = 15;
+	Level[3].waveEnemies[7][Basic] = 10;
+	Level[3].waveEnemies[8][Basic] = 15;
+	Level[3].waveEnemies[9][Basic] = 20;
 
-	Level[0].waveEnemies[0][Fast_Ghost] = 0;
-	Level[0].waveEnemies[1][Fast_Ghost] = 5;
-	Level[0].waveEnemies[2][Fast_Ghost] = 3;
-	Level[0].waveEnemies[3][Fast_Ghost] = 5;
-	Level[0].waveEnemies[4][Fast_Ghost] = 10;
-	Level[0].waveEnemies[5][Fast_Ghost] = 10;
-	Level[0].waveEnemies[6][Fast_Ghost] = 10;
-	Level[0].waveEnemies[7][Fast_Ghost] = 10;
-	Level[0].waveEnemies[8][Fast_Ghost] = 15;
-	Level[0].waveEnemies[9][Fast_Ghost] = 10;
+	Level[3].waveEnemies[0][Fast_Ghost] = 0;
+	Level[3].waveEnemies[1][Fast_Ghost] = 5;
+	Level[3].waveEnemies[2][Fast_Ghost] = 3;
+	Level[3].waveEnemies[3][Fast_Ghost] = 5;
+	Level[3].waveEnemies[4][Fast_Ghost] = 10;
+	Level[3].waveEnemies[5][Fast_Ghost] = 10;
+	Level[3].waveEnemies[6][Fast_Ghost] = 10;
+	Level[3].waveEnemies[7][Fast_Ghost] = 10;
+	Level[3].waveEnemies[8][Fast_Ghost] = 15;
+	Level[3].waveEnemies[9][Fast_Ghost] = 10;
 
-	Level[0].waveEnemies[0][Fat_Ghost] = 0;
-	Level[0].waveEnemies[1][Fat_Ghost] = 0;
-	Level[0].waveEnemies[2][Fat_Ghost] = 2;
-	Level[0].waveEnemies[3][Fat_Ghost] = 5;
-	Level[0].waveEnemies[4][Fat_Ghost] = 5;
-	Level[0].waveEnemies[5][Fat_Ghost] = 5;
-	Level[0].waveEnemies[6][Fat_Ghost] = 10;
-	Level[0].waveEnemies[7][Fat_Ghost] = 10;
-	Level[0].waveEnemies[8][Fat_Ghost] = 10;
-	Level[0].waveEnemies[9][Fat_Ghost] = 15;
+	Level[3].waveEnemies[0][Fat_Ghost] = 0;
+	Level[3].waveEnemies[1][Fat_Ghost] = 0;
+	Level[3].waveEnemies[2][Fat_Ghost] = 2;
+	Level[3].waveEnemies[3][Fat_Ghost] = 5;
+	Level[3].waveEnemies[4][Fat_Ghost] = 5;
+	Level[3].waveEnemies[5][Fat_Ghost] = 5;
+	Level[3].waveEnemies[6][Fat_Ghost] = 10;
+	Level[3].waveEnemies[7][Fat_Ghost] = 10;
+	Level[3].waveEnemies[8][Fat_Ghost] = 10;
+	Level[3].waveEnemies[9][Fat_Ghost] = 15;
 
-	Level[0].waveEnemies[0][grimReaper] = 0;
-	Level[0].waveEnemies[1][grimReaper] = 0;
-	Level[0].waveEnemies[2][grimReaper] = 0;
-	Level[0].waveEnemies[3][grimReaper] = 0;
-	Level[0].waveEnemies[4][grimReaper] = 0;
-	Level[0].waveEnemies[5][grimReaper] = 0;
-	Level[0].waveEnemies[6][grimReaper] = 0;
-	Level[0].waveEnemies[7][grimReaper] = 1;
-	Level[0].waveEnemies[8][grimReaper] = 2;
-	Level[0].waveEnemies[9][grimReaper] = 3;
+	Level[3].waveEnemies[0][grimReaper] = 0;
+	Level[3].waveEnemies[1][grimReaper] = 0;
+	Level[3].waveEnemies[2][grimReaper] = 0;
+	Level[3].waveEnemies[3][grimReaper] = 0;
+	Level[3].waveEnemies[4][grimReaper] = 0;
+	Level[3].waveEnemies[5][grimReaper] = 0;
+	Level[3].waveEnemies[6][grimReaper] = 0;
+	Level[3].waveEnemies[7][grimReaper] = 1;
+	Level[3].waveEnemies[8][grimReaper] = 2;
+	Level[3].waveEnemies[9][grimReaper] = 3;
 }
 
 void level5_init(void) {
 	currentGameLevel = 4;
-	Level[0].spawnRow = 0;
-	Level[0].spawnCol = (GAME_GRID_COLS - 1) / 2;
-	Level[0].exitRow = GAME_GRID_ROWS - 1;
-	Level[0].exitCol = (GAME_GRID_COLS - 1) / 2;
-	Level[0].health = 100;
-	Level[0].phantomQuartz = 50;
-	Level[0].goldQuartz = 0;
-	Level[0].currentWave = -1;// starts with building phase which increment wave by 1
-	Level[0].currentEffect = NoEnvironmentalEffects;
+	Level[4].spawnRow = 0;
+	Level[4].spawnCol = (GAME_GRID_COLS - 1) / 2;
+	Level[4].exitRow = GAME_GRID_ROWS - 1;
+	Level[4].exitCol = (GAME_GRID_COLS - 1) / 2;
+	Level[4].health = 100;
+	Level[4].phantomQuartz = 50;
+	Level[4].goldQuartz = 0;
+	Level[4].currentWave = -1;// starts with building phase which increment wave by 1
+	Level[4].currentEffect = NoEnvironmentalEffects;
 
-	Level[0].waveEnemies[0][Basic] = 10;
-	Level[0].waveEnemies[1][Basic] = 15;
-	Level[0].waveEnemies[2][Basic] = 15;
-	Level[0].waveEnemies[3][Basic] = 10;
-	Level[0].waveEnemies[4][Basic] = 15;
-	Level[0].waveEnemies[5][Basic] = 10;
-	Level[0].waveEnemies[6][Basic] = 15;
-	Level[0].waveEnemies[7][Basic] = 15;
-	Level[0].waveEnemies[8][Basic] = 15;
-	Level[0].waveEnemies[9][Basic] = 10;
+	Level[4].waveEnemies[0][Basic] = 10;
+	Level[4].waveEnemies[1][Basic] = 15;
+	Level[4].waveEnemies[2][Basic] = 15;
+	Level[4].waveEnemies[3][Basic] = 10;
+	Level[4].waveEnemies[4][Basic] = 15;
+	Level[4].waveEnemies[5][Basic] = 10;
+	Level[4].waveEnemies[6][Basic] = 15;
+	Level[4].waveEnemies[7][Basic] = 15;
+	Level[4].waveEnemies[8][Basic] = 15;
+	Level[4].waveEnemies[9][Basic] = 10;
 
-	Level[0].waveEnemies[0][Fast_Ghost] = 0;
-	Level[0].waveEnemies[1][Fast_Ghost] = 0;
-	Level[0].waveEnemies[2][Fast_Ghost] = 5;
-	Level[0].waveEnemies[3][Fast_Ghost] = 5;
-	Level[0].waveEnemies[4][Fast_Ghost] = 5;
-	Level[0].waveEnemies[5][Fast_Ghost] = 10;
-	Level[0].waveEnemies[6][Fast_Ghost] = 10;
-	Level[0].waveEnemies[7][Fast_Ghost] = 10;
-	Level[0].waveEnemies[8][Fast_Ghost] = 15;
-	Level[0].waveEnemies[9][Fast_Ghost] = 10;
+	Level[4].waveEnemies[0][Fast_Ghost] = 0;
+	Level[4].waveEnemies[1][Fast_Ghost] = 0;
+	Level[4].waveEnemies[2][Fast_Ghost] = 5;
+	Level[4].waveEnemies[3][Fast_Ghost] = 5;
+	Level[4].waveEnemies[4][Fast_Ghost] = 5;
+	Level[4].waveEnemies[5][Fast_Ghost] = 10;
+	Level[4].waveEnemies[6][Fast_Ghost] = 10;
+	Level[4].waveEnemies[7][Fast_Ghost] = 10;
+	Level[4].waveEnemies[8][Fast_Ghost] = 15;
+	Level[4].waveEnemies[9][Fast_Ghost] = 10;
 
-	Level[0].waveEnemies[0][Fat_Ghost] = 0;
-	Level[0].waveEnemies[1][Fat_Ghost] = 0;
-	Level[0].waveEnemies[2][Fat_Ghost] = 0;
-	Level[0].waveEnemies[3][Fat_Ghost] = 5;
-	Level[0].waveEnemies[4][Fat_Ghost] = 5;
-	Level[0].waveEnemies[5][Fat_Ghost] = 10;
-	Level[0].waveEnemies[6][Fat_Ghost] = 10;
-	Level[0].waveEnemies[7][Fat_Ghost] = 10;
-	Level[0].waveEnemies[8][Fat_Ghost] = 15;
-	Level[0].waveEnemies[9][Fat_Ghost] = 10;
+	Level[4].waveEnemies[0][Fat_Ghost] = 0;
+	Level[4].waveEnemies[1][Fat_Ghost] = 0;
+	Level[4].waveEnemies[2][Fat_Ghost] = 0;
+	Level[4].waveEnemies[3][Fat_Ghost] = 5;
+	Level[4].waveEnemies[4][Fat_Ghost] = 5;
+	Level[4].waveEnemies[5][Fat_Ghost] = 10;
+	Level[4].waveEnemies[6][Fat_Ghost] = 10;
+	Level[4].waveEnemies[7][Fat_Ghost] = 10;
+	Level[4].waveEnemies[8][Fat_Ghost] = 15;
+	Level[4].waveEnemies[9][Fat_Ghost] = 10;
 
-	Level[0].waveEnemies[0][grimReaper] = 0;
-	Level[0].waveEnemies[1][grimReaper] = 0;
-	Level[0].waveEnemies[2][grimReaper] = 0;
-	Level[0].waveEnemies[3][grimReaper] = 0;
-	Level[0].waveEnemies[4][grimReaper] = 0;
-	Level[0].waveEnemies[5][grimReaper] = 0;
-	Level[0].waveEnemies[6][grimReaper] = 0;
-	Level[0].waveEnemies[7][grimReaper] = 1;
-	Level[0].waveEnemies[8][grimReaper] = 2;
-	Level[0].waveEnemies[9][grimReaper] = 5;
+	Level[4].waveEnemies[0][grimReaper] = 0;
+	Level[4].waveEnemies[1][grimReaper] = 0;
+	Level[4].waveEnemies[2][grimReaper] = 0;
+	Level[4].waveEnemies[3][grimReaper] = 0;
+	Level[4].waveEnemies[4][grimReaper] = 0;
+	Level[4].waveEnemies[5][grimReaper] = 0;
+	Level[4].waveEnemies[6][grimReaper] = 0;
+	Level[4].waveEnemies[7][grimReaper] = 1;
+	Level[4].waveEnemies[8][grimReaper] = 2;
+	Level[4].waveEnemies[9][grimReaper] = 5;
 }
 
 void render_button_pressed(void) {
@@ -982,10 +982,20 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 		break;
 	case UpgradeMenu:
 		if (turretSelectedToUpgrade != NO_TURRET_SELECTED) { //Only render when upgrading
+
 			CP_Image_Draw(turretUpgradeBackground, menuObjectX.xOrigin + menuObjectX.width / 2,
 				menuObjectX.yOrigin + menuObjectX.height / 3, 275 * scalingFactor, 475 * scalingFactor, 255);
+
 			CP_Settings_Fill(COLOR_WHITE);
 			CP_Settings_TextSize(50.0f * scalingFactor);
+			
+
+			//Level Icon
+			RenderNormal(turretStatsIconSpriteSheet, turretStatsIconArray[0], menuObjectX.xOrigin + menuObjectX.width / 1.75,
+				menuObjectX.yOrigin + menuObjectX.height / 6.5, 64 * scalingFactor, 64 * scalingFactor);
+			sprintf_s(temp, sizeof(temp), "%-2d", turret[turretSelectedToUpgrade].level);
+			CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 1.25,
+				menuObjectX.yOrigin + menuObjectX.height / 6.5);
 
 			switch (turret[turretSelectedToUpgrade].type)
 			{
@@ -993,42 +1003,75 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 				sprintf_s(temp, sizeof(temp), "Basic");
 				CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 2, menuObjectX.yOrigin + menuObjectX.height / 18);
 				RenderNormal(basicTurretSpriteSheet, basicTurretArray[0],
-					menuObjectX.xOrigin + menuObjectX.width / 2,
-					menuObjectX.yOrigin + menuObjectX.height / 6, 128 * scalingFactor, 128 * scalingFactor);
+					menuObjectX.xOrigin + menuObjectX.width / 4,
+					menuObjectX.yOrigin + menuObjectX.height /7, 110 * scalingFactor, 110 * scalingFactor);
+				RenderNormal(turretStatsIconSpriteSheet, turretStatsIconArray[1], menuObjectX.xOrigin + menuObjectX.width / 5,
+					menuObjectX.yOrigin + menuObjectX.height / 3.9, 64 * scalingFactor, 64 * scalingFactor);
+				sprintf_s(temp, sizeof(temp), "%.2f", turret[turretSelectedToUpgrade].mod.damage);
+				CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 1.95, menuObjectX.yOrigin + menuObjectX.height / 3.85);
 				break;
+
 			case T_SLOW:
 				sprintf_s(temp, sizeof(temp), "Slow");
 				CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 2, menuObjectX.yOrigin + menuObjectX.height / 18);
-				CP_Image_Draw(slowTurretImageArray[0], menuObjectX.xOrigin + menuObjectX.width / 2,
-					menuObjectX.yOrigin + menuObjectX.height / 6, 128 * scalingFactor, 128 * scalingFactor, 255);
+				CP_Image_Draw(slowTurretImageArray[0], menuObjectX.xOrigin + menuObjectX.width / 4,
+					menuObjectX.yOrigin + menuObjectX.height / 7, 110 * scalingFactor, 110 * scalingFactor, 255);
+				RenderNormal(turretStatsIconSpriteSheet, turretStatsIconArray[2], menuObjectX.xOrigin + menuObjectX.width / 5,
+					menuObjectX.yOrigin + menuObjectX.height / 3.9, 64 * scalingFactor, 64 * scalingFactor);
+				sprintf_s(temp, sizeof(temp), "%.2f", turret[turretSelectedToUpgrade].mod.slow_amt);
+				CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 1.95, menuObjectX.yOrigin + menuObjectX.height / 3.85);
 				break;
+
 			case T_HOMING:
 				sprintf_s(temp, sizeof(temp), "Homing");
 				CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 2, menuObjectX.yOrigin + menuObjectX.height / 18);
 				RenderNormal(homingMissleTurretSpriteSheet, homingMissleTurretArray[0],
-					menuObjectX.xOrigin + menuObjectX.width / 2,
-					menuObjectX.yOrigin + menuObjectX.height / 6, 128 * scalingFactor, 128 * scalingFactor);
+					menuObjectX.xOrigin + menuObjectX.width / 4,
+					menuObjectX.yOrigin + menuObjectX.height / 7, 110 * scalingFactor, 110 * scalingFactor);
+				RenderNormal(turretStatsIconSpriteSheet, turretStatsIconArray[1], menuObjectX.xOrigin + menuObjectX.width / 5,
+					menuObjectX.yOrigin + menuObjectX.height / 3.9, 64 * scalingFactor, 64 * scalingFactor);
+				sprintf_s(temp, sizeof(temp), "%.2f", turret[turretSelectedToUpgrade].mod.damage);
+				CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 1.95, menuObjectX.yOrigin + menuObjectX.height / 3.85);
 				break;
+
 			case T_MINE:
 				sprintf_s(temp, sizeof(temp), "Mine");
 				CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 2, menuObjectX.yOrigin + menuObjectX.height / 18);
 				RenderNormal(mineSpriteSheet, mineArray[0],
-					menuObjectX.xOrigin + menuObjectX.width / 2,
-					menuObjectX.yOrigin + menuObjectX.height / 6, 128 * scalingFactor, 128 * scalingFactor);
+					menuObjectX.xOrigin + menuObjectX.width / 4,
+					menuObjectX.yOrigin + menuObjectX.height / 7, 110 * scalingFactor, 110 * scalingFactor);
+				RenderNormal(turretStatsIconSpriteSheet, turretStatsIconArray[1], menuObjectX.xOrigin + menuObjectX.width / 5,
+					menuObjectX.yOrigin + menuObjectX.height / 3.9, 64 * scalingFactor, 64 * scalingFactor);
+				sprintf_s(temp, sizeof(temp), "%.2f", turret[turretSelectedToUpgrade].mod.damage);
+				CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 1.95, menuObjectX.yOrigin + menuObjectX.height / 3.85);
 				break;
+
 			}
+			//Range Icon
+			RenderNormal(turretStatsIconSpriteSheet, turretStatsIconArray[3], menuObjectX.xOrigin + menuObjectX.width / 5,
+				menuObjectX.yOrigin + menuObjectX.height / 2.9, 64 * scalingFactor, 64 * scalingFactor);
+			sprintf_s(temp, sizeof(temp), "%-5.2f", turret[turretSelectedToUpgrade].mod.range);
+			CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 1.7, menuObjectX.yOrigin + menuObjectX.height / 2.9);
 
-			sprintf_s(temp, sizeof(temp), "Level:%d", turret[turretSelectedToUpgrade].level);
-			CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 2, menuObjectX.yOrigin + menuObjectX.height / 3);
-			sprintf_s(temp, sizeof(temp), "%d", turret_purchasing[TP_UPGRADE_PRICE][turret[turretSelectedToUpgrade].type]);
+			//Attack Speed Icon
+			RenderNormal(turretStatsIconSpriteSheet, turretStatsIconArray[4], menuObjectX.xOrigin + menuObjectX.width /5,
+				menuObjectX.yOrigin + menuObjectX.height / 2.32, 64 * scalingFactor, 64 * scalingFactor);
+			sprintf_s(temp, sizeof(temp), "%.2f", turret[turretSelectedToUpgrade].mod.shoot_rate);
+			CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 1.95, menuObjectX.yOrigin + menuObjectX.height / 2.3);
+
+			CP_Settings_TextSize(35.0f * scalingFactor);
+
+			//Upgrade Price
+			sprintf_s(temp, sizeof(temp), "%4d", turret[turretSelectedToUpgrade].upgrade_price);
 			CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 5.5, menuObjectX.yOrigin + menuObjectX.height / 1.95);
-			RenderNormal(currencySpriteSheet, currencyArray[1], menuObjectX.xOrigin + menuObjectX.width / 3,
-				menuObjectX.yOrigin + menuObjectX.height / 1.95, 64 * scalingFactor, 64 * scalingFactor);
+			RenderNormal(currencySpriteSheet, currencyArray[1], menuObjectX.xOrigin + menuObjectX.width / 2.95,
+				menuObjectX.yOrigin + menuObjectX.height / 1.95, 40 * scalingFactor, 40 * scalingFactor);
 
-			sprintf_s(temp, sizeof(temp), "10");
+			//Sell Price
+			sprintf_s(temp, sizeof(temp), "%4d", turret[turretSelectedToUpgrade].sell_price);
 			CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 1.45, menuObjectX.yOrigin + menuObjectX.height / 1.95);
-			RenderNormal(currencySpriteSheet, currencyArray[1], menuObjectX.xOrigin + menuObjectX.width / 1.2,
-				menuObjectX.yOrigin + menuObjectX.height / 1.95, 64 * scalingFactor, 64 * scalingFactor);
+			RenderNormal(currencySpriteSheet, currencyArray[1], menuObjectX.xOrigin + menuObjectX.width / 1.15,
+				menuObjectX.yOrigin + menuObjectX.height / 1.95, 40 * scalingFactor, 40* scalingFactor);
 		}
 		break;
 	case UpgradeButton:

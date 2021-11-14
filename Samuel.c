@@ -41,7 +41,7 @@ void turret_init(void)
 		turret[i].turret_img = slowTurretImageArray[0];
 		turret[i].currentAnimState = INACTIVE;
 		turret[i].animCounter = 0;
-		turret[i].price = 25;
+		turret[i].sell_price = 25;
 		turret[i].level = 1;
 	}
 	//init the lcoations of turret placed
@@ -66,8 +66,10 @@ void turret_init(void)
 	for (int i = 0; i < T_MAX; ++i)
 		turret_purchasing[TP_UPGRADE_MAX_LEVEL][i] = 5;
 
-	//place_turret(T_SLOW, 2, 1);
-	//Level[0].grid[1][2].type = Blocked;//Hard coded to set turret spot to blocked
+	//place_turret(T_WALL, 2, 1);
+	//Level[currentGameLevel].grid[1][2].type = Blocked;
+	//place_turret(T_SLOW, 4, 1);
+	//Level[0].grid[4][1].type = Blocked;//Hard coded to set turret spot to blocked
 	//place_turret(T_BASIC, 0, 4);
 	//Level[0].grid[4][0].type = Blocked;//Hard coded to set turret spot to blocked
 }
@@ -126,11 +128,18 @@ void place_turret(TurretType type, int index_x, int index_y)
 			turret[i].animCounter = 0;
 			turret[i].turretAnimTimer = 0;
 			break;
+		case T_WALL:
+
+			break;
 		default:
 			break;
 		}
+		//sell price back to default
+		turret[i].sell_price = (int)(turret_purchasing[TP_PRICE][type] * 0.7f);
 		//upgrade price back to default
 		turret[i].upgrade_price = turret_purchasing[TP_UPGRADE_PRICE][type];
+		//total price accumalated
+		turret[i].total_price = turret_purchasing[TP_PRICE][type];
 		//shooting rate set
 		turret[i].mod.shoot_rate = 0.6f;
 		//set to active and the turret type
@@ -168,9 +177,16 @@ void sell_turret(int t_index)
 {
 	int x = (int)((turret[t_index].data.xOrigin - Game.xOrigin) / Game.gridWidth);
 	int y = (int)((turret[t_index].data.yOrigin - Game.yOrigin) / Game.gridHeight);
-	int index = turret_on_grid[x][y];
-	Level[currentGameLevel].phantomQuartz += (turret[index].upgrade_price +
-		turret_purchasing[TP_PRICE][turret[index].type]) / 2;
+	float sell_price;
+
+	sell_price = (int)(turret[t_index].total_price * 0.7f);
+	//if (turret[t_index].level != 1)
+	//	sell_price = (turret[t_index].upgrade_price + turret_purchasing[TP_PRICE][turret[t_index].type]) * 0.7f;
+	//else
+	//	sell_price = turret_purchasing[TP_PRICE][turret[t_index].type] * 0.7f;
+
+	//printf("sell price: %d", (int)sell_price);
+	Level[currentGameLevel].phantomQuartz += (int)sell_price;
 	remove_turret(x, y);
 }
 
@@ -179,10 +195,10 @@ void upgrade_turret(int t_index)
 {
 	int x = (int)((turret[t_index].data.xOrigin - Game.xOrigin) / Game.gridWidth);
 	int y = (int)((turret[t_index].data.yOrigin - Game.yOrigin) / Game.gridHeight);
-	//int t_index = turret_on_grid[x][y];
-	
-	// Minus the price
-	//Level[currentGameLevel].phantomQuartz -= turret_purchasing[TP_UPGRADE_PRICE][turret[t_index].type] +
+
+
+	turret[t_index].total_price += turret[t_index].upgrade_price;
+	turret[t_index].sell_price = (int)((turret[t_index].total_price) * 0.7f);
 
 	turret[t_index].level++;
 	switch (turret[t_index].type)
@@ -217,6 +233,7 @@ void upgrade_turret(int t_index)
 	default:
 		break;
 	}
+
 }
 
 void render_turret(void)
@@ -247,6 +264,10 @@ void render_turret(void)
 			RenderNormal(mineSpriteSheet, mineArray[turret[i].animCounter],
 				turret[i].data.xOrigin, turret[i].data.yOrigin, turret[i].size, turret[i].size);
 			break;
+		case T_WALL:
+			RenderNormal(energyWallSpriteSheet, energyWallArray[turret[i].animCounter],
+				turret[i].data.xOrigin, turret[i].data.yOrigin, turret[i].size, turret[i].size);
+			break;
 		default:
 			break;
 		}
@@ -265,7 +286,7 @@ void update_turret(void)
 
 	for (int i = 0; i < MAX_TURRET; ++i)
 	{
-		if (!turret[i].isActive)
+		if (!turret[i].isActive || turret[i].type == T_WALL)
 			continue;
 
 		//reset variables

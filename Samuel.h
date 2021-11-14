@@ -67,7 +67,9 @@ typedef struct Turret
 	float turretAnimTimer;
 	CP_Image turret_img;
 	int animCounter;
-	int price, upgrade_price;
+	// sell price, upgrade price , 
+	// total accumulated price (each upgrades + base price) 
+	int sell_price, upgrade_price, total_price;
 	int level;
 } Turret;
 

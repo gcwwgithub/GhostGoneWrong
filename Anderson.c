@@ -142,7 +142,7 @@ void init_end_screen(void)
 	EndScreenButtons[1].textPositionY = EndScreenButtons[1].buttonData.yOrigin + BUTTON_HEIGHT / 2;
 	strcpy_s(EndScreenButtons[1].textString, sizeof(EndScreenButtons[1].textString), "Restart");
 
-	// Quit to Desktop
+	// Next Level
 	EndScreenButtons[2].buttonData.xOrigin = CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH / 2;
 	EndScreenButtons[2].buttonData.yOrigin = CP_System_GetWindowHeight() * 0.7f - BUTTON_HEIGHT / 2;
 	EndScreenButtons[2].buttonData.width = BUTTON_WIDTH;
@@ -150,8 +150,7 @@ void init_end_screen(void)
 	EndScreenButtons[2].buttonData.objectType = objectRectangle;
 	EndScreenButtons[2].textPositionX = EndScreenButtons[2].buttonData.xOrigin + BUTTON_WIDTH / 2;
 	EndScreenButtons[2].textPositionY = EndScreenButtons[2].buttonData.yOrigin + BUTTON_HEIGHT / 2;
-	strcpy_s(EndScreenButtons[2].textString, sizeof(EndScreenButtons[2].textString), "Quit");
-
+	strcpy_s(EndScreenButtons[2].textString, sizeof(EndScreenButtons[2].textString), "Next");
 }
 
 void init_game_font(void)
@@ -304,7 +303,11 @@ void render_end_screen(void)
 
 	render_ui_button(EndScreenButtons[0]);
 	render_ui_button(EndScreenButtons[1]);
-	render_ui_button(EndScreenButtons[2]);
+
+	if (currentGameLevel < 4)
+	{
+		render_ui_button(EndScreenButtons[2]);
+	}
 }
 
 void game_win_lose_check(void)
@@ -321,9 +324,8 @@ void game_win_lose_check(void)
 		{
 			currentGameState = Win;
 		}
-		else
+		else // if still in the midst of the current level
 		{
-			Level[currentGameLevel].currentWave++;
 			set_building_time(BUILDING_PHASE_TIME);
 			currentGameState = Building;
 		}
@@ -343,46 +345,47 @@ void game_win_lose_check(void)
 //	Level[0].phantomQuartz += goldAmtToConvert / conversionRate;
 //}
 
-void init_level(int gameLevelToRestart)
+void init_level(int nextGameLevel)
 {
-	//Level Data (presumed to be level 1)
-	currentGameLevel = gameLevelToRestart;
-
-	switch (gameLevelToRestart) {
-		{
-	case 0:
-		level1_init();
-		//default:
-			//Level[gameLevelToRestart].spawnRow = 0;
-			//Level[gameLevelToRestart].spawnCol = (GAME_GRID_COLS - 1) / 2;
-			//Level[gameLevelToRestart].exitRow = GAME_GRID_ROWS - 1;
-			//Level[gameLevelToRestart].exitCol = (GAME_GRID_COLS - 1) / 2;
-			//Level[gameLevelToRestart].health = 100;
-			//Level[gameLevelToRestart].phantomQuartz = 100;
-			//Level[gameLevelToRestart].goldQuartz = 100;
-			//Level[gameLevelToRestart].currentWave = 0;
-			//Level[gameLevelToRestart].currentEffect = 0;
-		}
-
-		pathfinding_init(&Level[gameLevelToRestart]);
-		environment_init(&Level[gameLevelToRestart]);
-
-		// this only frees the top right 3 turret tiles --> (0,2) (1,2) (2,2)
-		// placing a turret on (4,0) and restarting level changes the enemy path.
-	}for (int i = 0; i < GAME_GRID_ROWS; i++)
+	switch (nextGameLevel)
 	{
-		for (int j = 0; j < GAME_GRID_COLS; j++)
-		{
-			remove_turret(i, j);
-		}
+	case 0:
+	{
+		level2_init();
+		break;
 	}
+	case 1:
+	{
+		level2_init();
+		break;
+	}
+	case 2:
+	{
+		level3_init();
+		break;
+	}
+	case 3:
+	{
+		level4_init();
+		break;
+	}
+	case 4:
+	{
+		level5_init();
+		break;
+	}
+	}
+	isPlacingTurret = T_MAX;
+	turretSelectedToUpgrade = NO_TURRET_SELECTED;
+	powerUpMenu = FALSE;
+	pathfinding_init(&Level[nextGameLevel]);
+	environment_init(&Level[nextGameLevel]);
 
-	turret_init();
+	Enemies_init();
 
-	//Enemies_init(2, 2, 2, &Level[gameLevelToRestart]);
-	//set_building_time(BUILDING_PHASE_TIME);
-
-	//pathfinding_reset(&Level[gameLevelToRestart]);
-	//pathfinding_calculate_cost(&Level[gameLevelToRestart]);
-	//pathfinding_update(&Level[gameLevelToRestart]);
+	pathfinding_reset(&Level[nextGameLevel]);
+	pathfinding_calculate_cost(&Level[nextGameLevel]);
+	pathfinding_update(&Level[nextGameLevel]);
+	set_building_time(BUILDING_PHASE_TIME);
+	currentGameState = Building;
 }
