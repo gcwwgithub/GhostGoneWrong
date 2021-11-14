@@ -66,8 +66,10 @@ void turret_init(void)
 	for (int i = 0; i < T_MAX; ++i)
 		turret_purchasing[TP_UPGRADE_MAX_LEVEL][i] = 5;
 
-	//place_turret(T_SLOW, 2, 1);
-	//Level[0].grid[1][2].type = Blocked;//Hard coded to set turret spot to blocked
+	//place_turret(T_WALL, 2, 1);
+	//Level[currentGameLevel].grid[1][2].type = Blocked;
+	//place_turret(T_SLOW, 4, 1);
+	//Level[0].grid[4][1].type = Blocked;//Hard coded to set turret spot to blocked
 	//place_turret(T_BASIC, 0, 4);
 	//Level[0].grid[4][0].type = Blocked;//Hard coded to set turret spot to blocked
 }
@@ -125,6 +127,9 @@ void place_turret(TurretType type, int index_x, int index_y)
 			turret[i].data.objectType = objectCircle;
 			turret[i].animCounter = 0;
 			turret[i].turretAnimTimer = 0;
+			break;
+		case T_WALL:
+
 			break;
 		default:
 			break;
@@ -259,6 +264,10 @@ void render_turret(void)
 			RenderNormal(mineSpriteSheet, mineArray[turret[i].animCounter],
 				turret[i].data.xOrigin, turret[i].data.yOrigin, turret[i].size, turret[i].size);
 			break;
+		case T_WALL:
+			RenderNormal(energyWallSpriteSheet, energyWallArray[turret[i].animCounter],
+				turret[i].data.xOrigin, turret[i].data.yOrigin, turret[i].size, turret[i].size);
+			break;
 		default:
 			break;
 		}
@@ -277,7 +286,7 @@ void update_turret(void)
 
 	for (int i = 0; i < MAX_TURRET; ++i)
 	{
-		if (!turret[i].isActive)
+		if (!turret[i].isActive || turret[i].type == T_WALL)
 			continue;
 
 		//reset variables
