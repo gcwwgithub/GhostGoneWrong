@@ -23,7 +23,8 @@ typedef enum EnemyState {
 	Moving,
 	Hurt,
 	Death,
-	Reached
+	Reached,
+	Adjusting
 
 }EnemyState;
 
@@ -57,6 +58,10 @@ typedef struct Enemy {
 	int WavePowUp_isActive;
 	int currentAnimState;
 
+	float EnemyPathX[50];
+	float EnemyPathY[50];
+	int adjustingWaypoint;
+
 	float timer;
 }enemy;
 
@@ -88,6 +93,8 @@ void Env_eff_More_HP(void);
 void wave_enemy_init(int Basic_Ghost_count, int Fast_Ghost_count, int Fat_Ghost_count, int Grim_Reaper_count, LevelData Level);
 
 void Update_Path_Array(LevelData Level);
+void Check_pathAdjustment(enemy* r);
+void reset_enemy_path(enemy* r);
 
 enemy test;
 struct node* Enemy_node;

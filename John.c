@@ -35,6 +35,8 @@ int Check_state(enemy* r) {
 	switch (r->state) {
 	case Moving:
 		return 0;
+	case Adjusting:
+		return 0;
 	case Hurt:
 		return 1;
 	case Death:
@@ -46,7 +48,12 @@ int Check_state(enemy* r) {
 void enemy_move(enemy* r, float Enemy_PathpointsX[], float Enemy_PathpointsY[], int number_of_points, LevelData* Level) { //Enemy movement
 	float Speed = (r->speed) * r->slow_amt * CP_System_GetDt();
 	update_point_num(Enemy_PathpointsX, Enemy_PathpointsY, r);
-	if (r->CurrentWaypoint + 1 == number_of_points) {
+	if (r->CurrentWaypoint>=2 && r->state == Adjusting) {
+		r->state = Moving;
+		reset_enemy_path(r);
+		r->CurrentWaypoint = r->adjustingWaypoint;
+	}
+	if (r->CurrentWaypoint + 1 == number_of_points && r->state != Adjusting) {
 		if (r->state != Death && r->state != Inactive && r->state != Reached) {
 			Level->health -= 10;
 			insert_new_node_portal(&portalEnterFirstNode, r->data.xOrigin,
@@ -209,11 +216,12 @@ void Basic_Ghost(enemy* r) { // setup variable for basic ghost enemy
 	r->data.height = Game.gridWidth;
 	r->state = Inactive;
 	r->timer = 0;
-	r->points = 100;
+	r->points = 25;
 	//for the freeze turret & enemy interaction
 	r->slow_amt = 1;
 	r->slow_timer = 0;
 	r->currentAnimState = 0;
+	reset_enemy_path(r);
 }
 
 void Fast_Ghost_init(enemy* r) { // setup variable for fast ghost enemy
@@ -233,11 +241,12 @@ void Fast_Ghost_init(enemy* r) { // setup variable for fast ghost enemy
 	r->data.height = Game.gridWidth;
 	r->state = Inactive;
 	r->timer = 0;
-	r->points = 100;
+	r->points = 25;
 	//for the freeze turret & enemy interaction
 	r->slow_amt = 1;
 	r->slow_timer = 0;
 	r->currentAnimState = 0;
+	reset_enemy_path(r);
 }
 
 void Fat_Ghost_init(enemy* r) {
@@ -262,6 +271,7 @@ void Fat_Ghost_init(enemy* r) {
 	r->slow_amt = 1;
 	r->slow_timer = 0;
 	r->currentAnimState = 0;
+	reset_enemy_path(r);
 }
 
 void update_enemy(void) {
@@ -295,7 +305,8 @@ void update_enemy(void) {
 		}
 
 		Update_Path_Array(Level[0]);
-		enemy_move(&Enemy[i], Xarray, Yarray, Number_of_points, &Level[0]);
+		Check_pathAdjustment(&Enemy[i]);
+		enemy_move(&Enemy[i], Enemy[i].EnemyPathX, Enemy[i].EnemyPathY, Number_of_points, &Level[0]);
 		EnemyDeath(&Enemy[i], &Level[0]);
 		Reaper_ability(&Enemy[i]);
 
@@ -338,7 +349,7 @@ void draw_multiple_enemies(void) {
 
 void update_enemy_health_bar(enemy* r)
 {
-	if (r->health != 0)
+	if (r->health > 0)
 	{
 		float newWidth = r->health / r->max_health;
 		CP_Settings_Fill(COLOR_RED);
@@ -394,6 +405,7 @@ void grimReaper_init(enemy* r) {
 	r->slow_timer = 0;
 	r->currentAnimState = 0;
 	r->charges = charges_1;
+	reset_enemy_path(r);
 }
 
 void Reaper_minion_init(enemy* r) {
@@ -468,6 +480,10 @@ void empty_enemy_init(enemy* r) {
 	//r->Enemy_pow_up.SpeedDown = 0;
 	r->WavePowUp_isActive = 0;
 	r->isToken = 0;
+	for (int i = 0; i < 50; i++) {
+		r->EnemyPathX[i] = 0;
+		r->EnemyPathY[i] = 0;
+	}
 }
 
 
@@ -534,6 +550,7 @@ void Environment_check(LevelData Level) {
 
 void Reset_enemies(int current_level) {
 	if (currentGameState == Building) {
+		Update_Path_Array(Level[0]);
 		if (buildingTime > 0.05f && Level[current_level].currentWave + 1 < MAX_NUMBER_OF_WAVES) {
 			int BasicCount = Level[current_level].waveEnemies[Level[current_level].currentWave + 1][Basic];
 			int FastCount = Level[current_level].waveEnemies[Level[current_level].currentWave + 1][Fast_Ghost];
@@ -569,4 +586,69 @@ Basic_Ghost(&Enemy[i]);
 		Fat_Ghost_init(&Enemy[i]);
 	}
 	grimReaper_init(&Enemy[6]);
-	*/
+
+void Movement_adjust{
+Enemy movement array in struct
+Take points from self array
+if next waypoint does not match global array
+reset self array with closest point
+*/
+
+void Check_pathAdjustment(enemy* r) {
+	int XorY = 0;
+	int check = 0;
+	if (r->state != Adjusting&&r->state != Inactive&&r->state !=Death&&r->state != Reached) {
+		for (int j = 0; j < Number_of_points; j++) {
+			if (r->EnemyPathX[r->CurrentWaypoint + 1] == Xarray[j] && r->EnemyPathY[r->CurrentWaypoint + 1] == Yarray[j]) {
+				check++;
+			}
+		}
+		if (check < 1) {
+			int ClosestWaypoint = 0;
+			float d = 10000;
+			for (int i = 0; i < Number_of_points; i++) {
+				float a = fabs((double)r->data.xOrigin - Xarray[i]);
+				float b = fabs((double)r->data.yOrigin - Yarray[i]);
+				float c = a + b;
+				if (c < d) {
+					d = c;
+					ClosestWaypoint = i;
+					r->adjustingWaypoint = i;
+					if (a - b < 0) {
+						XorY = 2;
+					}
+					else {
+						XorY = 1;
+					}
+				}
+			}
+			if (XorY == 1) {
+				r->EnemyPathX[0] = r->data.xOrigin;
+				r->EnemyPathY[0] = r->data.yOrigin;
+				r->EnemyPathX[1] = Xarray[ClosestWaypoint];
+				r->EnemyPathY[1] = r->data.yOrigin;
+				r->EnemyPathX[2] = Xarray[ClosestWaypoint];
+				r->EnemyPathY[2] = Yarray[ClosestWaypoint];
+				r->CurrentWaypoint = 0;
+			}
+			else if (XorY == 2) {
+				r->EnemyPathX[0] = r->data.xOrigin;
+				r->EnemyPathY[0] = r->data.yOrigin;
+				r->EnemyPathX[1] = r->data.xOrigin;
+				r->EnemyPathY[1] = Yarray[ClosestWaypoint];
+				r->EnemyPathX[2] = Xarray[ClosestWaypoint];
+				r->EnemyPathY[2] = Yarray[ClosestWaypoint];
+
+				r->CurrentWaypoint = 0;
+			}
+			r->state = Adjusting;
+		}
+	}
+}
+
+void reset_enemy_path(enemy* r) {
+	for (int i = 0; i < 50; i++) {
+		r->EnemyPathX[i] = Xarray[i];
+		r->EnemyPathY[i] = Yarray[i];
+	}
+}
