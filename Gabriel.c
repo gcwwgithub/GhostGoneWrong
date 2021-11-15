@@ -376,6 +376,7 @@ void render_game_background(int currentLevel)
 	switch (currentLevel)
 	{
 	case 0:
+		CP_Settings_Tint(CP_Color_Create(0, 0, 0, 75));
 		RenderWithAlphaChanged(backgroundSpriteSheet, backgroundArray[1], CP_System_GetWindowWidth() * 0.5,
 			CP_System_GetWindowHeight() * 0.5, CP_System_GetWindowWidth(), CP_System_GetWindowHeight(), 255);
 		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[1], 
@@ -443,18 +444,22 @@ void render_game_background(int currentLevel)
 			64 * scalingFactor, 64 * scalingFactor);
 		break;
 	case 1:
+		CP_Settings_Tint(CP_Color_Create(0, 0, 0, 75));
 		RenderWithAlphaChanged(backgroundSpriteSheet, backgroundArray[2], CP_System_GetWindowWidth() * 0.5,
 			CP_System_GetWindowHeight() * 0.5, CP_System_GetWindowWidth(), CP_System_GetWindowHeight(), 255);
 		break;
 	case 2:
+		CP_Settings_Tint(CP_Color_Create(0, 0, 0, 75));
 		RenderWithAlphaChanged(backgroundSpriteSheet, backgroundArray[3], CP_System_GetWindowWidth() * 0.5,
 			CP_System_GetWindowHeight() * 0.5, CP_System_GetWindowWidth(), CP_System_GetWindowHeight(), 200);
 		break;
 	case 3:
+		CP_Settings_Tint(CP_Color_Create(0, 0, 0, 75));
 		RenderWithAlphaChanged(backgroundSpriteSheet, backgroundArray[4], CP_System_GetWindowWidth() * 0.5,
 			CP_System_GetWindowHeight() * 0.5, CP_System_GetWindowWidth(), CP_System_GetWindowHeight(), 200);
 		break;
 	case 4:
+		CP_Settings_Tint(CP_Color_Create(0, 0, 0, 75));
 		RenderWithAlphaChanged(backgroundSpriteSheet, backgroundArray[5], CP_System_GetWindowWidth() * 0.5,
 			CP_System_GetWindowHeight() * 0.5, CP_System_GetWindowWidth(), CP_System_GetWindowHeight(), 200);
 		break;
