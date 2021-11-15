@@ -78,7 +78,7 @@ struct SpriteSheetImage environmentObjectArray[8];
 struct SpriteSheetImage backgroundArray[5];
 struct SpriteSheetImage portalEnterEffectArray[4];
 struct SpriteSheetImage portalSpawnEffectArray[4];
-struct SpriteSheetImage powerUpIconArray[3];
+struct SpriteSheetImage powerUpIconArray[4];
 struct SpriteSheetImage battlefieldEffectIconArray[12];
 struct SpriteSheetImage backgroundUIFatArray[2];
 struct SpriteSheetImage interactableButtonsImageArray[3];

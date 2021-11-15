@@ -175,7 +175,7 @@ void init_spritesheet_array(void)
 	SpriteSheetCalculation(backgroundArray, backgroundSpriteSheet,1920,1080, 1);
 	SpriteSheetCalculation(portalEnterEffectArray, portalEnterEffectSpriteSheet, 128, 128, 0);
 	SpriteSheetCalculation(portalSpawnEffectArray, portalSpawnEffectSpriteSheet, 128, 128, 0);
-	SpriteSheetCalculation(powerUpIconArray, powerUpIconSpriteSheet, 128, 128, 1);
+	SpriteSheetCalculation(powerUpIconArray, powerUpIconSpriteSheet, 128, 128, 0);
 	SpriteSheetCalculation(battlefieldEffectIconArray, battlefieldEffectIconSpriteSheet, 128, 128, 0);
 	SpriteSheetCalculation(backgroundUIFatArray, backgroundUIFatSpriteSheet, 128, 128, 0);
 	SpriteSheetCalculation(interactableButtonsImageArray, interactableButtonsImageSpriteSheet, 128, 72, 1);

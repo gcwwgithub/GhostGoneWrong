@@ -836,8 +836,12 @@ void render_button_pressed(void) {
 		if (turretSelectedToUpgrade != NO_TURRET_SELECTED) {
 			if (turret[turretSelectedToUpgrade].type != T_MINE) {
 				if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT) && Level[currentGameLevel].phantomQuartz >= turret[turretSelectedToUpgrade].upgrade_price) {
-					Level[currentGameLevel].phantomQuartz -= turret[turretSelectedToUpgrade].upgrade_price;
-					upgrade_turret(turretSelectedToUpgrade);
+					if (turret[turretSelectedToUpgrade].level < 10)
+					{
+						Level[currentGameLevel].phantomQuartz -= turret[turretSelectedToUpgrade].upgrade_price;
+						upgrade_turret(turretSelectedToUpgrade);
+					}
+					
 					isPlacingTurret = T_MAX;
 					//call upgrade function
 				}
@@ -926,8 +930,13 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 		{
 			RenderNormal(powerUpIconSpriteSheet, powerUpIconArray[0], menuObjectX.width / 2,
 				(menuObjectX.yOrigin + menuObjectX.height / 2), 100 * scalingFactor, 100 * scalingFactor);
-			sprintf_s(temp, sizeof(temp), "%d", Level[currentGameLevel].currentPowerUpLevel.morePhantomQuartz);
-			CP_Font_DrawText(temp, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3));
+			sprintf_s(temp, sizeof(temp), "Lv:%-2d", Level[currentGameLevel].currentPowerUpLevel.morePhantomQuartz);
+			CP_Font_DrawText(temp, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 7));
+
+			sprintf_s(temp, sizeof(temp), "10");
+			CP_Font_DrawText(temp, menuObjectX.width / 2.5, (menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3));
+			RenderNormal(currencySpriteSheet, currencyArray[0], menuObjectX.width / 1.65,
+				(menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3), 45 * scalingFactor, 45 * scalingFactor);
 		}
 		break;
 
@@ -947,8 +956,15 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 		{
 			RenderNormal(powerUpIconSpriteSheet, powerUpIconArray[1], menuObjectX.width / 2,
 				(menuObjectX.yOrigin + menuObjectX.height / 2), 100 * scalingFactor, 100 * scalingFactor);
-			sprintf_s(temp, sizeof(temp), "%d", Level[currentGameLevel].currentPowerUpLevel.reduceEnemySpeed);
-			CP_Font_DrawText(temp, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3));
+			
+			
+			sprintf_s(temp, sizeof(temp), "Lv:%-2d", Level[currentGameLevel].currentPowerUpLevel.reduceEnemySpeed);
+			CP_Font_DrawText(temp, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 7));
+
+			sprintf_s(temp, sizeof(temp), "10");
+			CP_Font_DrawText(temp, menuObjectX.width / 2.5, (menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3));
+			RenderNormal(currencySpriteSheet, currencyArray[0], menuObjectX.width / 1.65,
+				(menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3), 45 * scalingFactor, 45 * scalingFactor);
 		}
 		break;
 
@@ -967,8 +983,14 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 		{
 			RenderNormal(powerUpIconSpriteSheet, powerUpIconArray[2], menuObjectX.width / 2,
 				(menuObjectX.yOrigin + menuObjectX.height / 2), 100 * scalingFactor, 100 * scalingFactor);
-			sprintf_s(temp, sizeof(temp), "%d", Level[currentGameLevel].currentPowerUpLevel.reduceEnemyHealth);
-			CP_Font_DrawText(temp, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3));
+			sprintf_s(temp, sizeof(temp), "Lv:%-2d", Level[currentGameLevel].currentPowerUpLevel.reduceEnemyHealth);
+			CP_Font_DrawText(temp, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 7));
+			
+			sprintf_s(temp, sizeof(temp), "10");
+			CP_Font_DrawText(temp, menuObjectX.width / 2.5, (menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3));
+			RenderNormal(currencySpriteSheet, currencyArray[0], menuObjectX.width / 1.65,
+				(menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3), 45 * scalingFactor, 45 * scalingFactor);
+
 		}
 		break;
 
@@ -985,10 +1007,17 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 		}
 		else
 		{
-			RenderNormal(powerUpIconSpriteSheet, powerUpIconArray[2], menuObjectX.width / 2,
+			RenderNormal(powerUpIconSpriteSheet, powerUpIconArray[3], menuObjectX.width / 2,
 				(menuObjectX.yOrigin + menuObjectX.height / 2), 100 * scalingFactor, 100 * scalingFactor);
-			sprintf_s(temp, sizeof(temp), "%d", Level[currentGameLevel].currentPowerUpLevel.increasedMineDamage);
-			CP_Font_DrawText(temp, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3));
+		
+			sprintf_s(temp, sizeof(temp), "Lv:%-2d", Level[currentGameLevel].currentPowerUpLevel.increasedMineDamage);
+			CP_Font_DrawText(temp, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 7));
+
+
+			sprintf_s(temp, sizeof(temp), "10");
+			CP_Font_DrawText(temp, menuObjectX.width / 2.5, (menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3));
+			RenderNormal(currencySpriteSheet, currencyArray[0], menuObjectX.width / 1.65,
+				(menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3), 45 * scalingFactor, 45 * scalingFactor);
 		}
 
 		break;
@@ -1088,8 +1117,17 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 			//Level Icon
 			RenderNormal(turretStatsIconSpriteSheet, turretStatsIconArray[0], menuObjectX.xOrigin + menuObjectX.width / 1.75,
 				menuObjectX.yOrigin + menuObjectX.height / 6.5, 64 * scalingFactor, 64 * scalingFactor);
-			sprintf_s(temp, sizeof(temp), "%-2d", turret[turretSelectedToUpgrade].level);
-			CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 1.25,
+			if (turret[turretSelectedToUpgrade].level == 10)
+			{
+				sprintf_s(temp, sizeof(temp), "MAX");
+			}
+
+			else
+			{
+				sprintf_s(temp, sizeof(temp), "%-3d", turret[turretSelectedToUpgrade].level);
+			}
+			
+			CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 1.2,
 				menuObjectX.yOrigin + menuObjectX.height / 6.5);
 
 			switch (turret[turretSelectedToUpgrade].type)
