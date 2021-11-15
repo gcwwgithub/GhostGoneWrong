@@ -5,9 +5,6 @@
 #include "John.h"
 #include "Samuel.h"
 
-// text currently aligned to horizontal_center, vertical_center of text box.
-// init_play_button(...)
-
 CP_Font pixelFont;
 
 buildingTime = BUILDING_PHASE_TIME;
@@ -17,9 +14,16 @@ score = 0;
 
 #pragma region Initialisations
 
+void init_game_font(void)
+{
+	pixelFont = GAME_FONT;
+	CP_Font_Set(pixelFont);
+	CP_Settings_TextSize(FONT_SIZE);
+}
+
 // Assuming all buttons are rectangles
-// Attempted soft coding of UI button initialisation - somewhat didn't work so is now just used for reference.
-void init_text_button(Button button, float buttonPosX, float buttonPosY, float buttonWidth, float buttonHeight, float textPosX, float textPosY, char string[])
+// Attempted soft coding of button initialisation - somehow didn't work so is now just used for reference.
+/*void init_text_button(Button button, float buttonPosX, float buttonPosY, float buttonWidth, float buttonHeight, float textPosX, float textPosY, char string[])
 {
 	button.buttonData.xOrigin = buttonPosX;
 	button.buttonData.yOrigin = buttonPosY;
@@ -30,31 +34,32 @@ void init_text_button(Button button, float buttonPosX, float buttonPosY, float b
 	button.textPositionX = textPosX;
 	button.textPositionY = textPosY;
 	strcpy_s(button.textString, sizeof(button.textString), string);
-}
+}*/
 
+// text currently aligned to horizontal_center, vertical_center of text box here
 void init_play_button(void)
 {
 	CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_CENTER, CP_TEXT_ALIGN_V_MIDDLE);
 
-	PlayButton.buttonData.xOrigin = CP_System_GetWindowWidth() / 5.0f;
-	PlayButton.buttonData.yOrigin = CP_System_GetWindowHeight() / 2.0f;
+	PlayButton.buttonData.xOrigin = CP_System_GetWindowWidth() * 0.3f;
+	PlayButton.buttonData.yOrigin = CP_System_GetWindowHeight() * 0.5f;
 	PlayButton.buttonData.width = BUTTON_WIDTH;
 	PlayButton.buttonData.height = BUTTON_HEIGHT;
 	PlayButton.buttonData.objectType = objectRectangle;
-	PlayButton.textPositionX = PlayButton.buttonData.xOrigin + BUTTON_WIDTH / 2;
-	PlayButton.textPositionY = PlayButton.buttonData.yOrigin + BUTTON_HEIGHT / 2;
+	PlayButton.textPositionX = PlayButton.buttonData.xOrigin + BUTTON_WIDTH * 0.5f;
+	PlayButton.textPositionY = PlayButton.buttonData.yOrigin + BUTTON_HEIGHT * 0.5f;
 	strcpy_s(PlayButton.textString, sizeof(PlayButton.textString), "Play");
 }
 
 void init_quit_button(void)
 {
-	QuitButton.buttonData.xOrigin = CP_System_GetWindowWidth() / 1.5f;
-	QuitButton.buttonData.yOrigin = CP_System_GetWindowHeight() / 2.0f;
+	QuitButton.buttonData.xOrigin = CP_System_GetWindowWidth() * 0.6f;
+	QuitButton.buttonData.yOrigin = CP_System_GetWindowHeight() * 0.5f;
 	QuitButton.buttonData.width = BUTTON_WIDTH;
 	QuitButton.buttonData.height = BUTTON_HEIGHT;
 	QuitButton.buttonData.objectType = objectRectangle;
-	QuitButton.textPositionX = QuitButton.buttonData.xOrigin + BUTTON_WIDTH / 2;
-	QuitButton.textPositionY = QuitButton.buttonData.yOrigin + BUTTON_HEIGHT / 2;
+	QuitButton.textPositionX = QuitButton.buttonData.xOrigin + BUTTON_WIDTH * 0.5f;
+	QuitButton.textPositionY = QuitButton.buttonData.yOrigin + BUTTON_HEIGHT * 0.5f;
 	strcpy_s(QuitButton.textString, sizeof(QuitButton.textString), "Quit");
 }
 
@@ -65,32 +70,55 @@ void init_back_button(void)
 	BackButton.buttonData.width = BUTTON_WIDTH;
 	BackButton.buttonData.height = BUTTON_HEIGHT;
 	BackButton.buttonData.objectType = objectRectangle;
-	BackButton.textPositionX = BackButton.buttonData.xOrigin + BUTTON_WIDTH / 2;
-	BackButton.textPositionY = BackButton.buttonData.yOrigin + BUTTON_HEIGHT / 2;
+	BackButton.textPositionX = BackButton.buttonData.xOrigin + BUTTON_WIDTH * 0.5f;
+	BackButton.textPositionY = BackButton.buttonData.yOrigin + BUTTON_HEIGHT * 0.5f;
 	strcpy_s(BackButton.textString, sizeof(BackButton.textString), "Back");
+}
+
+void init_how_to_play_button(void)
+{
+	// middle of title screen(?)
+	HowToPlayButton.buttonData.xOrigin = CP_System_GetWindowWidth() * 0.5f;
+	HowToPlayButton.buttonData.yOrigin = CP_System_GetWindowHeight() * 0.5f;
+	HowToPlayButton.buttonData.width = BUTTON_WIDTH * 2;
+	HowToPlayButton.buttonData.height = BUTTON_HEIGHT;
+	HowToPlayButton.buttonData.objectType = objectRectangle;
+	HowToPlayButton.textPositionX = HowToPlayButton.buttonData.xOrigin + BUTTON_WIDTH * 0.5f;
+	HowToPlayButton.textPositionY = HowToPlayButton.buttonData.yOrigin + BUTTON_HEIGHT * 0.5f;
+	strcpy_s(HowToPlayButton.textString, sizeof(HowToPlayButton.textString), "How To Play");
+}
+
+void init_how_to_play_screen(void)
+{
+	// display turret sprites, descriptions
+
+	// display ghost sprites, descriptions
+
+	// display win / lose conditions && rules
+
 }
 
 void init_pause_quit_button(void)
 {
-	PauseQuitButton.buttonData.xOrigin = CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH / 2;
-	PauseQuitButton.buttonData.yOrigin = CP_System_GetWindowHeight() * 0.4f - BUTTON_HEIGHT / 2;
+	PauseQuitButton.buttonData.xOrigin = CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f;
+	PauseQuitButton.buttonData.yOrigin = CP_System_GetWindowHeight() * 0.4f - BUTTON_HEIGHT * 0.5f;
 	PauseQuitButton.buttonData.width = BUTTON_WIDTH;
 	PauseQuitButton.buttonData.height = BUTTON_HEIGHT;
 	PauseQuitButton.buttonData.objectType = objectRectangle;
-	PauseQuitButton.textPositionX = PauseQuitButton.buttonData.xOrigin + BUTTON_WIDTH / 2;
-	PauseQuitButton.textPositionY = PauseQuitButton.buttonData.yOrigin + BUTTON_HEIGHT / 2;
+	PauseQuitButton.textPositionX = PauseQuitButton.buttonData.xOrigin + BUTTON_WIDTH * 0.5f;
+	PauseQuitButton.textPositionY = PauseQuitButton.buttonData.yOrigin + BUTTON_HEIGHT * 0.5f;
 	strcpy_s(PauseQuitButton.textString, sizeof(PauseQuitButton.textString), "Quit");
 }
 
 void init_pause_back_button(void)
 {
-	PauseBackButton.buttonData.xOrigin = CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH / 2;
-	PauseBackButton.buttonData.yOrigin = CP_System_GetWindowHeight() * 0.3f - BUTTON_HEIGHT / 2;
+	PauseBackButton.buttonData.xOrigin = CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f;
+	PauseBackButton.buttonData.yOrigin = CP_System_GetWindowHeight() * 0.3f - BUTTON_HEIGHT * 0.5f;
 	PauseBackButton.buttonData.width = BUTTON_WIDTH;
 	PauseBackButton.buttonData.height = BUTTON_HEIGHT;
 	PauseBackButton.buttonData.objectType = objectRectangle;
-	PauseBackButton.textPositionX = PauseBackButton.buttonData.xOrigin + BUTTON_WIDTH / 2;
-	PauseBackButton.textPositionY = PauseBackButton.buttonData.yOrigin + BUTTON_HEIGHT / 2;
+	PauseBackButton.textPositionX = PauseBackButton.buttonData.xOrigin + BUTTON_WIDTH * 0.5f;
+	PauseBackButton.textPositionY = PauseBackButton.buttonData.yOrigin + BUTTON_HEIGHT * 0.5f;
 	strcpy_s(PauseBackButton.textString, sizeof(PauseBackButton.textString), "Back");
 }
 
@@ -101,13 +129,13 @@ void init_level_select_buttons(void)
 	int c = 0;
 	for (int i = 0; i < 5; i++)
 	{
-		levelButtons[i].buttonData.xOrigin = CP_System_GetWindowWidth() / 2 - BUTTON_WIDTH / 2.0f;
-		levelButtons[i].buttonData.yOrigin = CP_System_GetWindowHeight() / 3 + i * (BUTTON_HEIGHT + 25.0f);
+		levelButtons[i].buttonData.xOrigin = CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH / 2.0f;
+		levelButtons[i].buttonData.yOrigin = CP_System_GetWindowHeight() * (1 / 3.0f) + i * (BUTTON_HEIGHT + 25.0f);
 		levelButtons[i].buttonData.width = BUTTON_WIDTH;
 		levelButtons[i].buttonData.height = BUTTON_HEIGHT;
 		levelButtons[i].buttonData.objectType = objectRectangle;
-		levelButtons[i].textPositionX = levelButtons[i].buttonData.xOrigin + BUTTON_WIDTH / 2.0f;
-		levelButtons[i].textPositionY = levelButtons[i].buttonData.yOrigin + BUTTON_HEIGHT / 2.0f;
+		levelButtons[i].textPositionX = levelButtons[i].buttonData.xOrigin + BUTTON_WIDTH * 0.5f;
+		levelButtons[i].textPositionY = levelButtons[i].buttonData.yOrigin + BUTTON_HEIGHT * 0.5f;
 		char levelNumberText[8];
 		c = snprintf(levelNumberText, 8, "Level %d", i + 1); // write text
 		strcpy_s(levelButtons[i].textString, sizeof(levelButtons[i].textString), levelNumberText);
@@ -123,41 +151,34 @@ void init_pause_screen(void)
 void init_end_screen(void)
 {
 	// Back to Main Menu
-	EndScreenButtons[0].buttonData.xOrigin = CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH / 2;
-	EndScreenButtons[0].buttonData.yOrigin = CP_System_GetWindowHeight() * 0.5f - BUTTON_HEIGHT / 2;
+	EndScreenButtons[0].buttonData.xOrigin = CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f;
+	EndScreenButtons[0].buttonData.yOrigin = CP_System_GetWindowHeight() * 0.5f - BUTTON_HEIGHT * 0.5f;
 	EndScreenButtons[0].buttonData.width = BUTTON_WIDTH;
 	EndScreenButtons[0].buttonData.height = BUTTON_HEIGHT;
 	EndScreenButtons[0].buttonData.objectType = objectRectangle;
-	EndScreenButtons[0].textPositionX = EndScreenButtons[0].buttonData.xOrigin + BUTTON_WIDTH / 2;
-	EndScreenButtons[0].textPositionY = EndScreenButtons[0].buttonData.yOrigin + BUTTON_HEIGHT / 2;
+	EndScreenButtons[0].textPositionX = EndScreenButtons[0].buttonData.xOrigin + BUTTON_WIDTH * 0.5f;
+	EndScreenButtons[0].textPositionY = EndScreenButtons[0].buttonData.yOrigin + BUTTON_HEIGHT * 0.5f;
 	strcpy_s(EndScreenButtons[0].textString, sizeof(EndScreenButtons[0].textString), "Back");
 
 	// Restart
-	EndScreenButtons[1].buttonData.xOrigin = CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH / 2;
-	EndScreenButtons[1].buttonData.yOrigin = CP_System_GetWindowHeight() * 0.6f - BUTTON_HEIGHT / 2;
+	EndScreenButtons[1].buttonData.xOrigin = CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f;
+	EndScreenButtons[1].buttonData.yOrigin = CP_System_GetWindowHeight() * 0.6f - BUTTON_HEIGHT * 0.5f;
 	EndScreenButtons[1].buttonData.width = BUTTON_WIDTH;
 	EndScreenButtons[1].buttonData.height = BUTTON_HEIGHT;
 	EndScreenButtons[1].buttonData.objectType = objectRectangle;
-	EndScreenButtons[1].textPositionX = EndScreenButtons[1].buttonData.xOrigin + BUTTON_WIDTH / 2;
-	EndScreenButtons[1].textPositionY = EndScreenButtons[1].buttonData.yOrigin + BUTTON_HEIGHT / 2;
+	EndScreenButtons[1].textPositionX = EndScreenButtons[1].buttonData.xOrigin + BUTTON_WIDTH * 0.5f;
+	EndScreenButtons[1].textPositionY = EndScreenButtons[1].buttonData.yOrigin + BUTTON_HEIGHT * 0.5f;
 	strcpy_s(EndScreenButtons[1].textString, sizeof(EndScreenButtons[1].textString), "Restart");
 
 	// Next Level
-	EndScreenButtons[2].buttonData.xOrigin = CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH / 2;
-	EndScreenButtons[2].buttonData.yOrigin = CP_System_GetWindowHeight() * 0.7f - BUTTON_HEIGHT / 2;
+	EndScreenButtons[2].buttonData.xOrigin = CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f;
+	EndScreenButtons[2].buttonData.yOrigin = CP_System_GetWindowHeight() * 0.7f - BUTTON_HEIGHT * 0.5f;
 	EndScreenButtons[2].buttonData.width = BUTTON_WIDTH;
 	EndScreenButtons[2].buttonData.height = BUTTON_HEIGHT;
 	EndScreenButtons[2].buttonData.objectType = objectRectangle;
-	EndScreenButtons[2].textPositionX = EndScreenButtons[2].buttonData.xOrigin + BUTTON_WIDTH / 2;
-	EndScreenButtons[2].textPositionY = EndScreenButtons[2].buttonData.yOrigin + BUTTON_HEIGHT / 2;
+	EndScreenButtons[2].textPositionX = EndScreenButtons[2].buttonData.xOrigin + BUTTON_WIDTH * 0.5f;
+	EndScreenButtons[2].textPositionY = EndScreenButtons[2].buttonData.yOrigin + BUTTON_HEIGHT * 0.5f;
 	strcpy_s(EndScreenButtons[2].textString, sizeof(EndScreenButtons[2].textString), "Next");
-}
-
-void init_game_font(void)
-{
-	pixelFont = GAME_FONT;
-	CP_Font_Set(pixelFont);
-	CP_Settings_TextSize(FONT_SIZE);
 }
 
 #pragma endregion
@@ -178,6 +199,11 @@ void render_ui_button(Button button)
 	CP_Settings_Fill(COLOR_WHITE);
 	CP_Settings_TextSize(FONT_SIZE);
 	CP_Font_DrawText(button.textString, button.textPositionX, button.textPositionY);
+}
+
+void render_how_to_play_screen(void)
+{
+
 }
 
 void render_level_select_buttons(void)
@@ -223,8 +249,8 @@ void init_skip_wave_button(void)
 	SkipWaveButton.buttonData.width = BUTTON_WIDTH;
 	SkipWaveButton.buttonData.height = BUTTON_HEIGHT;
 
-	SkipWaveButton.textPositionX = SkipWaveButton.buttonData.xOrigin + BUTTON_WIDTH / 2;
-	SkipWaveButton.textPositionY = SkipWaveButton.buttonData.yOrigin + BUTTON_HEIGHT / 2;
+	SkipWaveButton.textPositionX = SkipWaveButton.buttonData.xOrigin + BUTTON_WIDTH * 0.5f;
+	SkipWaveButton.textPositionY = SkipWaveButton.buttonData.yOrigin + BUTTON_HEIGHT * 0.5f;
 	strcpy_s(SkipWaveButton.textString, sizeof(SkipWaveButton.textString), "Skip");
 }
 
@@ -334,15 +360,15 @@ void game_win_lose_check(void)
 
 #pragma endregion
 
-//void gold_quartz_change(int changeInQuartz)
+//void quartz_change(int quartzTypeQuantity, int changeInQuartz)
 //{
-//	Level[0].goldQuartz += changeInQuartz;
+//	quartzTypeQuantity += changeInQuartz;
 //}
 //
 //void gold_to_phantom_quartz_conversion(int goldAmtToConvert, int conversionRate)
 //{
-//	Level[0].goldQuartz -= goldAmtToConvert;
-//	Level[0].phantomQuartz += goldAmtToConvert / conversionRate;
+//	Level[currentGameLevel].goldQuartz -= goldAmtToConvert;
+//	Level[currentGameLevel].phantomQuartz += goldAmtToConvert / conversionRate;
 //}
 
 void init_level(int nextGameLevel)
@@ -351,7 +377,7 @@ void init_level(int nextGameLevel)
 	{
 	case 0:
 	{
-		level2_init();
+		level1_init();
 		break;
 	}
 	case 1:
@@ -380,8 +406,13 @@ void init_level(int nextGameLevel)
 	powerUpMenu = FALSE;
 	pathfinding_init(&Level[nextGameLevel]);
 	environment_init(&Level[nextGameLevel]);
-
 	Enemies_init();
+
+	for (int i = 0; i < MAX_TURRET; i++)
+	{
+		remove_turret((int)((turret[i].data.xOrigin - Game.xOrigin) / Game.gridWidth),
+			(int)((turret[i].data.yOrigin - Game.yOrigin) / Game.gridHeight));
+	}
 
 	pathfinding_reset(&Level[nextGameLevel]);
 	pathfinding_calculate_cost(&Level[nextGameLevel]);
