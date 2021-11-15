@@ -175,7 +175,7 @@ void init_spritesheet_array(void)
 	SpriteSheetCalculation(bulletRadiusArray, bulletRadiusSpriteSheet, 128, 128, 0);
 	SpriteSheetCalculation(currencyArray, currencySpriteSheet, 128, 128, 1);
 	SpriteSheetCalculation(environmentObjectArray, environmentObjectsSpriteSheet, 128, 128, 0);
-	SpriteSheetCalculation(backgroundArray, backgroundSpriteSheet,1920,1080, 1);
+	SpriteSheetCalculation(backgroundArray, backgroundSpriteSheet,1920,1080, 0);
 	SpriteSheetCalculation(portalEnterEffectArray, portalEnterEffectSpriteSheet, 128, 128, 0);
 	SpriteSheetCalculation(portalSpawnEffectArray, portalSpawnEffectSpriteSheet, 128, 128, 0);
 	SpriteSheetCalculation(powerUpIconArray, powerUpIconSpriteSheet, 128, 128, 0);
@@ -452,6 +452,10 @@ void render_game_background(int currentLevel)
 		break;
 	case 3:
 		RenderWithAlphaChanged(backgroundSpriteSheet, backgroundArray[4], CP_System_GetWindowWidth() * 0.5,
+			CP_System_GetWindowHeight() * 0.5, CP_System_GetWindowWidth(), CP_System_GetWindowHeight(), 200);
+		break;
+	case 4:
+		RenderWithAlphaChanged(backgroundSpriteSheet, backgroundArray[5], CP_System_GetWindowWidth() * 0.5,
 			CP_System_GetWindowHeight() * 0.5, CP_System_GetWindowWidth(), CP_System_GetWindowHeight(), 200);
 		break;
 	}

@@ -76,7 +76,7 @@ struct SpriteSheetImage bulletArray[3];
 struct SpriteSheetImage bulletRadiusArray[4];
 struct SpriteSheetImage currencyArray[5];
 struct SpriteSheetImage environmentObjectArray[9];
-struct SpriteSheetImage backgroundArray[5];
+struct SpriteSheetImage backgroundArray[6];
 struct SpriteSheetImage portalEnterEffectArray[4];
 struct SpriteSheetImage portalSpawnEffectArray[4];
 struct SpriteSheetImage powerUpIconArray[4];
