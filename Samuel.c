@@ -4,6 +4,7 @@
 #include "Samuel.h"
 #include "John.h"
 #include "Gabriel.h"
+#include "ZhengWei.h"
 
 #if _DEBUG
 #include <stdio.h>
@@ -93,7 +94,7 @@ void place_turret(TurretType type, int index_x, int index_y)
 		{
 		case T_BASIC:
 			turret[i].mod.range = Game.gridWidth * 2;
-			turret[i].mod.damage = 1;
+			turret[i].mod.damage = 0.5f;
 			turret[i].animCounter = 0;
 			turret[i].turretAnimTimer = 0;
 			turret[i].mod.speed = 200.f;
@@ -206,23 +207,23 @@ void upgrade_turret(int t_index)
 	switch (turret[t_index].type)
 	{
 	case T_BASIC:
-		turret[t_index].mod.damage += 0.2f;
-		turret[t_index].mod.range *= 1.2f;
+		turret[t_index].mod.damage += 0.1f;
+		turret[t_index].mod.range += turret[t_index].mod.range * 0.05f;
 		turret[t_index].mod.shoot_rate -= 0.02f;
 		//increase the price for another upgrade
 		turret[t_index].upgrade_price += 25;
 		break;
 	case T_SLOW:
 		turret[t_index].mod.damage += 0.15f;
-		turret[t_index].mod.range *= 1.2f;
-		turret[t_index].mod.slow_amt -= 0.1f;
+		turret[t_index].mod.range += turret[t_index].mod.range * 0.05f;
+		turret[t_index].mod.slow_amt -= 0.03f;
 		turret[t_index].mod.shoot_rate -= 0.02f;
 		//increase the price for another upgrade
 		turret[t_index].upgrade_price += 25;
 		break;
 	case T_HOMING:
 		turret[t_index].mod.damage += 0.3f;
-		turret[t_index].mod.range *= 1.2f;
+		turret[t_index].mod.range += turret[t_index].mod.range * 0.05f;
 		turret[t_index].mod.shoot_rate -= 0.01f;
 		//increase the price for another upgrade
 		turret[t_index].upgrade_price += 50;
@@ -273,6 +274,14 @@ void render_turret(void)
 		default:
 			break;
 		}
+
+		if (turretSelectedToUpgrade != NO_TURRET_SELECTED)
+		{
+			CP_Settings_Fill(CP_Color_Create(255,255,255,255 * 0.5f));
+			CP_Graphics_DrawCircle(turret[turretSelectedToUpgrade].data.xOrigin, 
+				turret[turretSelectedToUpgrade].data.yOrigin, turret[turretSelectedToUpgrade].mod.range * 2);
+		}
+
 	}
 }
 
@@ -362,6 +371,9 @@ void update_turret(void)
 			//mine specific updates
 			if (turret[i].type == T_MINE)
 			{
+				//set mine dmg to power temp
+				turret[i].mod.damage += Level[currentGameLevel].currentPowerUpLevel.increasedMineDamage;
+
 				//fake shoot for mine, just spawn a proj on it
 				shoot(turret[i].data.xOrigin, turret[i].data.yOrigin, turret[i].mod, turret[i].type, turret[i].dir);
 				//sync the remove with animation later
