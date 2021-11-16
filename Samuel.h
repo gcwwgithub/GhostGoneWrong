@@ -137,6 +137,23 @@ void col_type_projectile(Projectile* p);
 //update animation
 void update_turretAnimation(Turret* t);
 
+//particle test
+typedef struct Particle
+{
+	Vector2 dir;
+	Vector2 pos;
+	float size;
+	float timer;
+	float duration;
+	int isActive;
+} Particle;
+
+Particle particles[200];
+
+void create_particle(Vector2 pos, Vector2 dir, float size, float duration);
+void update_particle();
+void render_particle();
+
 Projectile proj[MAX_PROJECTILE];
 Turret turret[MAX_TURRET];
 int turret_on_grid[GAME_GRID_ROWS][GAME_GRID_COLS];

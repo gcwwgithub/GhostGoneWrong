@@ -68,6 +68,17 @@ void turret_init(void)
 	for (int i = 0; i < T_MAX; ++i)
 		turret_purchasing[TP_UPGRADE_MAX_LEVEL][i] = 10;
 
+	for (int i = 0; i < sizeof(particles) / sizeof(particles[0]); ++i)
+	{
+		Vector2 v = { v.x = 0.f, v.y = 0.f };
+		particles[i].dir = v;
+		particles[i].pos = v;
+		particles[i].isActive = FALSE;
+		particles[i].timer = 0.f;
+		particles[i].duration = 5.f;
+		particles[i].size = 10.f;
+	}
+
 	//place_turret(T_WALL, 2, 1);
 	//Level[currentGameLevel].grid[1][2].type = Blocked;
 	//place_turret(T_SLOW, 4, 1);
@@ -163,12 +174,13 @@ void remove_turret(int index_x, int index_y)
 	if (index < 0)
 		return;
 
+	printf("I:%d\n", index);
 	//set that grid not in used
 	turret_on_grid[index_x][index_y] = -1;
 	turret[index].isActive = FALSE;
 	//set to clear if is blocked
-	if (Level[currentGameLevel].grid[index_y][index_x].type == Blocked)
-		Level[currentGameLevel].grid[index_y][index_x].type = Clear;
+	//if (Level[currentGameLevel].grid[index_y][index_x].type == Blocked)
+	//	Level[currentGameLevel].grid[index_y][index_x].type = Clear;
 
 }
 
@@ -274,14 +286,13 @@ void render_turret(void)
 		default:
 			break;
 		}
+	}
 
-		if (turretSelectedToUpgrade != NO_TURRET_SELECTED)
-		{
-			CP_Settings_Fill(CP_Color_Create(255,255,255,255 * 0.5f));
-			CP_Graphics_DrawCircle(turret[turretSelectedToUpgrade].data.xOrigin, 
-				turret[turretSelectedToUpgrade].data.yOrigin, turret[turretSelectedToUpgrade].mod.range * 2);
-		}
-
+	if (turretSelectedToUpgrade != NO_TURRET_SELECTED)
+	{
+		CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255 * 0.5f));
+		CP_Graphics_DrawCircle(turret[turretSelectedToUpgrade].data.xOrigin,
+			turret[turretSelectedToUpgrade].data.yOrigin, turret[turretSelectedToUpgrade].mod.range * 2);
 	}
 }
 
@@ -555,7 +566,7 @@ void render_projectile(void)
 			RenderNormal(bulletSpriteSheet, bulletArray[2], proj[i].data.xOrigin, proj[i].data.yOrigin, proj[i].size, proj[i].size);
 			break;
 		case P_MINE:
-			CP_Settings_Fill(COLOR_BLUE);
+			CP_Settings_Fill(COLOR_RED);
 			CP_Graphics_DrawCircle(proj[i].data.xOrigin, proj[i].data.yOrigin, proj[i].size);
 			break;
 		}
@@ -618,6 +629,17 @@ void col_type_projectile(Projectile* p)
 	default:
 		break;
 	}
+
+	//test particles
+	Vector2 pos = { .x = p->data.xOrigin, .y = p->data.yOrigin };
+	Vector2 dir = { .x = 1.f, .y = 0.f };
+	create_particle(pos, dir, 15.f, 1.f);
+	dir.x = -1.f;
+	dir.y = 0.f;
+	create_particle(pos, dir, 15.f, 1.f);
+	dir.x = 0.f;
+	dir.y = 1.f;
+	create_particle(pos, dir, 15.f, 1.f);
 }
 
 void update_turretAnimation(Turret* t)
@@ -682,4 +704,60 @@ void update_turretAnimation(Turret* t)
 	}
 
 
+}
+
+void create_particle(Vector2 pos, Vector2 dir, float size, float duration)
+{
+	for (int i = 0; i < sizeof(particles) / sizeof(particles[0]); ++i)
+	{
+		if (particles[i].isActive)
+			continue;
+
+		particles[i].isActive = TRUE;
+		particles[i].pos = pos;
+		particles[i].dir = dir;
+		particles[i].size = size;
+		particles[i].timer = 0.f;
+		particles[i].duration = duration;
+		break;
+	}
+}
+
+void update_particle()
+{
+	float dt = CP_System_GetDt();
+	for (int i = 0; i < sizeof(particles) / sizeof(particles[0]); ++i)
+	{
+		if (!particles[i].isActive)
+			continue;
+
+		particles[i].timer += dt;
+		if (particles[i].timer >= particles[i].duration)
+		{
+			particles[i].timer = 0.f;
+			particles[i].isActive = FALSE;
+			continue;
+		}
+
+		//test stuff
+		particles[i].dir.y += 3 * dt;
+		particles[i].dir.x -= particles[i].dir.x * (particles[i].timer / particles[i].duration) * dt;
+		particles[i].dir = normalise(particles[i].dir);
+
+		particles[i].pos.x += particles[i].dir.x * 50.f * dt;
+		particles[i].pos.y += particles[i].dir.y * 50.f * dt;
+	}
+}
+
+void render_particle()
+{
+	for (int i = 0; i < sizeof(particles) / sizeof(particles[0]); ++i)
+	{
+		if (!particles[i].isActive)
+			continue;
+
+		RenderNormal(bulletSpriteSheet, bulletArray[0], particles[i].pos.x, particles[i].pos.y, particles[i].size, particles[i].size);
+		//printf("PRINT");
+		//CP_Graphics_DrawCircle(particles[i].pos.x, particles[i].pos.y, 10.f);
+	}
 }
