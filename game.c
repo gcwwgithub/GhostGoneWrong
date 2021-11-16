@@ -147,7 +147,7 @@ void game_update(void)
 		render_button_pressed();
 
 		CP_Settings_NoTint();
-		render_wave_timer_text();
+		render_wave_timer();
 		render_ui_button(SkipWaveButton);
 
 		render_turret_menu_object(GameMenuObject[NUMBER_OF_MENU_OBJECTS - 2], NUMBER_OF_MENU_OBJECTS - 2);// Render Upgrade menu first
@@ -216,6 +216,7 @@ void game_update(void)
 		if (btn_is_pressed(PlayButton.buttonData))
 		{
 			currentGameState = LevelSelect;
+			//ui_button_movement(QuitButton.buttonData, CP_System_GetWindowWidth(), QuitButton.buttonData.yOrigin, QuitButton.interpolationTime);
 		}
 		else if (btn_is_pressed(QuitButton.buttonData))
 		{

@@ -14,6 +14,7 @@ typedef struct Button {
 	Coordinates buttonData;
 	float textPositionX;
 	float textPositionY;
+	int interpolationTime; // time to move from one position to another
 	char textString[16];
 }Button;
 
@@ -57,7 +58,7 @@ void render_how_to_play_screen(void);
 void render_level_select_buttons(void);
 void render_pause_screen(void);
 
-void render_wave_timer_text(void);
+void render_wave_timer(void);
 void reduce_building_phase_time(void);
 void set_building_time(float newBuildingTime);
 void init_skip_wave_button(void);
@@ -68,6 +69,8 @@ void init_pause_screen(void);
 void game_win_lose_check(void);
 void init_end_screen(void);
 void render_end_screen(void);
+
+void ui_button_movement(Coordinates buttonCoord, float destPosX, float destPosY, float time);
 
 void init_level(int gameLevelToRestart);
 void display_enemies_left(void);

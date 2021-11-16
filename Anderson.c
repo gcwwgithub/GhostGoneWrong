@@ -22,7 +22,6 @@ void init_game_font(void)
 }
 
 // Assuming all buttons are rectangles
-// Attempted soft coding of button initialisation - somehow didn't work so is now just used for reference.
 /*void init_text_button(Button button, float buttonPosX, float buttonPosY, float buttonWidth, float buttonHeight, float textPosX, float textPosY, char string[])
 {
 	button.buttonData.xOrigin = buttonPosX;
@@ -254,9 +253,20 @@ void init_skip_wave_button(void)
 	strcpy_s(SkipWaveButton.textString, sizeof(SkipWaveButton.textString), "Skip");
 }
 
-void render_wave_timer_text(void)
+void render_wave_timer_bar(float timeLeft, float maxTime, float barWidth, float barHeight)
+{
+	double percentage = timeLeft / maxTime;
+	// draw red, then green
+	CP_Settings_Fill(COLOR_RED);
+	CP_Graphics_DrawRect(CP_System_GetWindowWidth() * 0.5f - barWidth * 0.5f, 0.0f, barWidth, barHeight);
+	CP_Settings_Fill(COLOR_GREEN);
+	CP_Graphics_DrawRect(CP_System_GetWindowWidth() * 0.5f - barWidth * 0.5f, 0.0f, barWidth * percentage, barHeight);
+}
+
+void render_wave_timer(void)
 {
 	CP_Settings_TextSize(FONT_SIZE);
+	render_wave_timer_bar(buildingTime, BUILDING_PHASE_TIME, CP_System_GetWindowWidth() * 0.3f, CP_System_GetWindowHeight() * 0.1f);
 	CP_Settings_Fill(COLOR_BLACK);
 	char buffer[25] = { 0 };
 	sprintf_s(buffer, sizeof(buffer), "Time Left: %.1f", buildingTime);
@@ -370,6 +380,17 @@ void game_win_lose_check(void)
 //	Level[currentGameLevel].goldQuartz -= goldAmtToConvert;
 //	Level[currentGameLevel].phantomQuartz += goldAmtToConvert / conversionRate;
 //}
+
+static float linear(float start, float end, float value)
+{
+	return (1.f - value) * start + value * end;
+}
+
+void ui_button_movement(Coordinates buttonCoord, float destPosX, float destPosY, float time)
+{
+	buttonCoord.xOrigin = linear(buttonCoord.xOrigin, destPosX, time);
+	buttonCoord.yOrigin = linear(buttonCoord.xOrigin, destPosY, time);
+}
 
 void init_level(int nextGameLevel)
 {
