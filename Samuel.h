@@ -53,6 +53,15 @@ typedef struct Modifiers
 		slow_amt, slow_timer;
 } Modifiers;
 
+//For battlefield effects
+typedef enum Turret_Env_effects {
+	No_Effect,
+	Increased_damage,
+	Increased_attack_speed,
+	Decreased_damage,
+	Decreased_attack_speed
+}Turret_Env_effects;
+
 typedef struct Turret
 {
 	int isActive;
@@ -71,6 +80,9 @@ typedef struct Turret
 	// total accumulated price (each upgrades + base price) 
 	int sell_price, upgrade_price, total_price;
 	int level;
+
+	//For Battlefield effects
+	Turret_Env_effects Env_effect;
 } Turret;
 
 typedef struct Projectile

@@ -60,8 +60,12 @@ typedef struct Enemy {
 
 	float EnemyPathX[50];
 	float EnemyPathY[50];
-	int adjustingWaypoint;
+	int pathPoints;
+	float slowed_distance;
 
+	int adjustingWaypoint;
+	
+	float movement_timer;
 	float timer;
 }enemy;
 
@@ -87,9 +91,7 @@ void Reaper_minion_init(enemy* r);
 void empty_enemy_init(enemy* r);
 //void Level0_waveEnemies_init(void);
 void Reset_enemies(int current_level);
-void Environment_check(LevelData Level);
-void Env_eff_Faster_Enemies(void);
-void Env_eff_More_HP(void);
+
 void wave_enemy_init(int Basic_Ghost_count, int Fast_Ghost_count, int Fat_Ghost_count, int Grim_Reaper_count, LevelData Level);
 
 void Update_Path_Array(LevelData Level);
@@ -112,3 +114,17 @@ enemy Reaper_minions[10];
 
 
 void update_enemy_health_bar(enemy* r);
+
+//Environmental effects
+void Environment_check(int CurrentGameLevel);
+void Env_eff_More_HP(void);
+void Env_eff_Less_HP(void);
+void Env_eff_Faster_Enemies(void);
+void Env_eff_Slower_Enemies(void);
+void Env_eff_Increased_Phantom_quartz(void);
+void Env_eff_Decreased_Phantom_quartz(void);
+void Env_eff_No_Phantom_quartz(void);
+void Env_eff_IncreasedTurretDamage(void);
+void Env_eff_DecreasedTurretDamage(void);
+void Env_eff_DecreasedTurretAttackSpeed(void);
+void Env_eff_IncreasedTurretAttackSpeed(void);
