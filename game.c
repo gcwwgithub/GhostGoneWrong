@@ -23,10 +23,9 @@ void game_init(void)
 	currentGameState = MainMenu;
 
 	//Main menu, level select
-	init_play_button();
-	init_quit_button();
+
+	init_main_menu();
 	init_level_select_buttons();
-	init_back_button();
 
 	init_pause_screen();
 	init_end_screen();
@@ -96,8 +95,8 @@ void game_update(void)
 		render_game_background(currentGameLevel);
 		render_game_grid();
 		render_path(&Level[currentGameLevel]);
-		
-		
+
+
 		//display_enemies_left(); //Already done by my code render turret menu object
 		update_portal();
 
@@ -159,7 +158,7 @@ void game_update(void)
 		//setting enemies
 		Reset_enemies(currentGameLevel);
 
-		
+
 	}
 	else if (currentGameState == Win || currentGameState == Lose)
 	{
@@ -169,12 +168,12 @@ void game_update(void)
 		}
 		else if (btn_is_pressed(EndScreenButtons[1].buttonData))
 		{
-			init_level(currentGameLevel);
+			init_next_level(currentGameLevel);
 			currentGameState = Building;
 		}
 		else if (btn_is_pressed(EndScreenButtons[2].buttonData))
 		{
-			init_level(currentGameLevel + 1);
+			init_next_level(currentGameLevel + 1);
 			//exit_to_desktop();
 		}
 		//do enemy update first
@@ -215,117 +214,160 @@ void game_update(void)
 		CP_Settings_NoTint();
 		if (btn_is_pressed(PlayButton.buttonData))
 		{
-			currentGameState = LevelSelect;
-			//ui_button_movement(QuitButton.buttonData, CP_System_GetWindowWidth(), QuitButton.buttonData.yOrigin, QuitButton.interpolationTime);
+			PlayButton.isMoving = QuitButton.isMoving = levelButtons->isMoving = 1;
 		}
 		else if (btn_is_pressed(QuitButton.buttonData))
 		{
 			exit_to_desktop();
 		}
 
+		if (PlayButton.isMoving) // clicked on play
+		{
+			PlayButton = ui_button_movement(PlayButton, -BUTTON_WIDTH, PlayButton.buttonData.yOrigin);
+		}
+
+		if (QuitButton.isMoving) // clicked on play
+		{
+			QuitButton = ui_button_movement(QuitButton, CP_System_GetWindowWidth(), QuitButton.buttonData.yOrigin);
+		}
+
+		if (levelButtons->isMoving)
+		{
+			move_level_select();
+		}
+
+		if (button_has_finished_moving(PlayButton, -BUTTON_WIDTH, PlayButton.buttonData.yOrigin) &&
+			button_has_finished_moving(QuitButton, CP_System_GetWindowWidth(), QuitButton.buttonData.yOrigin))
+		{
+			// This presumes the play button was clicked already.
+			PlayButton.isMoving = QuitButton.isMoving = levelButtons->isMoving = 0;
+			currentGameState = LevelSelect;
+		}
+
 		CP_Graphics_ClearBackground(COLOR_GREY);
 		render_title_screen();
-		render_ui_button(PlayButton);
-		render_ui_button(QuitButton);
+		render_start_menu();
+		if (levelButtons->isMoving) { render_level_select_buttons(); }
 	}
 	else if (currentGameState == LevelSelect)
 	{
 		CP_Settings_NoTint();
 		// Level 1
-		if (btn_is_pressed(levelButtons[0].buttonData))
+		if (!levelButtons->isMoving) // hotfix for accidental misclick
 		{
-			level1_init();
-			isPlacingTurret = T_MAX;
-			turretSelectedToUpgrade = NO_TURRET_SELECTED;
-			powerUpMenu = FALSE;
-			pathfinding_init(&Level[currentGameLevel]);
-			environment_init(&Level[currentGameLevel]);
+			if (btn_is_pressed(levelButtons[0].buttonData))
+			{
+				level1_init();
+				isPlacingTurret = T_MAX;
+				turretSelectedToUpgrade = NO_TURRET_SELECTED;
+				powerUpMenu = FALSE;
+				pathfinding_init(&Level[currentGameLevel]);
+				environment_init(&Level[currentGameLevel]);
 
-			Enemies_init();
+				Enemies_init();
 
-			pathfinding_reset(&Level[currentGameLevel]);
-			pathfinding_calculate_cost(&Level[currentGameLevel]);
-			pathfinding_update(&Level[currentGameLevel]);
-			set_building_time(BUILDING_PHASE_TIME);
-			currentGameState = Building;
+				pathfinding_reset(&Level[currentGameLevel]);
+				pathfinding_calculate_cost(&Level[currentGameLevel]);
+				pathfinding_update(&Level[currentGameLevel]);
+				set_building_time(BUILDING_PHASE_TIME);
+				currentGameState = Building;
+			}
+			else if (btn_is_pressed(levelButtons[1].buttonData)) {
+				level2_init();
+				isPlacingTurret = T_MAX;
+				turretSelectedToUpgrade = NO_TURRET_SELECTED;
+				powerUpMenu = FALSE;
+				pathfinding_init(&Level[currentGameLevel]);
+				environment_init(&Level[currentGameLevel]);
+
+				Enemies_init();
+
+				pathfinding_reset(&Level[currentGameLevel]);
+				pathfinding_calculate_cost(&Level[currentGameLevel]);
+				pathfinding_update(&Level[currentGameLevel]);
+				set_building_time(BUILDING_PHASE_TIME);
+				currentGameState = Building;
+			}
+			else if (btn_is_pressed(levelButtons[2].buttonData)) {
+				level3_init();
+				isPlacingTurret = T_MAX;
+				turretSelectedToUpgrade = NO_TURRET_SELECTED;
+				powerUpMenu = FALSE;
+				pathfinding_init(&Level[currentGameLevel]);
+				environment_init(&Level[currentGameLevel]);
+
+				Enemies_init();
+
+				pathfinding_reset(&Level[currentGameLevel]);
+				pathfinding_calculate_cost(&Level[currentGameLevel]);
+				pathfinding_update(&Level[currentGameLevel]);
+				set_building_time(BUILDING_PHASE_TIME);
+				currentGameState = Building;
+			}
+			else if (btn_is_pressed(levelButtons[3].buttonData)) {
+				level4_init();
+				isPlacingTurret = T_MAX;
+				turretSelectedToUpgrade = NO_TURRET_SELECTED;
+				powerUpMenu = FALSE;
+				pathfinding_init(&Level[currentGameLevel]);
+				environment_init(&Level[currentGameLevel]);
+
+				Enemies_init();
+
+				pathfinding_reset(&Level[currentGameLevel]);
+				pathfinding_calculate_cost(&Level[currentGameLevel]);
+				pathfinding_update(&Level[currentGameLevel]);
+				set_building_time(BUILDING_PHASE_TIME);
+				currentGameState = Building;
+			}
+			else if (btn_is_pressed(levelButtons[4].buttonData)) {
+				level5_init();
+				isPlacingTurret = T_MAX;
+				turretSelectedToUpgrade = NO_TURRET_SELECTED;
+				powerUpMenu = FALSE;
+				pathfinding_init(&Level[currentGameLevel]);
+				environment_init(&Level[currentGameLevel]);
+
+				Enemies_init();
+
+				pathfinding_reset(&Level[currentGameLevel]);
+				pathfinding_calculate_cost(&Level[currentGameLevel]);
+				pathfinding_update(&Level[currentGameLevel]);
+				set_building_time(BUILDING_PHASE_TIME);
+				currentGameState = Building;
+			}
+			else if (btn_is_pressed(BackButton.buttonData))
+			{
+				PlayButton.isMoving = QuitButton.isMoving = levelButtons->isMoving = 1;
+			}
 		}
-		else if (btn_is_pressed(levelButtons[1].buttonData)) {
-			level2_init();
-			isPlacingTurret = T_MAX;
-			turretSelectedToUpgrade = NO_TURRET_SELECTED;
-			powerUpMenu = FALSE;
-			pathfinding_init(&Level[currentGameLevel]);
-			environment_init(&Level[currentGameLevel]);
 
-			Enemies_init();
-
-			pathfinding_reset(&Level[currentGameLevel]);
-			pathfinding_calculate_cost(&Level[currentGameLevel]);
-			pathfinding_update(&Level[currentGameLevel]);
-			set_building_time(BUILDING_PHASE_TIME);
-			currentGameState = Building;
-		}
-
-		else if (btn_is_pressed(levelButtons[2].buttonData)) {
-			level3_init();
-			isPlacingTurret = T_MAX;
-			turretSelectedToUpgrade = NO_TURRET_SELECTED;
-			powerUpMenu = FALSE;
-			pathfinding_init(&Level[currentGameLevel]);
-			environment_init(&Level[currentGameLevel]);
-
-			Enemies_init();
-
-			pathfinding_reset(&Level[currentGameLevel]);
-			pathfinding_calculate_cost(&Level[currentGameLevel]);
-			pathfinding_update(&Level[currentGameLevel]);
-			set_building_time(BUILDING_PHASE_TIME);
-			currentGameState = Building;
-		}
-
-		else if (btn_is_pressed(levelButtons[3].buttonData)) {
-			level4_init();
-			isPlacingTurret = T_MAX;
-			turretSelectedToUpgrade = NO_TURRET_SELECTED;
-			powerUpMenu = FALSE;
-			pathfinding_init(&Level[currentGameLevel]);
-			environment_init(&Level[currentGameLevel]);
-
-			Enemies_init();
-
-			pathfinding_reset(&Level[currentGameLevel]);
-			pathfinding_calculate_cost(&Level[currentGameLevel]);
-			pathfinding_update(&Level[currentGameLevel]);
-			set_building_time(BUILDING_PHASE_TIME);
-			currentGameState = Building;
-		}
-
-		else if (btn_is_pressed(levelButtons[4].buttonData)) {
-			level5_init();
-			isPlacingTurret = T_MAX;
-			turretSelectedToUpgrade = NO_TURRET_SELECTED;
-			powerUpMenu = FALSE;
-			pathfinding_init(&Level[currentGameLevel]);
-			environment_init(&Level[currentGameLevel]);
-
-			Enemies_init();
-
-			pathfinding_reset(&Level[currentGameLevel]);
-			pathfinding_calculate_cost(&Level[currentGameLevel]);
-			pathfinding_update(&Level[currentGameLevel]);
-			set_building_time(BUILDING_PHASE_TIME);
-			currentGameState = Building;
-		}
-
-		else if (btn_is_pressed(BackButton.buttonData))
+		if (PlayButton.isMoving)
 		{
+			PlayButton = ui_button_movement(PlayButton, CP_System_GetWindowWidth() * 0.3f, CP_System_GetWindowHeight() * 0.5f);
+		}
+
+		if (QuitButton.isMoving)
+		{
+			QuitButton = ui_button_movement(QuitButton, CP_System_GetWindowWidth() * 0.6f, CP_System_GetWindowHeight() * 0.5f);
+		}
+
+		if (levelButtons->isMoving)
+		{
+			move_level_select();
+		}
+
+		if (button_has_finished_moving(PlayButton, CP_System_GetWindowWidth() * 0.3f, CP_System_GetWindowHeight() * 0.5f) &&
+			button_has_finished_moving(QuitButton, CP_System_GetWindowWidth() * 0.6f, CP_System_GetWindowHeight() * 0.5f))
+		{
+			PlayButton.isMoving = QuitButton.isMoving = levelButtons->isMoving = 0;
 			currentGameState = MainMenu;
 		}
 
 		CP_Graphics_ClearBackground(COLOR_GREY);
 		render_title_screen();
+		if (PlayButton.isMoving || QuitButton.isMoving) { render_start_menu(); }
 		render_level_select_buttons();
-		render_ui_button(BackButton);
 	}
 	else if (currentGameState == Pause)
 	{

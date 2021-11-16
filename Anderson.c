@@ -7,6 +7,7 @@
 
 CP_Font pixelFont;
 
+movingDuration = 5.0f;
 buildingTime = BUILDING_PHASE_TIME;
 score = 0;
 
@@ -22,44 +23,20 @@ void init_game_font(void)
 }
 
 // Assuming all buttons are rectangles
-/*void init_text_button(Button button, float buttonPosX, float buttonPosY, float buttonWidth, float buttonHeight, float textPosX, float textPosY, char string[])
+Button init_text_button(Button button, float buttonPosX, float buttonPosY, float buttonWidth, float buttonHeight, float textPosX, float textPosY, char string[])
 {
 	button.buttonData.xOrigin = buttonPosX;
 	button.buttonData.yOrigin = buttonPosY;
 	button.buttonData.width = buttonWidth;
 	button.buttonData.height = buttonHeight;
 	button.buttonData.objectType = objectRectangle;
-
-	button.textPositionX = textPosX;
-	button.textPositionY = textPosY;
-	strcpy_s(button.textString, sizeof(button.textString), string);
-}*/
-
-// text currently aligned to horizontal_center, vertical_center of text box here
-void init_play_button(void)
-{
+	button.interpolationTime = 0.0f;
 	CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_CENTER, CP_TEXT_ALIGN_V_MIDDLE);
+	button.textPositionX = button.buttonData.xOrigin + textPosX;
+	button.textPositionY = button.buttonData.yOrigin + textPosY;
+	strcpy_s(button.textString, sizeof(button.textString), string);
 
-	PlayButton.buttonData.xOrigin = CP_System_GetWindowWidth() * 0.3f;
-	PlayButton.buttonData.yOrigin = CP_System_GetWindowHeight() * 0.5f;
-	PlayButton.buttonData.width = BUTTON_WIDTH;
-	PlayButton.buttonData.height = BUTTON_HEIGHT;
-	PlayButton.buttonData.objectType = objectRectangle;
-	PlayButton.textPositionX = PlayButton.buttonData.xOrigin + BUTTON_WIDTH * 0.5f;
-	PlayButton.textPositionY = PlayButton.buttonData.yOrigin + BUTTON_HEIGHT * 0.5f;
-	strcpy_s(PlayButton.textString, sizeof(PlayButton.textString), "Play");
-}
-
-void init_quit_button(void)
-{
-	QuitButton.buttonData.xOrigin = CP_System_GetWindowWidth() * 0.6f;
-	QuitButton.buttonData.yOrigin = CP_System_GetWindowHeight() * 0.5f;
-	QuitButton.buttonData.width = BUTTON_WIDTH;
-	QuitButton.buttonData.height = BUTTON_HEIGHT;
-	QuitButton.buttonData.objectType = objectRectangle;
-	QuitButton.textPositionX = QuitButton.buttonData.xOrigin + BUTTON_WIDTH * 0.5f;
-	QuitButton.textPositionY = QuitButton.buttonData.yOrigin + BUTTON_HEIGHT * 0.5f;
-	strcpy_s(QuitButton.textString, sizeof(QuitButton.textString), "Quit");
+	return button;
 }
 
 void init_back_button(void)
@@ -121,24 +98,28 @@ void init_pause_back_button(void)
 	strcpy_s(PauseBackButton.textString, sizeof(PauseBackButton.textString), "Back");
 }
 
+void init_main_menu(void)
+{
+	PlayButton = init_text_button(PlayButton, CP_System_GetWindowWidth() * 0.2f, CP_System_GetWindowHeight() * 0.5f,
+		BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Play");
+	QuitButton = init_text_button(QuitButton, CP_System_GetWindowWidth() * 0.65f, CP_System_GetWindowHeight() * 0.5f,
+		BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Quit");
+}
+
 // number of levels is hardcoded.
 // LSelect buttons seperated by pure vertical gap that is 25.0f units long.
 void init_level_select_buttons(void)
 {
-	int c = 0;
+	int c = 0; char levelNumberText[8];
 	for (int i = 0; i < 5; i++)
 	{
-		levelButtons[i].buttonData.xOrigin = CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH / 2.0f;
-		levelButtons[i].buttonData.yOrigin = CP_System_GetWindowHeight() * (1 / 3.0f) + i * (BUTTON_HEIGHT + 25.0f);
-		levelButtons[i].buttonData.width = BUTTON_WIDTH;
-		levelButtons[i].buttonData.height = BUTTON_HEIGHT;
-		levelButtons[i].buttonData.objectType = objectRectangle;
-		levelButtons[i].textPositionX = levelButtons[i].buttonData.xOrigin + BUTTON_WIDTH * 0.5f;
-		levelButtons[i].textPositionY = levelButtons[i].buttonData.yOrigin + BUTTON_HEIGHT * 0.5f;
-		char levelNumberText[8];
-		c = snprintf(levelNumberText, 8, "Level %d", i + 1); // write text
+		c = snprintf(levelNumberText, 8, "Level %d", i + 1);
 		strcpy_s(levelButtons[i].textString, sizeof(levelButtons[i].textString), levelNumberText);
+		levelButtons[i] = init_text_button(levelButtons[i], CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f,
+			CP_System_GetWindowHeight() + i * (BUTTON_HEIGHT + 25.0f), BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, levelNumberText);
 	}
+	BackButton = init_text_button(BackButton, CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 1.5f,
+		BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Back");
 }
 
 void init_pause_screen(void)
@@ -205,6 +186,12 @@ void render_how_to_play_screen(void)
 
 }
 
+void render_start_menu(void)
+{
+	render_ui_button(PlayButton);
+	render_ui_button(QuitButton);
+}
+
 void render_level_select_buttons(void)
 {
 	CP_Settings_TextSize(FONT_SIZE);
@@ -213,6 +200,7 @@ void render_level_select_buttons(void)
 	{
 		render_ui_button(levelButtons[i]);
 	}
+	render_ui_button(BackButton);
 }
 
 void render_credits_screen(void)
@@ -293,22 +281,6 @@ void set_building_time(float newBuildingTime)
 	buildingTime = newBuildingTime;
 }
 
-//void display_enemies_left(void)
-//{
-//	// render text, go through list of enemies, check each if active.
-//	// if so, increment no. of active enemies.
-//	CP_Settings_TextSize(24.0f);
-//	char buffer[55] = { 0 };
-//	sprintf_s(buffer, sizeof(buffer), "Enemies Left: %d", enemiesLeft);
-//	CP_Font_DrawText(buffer, CP_System_GetWindowWidth() * 0.9f, CP_System_GetWindowHeight() * 0.5f);
-//	sprintf_s(buffer, sizeof(buffer), "Basic: %d", basicEnemyNum);
-//	CP_Font_DrawText(buffer, CP_System_GetWindowWidth() * 0.9f, CP_System_GetWindowHeight() * 0.6f);
-//	sprintf_s(buffer, sizeof(buffer), "Fast: %d", fastEnemyNum);
-//	CP_Font_DrawText(buffer, CP_System_GetWindowWidth() * 0.9f, CP_System_GetWindowHeight() * 0.7f);
-//	sprintf_s(buffer, sizeof(buffer), "Fat: %d", fatEnemyNum);
-//	CP_Font_DrawText(buffer, CP_System_GetWindowWidth() * 0.9f, CP_System_GetWindowHeight() * 0.8f);
-//}
-
 void add_score_bonus(int bonus)
 {
 	score += bonus;
@@ -381,18 +353,62 @@ void game_win_lose_check(void)
 //	Level[currentGameLevel].phantomQuartz += goldAmtToConvert / conversionRate;
 //}
 
-static float linear(float start, float end, float value)
+// taken from easing.h, credit goes to prof gerald
+float linear(float start, float end, float value)
 {
 	return (1.f - value) * start + value * end;
 }
 
-void ui_button_movement(Coordinates buttonCoord, float destPosX, float destPosY, float time)
+Button ui_button_movement(Button button, float destPosX, float destPosY)
 {
-	buttonCoord.xOrigin = linear(buttonCoord.xOrigin, destPosX, time);
-	buttonCoord.yOrigin = linear(buttonCoord.xOrigin, destPosY, time);
+	if (button.interpolationTime <= movingDuration)
+	{
+		button.interpolationTime += CP_System_GetDt();
+		button.buttonData.xOrigin = linear(button.buttonData.xOrigin, destPosX, button.interpolationTime / movingDuration);
+		button.buttonData.yOrigin = linear(button.buttonData.yOrigin, destPosY, button.interpolationTime / movingDuration);
+		button.textPositionX = linear(button.textPositionX, destPosX + BUTTON_WIDTH * 0.5f, button.interpolationTime / movingDuration);
+		button.textPositionY = linear(button.textPositionY, destPosY + BUTTON_HEIGHT * 0.5f, button.interpolationTime / movingDuration);
+	}
+	else
+	{
+		button.interpolationTime = 0.0f;
+	}
+	return button;
 }
 
-void init_level(int nextGameLevel)
+void move_level_select(void)
+{
+	for (int i = 0; i < 5; i++)
+	{
+		if (currentGameState == LevelSelect) // going to main menu
+		{
+			levelButtons[i] = ui_button_movement(levelButtons[i], CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f,
+				CP_System_GetWindowHeight() + i * (BUTTON_HEIGHT + 25.0f)); // from l_select back to main menu
+			BackButton = ui_button_movement(BackButton, CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f,
+				CP_System_GetWindowHeight() * 1.50f); // from l_select back to main menu
+		}
+		else if (currentGameState == MainMenu)
+		{
+			levelButtons[i] = ui_button_movement(levelButtons[i], CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f,
+				CP_System_GetWindowHeight() * 0.35f + i * (BUTTON_HEIGHT + 25.0f)); // from l_select back to main menu
+			BackButton = ui_button_movement(BackButton, CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f,
+				CP_System_GetWindowHeight() * 0.8f); // from l_select back to main menu
+		}
+	}
+}
+
+int level_select_moving(void)
+{
+	return levelButtons->isMoving;
+}
+
+
+int button_has_finished_moving(Button button, float destPosX, float destPosY)
+{
+	return (button.buttonData.xOrigin == destPosX && button.buttonData.yOrigin == destPosY);
+}
+
+void init_next_level(int nextGameLevel)
 {
 	switch (nextGameLevel)
 	{
