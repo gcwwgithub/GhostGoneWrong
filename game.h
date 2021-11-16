@@ -79,6 +79,13 @@ typedef enum Environmentaleffects {
 
 }EnvironmentalEffects;
 
+typedef struct PowerUps {
+	int morePhantomQuartz;
+	int reduceEnemySpeed;
+	int reduceEnemyHealth;
+	int increasedMineDamage;
+}PowerUps;
+
 typedef struct LevelData {
 	int spawnRow;
 	int spawnCol;
@@ -91,9 +98,10 @@ typedef struct LevelData {
 	int currentWave;
 	int waveEnemies[MAX_NUMBER_OF_WAVES][MAX_ENEMY_TYPE];
 	EnvironmentalEffects currentEffect;
-
+	PowerUps currentPowerUpLevel;
 }LevelData;
 
+PowerUps powerUpPrice;
 LevelData Level[MAX_NUMBER_OF_LEVEL];
 
 int currentGameLevel;
@@ -131,10 +139,10 @@ enum MenuObjectType {
 	WaveDisplay,
 	BattlefieldEffects,
 	MonsterRemainingDisplay,
-	UpgradeMenu,
 	UpgradeButton,
 	SellButton,
-	GameGrid,//needs to be second last variable
+	UpgradeMenu,// Rendered seperately from the render loop
+	GameGrid,//Not included in the render loop
 	NoButton
 };
 

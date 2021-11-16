@@ -60,6 +60,7 @@ CP_Image battlefieldEffectIconSpriteSheet;
 CP_Image backgroundUIFatSpriteSheet;
 CP_Image interactableButtonsImageSpriteSheet;
 CP_Image turretStatsIconSpriteSheet;
+CP_Image nonGridEnvironmentObjectsSpriteSheet;
 
 struct SpriteSheetImage basicGhostSpriteArray[3];
 struct SpriteSheetImage fastGhostSpriteArray[3];
@@ -74,16 +75,18 @@ struct SpriteSheetImage energyWallArray[2];
 struct SpriteSheetImage bulletArray[3];
 struct SpriteSheetImage bulletRadiusArray[4];
 struct SpriteSheetImage currencyArray[5];
-struct SpriteSheetImage environmentObjectArray[8];
-struct SpriteSheetImage backgroundArray[5];
+struct SpriteSheetImage environmentObjectArray[9];
+struct SpriteSheetImage backgroundArray[6];
 struct SpriteSheetImage portalEnterEffectArray[4];
 struct SpriteSheetImage portalSpawnEffectArray[4];
-struct SpriteSheetImage powerUpIconArray[3];
+struct SpriteSheetImage powerUpIconArray[4];
 struct SpriteSheetImage battlefieldEffectIconArray[12];
 struct SpriteSheetImage backgroundUIFatArray[2];
 struct SpriteSheetImage interactableButtonsImageArray[3];
-struct PortalVariables portalVariablesArray[2];
 struct SpriteSheetImage turretStatsIconArray[5];
+struct SpriteSheetImage nonGridEnvironmentObjectsArray[3];
+
+struct PortalVariables portalVariablesArray[2];
 
 struct node* bulletRadiusFirstNode;
 int bulletRadiusNodeKeyNumber;

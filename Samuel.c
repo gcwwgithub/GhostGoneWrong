@@ -23,6 +23,7 @@ void turret_init(void)
 		proj[i].size = 48;
 		proj[i].mod.slow_amt = 1.f;
 		proj[i].mod.slow_timer = 0.f;
+		proj[i].lifetime = 10.f;
 	}
 	for (int i = 0; i < MAX_TURRET; ++i)
 	{
@@ -64,7 +65,7 @@ void turret_init(void)
 
 	//set all to 5 level only first change later
 	for (int i = 0; i < T_MAX; ++i)
-		turret_purchasing[TP_UPGRADE_MAX_LEVEL][i] = 5;
+		turret_purchasing[TP_UPGRADE_MAX_LEVEL][i] = 10;
 
 	//place_turret(T_WALL, 2, 1);
 	//Level[currentGameLevel].grid[1][2].type = Blocked;
@@ -84,8 +85,6 @@ void place_turret(TurretType type, int index_x, int index_y)
 		//	break;
 		if (turret[i].isActive)
 			continue;
-		if (turret_on_grid[index_x][index_y] >= 0)
-			break; // come out of loop cause space occupied
 
 		turret[i].type = type;
 
@@ -193,9 +192,12 @@ void sell_turret(int t_index)
 //upgrade system (for now using index will change depending on usage)
 void upgrade_turret(int t_index)
 {
-	int x = (int)((turret[t_index].data.xOrigin - Game.xOrigin) / Game.gridWidth);
-	int y = (int)((turret[t_index].data.yOrigin - Game.yOrigin) / Game.gridHeight);
+	//int x = (int)((turret[t_index].data.xOrigin - Game.xOrigin) / Game.gridWidth);
+	//int y = (int)((turret[t_index].data.yOrigin - Game.yOrigin) / Game.gridHeight);
 
+	//dont increase beyond lvl 10
+	if (turret[t_index].level >= turret_purchasing[TP_UPGRADE_MAX_LEVEL][turret[t_index].type])
+		return;
 
 	turret[t_index].total_price += turret[t_index].upgrade_price;
 	turret[t_index].sell_price = (int)((turret[t_index].total_price) * 0.7f);
@@ -204,24 +206,24 @@ void upgrade_turret(int t_index)
 	switch (turret[t_index].type)
 	{
 	case T_BASIC:
-		turret[t_index].mod.damage += 1.f;
-		turret[t_index].mod.range *= 1.5f;
-		turret[t_index].mod.shoot_rate -= 0.05f;
+		turret[t_index].mod.damage += 0.2f;
+		turret[t_index].mod.range *= 1.2f;
+		turret[t_index].mod.shoot_rate -= 0.02f;
 		//increase the price for another upgrade
 		turret[t_index].upgrade_price += 25;
 		break;
 	case T_SLOW:
-		turret[t_index].mod.damage += 1.f;
-		turret[t_index].mod.range *= 1.5f;
+		turret[t_index].mod.damage += 0.15f;
+		turret[t_index].mod.range *= 1.2f;
 		turret[t_index].mod.slow_amt -= 0.1f;
-		turret[t_index].mod.shoot_rate -= 0.05f;
+		turret[t_index].mod.shoot_rate -= 0.02f;
 		//increase the price for another upgrade
 		turret[t_index].upgrade_price += 25;
 		break;
 	case T_HOMING:
-		turret[t_index].mod.damage += 1.f;
-		turret[t_index].mod.range *= 1.5f;
-		turret[t_index].mod.shoot_rate -= 0.05f;
+		turret[t_index].mod.damage += 0.3f;
+		turret[t_index].mod.range *= 1.2f;
+		turret[t_index].mod.shoot_rate -= 0.01f;
 		//increase the price for another upgrade
 		turret[t_index].upgrade_price += 50;
 		break;
@@ -432,6 +434,7 @@ void shoot(float x, float y, Modifiers mod, ProjectileType type, Vector2 dir)
 		proj[i].type = type;
 		proj[i].mod.tracked_index = mod.tracked_index;
 		proj[i].mod.speed = mod.speed;
+		proj[i].lifetime = 10.f;
 		break;
 	}
 
@@ -439,6 +442,7 @@ void shoot(float x, float y, Modifiers mod, ProjectileType type, Vector2 dir)
 
 void update_projectile(void)
 {
+	float dt = CP_System_GetDt();
 	for (int i = 0; i < MAX_PROJECTILE; ++i)
 	{
 		//bounds check
@@ -447,11 +451,19 @@ void update_projectile(void)
 				|| proj[i].data.yOrigin < 0 || proj[i].data.yOrigin >(float)CP_System_GetDisplayHeight()))
 		{
 			//set to inactive
-			proj[i].isActive = 0;
+			proj[i].isActive = FALSE;
 			continue;
 		}
 		if (!proj[i].isActive)
 			continue;
+
+		proj[i].lifetime -= dt;
+		if (proj[i].lifetime <= 0.f)
+		{
+			proj[i].isActive = FALSE;
+			continue;
+		}
+
 
 		// tracking proj, track if a valid id is provided and state is alive
 		if (proj[i].type == P_HOMING)
@@ -465,8 +477,8 @@ void update_projectile(void)
 				v.x = proj[i].dir.x - (Enemy[proj[i].mod.tracked_index].data.xOrigin - proj[i].data.xOrigin);
 				v.y = proj[i].dir.y - (Enemy[proj[i].mod.tracked_index].data.yOrigin - proj[i].data.yOrigin);
 
-				proj[i].dir.x -= v.x * 0.1f * CP_System_GetDt(); //gradual change of dir, magic number is the rate of change
-				proj[i].dir.y -= v.y * 0.1f * CP_System_GetDt();
+				proj[i].dir.x -= v.x * 0.08f * dt; //gradual change of dir, magic number is the rate of change
+				proj[i].dir.y -= v.y * 0.08f * dt;
 				proj[i].dir = normalise(proj[i].dir);
 				//printf("x:%f y:%f\n", proj[i].dir.x, proj[i].dir.y);
 			}
@@ -481,6 +493,11 @@ void update_projectile(void)
 
 					v.x = proj[i].data.xOrigin - Enemy[j].data.xOrigin;
 					v.y = proj[i].data.yOrigin - Enemy[j].data.yOrigin;
+
+					//dont track when out of range
+					if (magnitude_sq(v) > HOMING_RANGE * HOMING_RANGE)
+						continue;
+
 					tmp = magnitude_sq(v);
 					float sqrdst = dist * dist;
 					if (tmp < sqrdst)
@@ -497,8 +514,8 @@ void update_projectile(void)
 		if (proj[i].type != P_MINE)
 		{
 			//proj movement dir * speed * deltatime
-			proj[i].data.xOrigin += proj[i].dir.x * proj[i].mod.speed * CP_System_GetDt();
-			proj[i].data.yOrigin += proj[i].dir.y * proj[i].mod.speed * CP_System_GetDt();
+			proj[i].data.xOrigin += proj[i].dir.x * proj[i].mod.speed * dt;
+			proj[i].data.yOrigin += proj[i].dir.y * proj[i].mod.speed * dt;
 		}
 
 	}

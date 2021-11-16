@@ -204,8 +204,7 @@ void render_game_grid_press(LevelData* LevelX) {
 int check_game_button_pressed(void) {
 	for (int i = 0; i < NUMBER_OF_MENU_OBJECTS; i++) {
 		if (btn_is_pressed(GameMenuObject[i])) {
-			if (i != UpgradeMenu)//Upgrade Menu should be cnsidered no button
-				return i;
+			return i;
 		}
 	}
 	return NoButton;
@@ -427,6 +426,10 @@ void level1_init(void) {
 	Level[0].goldQuartz = 0;
 	Level[0].currentWave = -1;// starts with building phase which increment wave by 1
 	Level[0].currentEffect = NoEnvironmentalEffects;
+	Level[0].currentPowerUpLevel.morePhantomQuartz = 0;
+	Level[0].currentPowerUpLevel.reduceEnemySpeed = 0;
+	Level[0].currentPowerUpLevel.reduceEnemyHealth = 0;
+	Level[0].currentPowerUpLevel.increasedMineDamage = 0;
 
 	Level[0].waveEnemies[0][Basic] = 10;
 	Level[0].waveEnemies[1][Basic] = 10;
@@ -439,38 +442,12 @@ void level1_init(void) {
 	Level[0].waveEnemies[8][Basic] = 30;
 	Level[0].waveEnemies[9][Basic] = 30;
 
-	Level[0].waveEnemies[0][Fast_Ghost] = 0;
-	Level[0].waveEnemies[1][Fast_Ghost] = 0;
-	Level[0].waveEnemies[2][Fast_Ghost] = 0;
-	Level[0].waveEnemies[3][Fast_Ghost] = 0;
-	Level[0].waveEnemies[4][Fast_Ghost] = 0;
-	Level[0].waveEnemies[5][Fast_Ghost] = 0;
-	Level[0].waveEnemies[6][Fast_Ghost] = 0;
-	Level[0].waveEnemies[7][Fast_Ghost] = 0;
-	Level[0].waveEnemies[8][Fast_Ghost] = 0;
-	Level[0].waveEnemies[9][Fast_Ghost] = 0;
-
-	Level[0].waveEnemies[0][Fat_Ghost] = 0;
-	Level[0].waveEnemies[1][Fat_Ghost] = 0;
-	Level[0].waveEnemies[2][Fat_Ghost] = 0;
-	Level[0].waveEnemies[3][Fat_Ghost] = 0;
-	Level[0].waveEnemies[4][Fat_Ghost] = 0;
-	Level[0].waveEnemies[5][Fat_Ghost] = 0;
-	Level[0].waveEnemies[6][Fat_Ghost] = 0;
-	Level[0].waveEnemies[7][Fat_Ghost] = 0;
-	Level[0].waveEnemies[8][Fat_Ghost] = 0;
-	Level[0].waveEnemies[9][Fat_Ghost] = 0;
-
-	Level[0].waveEnemies[0][grimReaper] = 0;
-	Level[0].waveEnemies[1][grimReaper] = 0;
-	Level[0].waveEnemies[2][grimReaper] = 0;
-	Level[0].waveEnemies[3][grimReaper] = 0;
-	Level[0].waveEnemies[4][grimReaper] = 0;
-	Level[0].waveEnemies[5][grimReaper] = 0;
-	Level[0].waveEnemies[6][grimReaper] = 0;
-	Level[0].waveEnemies[7][grimReaper] = 0;
-	Level[0].waveEnemies[8][grimReaper] = 0;
-	Level[0].waveEnemies[9][grimReaper] = 0;
+	for (int i = 0; i < 10; i++)
+	{
+		Level[0].waveEnemies[i][Fast_Ghost] = 0;
+		Level[0].waveEnemies[i][Fat_Ghost] = 0;
+		Level[0].waveEnemies[i][grimReaper] = 0;
+	}
 }
 
 void level2_init(void) {
@@ -484,6 +461,11 @@ void level2_init(void) {
 	Level[1].goldQuartz = 0;
 	Level[1].currentWave = -1;// starts with building phase which increment wave by 1
 	Level[1].currentEffect = NoEnvironmentalEffects;
+	Level[1].currentPowerUpLevel.morePhantomQuartz = 0;
+	Level[1].currentPowerUpLevel.reduceEnemySpeed = 0;
+	Level[1].currentPowerUpLevel.reduceEnemyHealth = 0;
+	Level[1].currentPowerUpLevel.increasedMineDamage = 0;
+
 
 	Level[1].waveEnemies[0][Basic] = 10;
 	Level[1].waveEnemies[1][Basic] = 10;
@@ -507,27 +489,12 @@ void level2_init(void) {
 	Level[1].waveEnemies[8][Fast_Ghost] = 10;
 	Level[1].waveEnemies[9][Fast_Ghost] = 15;
 
-	Level[1].waveEnemies[0][Fat_Ghost] = 0;
-	Level[1].waveEnemies[1][Fat_Ghost] = 0;
-	Level[1].waveEnemies[2][Fat_Ghost] = 0;
-	Level[1].waveEnemies[3][Fat_Ghost] = 0;
-	Level[1].waveEnemies[4][Fat_Ghost] = 0;
-	Level[1].waveEnemies[5][Fat_Ghost] = 0;
-	Level[1].waveEnemies[6][Fat_Ghost] = 0;
-	Level[1].waveEnemies[7][Fat_Ghost] = 0;
-	Level[1].waveEnemies[8][Fat_Ghost] = 0;
-	Level[1].waveEnemies[9][Fat_Ghost] = 0;
+	for (int i = 0; i < 10; i++)
+	{
+		Level[1].waveEnemies[i][Fat_Ghost] = 0;
+		Level[1].waveEnemies[i][grimReaper] = 0;
+	}
 
-	Level[1].waveEnemies[0][grimReaper] = 0;
-	Level[1].waveEnemies[1][grimReaper] = 0;
-	Level[1].waveEnemies[2][grimReaper] = 0;
-	Level[1].waveEnemies[3][grimReaper] = 0;
-	Level[1].waveEnemies[4][grimReaper] = 0;
-	Level[1].waveEnemies[5][grimReaper] = 0;
-	Level[1].waveEnemies[6][grimReaper] = 0;
-	Level[1].waveEnemies[7][grimReaper] = 0;
-	Level[1].waveEnemies[8][grimReaper] = 0;
-	Level[1].waveEnemies[9][grimReaper] = 0;
 }
 
 void level3_init(void) {
@@ -542,6 +509,11 @@ void level3_init(void) {
 	Level[2].goldQuartz = 0;
 	Level[2].currentWave = -1;// starts with building phase which increment wave by 1
 	Level[2].currentEffect = NoEnvironmentalEffects;
+	Level[2].currentPowerUpLevel.morePhantomQuartz = 0;
+	Level[2].currentPowerUpLevel.reduceEnemySpeed = 0;
+	Level[2].currentPowerUpLevel.reduceEnemyHealth = 0;
+	Level[2].currentPowerUpLevel.increasedMineDamage = 0;
+
 
 	Level[2].waveEnemies[0][Basic] = 10;
 	Level[2].waveEnemies[1][Basic] = 10;
@@ -576,16 +548,10 @@ void level3_init(void) {
 	Level[2].waveEnemies[8][Fat_Ghost] = 10;
 	Level[2].waveEnemies[9][Fat_Ghost] = 10;
 
-	Level[2].waveEnemies[0][grimReaper] = 0;
-	Level[2].waveEnemies[1][grimReaper] = 0;
-	Level[2].waveEnemies[2][grimReaper] = 0;
-	Level[2].waveEnemies[3][grimReaper] = 0;
-	Level[2].waveEnemies[4][grimReaper] = 0;
-	Level[2].waveEnemies[5][grimReaper] = 0;
-	Level[2].waveEnemies[6][grimReaper] = 0;
-	Level[2].waveEnemies[7][grimReaper] = 0;
-	Level[2].waveEnemies[8][grimReaper] = 0;
-	Level[2].waveEnemies[9][grimReaper] = 0;
+	for (int i = 0; i < 10; i++)
+	{
+		Level[2].waveEnemies[i][grimReaper] = 0;
+	}
 }
 
 void level4_init(void) {
@@ -599,6 +565,11 @@ void level4_init(void) {
 	Level[3].goldQuartz = 0;
 	Level[3].currentWave = -1;// starts with building phase which increment wave by 1
 	Level[3].currentEffect = NoEnvironmentalEffects;
+	Level[3].currentPowerUpLevel.morePhantomQuartz = 0;
+	Level[3].currentPowerUpLevel.reduceEnemySpeed = 0;
+	Level[3].currentPowerUpLevel.reduceEnemyHealth = 0;
+	Level[3].currentPowerUpLevel.increasedMineDamage = 0;
+
 
 	Level[3].waveEnemies[0][Basic] = 10;
 	Level[3].waveEnemies[1][Basic] = 10;
@@ -656,6 +627,11 @@ void level5_init(void) {
 	Level[4].goldQuartz = 0;
 	Level[4].currentWave = -1;// starts with building phase which increment wave by 1
 	Level[4].currentEffect = NoEnvironmentalEffects;
+	Level[4].currentPowerUpLevel.morePhantomQuartz = 0;
+	Level[4].currentPowerUpLevel.reduceEnemySpeed = 0;
+	Level[4].currentPowerUpLevel.reduceEnemyHealth = 0;
+	Level[4].currentPowerUpLevel.increasedMineDamage = 0;
+
 
 	Level[4].waveEnemies[0][Basic] = 10;
 	Level[4].waveEnemies[1][Basic] = 15;
@@ -712,25 +688,61 @@ void render_button_pressed(void) {
 		currentGameState = currentGameState == Pause ? Wave : Pause;
 		mouse_reset();
 		break;
+
 	case TurretButtonBasic:
 		if (turret_purchasing[TP_PRICE][T_BASIC] <= Level[currentGameLevel].phantomQuartz && powerUpMenu == FALSE) { // Currently hardcoded 
 			isPlacingTurret = T_BASIC;
 			turretSelectedToUpgrade = NO_TURRET_SELECTED;
 			RenderNormal(basicTurretSpriteSheet, basicTurretArray[0], CP_Input_GetMouseX(), CP_Input_GetMouseY(), Game.gridWidth, Game.gridHeight);
 		}
+		else if (powerUpMenu == TRUE && Level[currentGameLevel].goldQuartz >= powerUpPrice.morePhantomQuartz) {
+			Level[currentGameLevel].currentPowerUpLevel.morePhantomQuartz += 1;
+			Level[currentGameLevel].goldQuartz -= powerUpPrice.morePhantomQuartz;
+			mouse_reset();
+			isPlacingTurret = T_MAX;
+			turretSelectedToUpgrade = NO_TURRET_SELECTED;
+		}
+		else {
+			isPlacingTurret = T_MAX;
+			turretSelectedToUpgrade = NO_TURRET_SELECTED;
+		}
 		break;
+
 	case TurretButtonSlow:
 		if (turret_purchasing[TP_PRICE][T_SLOW] <= Level[currentGameLevel].phantomQuartz && powerUpMenu == FALSE) {
 			isPlacingTurret = T_SLOW;
 			turretSelectedToUpgrade = NO_TURRET_SELECTED;
 			CP_Image_DrawAdvanced(GameMenuObject[check_game_button_pressed()].image, CP_Input_GetMouseX(), CP_Input_GetMouseY(), Game.gridWidth, Game.gridHeight, 255, 0);
 		}
+		else if (powerUpMenu == TRUE && Level[currentGameLevel].goldQuartz >= powerUpPrice.reduceEnemySpeed) {
+			Level[currentGameLevel].currentPowerUpLevel.reduceEnemySpeed += 1;
+			Level[currentGameLevel].goldQuartz -= powerUpPrice.reduceEnemySpeed;
+			mouse_reset();
+			isPlacingTurret = T_MAX;
+			turretSelectedToUpgrade = NO_TURRET_SELECTED;
+		}
+		else {
+			isPlacingTurret = T_MAX;
+			turretSelectedToUpgrade = NO_TURRET_SELECTED;
+		}
 		break;
+
 	case TurretButtonHoming:
 		if (turret_purchasing[TP_PRICE][T_HOMING] <= Level[currentGameLevel].phantomQuartz && powerUpMenu == FALSE) {
 			isPlacingTurret = T_HOMING;
 			turretSelectedToUpgrade = NO_TURRET_SELECTED;
 			RenderNormal(homingMissleTurretSpriteSheet, homingMissleTurretArray[0], CP_Input_GetMouseX(), CP_Input_GetMouseY(), Game.gridWidth, Game.gridHeight);
+		}
+		else if (powerUpMenu == TRUE && Level[currentGameLevel].goldQuartz >= powerUpPrice.reduceEnemyHealth) {
+			Level[currentGameLevel].currentPowerUpLevel.reduceEnemyHealth += 1;
+			Level[currentGameLevel].goldQuartz -= powerUpPrice.reduceEnemyHealth;
+			mouse_reset();
+			isPlacingTurret = T_MAX;
+			turretSelectedToUpgrade = NO_TURRET_SELECTED;
+		}
+		else {
+			isPlacingTurret = T_MAX;
+			turretSelectedToUpgrade = NO_TURRET_SELECTED;
 		}
 		break;
 	case TurretButtonMine:
@@ -739,7 +751,19 @@ void render_button_pressed(void) {
 			turretSelectedToUpgrade = NO_TURRET_SELECTED;
 			RenderNormal(mineSpriteSheet, mineArray[0], CP_Input_GetMouseX(), CP_Input_GetMouseY(), Game.gridWidth, Game.gridHeight);
 		}
+		else if (powerUpMenu == TRUE && Level[currentGameLevel].goldQuartz >= powerUpPrice.increasedMineDamage) {
+			Level[currentGameLevel].currentPowerUpLevel.increasedMineDamage += 1;
+			Level[currentGameLevel].goldQuartz -= powerUpPrice.increasedMineDamage;
+			mouse_reset();
+			isPlacingTurret = T_MAX;
+			turretSelectedToUpgrade = NO_TURRET_SELECTED;
+		}
+		else {
+			isPlacingTurret = T_MAX;
+			turretSelectedToUpgrade = NO_TURRET_SELECTED;
+		}
 		break;
+
 	case SwapButton:
 		isPlacingTurret = T_MAX;
 		turretSelectedToUpgrade = NO_TURRET_SELECTED;
@@ -756,12 +780,27 @@ void render_button_pressed(void) {
 		}
 		mouse_reset();
 		break;
+
+	case UpgradeMenu:
+		isPlacingTurret = T_MAX;
+		break;
+
 	case UpgradeButton:
 		if (turretSelectedToUpgrade != NO_TURRET_SELECTED) {
-			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT) && Level[currentGameLevel].phantomQuartz >= turret[turretSelectedToUpgrade].upgrade_price) {
-				Level[currentGameLevel].phantomQuartz -= turret[turretSelectedToUpgrade].upgrade_price;
-				upgrade_turret(turretSelectedToUpgrade);
-				//call upgrade function
+			if (turret[turretSelectedToUpgrade].type != T_MINE) {
+				if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT) && Level[currentGameLevel].phantomQuartz >= turret[turretSelectedToUpgrade].upgrade_price) {
+					if (turret[turretSelectedToUpgrade].level < 10)
+					{
+						Level[currentGameLevel].phantomQuartz -= turret[turretSelectedToUpgrade].upgrade_price;
+						upgrade_turret(turretSelectedToUpgrade);
+					}
+					
+					isPlacingTurret = T_MAX;
+					//call upgrade function
+				}
+			}
+			else {
+				isPlacingTurret = T_MAX;
 			}
 		}
 		else {
@@ -769,6 +808,7 @@ void render_button_pressed(void) {
 			turretSelectedToUpgrade = NO_TURRET_SELECTED;
 		}
 		break;
+
 	case SellButton:
 		if (turretSelectedToUpgrade != NO_TURRET_SELECTED) {
 			int drawX, drawY;
@@ -780,6 +820,7 @@ void render_button_pressed(void) {
 			pathfinding_calculate_cost(&Level[currentGameLevel]);
 			pathfinding_update(&Level[currentGameLevel]);
 			mouse_reset();
+			isPlacingTurret = T_MAX;
 		}
 		else {
 			isPlacingTurret = T_MAX;
@@ -814,6 +855,9 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 	if (turretSelectedToUpgrade == NO_TURRET_SELECTED && (type == UpgradeButton || type == SellButton || type == UpgradeMenu)) {// only render upgrade and sell button when turret selected
 	//empty by design
 	}
+	else if (turret[turretSelectedToUpgrade].type == T_MINE && type == UpgradeButton) { //Hide the upgrade menu for mine
+		//empty by design
+	}
 	else {
 		CP_Settings_RectMode(CP_POSITION_CORNER);
 		CP_Settings_Fill(COLOR_WHITE);
@@ -839,8 +883,13 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 		{
 			RenderNormal(powerUpIconSpriteSheet, powerUpIconArray[0], menuObjectX.width / 2,
 				(menuObjectX.yOrigin + menuObjectX.height / 2), 100 * scalingFactor, 100 * scalingFactor);
-			sprintf_s(temp, sizeof(temp), "25");
-			CP_Font_DrawText(temp, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3));
+			sprintf_s(temp, sizeof(temp), "Lv:%-2d", Level[currentGameLevel].currentPowerUpLevel.morePhantomQuartz);
+			CP_Font_DrawText(temp, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 7));
+
+			sprintf_s(temp, sizeof(temp), "10");
+			CP_Font_DrawText(temp, menuObjectX.width / 2.5, (menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3));
+			RenderNormal(currencySpriteSheet, currencyArray[0], menuObjectX.width / 1.65,
+				(menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3), 45 * scalingFactor, 45 * scalingFactor);
 		}
 		break;
 
@@ -860,8 +909,15 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 		{
 			RenderNormal(powerUpIconSpriteSheet, powerUpIconArray[1], menuObjectX.width / 2,
 				(menuObjectX.yOrigin + menuObjectX.height / 2), 100 * scalingFactor, 100 * scalingFactor);
-			sprintf_s(temp, sizeof(temp), "25");
-			CP_Font_DrawText(temp, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3));
+			
+			
+			sprintf_s(temp, sizeof(temp), "Lv:%-2d", Level[currentGameLevel].currentPowerUpLevel.reduceEnemySpeed);
+			CP_Font_DrawText(temp, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 7));
+
+			sprintf_s(temp, sizeof(temp), "10");
+			CP_Font_DrawText(temp, menuObjectX.width / 2.5, (menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3));
+			RenderNormal(currencySpriteSheet, currencyArray[0], menuObjectX.width / 1.65,
+				(menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3), 45 * scalingFactor, 45 * scalingFactor);
 		}
 		break;
 
@@ -880,15 +936,21 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 		{
 			RenderNormal(powerUpIconSpriteSheet, powerUpIconArray[2], menuObjectX.width / 2,
 				(menuObjectX.yOrigin + menuObjectX.height / 2), 100 * scalingFactor, 100 * scalingFactor);
-			sprintf_s(temp, sizeof(temp), "25");
-			CP_Font_DrawText(temp, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3));
+			sprintf_s(temp, sizeof(temp), "Lv:%-2d", Level[currentGameLevel].currentPowerUpLevel.reduceEnemyHealth);
+			CP_Font_DrawText(temp, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 7));
+			
+			sprintf_s(temp, sizeof(temp), "10");
+			CP_Font_DrawText(temp, menuObjectX.width / 2.5, (menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3));
+			RenderNormal(currencySpriteSheet, currencyArray[0], menuObjectX.width / 1.65,
+				(menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3), 45 * scalingFactor, 45 * scalingFactor);
+
 		}
 		break;
 
 	case TurretButtonMine:
+		CP_Image_Draw(turretUIButton, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 2),
+			136 * scalingFactor, 136 * scalingFactor, 255);
 		if (powerUpMenu == FALSE) {
-			CP_Image_Draw(turretUIButton, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 2),
-				136 * scalingFactor, 136 * scalingFactor, 255);
 			RenderNormal(mineSpriteSheet, mineArray[0], menuObjectX.width / 2,
 				(menuObjectX.yOrigin + menuObjectX.height / 2), 128 * scalingFactor, 128 * scalingFactor);
 			sprintf_s(temp, sizeof(temp), "%d", turret_purchasing[TP_PRICE][T_MINE]);
@@ -896,6 +958,21 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 			RenderNormal(currencySpriteSheet, currencyArray[1], menuObjectX.width / 1.65,
 				(menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3), 45 * scalingFactor, 45 * scalingFactor);
 		}
+		else
+		{
+			RenderNormal(powerUpIconSpriteSheet, powerUpIconArray[3], menuObjectX.width / 2,
+				(menuObjectX.yOrigin + menuObjectX.height / 2), 100 * scalingFactor, 100 * scalingFactor);
+		
+			sprintf_s(temp, sizeof(temp), "Lv:%-2d", Level[currentGameLevel].currentPowerUpLevel.increasedMineDamage);
+			CP_Font_DrawText(temp, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 7));
+
+
+			sprintf_s(temp, sizeof(temp), "10");
+			CP_Font_DrawText(temp, menuObjectX.width / 2.5, (menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3));
+			RenderNormal(currencySpriteSheet, currencyArray[0], menuObjectX.width / 1.65,
+				(menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3), 45 * scalingFactor, 45 * scalingFactor);
+		}
+
 		break;
 
 	case PauseButton:
@@ -988,13 +1065,22 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 
 			CP_Settings_Fill(COLOR_WHITE);
 			CP_Settings_TextSize(50.0f * scalingFactor);
-			
+
 
 			//Level Icon
 			RenderNormal(turretStatsIconSpriteSheet, turretStatsIconArray[0], menuObjectX.xOrigin + menuObjectX.width / 1.75,
 				menuObjectX.yOrigin + menuObjectX.height / 6.5, 64 * scalingFactor, 64 * scalingFactor);
-			sprintf_s(temp, sizeof(temp), "%-2d", turret[turretSelectedToUpgrade].level);
-			CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 1.25,
+			if (turret[turretSelectedToUpgrade].level == 10)
+			{
+				sprintf_s(temp, sizeof(temp), "MAX");
+			}
+
+			else
+			{
+				sprintf_s(temp, sizeof(temp), "%-3d", turret[turretSelectedToUpgrade].level);
+			}
+			
+			CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 1.2,
 				menuObjectX.yOrigin + menuObjectX.height / 6.5);
 
 			switch (turret[turretSelectedToUpgrade].type)
@@ -1004,7 +1090,7 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 				CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 2, menuObjectX.yOrigin + menuObjectX.height / 18);
 				RenderNormal(basicTurretSpriteSheet, basicTurretArray[0],
 					menuObjectX.xOrigin + menuObjectX.width / 4,
-					menuObjectX.yOrigin + menuObjectX.height /7, 110 * scalingFactor, 110 * scalingFactor);
+					menuObjectX.yOrigin + menuObjectX.height / 7, 110 * scalingFactor, 110 * scalingFactor);
 				RenderNormal(turretStatsIconSpriteSheet, turretStatsIconArray[1], menuObjectX.xOrigin + menuObjectX.width / 5,
 					menuObjectX.yOrigin + menuObjectX.height / 3.9, 64 * scalingFactor, 64 * scalingFactor);
 				sprintf_s(temp, sizeof(temp), "%.2f", turret[turretSelectedToUpgrade].mod.damage);
@@ -1054,7 +1140,7 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 			CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 1.7, menuObjectX.yOrigin + menuObjectX.height / 2.9);
 
 			//Attack Speed Icon
-			RenderNormal(turretStatsIconSpriteSheet, turretStatsIconArray[4], menuObjectX.xOrigin + menuObjectX.width /5,
+			RenderNormal(turretStatsIconSpriteSheet, turretStatsIconArray[4], menuObjectX.xOrigin + menuObjectX.width / 5,
 				menuObjectX.yOrigin + menuObjectX.height / 2.32, 64 * scalingFactor, 64 * scalingFactor);
 			sprintf_s(temp, sizeof(temp), "%.2f", turret[turretSelectedToUpgrade].mod.shoot_rate);
 			CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 1.95, menuObjectX.yOrigin + menuObjectX.height / 2.3);
@@ -1062,20 +1148,22 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 			CP_Settings_TextSize(35.0f * scalingFactor);
 
 			//Upgrade Price
-			sprintf_s(temp, sizeof(temp), "%4d", turret[turretSelectedToUpgrade].upgrade_price);
-			CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 5.5, menuObjectX.yOrigin + menuObjectX.height / 1.95);
-			RenderNormal(currencySpriteSheet, currencyArray[1], menuObjectX.xOrigin + menuObjectX.width / 2.95,
-				menuObjectX.yOrigin + menuObjectX.height / 1.95, 40 * scalingFactor, 40 * scalingFactor);
+			if (turret[turretSelectedToUpgrade].type != T_MINE) {
+				sprintf_s(temp, sizeof(temp), "%4d", turret[turretSelectedToUpgrade].upgrade_price);
+				CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 5.5, menuObjectX.yOrigin + menuObjectX.height / 1.95);
+				RenderNormal(currencySpriteSheet, currencyArray[1], menuObjectX.xOrigin + menuObjectX.width / 2.95,
+					menuObjectX.yOrigin + menuObjectX.height / 1.95, 40 * scalingFactor, 40 * scalingFactor);
+			}
 
 			//Sell Price
 			sprintf_s(temp, sizeof(temp), "%4d", turret[turretSelectedToUpgrade].sell_price);
 			CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 1.45, menuObjectX.yOrigin + menuObjectX.height / 1.95);
 			RenderNormal(currencySpriteSheet, currencyArray[1], menuObjectX.xOrigin + menuObjectX.width / 1.15,
-				menuObjectX.yOrigin + menuObjectX.height / 1.95, 40 * scalingFactor, 40* scalingFactor);
+				menuObjectX.yOrigin + menuObjectX.height / 1.95, 40 * scalingFactor, 40 * scalingFactor);
 		}
 		break;
 	case UpgradeButton:
-		if (turretSelectedToUpgrade != NO_TURRET_SELECTED) { //Only render when upgrading
+		if (turretSelectedToUpgrade != NO_TURRET_SELECTED && turret[turretSelectedToUpgrade].type != T_MINE) { //Only render when upgrading or when mine is not selected
 
 			RenderNormal(interactableButtonsImageSpriteSheet, interactableButtonsImageArray[1],
 				menuObjectX.xOrigin + menuObjectX.width / 2,

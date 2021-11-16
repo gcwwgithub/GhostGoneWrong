@@ -8,6 +8,7 @@
 #define PROJ_OFFSET Game.gridHeight * 0.4
 #define SLOW_RANGE Game.gridWidth * 2
 #define EXPLOSION_RANGE Game.gridWidth * 2
+#define HOMING_RANGE Game.gridWidth * 3
 #define TRUE 1
 #define FALSE 0
 
@@ -88,7 +89,7 @@ typedef struct Turret
 typedef struct Projectile
 {
 	int isActive;
-	float size;
+	float size, lifetime;
 	//float damage, speed, ;
 	//float p_slow_amt, p_slow_timer; //for slow projectile
 	Modifiers mod;
