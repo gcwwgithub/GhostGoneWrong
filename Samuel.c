@@ -161,7 +161,6 @@ void place_turret(TurretType type, int index_x, int index_y)
 		// where on grid turret placed storing the index of placed turret
 		turret_on_grid[index_x][index_y] = i;
 		//where u place u block
-		Level[currentGameLevel].grid[index_y][index_x].type = Blocked;
 		turret[i].level = 1;
 		//escape from loop once done
 		break;
