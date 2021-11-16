@@ -139,5 +139,5 @@ void update_turretAnimation(Turret* t);
 
 Projectile proj[MAX_PROJECTILE];
 Turret turret[MAX_TURRET];
-int turret_on_grid[GAME_GRID_ROWS][GAME_GRID_COLS];
+int turret_on_grid[GAME_GRID_COLS][GAME_GRID_ROWS];
 int turret_purchasing[TP_MAX][T_MAX];
