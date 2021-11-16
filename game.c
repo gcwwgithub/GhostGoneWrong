@@ -216,7 +216,7 @@ void game_update(void)
 		if (btn_is_pressed(PlayButton.buttonData))
 		{
 			currentGameState = LevelSelect;
-			ui_button_movement(QuitButton.buttonData, CP_System_GetWindowWidth(), QuitButton.buttonData.yOrigin, QuitButton.interpolationTime);
+			//ui_button_movement(QuitButton.buttonData, CP_System_GetWindowWidth(), QuitButton.buttonData.yOrigin, QuitButton.interpolationTime);
 		}
 		else if (btn_is_pressed(QuitButton.buttonData))
 		{
