@@ -3,7 +3,7 @@
 #include <stdio.h>
 
 //Game Grid
-#define LEVEL1_COLS 3
+#define LEVEL1_COLS 6
 #define LEVEL1_ROWS 7
 #define LEVEL2_COLS 3
 #define LEVEL2_ROWS 7
@@ -164,7 +164,7 @@ Coordinates GameMenuObject[NUMBER_OF_MENU_OBJECTS];
 Coordinates MouseInput;
 
 //Environment
-#define MAX_ENVIRONMENT_OBJECT 1
+#define MAX_ENVIRONMENT_OBJECT 10
 Coordinates Environment[MAX_ENVIRONMENT_OBJECT];
 
 //Common Tools

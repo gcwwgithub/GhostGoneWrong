@@ -174,7 +174,7 @@ void init_spritesheet_array(void)
 	SpriteSheetCalculation(bulletArray, bulletSpriteSheet, 128, 128, 1);
 	SpriteSheetCalculation(bulletRadiusArray, bulletRadiusSpriteSheet, 128, 128, 0);
 	SpriteSheetCalculation(currencyArray, currencySpriteSheet, 128, 128, 1);
-	SpriteSheetCalculation(environmentObjectArray, environmentObjectsSpriteSheet, 128, 128, 0);
+	SpriteSheetCalculation(environmentObjectArray, environmentObjectsSpriteSheet, 128, 128, 2);
 	SpriteSheetCalculation(backgroundArray, backgroundSpriteSheet,1920,1080, 0);
 	SpriteSheetCalculation(portalEnterEffectArray, portalEnterEffectSpriteSheet, 128, 128, 0);
 	SpriteSheetCalculation(portalSpawnEffectArray, portalSpawnEffectSpriteSheet, 128, 128, 0);
@@ -183,7 +183,7 @@ void init_spritesheet_array(void)
 	SpriteSheetCalculation(backgroundUIFatArray, backgroundUIFatSpriteSheet, 128, 128, 0);
 	SpriteSheetCalculation(interactableButtonsImageArray, interactableButtonsImageSpriteSheet, 128, 72, 1);
 	SpriteSheetCalculation(turretStatsIconArray, turretStatsIconSpriteSheet, 128, 128, 1);
-	SpriteSheetCalculation(nonGridEnvironmentObjectsArray, nonGridEnvironmentObjectsSpriteSheet, 512, 512, 1);
+	SpriteSheetCalculation(nonGridEnvironmentObjectsArray, nonGridEnvironmentObjectsSpriteSheet, 512, 512, 0);
 }
 
 void SpriteSheetCalculation(struct SpriteSheetImage* s, CP_Image image, int pixelWidth, int pixelHeight, int stopPoint)

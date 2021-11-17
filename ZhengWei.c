@@ -282,18 +282,46 @@ void turret_mine_button_init(void) {
 }
 
 void environment_init(LevelData* LevelX) {
-	int row = 1, col = 1;
-	Environment[0].image = environmentObjectsSpriteSheet;
-	Environment[0].xOrigin = Game.xOrigin + Game.gridWidth * (col + 0.5f);
-	Environment[0].yOrigin = Game.yOrigin + Game.gridHeight * (row + 0.5f);
-	Environment[0].width = Game.gridWidth;
-	Environment[0].height = Game.gridHeight;
+	switch (currentGameLevel)
+	{
+	case 0:
+		init_environment_object(0, 2, 2, LevelX);
+		init_environment_object(1, 3, 4, LevelX);
+		init_environment_object(2, 5, 1, LevelX);
+		break;
+	case 1:
+		init_environment_object(0, 2, 2, LevelX);
+		break;
+	case 2:
+		init_environment_object(0, 2, 2, LevelX);
+		break;
+	case 3:
+		init_environment_object(0, 2, 2, LevelX);
+		break;
+	case 4:
+		init_environment_object(0, 2, 2, LevelX);
+		break;
+	}
+	
+}
+
+void init_environment_object(int arrayIndex,int row, int col, LevelData* LevelX)
+{
+	Environment[arrayIndex].image = environmentObjectsSpriteSheet;
+	Environment[arrayIndex].xOrigin = Game.xOrigin + Game.gridWidth * (col + 0.5f);
+	Environment[arrayIndex].yOrigin = Game.yOrigin + Game.gridHeight * (row + 0.5f);
+	Environment[arrayIndex].width = Game.gridWidth;
+	Environment[arrayIndex].height = Game.gridHeight;
 	LevelX->grid[row][col].type = Blocked;
 }
 
 void render_environment(void) {
 	for (int i = 0; i < MAX_ENVIRONMENT_OBJECT; i++) {
-		RenderNormal(Environment[i].image, environmentObjectArray[0], Environment[i].xOrigin, Environment[i].yOrigin, Environment[i].width, Environment[i].height);
+		if (Environment[i].xOrigin != 0)
+		{
+			RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[8], Environment[i].xOrigin, Environment[i].yOrigin, Environment[i].width, Environment[i].height);
+		}
+		
 	}
 }
 
@@ -428,10 +456,13 @@ void level1_init(void) {
 			exit_to_desktop();
 		}
 	}
+
+
+
 	Level[0].spawnRow = 0;
-	Level[0].spawnCol = (gameGridCols - 1) / 2;
+	Level[0].spawnCol = 0;
 	Level[0].exitRow = gameGridRows - 1;
-	Level[0].exitCol = (gameGridCols - 1) / 2;
+	Level[0].exitCol = (gameGridCols - 1);
 	Level[0].health = 100;
 	Level[0].phantomQuartz = 50000;
 	Level[0].goldQuartz = 0;
@@ -442,23 +473,17 @@ void level1_init(void) {
 	Level[0].currentPowerUpLevel.reduceEnemyHealth = 0;
 	Level[0].currentPowerUpLevel.increasedMineDamage = 0;
 
-	Level[0].waveEnemies[0][Basic] = 10;
-	Level[0].waveEnemies[1][Basic] = 10;
-	Level[0].waveEnemies[2][Basic] = 15;
-	Level[0].waveEnemies[3][Basic] = 15;
-	Level[0].waveEnemies[4][Basic] = 20;
-	Level[0].waveEnemies[5][Basic] = 20;
-	Level[0].waveEnemies[6][Basic] = 25;
-	Level[0].waveEnemies[7][Basic] = 25;
-	Level[0].waveEnemies[8][Basic] = 30;
-	Level[0].waveEnemies[9][Basic] = 30;
+	general_level_enemies_init(0, 0, 10, 0, 0, 0);
+	general_level_enemies_init(0, 1, 10, 0, 0, 0);
+	general_level_enemies_init(0, 2, 15, 0, 0, 0);
+	general_level_enemies_init(0, 3, 15, 0, 0, 0);
+	general_level_enemies_init(0, 4, 20, 0, 0, 0);
+	general_level_enemies_init(0, 5, 20, 0, 0, 0);
+	general_level_enemies_init(0, 6, 25, 0, 0, 0);
+	general_level_enemies_init(0, 7, 25, 0, 0, 0);
+	general_level_enemies_init(0, 8, 30, 0, 0, 0);
+	general_level_enemies_init(0, 9, 30, 0, 0, 0);
 
-	for (int i = 0; i < 10; i++)
-	{
-		Level[0].waveEnemies[i][Fast_Ghost] = 0;
-		Level[0].waveEnemies[i][Fat_Ghost] = 0;
-		Level[0].waveEnemies[i][grimReaper] = 0;
-	}
 }
 
 void level2_init(void) {
@@ -489,33 +514,16 @@ void level2_init(void) {
 	Level[1].currentPowerUpLevel.increasedMineDamage = 0;
 
 
-	Level[1].waveEnemies[0][Basic] = 10;
-	Level[1].waveEnemies[1][Basic] = 10;
-	Level[1].waveEnemies[2][Basic] = 15;
-	Level[1].waveEnemies[3][Basic] = 15;
-	Level[1].waveEnemies[4][Basic] = 20;
-	Level[1].waveEnemies[5][Basic] = 20;
-	Level[1].waveEnemies[6][Basic] = 25;
-	Level[1].waveEnemies[7][Basic] = 25;
-	Level[1].waveEnemies[8][Basic] = 30;
-	Level[1].waveEnemies[9][Basic] = 25;
-
-	Level[1].waveEnemies[0][Fat_Ghost] = 0;
-	Level[1].waveEnemies[1][Fat_Ghost] = 0;
-	Level[1].waveEnemies[2][Fast_Ghost] = 1;
-	Level[1].waveEnemies[3][Fast_Ghost] = 5;
-	Level[1].waveEnemies[4][Fast_Ghost] = 5;
-	Level[1].waveEnemies[5][Fast_Ghost] = 10;
-	Level[1].waveEnemies[6][Fast_Ghost] = 10;
-	Level[1].waveEnemies[7][Fast_Ghost] = 10;
-	Level[1].waveEnemies[8][Fast_Ghost] = 10;
-	Level[1].waveEnemies[9][Fast_Ghost] = 15;
-
-	for (int i = 0; i < 10; i++)
-	{
-		Level[1].waveEnemies[i][Fat_Ghost] = 0;
-		Level[1].waveEnemies[i][grimReaper] = 0;
-	}
+	general_level_enemies_init(1, 0, 10, 0, 0, 0);
+	general_level_enemies_init(1, 1, 10, 0, 0, 0);
+	general_level_enemies_init(1, 2, 15, 1, 0, 0);
+	general_level_enemies_init(1, 3, 15, 5, 0, 0);
+	general_level_enemies_init(1, 4, 20, 5, 0, 0);
+	general_level_enemies_init(1, 5, 20, 10, 0, 0);
+	general_level_enemies_init(1, 6, 25, 10, 0, 0);
+	general_level_enemies_init(1, 7, 25, 10, 0, 0);
+	general_level_enemies_init(1, 8, 30, 10, 0, 0);
+	general_level_enemies_init(1, 9, 25, 15, 0, 0);
 
 }
 
@@ -546,44 +554,17 @@ void level3_init(void) {
 	Level[2].currentPowerUpLevel.reduceEnemyHealth = 0;
 	Level[2].currentPowerUpLevel.increasedMineDamage = 0;
 
+	general_level_enemies_init(2, 0, 10, 0, 0, 0);
+	general_level_enemies_init(2, 1, 10, 5, 0, 0);
+	general_level_enemies_init(2, 2, 10, 5, 0, 0);
+	general_level_enemies_init(2, 3, 15, 5, 0, 0);
+	general_level_enemies_init(2, 4, 15,10, 1, 0);
+	general_level_enemies_init(2, 5, 15, 10, 5, 0);
+	general_level_enemies_init(2, 6, 15, 10, 5, 0);
+	general_level_enemies_init(2, 7, 20, 10, 5, 0);
+	general_level_enemies_init(2, 8, 20, 10, 10, 0);
+	general_level_enemies_init(2, 9, 25, 10, 10, 0);
 
-	Level[2].waveEnemies[0][Basic] = 10;
-	Level[2].waveEnemies[1][Basic] = 10;
-	Level[2].waveEnemies[2][Basic] = 10;
-	Level[2].waveEnemies[3][Basic] = 15;
-	Level[2].waveEnemies[4][Basic] = 15;
-	Level[2].waveEnemies[5][Basic] = 15;
-	Level[2].waveEnemies[6][Basic] = 15;
-	Level[2].waveEnemies[7][Basic] = 20;
-	Level[2].waveEnemies[8][Basic] = 20;
-	Level[2].waveEnemies[9][Basic] = 25;
-
-	Level[2].waveEnemies[0][Fast_Ghost] = 0;
-	Level[2].waveEnemies[1][Fast_Ghost] = 5;
-	Level[2].waveEnemies[2][Fast_Ghost] = 5;
-	Level[2].waveEnemies[3][Fast_Ghost] = 5;
-	Level[2].waveEnemies[4][Fast_Ghost] = 10;
-	Level[2].waveEnemies[5][Fast_Ghost] = 10;
-	Level[2].waveEnemies[6][Fast_Ghost] = 10;
-	Level[2].waveEnemies[7][Fast_Ghost] = 10;
-	Level[2].waveEnemies[8][Fast_Ghost] = 10;
-	Level[2].waveEnemies[9][Fast_Ghost] = 10;
-
-	Level[2].waveEnemies[0][Fat_Ghost] = 0;
-	Level[2].waveEnemies[1][Fat_Ghost] = 0;
-	Level[2].waveEnemies[2][Fat_Ghost] = 0;
-	Level[2].waveEnemies[3][Fat_Ghost] = 0;
-	Level[2].waveEnemies[4][Fat_Ghost] = 1;
-	Level[2].waveEnemies[5][Fat_Ghost] = 5;
-	Level[2].waveEnemies[6][Fat_Ghost] = 5;
-	Level[2].waveEnemies[7][Fat_Ghost] = 5;
-	Level[2].waveEnemies[8][Fat_Ghost] = 10;
-	Level[2].waveEnemies[9][Fat_Ghost] = 10;
-
-	for (int i = 0; i < 10; i++)
-	{
-		Level[2].waveEnemies[i][grimReaper] = 0;
-	}
 }
 
 void level4_init(void) {
@@ -614,49 +595,16 @@ void level4_init(void) {
 	Level[3].currentPowerUpLevel.increasedMineDamage = 0;
 
 
-	Level[3].waveEnemies[0][Basic] = 10;
-	Level[3].waveEnemies[1][Basic] = 10;
-	Level[3].waveEnemies[2][Basic] = 10;
-	Level[3].waveEnemies[3][Basic] = 10;
-	Level[3].waveEnemies[4][Basic] = 15;
-	Level[3].waveEnemies[5][Basic] = 15;
-	Level[3].waveEnemies[6][Basic] = 15;
-	Level[3].waveEnemies[7][Basic] = 10;
-	Level[3].waveEnemies[8][Basic] = 15;
-	Level[3].waveEnemies[9][Basic] = 20;
-
-	Level[3].waveEnemies[0][Fast_Ghost] = 0;
-	Level[3].waveEnemies[1][Fast_Ghost] = 5;
-	Level[3].waveEnemies[2][Fast_Ghost] = 3;
-	Level[3].waveEnemies[3][Fast_Ghost] = 5;
-	Level[3].waveEnemies[4][Fast_Ghost] = 10;
-	Level[3].waveEnemies[5][Fast_Ghost] = 10;
-	Level[3].waveEnemies[6][Fast_Ghost] = 10;
-	Level[3].waveEnemies[7][Fast_Ghost] = 10;
-	Level[3].waveEnemies[8][Fast_Ghost] = 15;
-	Level[3].waveEnemies[9][Fast_Ghost] = 10;
-
-	Level[3].waveEnemies[0][Fat_Ghost] = 0;
-	Level[3].waveEnemies[1][Fat_Ghost] = 0;
-	Level[3].waveEnemies[2][Fat_Ghost] = 2;
-	Level[3].waveEnemies[3][Fat_Ghost] = 5;
-	Level[3].waveEnemies[4][Fat_Ghost] = 5;
-	Level[3].waveEnemies[5][Fat_Ghost] = 5;
-	Level[3].waveEnemies[6][Fat_Ghost] = 10;
-	Level[3].waveEnemies[7][Fat_Ghost] = 10;
-	Level[3].waveEnemies[8][Fat_Ghost] = 10;
-	Level[3].waveEnemies[9][Fat_Ghost] = 15;
-
-	Level[3].waveEnemies[0][grimReaper] = 0;
-	Level[3].waveEnemies[1][grimReaper] = 0;
-	Level[3].waveEnemies[2][grimReaper] = 0;
-	Level[3].waveEnemies[3][grimReaper] = 0;
-	Level[3].waveEnemies[4][grimReaper] = 0;
-	Level[3].waveEnemies[5][grimReaper] = 0;
-	Level[3].waveEnemies[6][grimReaper] = 0;
-	Level[3].waveEnemies[7][grimReaper] = 1;
-	Level[3].waveEnemies[8][grimReaper] = 2;
-	Level[3].waveEnemies[9][grimReaper] = 3;
+	general_level_enemies_init(3, 0, 10, 0, 0, 0);
+	general_level_enemies_init(3, 1, 10, 5, 0, 0);
+	general_level_enemies_init(3, 2, 10, 3, 2, 0);
+	general_level_enemies_init(3, 3, 10, 5, 5, 0);
+	general_level_enemies_init(3, 4, 15, 10, 5, 0);
+	general_level_enemies_init(3, 5, 15, 10, 5, 0);
+	general_level_enemies_init(3, 6, 15, 10, 10, 0);
+	general_level_enemies_init(3, 7, 10, 10, 10, 1);
+	general_level_enemies_init(3, 8, 15, 15, 10, 2);
+	general_level_enemies_init(3, 9, 20, 10, 15, 3);
 }
 
 void level5_init(void) {
@@ -686,50 +634,16 @@ void level5_init(void) {
 	Level[4].currentPowerUpLevel.reduceEnemyHealth = 0;
 	Level[4].currentPowerUpLevel.increasedMineDamage = 0;
 
-
-	Level[4].waveEnemies[0][Basic] = 10;
-	Level[4].waveEnemies[1][Basic] = 15;
-	Level[4].waveEnemies[2][Basic] = 15;
-	Level[4].waveEnemies[3][Basic] = 10;
-	Level[4].waveEnemies[4][Basic] = 15;
-	Level[4].waveEnemies[5][Basic] = 10;
-	Level[4].waveEnemies[6][Basic] = 15;
-	Level[4].waveEnemies[7][Basic] = 15;
-	Level[4].waveEnemies[8][Basic] = 15;
-	Level[4].waveEnemies[9][Basic] = 10;
-
-	Level[4].waveEnemies[0][Fast_Ghost] = 0;
-	Level[4].waveEnemies[1][Fast_Ghost] = 0;
-	Level[4].waveEnemies[2][Fast_Ghost] = 5;
-	Level[4].waveEnemies[3][Fast_Ghost] = 5;
-	Level[4].waveEnemies[4][Fast_Ghost] = 5;
-	Level[4].waveEnemies[5][Fast_Ghost] = 10;
-	Level[4].waveEnemies[6][Fast_Ghost] = 10;
-	Level[4].waveEnemies[7][Fast_Ghost] = 10;
-	Level[4].waveEnemies[8][Fast_Ghost] = 15;
-	Level[4].waveEnemies[9][Fast_Ghost] = 10;
-
-	Level[4].waveEnemies[0][Fat_Ghost] = 0;
-	Level[4].waveEnemies[1][Fat_Ghost] = 0;
-	Level[4].waveEnemies[2][Fat_Ghost] = 0;
-	Level[4].waveEnemies[3][Fat_Ghost] = 5;
-	Level[4].waveEnemies[4][Fat_Ghost] = 5;
-	Level[4].waveEnemies[5][Fat_Ghost] = 10;
-	Level[4].waveEnemies[6][Fat_Ghost] = 10;
-	Level[4].waveEnemies[7][Fat_Ghost] = 10;
-	Level[4].waveEnemies[8][Fat_Ghost] = 15;
-	Level[4].waveEnemies[9][Fat_Ghost] = 10;
-
-	Level[4].waveEnemies[0][grimReaper] = 0;
-	Level[4].waveEnemies[1][grimReaper] = 0;
-	Level[4].waveEnemies[2][grimReaper] = 0;
-	Level[4].waveEnemies[3][grimReaper] = 0;
-	Level[4].waveEnemies[4][grimReaper] = 0;
-	Level[4].waveEnemies[5][grimReaper] = 0;
-	Level[4].waveEnemies[6][grimReaper] = 0;
-	Level[4].waveEnemies[7][grimReaper] = 1;
-	Level[4].waveEnemies[8][grimReaper] = 2;
-	Level[4].waveEnemies[9][grimReaper] = 5;
+	general_level_enemies_init(4, 0, 10, 0, 0, 0);
+	general_level_enemies_init(4, 1, 15, 0, 0, 0);
+	general_level_enemies_init(4, 2, 15, 5, 0, 0);
+	general_level_enemies_init(4, 3, 10, 5, 5, 0);
+	general_level_enemies_init(4, 4, 15, 5, 5, 0);
+	general_level_enemies_init(4, 5, 10, 10, 10, 0);
+	general_level_enemies_init(4, 6, 15, 10, 10, 0);
+	general_level_enemies_init(4, 7, 15, 10, 10, 1);
+	general_level_enemies_init(4, 8, 15, 15, 15, 2);
+	general_level_enemies_init(4, 9, 10, 10, 10, 5);
 }
 
 void render_button_pressed(void) {
@@ -1309,5 +1223,14 @@ void render_path(LevelData* LevelX) {
 			}
 		}
 	}
+}
+
+void general_level_enemies_init(int level, int wave, int basic, int fast, int fat, int grim)
+{
+	Level[level].waveEnemies[wave][Basic] = basic;
+	Level[level].waveEnemies[wave][Fast_Ghost] = fast;
+	Level[level].waveEnemies[wave][Fat_Ghost] = fat;
+	Level[level].waveEnemies[wave][grimReaper] = grim;
+	
 }
 

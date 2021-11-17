@@ -11,6 +11,7 @@ void turret_slow_button_init(void);
 void turret_homing_button_init(void);
 void turret_mine_button_init(void);
 void mouse_init(void);
+void init_environment_object(int arrayIndex, int row, int col, LevelData* LevelX);
 void environment_init(LevelData* LevelX);
 void phantomQuartz_init(void);
 void goldQuartz_init(void);
@@ -35,6 +36,7 @@ void render_game_grid(void);
 void render_path(LevelData* LevelX);
 void render_button_pressed(void);
 void pathfinding_update(LevelData* LevelX);
+void general_level_enemies_init(int level, int wave, int basic, int fast, int fat, int grim);
 
 int isPlacingTurret;
 int powerUpMenu;
