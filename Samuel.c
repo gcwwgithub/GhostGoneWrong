@@ -46,8 +46,8 @@ void turret_init(void)
 		turret[i].level = 1;
 	}
 	//init the lcoations of turret placed
-	for (int i = 0; i < GAME_GRID_ROWS; ++i)
-		for (int j = 0; j < GAME_GRID_COLS; ++j)
+	for (int i = 0; i < gameGridRows; ++i)
+		for (int j = 0; j < gameGridCols; ++j)
 			turret_on_grid[i][j] = -1;
 
 	//set price of turrets and stuff

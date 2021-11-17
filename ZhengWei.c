@@ -44,7 +44,7 @@ int is_destination_updated(LevelData* LevelX) {
 void pathfinding_update_neighbor_cost(int gridRow, int gridCol, int generation, LevelData* LevelX) {
 	//Update Row Neighbor
 	for (int i = -1; i <= 1; i++) {
-		if (gridRow + i >= 0 && gridRow + i < GAME_GRID_ROWS) {
+		if (gridRow + i >= 0 && gridRow + i < gameGridRows) {
 			if (LevelX->grid[gridRow + i][gridCol].visited == 0) {
 				LevelX->grid[gridRow + i][gridCol].cost = generation + 1;
 				LevelX->grid[gridRow + i][gridCol].parentRow = gridRow;
@@ -55,7 +55,7 @@ void pathfinding_update_neighbor_cost(int gridRow, int gridCol, int generation, 
 	}
 	//Update Col Neighbor
 	for (int i = -1; i <= 1; i++) {
-		if (gridCol + i >= 0 && gridCol + i < GAME_GRID_COLS) {
+		if (gridCol + i >= 0 && gridCol + i < gameGridCols) {
 			if (LevelX->grid[gridRow][gridCol + i].visited == 0) {
 				LevelX->grid[gridRow][gridCol + i].cost = generation + 1;
 				LevelX->grid[gridRow][gridCol + i].parentRow = gridRow;
@@ -68,9 +68,9 @@ void pathfinding_update_neighbor_cost(int gridRow, int gridCol, int generation, 
 
 //Calculate all grid cost. Find the squares in the same generation and call a function to update neighbors.
 void pathfinding_calculate_cost(LevelData* LevelX) {
-	for (int currentCost = 0; !is_destination_updated(LevelX) && currentCost <= GAME_GRID_ROWS * GAME_GRID_COLS; currentCost++) {
-		for (int i = 0; i < GAME_GRID_ROWS; i++) {
-			for (int j = 0; j < GAME_GRID_COLS; j++) {
+	for (int currentCost = 0; !is_destination_updated(LevelX) && currentCost <= gameGridRows * gameGridCols; currentCost++) {
+		for (int i = 0; i < gameGridRows; i++) {
+			for (int j = 0; j < gameGridCols; j++) {
 				if (LevelX->grid[i][j].cost == currentCost) {
 					pathfinding_update_neighbor_cost(i, j, currentCost, LevelX);
 				}
@@ -222,9 +222,9 @@ void game_grid_init(void) {
 	float unusableScreenHeight, unusableScreenWidth;/*Height and Width not used for game, example menu*/
 	unusableScreenHeight = (float)CP_System_GetWindowHeight() / 2; //Half the screeen is used for the game
 	Game.height = (float)CP_System_GetWindowHeight() - unusableScreenHeight;
-	Game.gridHeight = Game.height / GAME_GRID_ROWS;
-	Game.gridWidth = Game.height / GAME_GRID_ROWS; //Grid is a Square
-	Game.width = Game.gridWidth * GAME_GRID_COLS;
+	Game.gridHeight = Game.height / gameGridRows;
+	Game.gridWidth = Game.height / gameGridRows; //Grid is a Square
+	Game.width = Game.gridWidth * gameGridCols;
 	unusableScreenWidth = (float)CP_System_GetWindowWidth() - Game.width;
 	Game.xOrigin = unusableScreenWidth / 2; //To centralise the Grid
 	Game.yOrigin = unusableScreenHeight / 2; //Centre the game
@@ -416,11 +416,17 @@ void sell_button_init(void) {
 }
 
 void level1_init(void) {
+	gameGridCols = LEVEL1_COLS;
+	gameGridRows = LEVEL1_ROWS;
 	currentGameLevel = 0;
+	Level[currentGameLevel].grid = (Grids**)calloc(gameGridRows, sizeof(Grids)*gameGridCols);
+	for (int i = 0; i < gameGridRows; i++) {
+		Level[currentGameLevel].grid[i] = (Grids*)calloc(gameGridCols, sizeof(Grids));
+	}
 	Level[0].spawnRow = 0;
-	Level[0].spawnCol = (GAME_GRID_COLS - 1) / 2;
-	Level[0].exitRow = GAME_GRID_ROWS - 1;
-	Level[0].exitCol = (GAME_GRID_COLS - 1) / 2;
+	Level[0].spawnCol = (gameGridCols - 1) / 2;
+	Level[0].exitRow = gameGridRows - 1;
+	Level[0].exitCol = (gameGridCols - 1) / 2;
 	Level[0].health = 100;
 	Level[0].phantomQuartz = 50000;
 	Level[0].goldQuartz = 0;
@@ -451,11 +457,17 @@ void level1_init(void) {
 }
 
 void level2_init(void) {
+	gameGridCols = LEVEL2_COLS;
+	gameGridRows = LEVEL2_ROWS;
 	currentGameLevel = 1;
+	Level[currentGameLevel].grid = (Grids**)calloc(gameGridRows, sizeof(Grids) * gameGridCols);
+	for (int i = 0; i < gameGridRows; i++) {
+		Level[currentGameLevel].grid[i] = (Grids*)calloc(gameGridCols, sizeof(Grids));
+	}
 	Level[1].spawnRow = 0;
-	Level[1].spawnCol = (GAME_GRID_COLS - 1) / 2;
-	Level[1].exitRow = GAME_GRID_ROWS - 1;
-	Level[1].exitCol = (GAME_GRID_COLS - 1) / 2;
+	Level[1].spawnCol = (gameGridCols - 1) / 2;
+	Level[1].exitRow = gameGridRows - 1;
+	Level[1].exitCol = (gameGridCols - 1) / 2;
 	Level[1].health = 100;
 	Level[1].phantomQuartz = 50;
 	Level[1].goldQuartz = 0;
@@ -498,12 +510,17 @@ void level2_init(void) {
 }
 
 void level3_init(void) {
-
+	gameGridCols = LEVEL3_COLS;
+	gameGridRows = LEVEL3_ROWS;
 	currentGameLevel = 2;
+	Level[currentGameLevel].grid = (Grids**)calloc(gameGridRows, sizeof(Grids) * gameGridCols);
+	for (int i = 0; i < gameGridRows; i++) {
+		Level[currentGameLevel].grid[i] = (Grids*)calloc(gameGridCols, sizeof(Grids));
+	}
 	Level[2].spawnRow = 0;
-	Level[2].spawnCol = (GAME_GRID_COLS - 1) / 2;
-	Level[2].exitRow = GAME_GRID_ROWS - 1;
-	Level[2].exitCol = (GAME_GRID_COLS - 1) / 2;
+	Level[2].spawnCol = (gameGridCols - 1) / 2;
+	Level[2].exitRow = gameGridRows - 1;
+	Level[2].exitCol = (gameGridCols - 1) / 2;
 	Level[2].health = 100;
 	Level[2].phantomQuartz = 50;
 	Level[2].goldQuartz = 0;
@@ -555,11 +572,17 @@ void level3_init(void) {
 }
 
 void level4_init(void) {
+	gameGridCols = LEVEL4_COLS;
+	gameGridRows = LEVEL4_ROWS;
 	currentGameLevel = 3;
+	Level[currentGameLevel].grid = (Grids**)calloc(gameGridRows, sizeof(Grids) * gameGridCols);
+	for (int i = 0; i < gameGridRows; i++) {
+		Level[currentGameLevel].grid[i] = (Grids*)calloc(gameGridCols, sizeof(Grids));
+	}
 	Level[3].spawnRow = 0;
-	Level[3].spawnCol = (GAME_GRID_COLS - 1) / 2;
-	Level[3].exitRow = GAME_GRID_ROWS - 1;
-	Level[3].exitCol = (GAME_GRID_COLS - 1) / 2;
+	Level[3].spawnCol = (gameGridCols - 1) / 2;
+	Level[3].exitRow = gameGridRows - 1;
+	Level[3].exitCol = (gameGridCols - 1) / 2;
 	Level[3].health = 100;
 	Level[3].phantomQuartz = 50;
 	Level[3].goldQuartz = 0;
@@ -617,11 +640,17 @@ void level4_init(void) {
 }
 
 void level5_init(void) {
+	gameGridCols = LEVEL5_COLS;
+	gameGridRows = LEVEL5_ROWS;
 	currentGameLevel = 4;
+	Level[currentGameLevel].grid = (Grids**)calloc(gameGridRows, sizeof(Grids) * gameGridCols);
+	for (int i = 0; i < gameGridRows; i++) {
+		Level[currentGameLevel].grid[i] = (Grids*)calloc(gameGridCols, sizeof(Grids));
+	}
 	Level[4].spawnRow = 0;
-	Level[4].spawnCol = (GAME_GRID_COLS - 1) / 2;
-	Level[4].exitRow = GAME_GRID_ROWS - 1;
-	Level[4].exitCol = (GAME_GRID_COLS - 1) / 2;
+	Level[4].spawnCol = (gameGridCols - 1) / 2;
+	Level[4].exitRow = gameGridRows - 1;
+	Level[4].exitCol = (gameGridCols - 1) / 2;
 	Level[4].health = 100;
 	Level[4].phantomQuartz = 50;
 	Level[4].goldQuartz = 0;
@@ -840,11 +869,11 @@ void render_game_grid(void)
 	int currentGridRow = 0, currentGridCol = 0;
 	CP_Graphics_ClearBackground(COLOR_WHITE);
 	CP_Settings_Fill(COLOR_BLACK);
-	while (currentGridRow <= GAME_GRID_ROWS) {
+	while (currentGridRow <= gameGridRows) {
 		CP_Graphics_DrawLine((Game.xOrigin), (Game.yOrigin + Game.gridHeight * currentGridRow), (Game.xOrigin + Game.width), (Game.yOrigin + Game.gridHeight * currentGridRow));
 		currentGridRow++;
 	}
-	while (currentGridCol <= GAME_GRID_COLS) {
+	while (currentGridCol <= gameGridCols) {
 		CP_Graphics_DrawLine((Game.xOrigin + Game.gridWidth * currentGridCol), (Game.yOrigin), (Game.xOrigin + Game.gridWidth * currentGridCol), (Game.yOrigin + Game.height));
 		currentGridCol++;
 	}
@@ -1194,8 +1223,8 @@ void pathfinding_init(LevelData* LevelX) {
 }
 //reset data in pathfinding
 void pathfinding_reset(LevelData* LevelX) {
-	for (int i = 0; i < GAME_GRID_ROWS; i++) {
-		for (int j = 0; j < GAME_GRID_COLS; j++) {
+	for (int i = 0; i < gameGridRows; i++) {
+		for (int j = 0; j < gameGridCols; j++) {
 			LevelX->grid[i][j].visited = 0;
 			LevelX->grid[i][j].cost = -1;
 			LevelX->grid[i][j].parentRow = -1;
@@ -1230,8 +1259,8 @@ void pathfinding_update(LevelData* LevelX) {
 	}
 }
 void render_path(LevelData* LevelX) {
-	for (int i = 0; i < GAME_GRID_ROWS; i++) {
-		for (int j = 0; j < GAME_GRID_COLS; j++) {
+	for (int i = 0; i < gameGridRows; i++) {
+		for (int j = 0; j < gameGridCols; j++) {
 			if (LevelX->grid[i][j].type == Path) {
 				color_game_square(i, j, COLOR_GREY);
 			}

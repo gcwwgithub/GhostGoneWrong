@@ -3,8 +3,18 @@
 #include <stdio.h>
 
 //Game Grid
-#define GAME_GRID_COLS 3
-#define GAME_GRID_ROWS 7
+#define LEVEL1_COLS 3
+#define LEVEL1_ROWS 7
+#define LEVEL2_COLS 3
+#define LEVEL2_ROWS 7
+#define LEVEL3_COLS 3
+#define LEVEL3_ROWS 7
+#define LEVEL4_COLS 3
+#define LEVEL4_ROWS 7
+#define LEVEL5_COLS 3
+#define LEVEL5_ROWS 7
+int gameGridCols;
+int gameGridRows;
 typedef struct GameCoordinates {
 	float width;
 	float height;
@@ -91,7 +101,7 @@ typedef struct LevelData {
 	int spawnCol;
 	int exitRow;
 	int exitCol;
-	Grids grid[GAME_GRID_ROWS][GAME_GRID_COLS];
+	Grids** grid;
 	int phantomQuartz;
 	int goldQuartz;
 	int health;
