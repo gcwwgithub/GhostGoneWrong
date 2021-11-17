@@ -419,9 +419,14 @@ void level1_init(void) {
 	gameGridCols = LEVEL1_COLS;
 	gameGridRows = LEVEL1_ROWS;
 	currentGameLevel = 0;
-	Level[currentGameLevel].grid = (Grids**)calloc(gameGridRows, sizeof(Grids)*gameGridCols);
+	Level[currentGameLevel].grid = (Grids**)calloc(gameGridRows, sizeof(Grids) * gameGridCols);
 	for (int i = 0; i < gameGridRows; i++) {
-		Level[currentGameLevel].grid[i] = (Grids*)calloc(gameGridCols, sizeof(Grids));
+		if (Level[currentGameLevel].grid != NULL) {
+			Level[currentGameLevel].grid[i] = (Grids*)calloc(gameGridCols, sizeof(Grids));
+		}
+		else {
+			exit_to_desktop();
+		}
 	}
 	Level[0].spawnRow = 0;
 	Level[0].spawnCol = (gameGridCols - 1) / 2;
@@ -462,7 +467,12 @@ void level2_init(void) {
 	currentGameLevel = 1;
 	Level[currentGameLevel].grid = (Grids**)calloc(gameGridRows, sizeof(Grids) * gameGridCols);
 	for (int i = 0; i < gameGridRows; i++) {
-		Level[currentGameLevel].grid[i] = (Grids*)calloc(gameGridCols, sizeof(Grids));
+		if (Level[currentGameLevel].grid != NULL) {
+			Level[currentGameLevel].grid[i] = (Grids*)calloc(gameGridCols, sizeof(Grids));
+		}
+		else {
+			exit_to_desktop();
+		};
 	}
 	Level[1].spawnRow = 0;
 	Level[1].spawnCol = (gameGridCols - 1) / 2;
@@ -515,7 +525,12 @@ void level3_init(void) {
 	currentGameLevel = 2;
 	Level[currentGameLevel].grid = (Grids**)calloc(gameGridRows, sizeof(Grids) * gameGridCols);
 	for (int i = 0; i < gameGridRows; i++) {
-		Level[currentGameLevel].grid[i] = (Grids*)calloc(gameGridCols, sizeof(Grids));
+		if (Level[currentGameLevel].grid != NULL) {
+			Level[currentGameLevel].grid[i] = (Grids*)calloc(gameGridCols, sizeof(Grids));
+		}
+		else {
+			exit_to_desktop();
+		}
 	}
 	Level[2].spawnRow = 0;
 	Level[2].spawnCol = (gameGridCols - 1) / 2;
@@ -577,7 +592,12 @@ void level4_init(void) {
 	currentGameLevel = 3;
 	Level[currentGameLevel].grid = (Grids**)calloc(gameGridRows, sizeof(Grids) * gameGridCols);
 	for (int i = 0; i < gameGridRows; i++) {
-		Level[currentGameLevel].grid[i] = (Grids*)calloc(gameGridCols, sizeof(Grids));
+		if (Level[currentGameLevel].grid != NULL) {
+			Level[currentGameLevel].grid[i] = (Grids*)calloc(gameGridCols, sizeof(Grids));
+		}
+		else {
+			exit_to_desktop();
+		}
 	}
 	Level[3].spawnRow = 0;
 	Level[3].spawnCol = (gameGridCols - 1) / 2;
@@ -645,7 +665,12 @@ void level5_init(void) {
 	currentGameLevel = 4;
 	Level[currentGameLevel].grid = (Grids**)calloc(gameGridRows, sizeof(Grids) * gameGridCols);
 	for (int i = 0; i < gameGridRows; i++) {
-		Level[currentGameLevel].grid[i] = (Grids*)calloc(gameGridCols, sizeof(Grids));
+		if (Level[currentGameLevel].grid != NULL) {
+			Level[currentGameLevel].grid[i] = (Grids*)calloc(gameGridCols, sizeof(Grids));
+		}
+		else {
+			exit_to_desktop();
+		}
 	}
 	Level[4].spawnRow = 0;
 	Level[4].spawnCol = (gameGridCols - 1) / 2;
@@ -823,7 +848,7 @@ void render_button_pressed(void) {
 						Level[currentGameLevel].phantomQuartz -= turret[turretSelectedToUpgrade].upgrade_price;
 						upgrade_turret(turretSelectedToUpgrade);
 					}
-					
+
 					isPlacingTurret = T_MAX;
 					//call upgrade function
 				}
@@ -938,8 +963,8 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 		{
 			RenderNormal(powerUpIconSpriteSheet, powerUpIconArray[1], menuObjectX.width / 2,
 				(menuObjectX.yOrigin + menuObjectX.height / 2), 100 * scalingFactor, 100 * scalingFactor);
-			
-			
+
+
 			sprintf_s(temp, sizeof(temp), "Lv:%-2d", Level[currentGameLevel].currentPowerUpLevel.reduceEnemySpeed);
 			CP_Font_DrawText(temp, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 7));
 
@@ -967,7 +992,7 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 				(menuObjectX.yOrigin + menuObjectX.height / 2), 100 * scalingFactor, 100 * scalingFactor);
 			sprintf_s(temp, sizeof(temp), "Lv:%-2d", Level[currentGameLevel].currentPowerUpLevel.reduceEnemyHealth);
 			CP_Font_DrawText(temp, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 7));
-			
+
 			sprintf_s(temp, sizeof(temp), "10");
 			CP_Font_DrawText(temp, menuObjectX.width / 2.5, (menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3));
 			RenderNormal(currencySpriteSheet, currencyArray[0], menuObjectX.width / 1.65,
@@ -991,7 +1016,7 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 		{
 			RenderNormal(powerUpIconSpriteSheet, powerUpIconArray[3], menuObjectX.width / 2,
 				(menuObjectX.yOrigin + menuObjectX.height / 2), 100 * scalingFactor, 100 * scalingFactor);
-		
+
 			sprintf_s(temp, sizeof(temp), "Lv:%-2d", Level[currentGameLevel].currentPowerUpLevel.increasedMineDamage);
 			CP_Font_DrawText(temp, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 7));
 
@@ -1108,7 +1133,7 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 			{
 				sprintf_s(temp, sizeof(temp), "%-3d", turret[turretSelectedToUpgrade].level);
 			}
-			
+
 			CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 1.2,
 				menuObjectX.yOrigin + menuObjectX.height / 6.5);
 
