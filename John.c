@@ -379,8 +379,8 @@ void update_enemy_health_bar(enemy* r)
 void Update_Path_Array(int CurrentGameLevel) {
 	int nextPathRow = 1, nextPathCol = 1;
 	for (int currentCost = 1; currentCost <= Level[CurrentGameLevel].grid[Level[CurrentGameLevel].exitRow][Level[CurrentGameLevel].exitCol].cost; currentCost++) {
-		for (int currentRow = 0; currentRow < GAME_GRID_ROWS; currentRow++) {
-			for (int currentCol = 0; currentCol < GAME_GRID_COLS; currentCol++) {
+		for (int currentRow = 0; currentRow < gameGridRows; currentRow++) {
+			for (int currentCol = 0; currentCol < gameGridCols; currentCol++) {
 				if (Level[CurrentGameLevel].grid[currentRow][currentCol].cost == currentCost && (Level[CurrentGameLevel].grid[currentRow][currentCol].type == Path || Level[CurrentGameLevel].grid[currentRow][currentCol].type == Exit)) {
 					nextPathRow = currentRow;
 					nextPathCol = currentCol;

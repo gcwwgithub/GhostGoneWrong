@@ -239,6 +239,8 @@ void game_update(void)
 			if (btn_is_pressed(levelButtons[0].buttonData))
 			{
 				level1_init();
+				//game grid 
+				game_grid_init();
 				isPlacingTurret = T_MAX;
 				turretSelectedToUpgrade = NO_TURRET_SELECTED;
 				powerUpMenu = FALSE;
