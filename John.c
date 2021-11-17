@@ -45,7 +45,7 @@ int Check_state(enemy* r) {
 	return 0;
 }
 
-void enemy_move(enemy* r, float Enemy_PathpointsX[], float Enemy_PathpointsY[], int number_of_points, LevelData* Level) { //Enemy movement
+void enemy_move(enemy* r, float Enemy_PathpointsX[], float Enemy_PathpointsY[], int number_of_points, int CurrentGameLevel) { //Enemy movement
 	float Speed = (r->speed) * r->slow_amt * CP_System_GetDt();
 	update_point_num(Enemy_PathpointsX, Enemy_PathpointsY, r);
 	if (r->CurrentWaypoint>=2 && r->state == Adjusting) {
@@ -125,7 +125,7 @@ int update_point_num(float Enemy_PathpointsX[], float Enemy_PathpointsY[], enemy
 
 
 
-void EnemyDeath(enemy* r, LevelData* Level) {  //function updates and checks for collision or death also what happens upon death
+void EnemyDeath(enemy* r, int CurrentGameLevel) {  //function updates and checks for collision or death also what happens upon death
 	for (int i = 0; i < MAX_PROJECTILE; ++i) {
 		if (proj[i].isActive) {
 			Coordinates a = r->data;
@@ -202,7 +202,7 @@ void Enemies_init(void) {
 void Basic_Ghost(enemy* r) { // setup variable for basic ghost enemy
 	r->health = 4;
 	r->max_health = 4;
-	r->speed = 10;
+	r->speed = 15;
 	r->CurrentWaypoint = 0;
 	r->data.xOrigin = Xarray[0];
 	r->data.yOrigin = Yarray[0];
@@ -252,7 +252,7 @@ void Fast_Ghost_init(enemy* r) { // setup variable for fast ghost enemy
 void Fat_Ghost_init(enemy* r) {
 	r->health = 10;
 	r->max_health = 10;
-	r->speed = 10;
+	r->speed = 15;
 	r->CurrentWaypoint = 0;
 	r->data.xOrigin = Xarray[0];
 	r->data.yOrigin = Yarray[0];
@@ -313,10 +313,10 @@ void update_enemy(void) {
 				Enemy[i].slow_amt = 1.f;
 		}
 
-		Update_Path_Array(Level[0]);
+		Update_Path_Array(currentGameLevel);
 		Check_pathAdjustment(&Enemy[i]);
-		enemy_move(&Enemy[i], Enemy[i].EnemyPathX, Enemy[i].EnemyPathY, Number_of_points, &Level[0]);
-		EnemyDeath(&Enemy[i], &Level[0]);
+		enemy_move(&Enemy[i], Enemy[i].EnemyPathX, Enemy[i].EnemyPathY, Number_of_points, currentGameLevel);
+		EnemyDeath(&Enemy[i], currentGameLevel);
 		Reaper_ability(&Enemy[i]);
 		Environment_check(currentGameLevel);
 	}
@@ -376,12 +376,12 @@ void update_enemy_health_bar(enemy* r)
 
 }
 
-void Update_Path_Array(LevelData Level) {
+void Update_Path_Array(int CurrentGameLevel) {
 	int nextPathRow = 1, nextPathCol = 1;
-	for (int currentCost = 1; currentCost <= Level.grid[Level.exitRow][Level.exitCol].cost; currentCost++) {
-		for (int currentRow = 0; currentRow < gameGridRows; currentRow++) {
-			for (int currentCol = 0; currentCol < gameGridCols; currentCol++) {
-				if (Level.grid[currentRow][currentCol].cost == currentCost && (Level.grid[currentRow][currentCol].type == Path || Level.grid[currentRow][currentCol].type == Exit)) {
+	for (int currentCost = 1; currentCost <= Level[CurrentGameLevel].grid[Level[CurrentGameLevel].exitRow][Level[CurrentGameLevel].exitCol].cost; currentCost++) {
+		for (int currentRow = 0; currentRow < GAME_GRID_ROWS; currentRow++) {
+			for (int currentCol = 0; currentCol < GAME_GRID_COLS; currentCol++) {
+				if (Level[CurrentGameLevel].grid[currentRow][currentCol].cost == currentCost && (Level[CurrentGameLevel].grid[currentRow][currentCol].type == Path || Level[CurrentGameLevel].grid[currentRow][currentCol].type == Exit)) {
 					nextPathRow = currentRow;
 					nextPathCol = currentCol;
 					break;
@@ -399,7 +399,7 @@ void Update_Path_Array(LevelData Level) {
 void grimReaper_init(enemy* r) {
 	r->health = 20;
 	r->max_health = 20;
-	r->speed = 10;
+	r->speed = 15;
 	r->CurrentWaypoint = 0;
 	r->data.xOrigin = Xarray[0];
 	r->data.yOrigin = Yarray[0];
@@ -537,7 +537,7 @@ void wave_enemy_init(int Basic_Ghost_count, int Fast_Ghost_count, int Fat_Ghost_
 
 void Reset_enemies(int current_level) {
 	if (currentGameState == Building) {
-		Update_Path_Array(Level[0]);
+		Update_Path_Array(currentGameLevel);
 		if (buildingTime > 0.05f && Level[current_level].currentWave + 1 < MAX_NUMBER_OF_WAVES) {
 			int BasicCount = Level[current_level].waveEnemies[Level[current_level].currentWave + 1][Basic];
 			int FastCount = Level[current_level].waveEnemies[Level[current_level].currentWave + 1][Fast_Ghost];
@@ -625,18 +625,12 @@ DecreasedTurretAttackSpeed,
 NoPhantomQuartz
 */
 void Env_eff_IncreasedTurretDamage(void){
-	static int damage_increase[MAX_TURRET];
+	static float damage_increase[MAX_TURRET];
 	static int level_check[MAX_TURRET];
 	for (int i = 0; i < MAX_TURRET; i++) {
 		if (turret[i].isActive) {
 			if (Level[currentGameLevel].currentEffect == IncreasedTurretDamage && turret[i].Env_effect == No_Effect) {
-				damage_increase[i] = (int)turret[i].mod.damage * 0.2;
-				if (damage_increase[i] < 1) {
-					turret[i].mod.damage += 1.0f;
-					turret[i].Env_effect = Increased_damage;
-					level_check[i] = turret[i].level;
-					continue;
-				}
+				damage_increase[i] = turret[i].mod.damage * 0.2;
 				turret[i].mod.damage += damage_increase[i];
 				level_check[i] = turret[i].level;
 				turret[i].Env_effect = Increased_damage;
@@ -658,7 +652,7 @@ void Env_eff_IncreasedTurretDamage(void){
 }
 
 void Env_eff_DecreasedTurretDamage(void) {
-	static int damage_decrease[MAX_TURRET];
+	static float damage_decrease[MAX_TURRET];
 	static int level_check[MAX_TURRET];
 	for (int i = 0; i < MAX_TURRET; i++) {
 		if (turret[i].isActive) {
@@ -669,10 +663,7 @@ void Env_eff_DecreasedTurretDamage(void) {
 					damage_decrease[i] = 0;
 					continue;
 				}
-				damage_decrease[i] = (int)turret[i].mod.damage * 0.2;
-				if (damage_decrease[i] < 1) {
-					damage_decrease[i] = 1;
-				}
+				damage_decrease[i] = turret[i].mod.damage * 0.2;
 				turret[i].mod.damage -= damage_decrease[i];
 				turret[i].Env_effect = Decreased_damage;
 				level_check[i] = turret[i].level;
@@ -840,6 +831,11 @@ void Environment_check(int CurrentGameLevel) {
 		Env_eff_No_Phantom_quartz();
 		break;
 	}
+}
+
+void Change_current_effect(int CurrentGameLevel) {
+	EnvironmentalEffects a = CP_Random_RangeInt(0, 11);
+	Level[CurrentGameLevel].currentEffect = a;
 }
 
 /*void movement_redone(enemy* r) {

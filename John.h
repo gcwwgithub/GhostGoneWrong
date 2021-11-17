@@ -71,7 +71,7 @@ typedef struct Enemy {
 
 
 void Draw_enemy(enemy* r);
-void enemy_move(enemy* r, float Enemy_PathpointsX[], float Enemy_PathpointsY[], int number_of_points, LevelData* Level);
+void enemy_move(enemy* r, float Enemy_PathpointsX[], float Enemy_PathpointsY[], int number_of_points, int CurrentGameLevel);
 int direction_to_next_point(float enemy_pathpointsX[], float enemy_pathpointsY[], enemy* r);
 int update_point_num(float enemy_pathpointsX[], float enemy_pathpointsY[], enemy* r);
 void EnemyAnimationState(enemy* r);
@@ -79,7 +79,7 @@ int Check_state(enemy* r);
 void Reaper_ability(enemy* r);
 
 
-void EnemyDeath(enemy* r, LevelData* Level);
+void EnemyDeath(enemy* r, int CurrentGameLevel);
 void Basic_Ghost(enemy* r);
 void Enemies_init(void);
 void update_enemy(void);
@@ -94,7 +94,7 @@ void Reset_enemies(int current_level);
 
 void wave_enemy_init(int Basic_Ghost_count, int Fast_Ghost_count, int Fat_Ghost_count, int Grim_Reaper_count, LevelData Level);
 
-void Update_Path_Array(LevelData Level);
+void Update_Path_Array(int CurrentGameLevel);
 void Check_pathAdjustment(enemy* r);
 void reset_enemy_path(enemy* r);
 
