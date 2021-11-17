@@ -290,7 +290,11 @@ void environment_init(LevelData* LevelX) {
 		init_environment_object(2, 5, 1, LevelX);
 		break;
 	case 1:
-		init_environment_object(0, 2, 2, LevelX);
+		init_environment_object(0, 0, 1, LevelX);
+		init_environment_object(1, 1, 4, LevelX);
+		init_environment_object(2, 5, 1, LevelX);
+		init_environment_object(3, 5, 5, LevelX);
+		init_environment_object(4, 2, 2, LevelX);
 		break;
 	case 2:
 		init_environment_object(0, 2, 2, LevelX);
@@ -500,9 +504,9 @@ void level2_init(void) {
 		};
 	}
 	Level[1].spawnRow = 0;
-	Level[1].spawnCol = (gameGridCols - 1) / 2;
+	Level[1].spawnCol = 0;
 	Level[1].exitRow = gameGridRows - 1;
-	Level[1].exitCol = (gameGridCols - 1) / 2;
+	Level[1].exitCol = (gameGridCols - 1);
 	Level[1].health = 100;
 	Level[1].phantomQuartz = 50;
 	Level[1].goldQuartz = 0;

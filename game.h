@@ -5,7 +5,7 @@
 //Game Grid
 #define LEVEL1_COLS 6
 #define LEVEL1_ROWS 7
-#define LEVEL2_COLS 3
+#define LEVEL2_COLS 6
 #define LEVEL2_ROWS 7
 #define LEVEL3_COLS 3
 #define LEVEL3_ROWS 7
