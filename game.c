@@ -70,8 +70,6 @@ void game_update(void)
 		render_game_grid();
 		render_path(&Level[currentGameLevel]);
 
-
-		//display_enemies_left(); //Already done by my code render turret menu object
 		update_portal();
 
 		draw_multiple_enemies();

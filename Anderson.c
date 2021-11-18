@@ -39,18 +39,6 @@ Button init_text_button(Button button, float buttonPosX, float buttonPosY, float
 	return button;
 }
 
-void init_back_button(void)
-{
-	BackButton.buttonData.xOrigin = CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f;
-	BackButton.buttonData.yOrigin = CP_System_GetWindowHeight() * 0.75f;
-	BackButton.buttonData.width = BUTTON_WIDTH;
-	BackButton.buttonData.height = BUTTON_HEIGHT;
-	BackButton.buttonData.objectType = objectRectangle;
-	BackButton.textPositionX = BackButton.buttonData.xOrigin + BUTTON_WIDTH * 0.5f;
-	BackButton.textPositionY = BackButton.buttonData.yOrigin + BUTTON_HEIGHT * 0.5f;
-	strcpy_s(BackButton.textString, sizeof(BackButton.textString), "Back");
-}
-
 void init_how_to_play_button(void)
 {
 	// middle of title screen(?)
@@ -72,30 +60,6 @@ void init_how_to_play_screen(void)
 
 	// display win / lose conditions && rules
 
-}
-
-void init_pause_quit_button(void)
-{
-	PauseQuitButton.buttonData.xOrigin = CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f;
-	PauseQuitButton.buttonData.yOrigin = CP_System_GetWindowHeight() * 0.4f - BUTTON_HEIGHT * 0.5f;
-	PauseQuitButton.buttonData.width = BUTTON_WIDTH;
-	PauseQuitButton.buttonData.height = BUTTON_HEIGHT;
-	PauseQuitButton.buttonData.objectType = objectRectangle;
-	PauseQuitButton.textPositionX = PauseQuitButton.buttonData.xOrigin + BUTTON_WIDTH * 0.5f;
-	PauseQuitButton.textPositionY = PauseQuitButton.buttonData.yOrigin + BUTTON_HEIGHT * 0.5f;
-	strcpy_s(PauseQuitButton.textString, sizeof(PauseQuitButton.textString), "Quit");
-}
-
-void init_pause_back_button(void)
-{
-	PauseBackButton.buttonData.xOrigin = CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f;
-	PauseBackButton.buttonData.yOrigin = CP_System_GetWindowHeight() * 0.3f - BUTTON_HEIGHT * 0.5f;
-	PauseBackButton.buttonData.width = BUTTON_WIDTH;
-	PauseBackButton.buttonData.height = BUTTON_HEIGHT;
-	PauseBackButton.buttonData.objectType = objectRectangle;
-	PauseBackButton.textPositionX = PauseBackButton.buttonData.xOrigin + BUTTON_WIDTH * 0.5f;
-	PauseBackButton.textPositionY = PauseBackButton.buttonData.yOrigin + BUTTON_HEIGHT * 0.5f;
-	strcpy_s(PauseBackButton.textString, sizeof(PauseBackButton.textString), "Back");
 }
 
 void init_main_menu(void)
@@ -124,8 +88,10 @@ void init_level_select_buttons(void)
 
 void init_pause_screen(void)
 {
-	init_pause_back_button();
-	init_pause_quit_button();
+	PauseBackButton = init_text_button(PauseBackButton, CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 0.3f - BUTTON_HEIGHT * 0.5f,
+		BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Back");
+	PauseQuitButton = init_text_button(PauseQuitButton, CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 0.4f - BUTTON_HEIGHT * 0.5f,
+		BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Quit");
 }
 
 void init_end_screen(void)
@@ -165,6 +131,12 @@ void init_end_screen(void)
 
 #pragma region Rendering
 
+int cursor_over_button(Coordinates buttonCoord)
+{
+	return ((CP_Input_GetMouseX() > buttonCoord.xOrigin) && (CP_Input_GetMouseX() < buttonCoord.xOrigin + buttonCoord.width)
+		&& (CP_Input_GetMouseY() > buttonCoord.yOrigin) && (CP_Input_GetMouseY() < buttonCoord.yOrigin + buttonCoord.height));
+}
+
 // Draws a background image, background is drawn with code, rest with pixel art
 void render_title_screen(void)
 {
@@ -175,8 +147,16 @@ void render_title_screen(void)
 void render_ui_button(Button button)
 {
 	CP_Settings_Fill(COLOR_BLACK);
-	CP_Graphics_DrawRect(button.buttonData.xOrigin, button.buttonData.yOrigin, button.buttonData.width, button.buttonData.height);
-	CP_Settings_Fill(COLOR_WHITE);
+
+	double mouseOverSizeModifier = cursor_over_button(button.buttonData) ? 1.1 : 1;
+
+	// Adjusting position to account for enlarged button when moused over.
+	CP_Graphics_DrawRect(button.buttonData.xOrigin - (mouseOverSizeModifier - 1) * button.buttonData.width / 2, 
+		button.buttonData.yOrigin - (mouseOverSizeModifier - 1) * button.buttonData.height / 2, 
+		button.buttonData.width * mouseOverSizeModifier, button.buttonData.height * mouseOverSizeModifier);
+
+	(mouseOverSizeModifier - 1) ? CP_Settings_Fill(COLOR_GREY) : CP_Settings_Fill(COLOR_WHITE);
+
 	CP_Settings_TextSize(FONT_SIZE);
 	CP_Font_DrawText(button.textString, button.textPositionX, button.textPositionY);
 }
@@ -402,7 +382,6 @@ int level_select_moving(void)
 	return levelButtons->isMoving;
 }
 
-
 int button_has_finished_moving(Button button, float destPosX, float destPosY)
 {
 	return (button.buttonData.xOrigin == destPosX && button.buttonData.yOrigin == destPosY);
@@ -437,23 +416,30 @@ void init_next_level(int nextGameLevel)
 		level5_init();
 		break;
 	}
-	}
+
+	game_grid_init();
 	isPlacingTurret = T_MAX;
 	turretSelectedToUpgrade = NO_TURRET_SELECTED;
 	powerUpMenu = FALSE;
 	pathfinding_init(&Level[nextGameLevel]);
 	environment_init(&Level[nextGameLevel]);
-	Enemies_init();
 
-	for (int i = 0; i < MAX_TURRET; i++)
-	{
-		remove_turret((int)((turret[i].data.xOrigin - Game.xOrigin) / Game.gridWidth),
-			(int)((turret[i].data.yOrigin - Game.yOrigin) / Game.gridHeight));
-	}
+	//turret menu items
+	pause_button_init();
+	turret_basic_button_init();
+	turret_slow_button_init();
+	turret_homing_button_init();
+	turret_mine_button_init();
+	phantomQuartz_init();
+	goldQuartz_init();
+
+	turret_init();
+	Enemies_init();
 
 	pathfinding_reset(&Level[nextGameLevel]);
 	pathfinding_calculate_cost(&Level[nextGameLevel]);
 	pathfinding_update(&Level[nextGameLevel]);
 	set_building_time(BUILDING_PHASE_TIME);
 	currentGameState = Building;
+	}
 }
