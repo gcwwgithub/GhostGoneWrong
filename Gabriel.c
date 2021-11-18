@@ -446,6 +446,7 @@ void render_game_background(int currentLevel)
 #pragma endregion
 		break;
 	case 1:
+		#pragma region Level 2 Objects
 		CP_Settings_Tint(CP_Color_Create(0, 0, 0, 75));
 		RenderWithAlphaChanged(backgroundSpriteSheet, backgroundArray[2], CP_System_GetWindowWidth() * 0.5,
 			CP_System_GetWindowHeight() * 0.5, CP_System_GetWindowWidth(), CP_System_GetWindowHeight(), 255);
@@ -522,12 +523,70 @@ void render_game_background(int currentLevel)
 		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[9],
 			CP_System_GetWindowWidth() * 0.8, CP_System_GetWindowHeight() * 0.8,
 			64 * scalingFactor, 64 * scalingFactor);
-
+#pragma endregion
 		break;
 	case 2:
 		CP_Settings_Tint(CP_Color_Create(0, 0, 0, 75));
 		RenderWithAlphaChanged(backgroundSpriteSheet, backgroundArray[3], CP_System_GetWindowWidth() * 0.5,
 			CP_System_GetWindowHeight() * 0.5, CP_System_GetWindowWidth(), CP_System_GetWindowHeight(), 200);
+		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[3],
+			CP_System_GetWindowWidth() * 0.15, CP_System_GetWindowHeight() * 0.19,
+			300* scalingFactor, 300 * scalingFactor, 255);
+		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[7],
+			CP_System_GetWindowWidth() * 0.9, CP_System_GetWindowHeight() * 0.65,
+			200 * scalingFactor, 200 * scalingFactor);
+
+		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[5],
+			CP_System_GetWindowWidth() * 0.15, CP_System_GetWindowHeight() * 0.5,
+			64 * scalingFactor, 64 * scalingFactor);
+		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[5],
+			CP_System_GetWindowWidth() * 0.25, CP_System_GetWindowHeight() * 0.65,
+			64 * scalingFactor, 64 * scalingFactor);
+		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[5],
+			CP_System_GetWindowWidth() * 0.2, CP_System_GetWindowHeight() * 0.85,
+			64 * scalingFactor, 64 * scalingFactor);
+		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[5],
+			CP_System_GetWindowWidth() * 0.7, CP_System_GetWindowHeight() * 0.2,
+			64 * scalingFactor, 64 * scalingFactor);
+		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[5],
+			CP_System_GetWindowWidth() * 0.75, CP_System_GetWindowHeight() * 0.4,
+			64 * scalingFactor, 64 * scalingFactor);
+		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[5],
+			CP_System_GetWindowWidth() * 0.8, CP_System_GetWindowHeight() * 0.85,
+			64 * scalingFactor, 64 * scalingFactor);
+		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[5],
+			CP_System_GetWindowWidth() * 0.7, CP_System_GetWindowHeight() * 0.65,
+			64 * scalingFactor, 64 * scalingFactor);
+
+		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[9],
+			CP_System_GetWindowWidth() * 0.5, CP_System_GetWindowHeight() * 0.8,
+			64 * scalingFactor, 64 * scalingFactor);
+		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[9],
+			CP_System_GetWindowWidth() * 0.65, CP_System_GetWindowHeight() * 0.5,
+			64 * scalingFactor, 64 * scalingFactor);
+		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[9],
+			CP_System_GetWindowWidth() * 0.35, CP_System_GetWindowHeight() * 0.9,
+			64 * scalingFactor, 64 * scalingFactor);
+		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[9],
+			CP_System_GetWindowWidth() * 0.4, CP_System_GetWindowHeight() * 0.1,
+			64 * scalingFactor, 64 * scalingFactor);
+		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[9],
+			CP_System_GetWindowWidth() * 0.9, CP_System_GetWindowHeight() * 0.9,
+			64 * scalingFactor, 64 * scalingFactor);
+
+		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[8],
+			CP_System_GetWindowWidth() * 0.6, CP_System_GetWindowHeight() * 0.1,
+			64 * scalingFactor, 64 * scalingFactor);
+		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[8],
+			CP_System_GetWindowWidth() * 0.25, CP_System_GetWindowHeight() * 0.1,
+			64 * scalingFactor, 64 * scalingFactor);
+		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[8],
+			CP_System_GetWindowWidth() * 0.2, CP_System_GetWindowHeight() * 0.4,
+			64 * scalingFactor, 64 * scalingFactor);
+		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[8],
+			CP_System_GetWindowWidth() * 0.15, CP_System_GetWindowHeight() * 0.4,
+			64 * scalingFactor, 64 * scalingFactor);
+
 		break;
 	case 3:
 		CP_Settings_Tint(CP_Color_Create(0, 0, 0, 75));

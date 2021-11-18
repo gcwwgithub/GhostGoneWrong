@@ -7,7 +7,7 @@
 #define LEVEL1_ROWS 7
 #define LEVEL2_COLS 6
 #define LEVEL2_ROWS 7
-#define LEVEL3_COLS 3
+#define LEVEL3_COLS 6
 #define LEVEL3_ROWS 7
 #define LEVEL4_COLS 3
 #define LEVEL4_ROWS 7
