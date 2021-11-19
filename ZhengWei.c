@@ -311,10 +311,10 @@ void environment_init(LevelData* LevelX) {
 		init_environment_object(0, 2, 2, LevelX);
 		break;
 	}
-	
+
 }
 
-void init_environment_object(int arrayIndex,int row, int col, LevelData* LevelX)
+void init_environment_object(int arrayIndex, int row, int col, LevelData* LevelX)
 {
 	Environment[arrayIndex].image = environmentObjectsSpriteSheet;
 	Environment[arrayIndex].xOrigin = Game.xOrigin + Game.gridWidth * (col + 0.5f);
@@ -330,7 +330,7 @@ void render_environment(void) {
 		{
 			RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[8], Environment[i].xOrigin, Environment[i].yOrigin, Environment[i].width, Environment[i].height);
 		}
-		
+
 	}
 }
 
@@ -456,10 +456,13 @@ void level1_init(void) {
 	gameGridCols = LEVEL1_COLS;
 	gameGridRows = LEVEL1_ROWS;
 	currentGameLevel = 0;
-	Level[currentGameLevel].grid = (Grids**)calloc(gameGridRows, sizeof(Grids) * gameGridCols);
+	Level[currentGameLevel].grid = (Grids**)calloc(gameGridRows, sizeof(int*));// using size of pointers so that lower bits operating system do not require so much malloc
 	for (int i = 0; i < gameGridRows; i++) {
 		if (Level[currentGameLevel].grid != NULL) {
 			Level[currentGameLevel].grid[i] = (Grids*)calloc(gameGridCols, sizeof(Grids));
+			if (Level[currentGameLevel].grid[i] == NULL) {
+				exit_to_desktop();
+			}
 		}
 		else {
 			exit_to_desktop();
@@ -499,14 +502,17 @@ void level2_init(void) {
 	gameGridCols = LEVEL2_COLS;
 	gameGridRows = LEVEL2_ROWS;
 	currentGameLevel = 1;
-	Level[currentGameLevel].grid = (Grids**)calloc(gameGridRows, sizeof(Grids) * gameGridCols);
+	Level[currentGameLevel].grid = (Grids**)calloc(gameGridRows, sizeof(int*));// using size of pointers so that lower bits operating system do not require so much malloc
 	for (int i = 0; i < gameGridRows; i++) {
 		if (Level[currentGameLevel].grid != NULL) {
 			Level[currentGameLevel].grid[i] = (Grids*)calloc(gameGridCols, sizeof(Grids));
+			if (Level[currentGameLevel].grid[i] == NULL) {
+				exit_to_desktop();
+			}
 		}
 		else {
 			exit_to_desktop();
-		};
+		}
 	}
 	Level[1].spawnRow = 0;
 	Level[1].spawnCol = 0;
@@ -540,10 +546,13 @@ void level3_init(void) {
 	gameGridCols = LEVEL3_COLS;
 	gameGridRows = LEVEL3_ROWS;
 	currentGameLevel = 2;
-	Level[currentGameLevel].grid = (Grids**)calloc(gameGridRows, sizeof(Grids) * gameGridCols);
+	Level[currentGameLevel].grid = (Grids**)calloc(gameGridRows, sizeof(int*));// using size of pointers so that lower bits operating system do not require so much malloc
 	for (int i = 0; i < gameGridRows; i++) {
 		if (Level[currentGameLevel].grid != NULL) {
 			Level[currentGameLevel].grid[i] = (Grids*)calloc(gameGridCols, sizeof(Grids));
+			if (Level[currentGameLevel].grid[i] == NULL) {
+				exit_to_desktop();
+			}
 		}
 		else {
 			exit_to_desktop();
@@ -551,8 +560,8 @@ void level3_init(void) {
 	}
 	Level[2].spawnRow = gameGridRows - 1;
 	Level[2].spawnCol = (gameGridCols - 1);
-		Level[2].exitRow = 0;
-		Level[2].exitCol = 0;
+	Level[2].exitRow = 0;
+	Level[2].exitCol = 0;
 	Level[2].health = 100;
 	Level[2].phantomQuartz = 50;
 	Level[2].goldQuartz = 0;
@@ -567,7 +576,7 @@ void level3_init(void) {
 	general_level_enemies_init(2, 1, 10, 5, 0, 0);
 	general_level_enemies_init(2, 2, 10, 5, 0, 0);
 	general_level_enemies_init(2, 3, 15, 5, 0, 0);
-	general_level_enemies_init(2, 4, 15,10, 1, 0);
+	general_level_enemies_init(2, 4, 15, 10, 1, 0);
 	general_level_enemies_init(2, 5, 15, 10, 5, 0);
 	general_level_enemies_init(2, 6, 15, 10, 5, 0);
 	general_level_enemies_init(2, 7, 20, 10, 5, 0);
@@ -580,10 +589,13 @@ void level4_init(void) {
 	gameGridCols = LEVEL4_COLS;
 	gameGridRows = LEVEL4_ROWS;
 	currentGameLevel = 3;
-	Level[currentGameLevel].grid = (Grids**)calloc(gameGridRows, sizeof(Grids) * gameGridCols);
+	Level[currentGameLevel].grid = (Grids**)calloc(gameGridRows, sizeof(int*));// using size of pointers so that lower bits operating system do not require so much malloc
 	for (int i = 0; i < gameGridRows; i++) {
 		if (Level[currentGameLevel].grid != NULL) {
 			Level[currentGameLevel].grid[i] = (Grids*)calloc(gameGridCols, sizeof(Grids));
+			if (Level[currentGameLevel].grid[i] == NULL) {
+				exit_to_desktop();
+			}
 		}
 		else {
 			exit_to_desktop();
@@ -620,10 +632,13 @@ void level5_init(void) {
 	gameGridCols = LEVEL5_COLS;
 	gameGridRows = LEVEL5_ROWS;
 	currentGameLevel = 4;
-	Level[currentGameLevel].grid = (Grids**)calloc(gameGridRows, sizeof(Grids) * gameGridCols);
+	Level[currentGameLevel].grid = (Grids**)calloc(gameGridRows, sizeof(int*));// using size of pointers so that lower bits operating system do not require so much malloc
 	for (int i = 0; i < gameGridRows; i++) {
 		if (Level[currentGameLevel].grid != NULL) {
 			Level[currentGameLevel].grid[i] = (Grids*)calloc(gameGridCols, sizeof(Grids));
+			if (Level[currentGameLevel].grid[i] == NULL) {
+				exit_to_desktop();
+			}
 		}
 		else {
 			exit_to_desktop();
@@ -1240,6 +1255,6 @@ void general_level_enemies_init(int level, int wave, int basic, int fast, int fa
 	Level[level].waveEnemies[wave][Fast_Ghost] = fast;
 	Level[level].waveEnemies[wave][Fat_Ghost] = fat;
 	Level[level].waveEnemies[wave][grimReaper] = grim;
-	
+
 }
 

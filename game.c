@@ -186,6 +186,13 @@ void game_update(void)
 			free(Level[currentGameLevel].grid[i]);
 		}
 		free(Level[currentGameLevel].grid);
+		currentGameState = MainMenu;
+		//Free memory for turret_on_grid
+		for (int i = 0; i < gameGridCols; i++) {
+			free(turret_on_grid[i]);
+		}
+		free(turret_on_grid);
+
 	}
 	else if (currentGameState == MainMenu)
 	{
@@ -493,13 +500,28 @@ void game_update(void)
 			}
 			free(Level[currentGameLevel].grid);
 			currentGameState = MainMenu;
+			//Free memory for turret_on_grid
+			for (int i = 0; i < gameGridCols; i++) {
+				free(turret_on_grid[i]);
+			}
+			free(turret_on_grid);
+
+			currentGameState = MainMenu;
 		}
 		else if (btn_is_pressed(PauseQuitButton.buttonData))
 		{
+			//free memory
 			for (int i = 0; i < gameGridRows; i++) {
 				free(Level[currentGameLevel].grid[i]);
 			}
 			free(Level[currentGameLevel].grid);
+			currentGameState = MainMenu;
+			//Free memory for turret_on_grid
+			for (int i = 0; i < gameGridCols; i++) {
+				free(turret_on_grid[i]);
+			}
+			free(turret_on_grid);
+
 			exit_to_desktop();
 		}
 		render_pause_screen();

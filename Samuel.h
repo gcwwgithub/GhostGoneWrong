@@ -156,5 +156,5 @@ void render_particle();
 
 Projectile proj[MAX_PROJECTILE];
 Turret turret[MAX_TURRET];
-int turret_on_grid[3][7];
+int** turret_on_grid;
 int turret_purchasing[TP_MAX][T_MAX];

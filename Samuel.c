@@ -5,6 +5,7 @@
 #include "John.h"
 #include "Gabriel.h"
 #include "ZhengWei.h"
+#include "Anderson.h"
 
 #if _DEBUG
 #include <stdio.h>
@@ -13,6 +14,23 @@
 void turret_init(void)
 {
 	Vector2 v;
+
+	turret_on_grid = (int**)calloc(gameGridCols, sizeof(int*));
+	//using size of pointers instead of static 8 so that it takes less memory on devices that uses smaller memory address pool like 32 bit system
+
+	for (int i = 0; i < gameGridCols; i++) {
+		if (turret_on_grid != NULL) {
+			turret_on_grid[i] = (int*)calloc(gameGridRows, sizeof(int));
+			if (turret_on_grid[i] == NULL) {
+				exit_to_desktop();// calling anderson exit in case calloc fail
+			}
+		}
+		else {
+			exit_to_desktop();// calling anderson exit in case calloc fail
+		}
+	}
+	//Array turret_on_grid[gameGridCols][gameGridRows]
+
 
 	for (int i = 0; i < MAX_PROJECTILE; ++i)
 	{
@@ -47,9 +65,15 @@ void turret_init(void)
 		turret[i].level = 1;
 	}
 	//init the lcoations of turret placed
-	for (int i = 0; i < gameGridRows; ++i)
-		for (int j = 0; j < gameGridCols; ++j)
-			turret_on_grid[i][j] = -1;
+	if (turret_on_grid != NULL) { // Redundant if statement because intellisense is flagging possible null pointers
+		for (int i = 0; i < gameGridCols; ++i) {
+			if (turret_on_grid[i] != NULL) { // Redundant if statement because intellisense is flagging possible null pointers
+				for (int j = 0; j < gameGridRows; ++j) {
+					turret_on_grid[i][j] = -1;
+				}
+			}
+		}
+	}
 
 	//set price of turrets and stuff
 	turret_purchasing[TP_PRICE][T_BASIC] = 25;
