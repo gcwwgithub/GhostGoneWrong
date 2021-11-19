@@ -160,8 +160,20 @@ void render_game_grid_press(LevelData* LevelX) {
 	int drawX, drawY;
 	drawX = (int)((MouseInput.xOrigin - Game.xOrigin) / Game.gridWidth);
 	drawY = (int)((MouseInput.yOrigin - Game.yOrigin) / Game.gridHeight);
+	Coordinates GridTemp;
+	GridTemp.width = Game.gridWidth;
+	GridTemp.height = Game.gridHeight;
+	GridTemp.xOrigin = Game.xOrigin + (drawX + 0.5f) * Game.gridWidth;
+	GridTemp.yOrigin = Game.yOrigin + (drawY + 0.5f) * Game.gridHeight;
+
+	int isPositionEmpty = TRUE;
+	for (int i = 0; i < MAX_TURRET; i++) {
+		if (turret[i].data.xOrigin == GridTemp.xOrigin && turret[i].data.yOrigin == GridTemp.yOrigin && turret[i].isActive == TRUE) {
+			isPositionEmpty = FALSE;
+		}
+	}
 	if (isPlacingTurret != T_MAX) {
-		if (LevelX->grid[drawY][drawX].type == Clear || LevelX->grid[drawY][drawX].type == Path) {
+		if (isPositionEmpty == TRUE) {
 			if (isPlacingTurret != T_MINE) {
 				LevelX->grid[drawY][drawX].type = Blocked;
 				pathfinding_reset(LevelX);
@@ -182,11 +194,6 @@ void render_game_grid_press(LevelData* LevelX) {
 		mouse_reset();
 	}
 	else {
-		Coordinates GridTemp;
-		GridTemp.width = Game.gridWidth;
-		GridTemp.height = Game.gridHeight;
-		GridTemp.xOrigin = Game.xOrigin + (drawX + 0.5f) * Game.gridWidth;
-		GridTemp.yOrigin = Game.yOrigin + (drawY + 0.5f) * Game.gridHeight;
 		for (int i = 0; i < MAX_TURRET; i++) {
 			if (turret[i].data.xOrigin == GridTemp.xOrigin && turret[i].data.yOrigin == GridTemp.yOrigin && turretSelectedToUpgrade != NO_TURRET_SELECTED && CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
 				turretSelectedToUpgrade = NO_TURRET_SELECTED;
