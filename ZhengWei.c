@@ -313,9 +313,23 @@ void environment_init(LevelData* LevelX) {
 		break;
 	case 3:
 		init_environment_object(0, 2, 2, LevelX);
+		init_environment_object(1, 3, 3, LevelX);
+		init_environment_object(2, 1, 0, LevelX);
+		init_environment_object(3, 5, 2, LevelX);
+		init_environment_object(4, 1, 1, LevelX);
+		init_environment_object(5, 3, 1, LevelX);
+		init_environment_object(6, 4, 4, LevelX);
 		break;
 	case 4:
-		init_environment_object(0, 2, 2, LevelX);
+		init_environment_object(0, 0, 2, LevelX);
+		init_environment_object(1, 3, 4, LevelX);
+		init_environment_object(2, 2, 1, LevelX);
+		init_environment_object(3, 5, 5, LevelX);
+		init_environment_object(4, 3, 2, LevelX);
+		init_environment_object(5, 6, 2, LevelX);
+		init_environment_object(6, 5, 1, LevelX);
+		init_environment_object(7, 6, 4, LevelX);
+		init_environment_object(8, 2, 6, LevelX);
 		break;
 	}
 
@@ -611,7 +625,7 @@ void level4_init(void) {
 	Level[3].spawnRow = 0;
 	Level[3].spawnCol = 0;
 	Level[3].exitRow = gameGridRows - 1;
-	Level[3].exitCol = (gameGridCols - 1) / 2;
+	Level[3].exitCol = 0;
 	Level[3].health = 100;
 	Level[3].phantomQuartz = 50;
 	Level[3].goldQuartz = 0;
@@ -654,7 +668,7 @@ void level5_init(void) {
 	Level[4].spawnRow = 0;
 	Level[4].spawnCol = (gameGridCols - 1) / 2;
 	Level[4].exitRow = gameGridRows - 1;
-	Level[4].exitCol = (gameGridCols - 1);
+	Level[4].exitCol = (gameGridCols - 1)/2;
 	Level[4].health = 100;
 	Level[4].phantomQuartz = 50;
 	Level[4].goldQuartz = 0;

@@ -9,10 +9,10 @@
 #define LEVEL2_ROWS 7
 #define LEVEL3_COLS 6
 #define LEVEL3_ROWS 7
-#define LEVEL4_COLS 3
+#define LEVEL4_COLS 6
 #define LEVEL4_ROWS 7
-#define LEVEL5_COLS 3
-#define LEVEL5_ROWS 7
+#define LEVEL5_COLS 8
+#define LEVEL5_ROWS 8
 int gameGridCols;
 int gameGridRows;
 typedef struct GameCoordinates {
