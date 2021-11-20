@@ -7,7 +7,6 @@
 
 CP_Font pixelFont;
 
-movingDuration = 5.0f;
 buildingTime = BUILDING_PHASE_TIME;
 score = 0;
 
@@ -151,8 +150,8 @@ void render_ui_button(Button button)
 	double mouseOverSizeModifier = cursor_over_button(button.buttonData) ? 1.1 : 1;
 
 	// Adjusting position to account for enlarged button when moused over.
-	CP_Graphics_DrawRect(button.buttonData.xOrigin - (mouseOverSizeModifier - 1) * button.buttonData.width / 2, 
-		button.buttonData.yOrigin - (mouseOverSizeModifier - 1) * button.buttonData.height / 2, 
+	CP_Graphics_DrawRect(button.buttonData.xOrigin - (mouseOverSizeModifier - 1) * button.buttonData.width / 2,
+		button.buttonData.yOrigin - (mouseOverSizeModifier - 1) * button.buttonData.height / 2,
 		button.buttonData.width * mouseOverSizeModifier, button.buttonData.height * mouseOverSizeModifier);
 
 	(mouseOverSizeModifier - 1) ? CP_Settings_Fill(COLOR_GREY) : CP_Settings_Fill(COLOR_WHITE);
@@ -333,24 +332,26 @@ void game_win_lose_check(void)
 //	Level[currentGameLevel].phantomQuartz += goldAmtToConvert / conversionRate;
 //}
 
-// taken from easing.h, credit goes to prof gerald
 float linear(float start, float end, float value)
 {
+	// taken from easing.h, credit goes to prof gerald
 	return (1.f - value) * start + value * end;
 }
 
 Button ui_button_movement(Button button, float destPosX, float destPosY)
 {
-	if (button.interpolationTime <= movingDuration)
+	if (button.interpolationTime <= MOVE_DURATION)
 	{
 		button.interpolationTime += CP_System_GetDt();
-		button.buttonData.xOrigin = linear(button.buttonData.xOrigin, destPosX, button.interpolationTime / movingDuration);
-		button.buttonData.yOrigin = linear(button.buttonData.yOrigin, destPosY, button.interpolationTime / movingDuration);
-		button.textPositionX = linear(button.textPositionX, destPosX + BUTTON_WIDTH * 0.5f, button.interpolationTime / movingDuration);
-		button.textPositionY = linear(button.textPositionY, destPosY + BUTTON_HEIGHT * 0.5f, button.interpolationTime / movingDuration);
+		button.buttonData.xOrigin = linear(button.buttonData.xOrigin, destPosX, button.interpolationTime / MOVE_DURATION);
+		button.buttonData.yOrigin = linear(button.buttonData.yOrigin, destPosY, button.interpolationTime / MOVE_DURATION);
+		button.textPositionX = linear(button.textPositionX, destPosX + BUTTON_WIDTH * 0.5f, button.interpolationTime / MOVE_DURATION);
+		button.textPositionY = linear(button.textPositionY, destPosY + BUTTON_HEIGHT * 0.5f, button.interpolationTime / MOVE_DURATION);
 	}
 	else
 	{
+		// Most buttons take ~3-4s to finish moving.
+		// May be good to try basing this on something else instead like distance.
 		button.interpolationTime = 0.0f;
 	}
 	return button;
@@ -358,28 +359,58 @@ Button ui_button_movement(Button button, float destPosX, float destPosY)
 
 void move_level_select(void)
 {
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < MAX_NUMBER_OF_LEVEL; i++)
 	{
 		if (currentGameState == LevelSelect) // going to main menu
 		{
 			levelButtons[i] = ui_button_movement(levelButtons[i], CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f,
 				CP_System_GetWindowHeight() + i * (BUTTON_HEIGHT + 25.0f)); // from l_select back to main menu
-			BackButton = ui_button_movement(BackButton, CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f,
-				CP_System_GetWindowHeight() * 1.50f); // from l_select back to main menu
 		}
 		else if (currentGameState == MainMenu)
 		{
 			levelButtons[i] = ui_button_movement(levelButtons[i], CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f,
 				CP_System_GetWindowHeight() * 0.35f + i * (BUTTON_HEIGHT + 25.0f)); // from l_select back to main menu
-			BackButton = ui_button_movement(BackButton, CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f,
-				CP_System_GetWindowHeight() * 0.8f); // from l_select back to main menu
 		}
+	}
+	if (currentGameState == LevelSelect) // going to main menu
+	{
+		BackButton = ui_button_movement(BackButton, CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f,
+			CP_System_GetWindowHeight() * 1.50f); // from l_select back to main menu
+	}
+	else if (currentGameState == MainMenu)
+	{
+		BackButton = ui_button_movement(BackButton, CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f,
+			CP_System_GetWindowHeight() * 0.8f); // from l_select back to main menu
 	}
 }
 
-int level_select_moving(void)
+int level_select_finished_moving(void)
 {
-	return levelButtons->isMoving;
+	if (currentGameState == LevelSelect)
+	{
+		if (button_has_finished_moving(*levelButtons, CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight()))
+		{
+			for (Button* b = levelButtons; b < levelButtons + MAX_NUMBER_OF_LEVEL; b++)
+			{
+				b->interpolationTime = 0.0f;
+			}
+			BackButton.interpolationTime = 0.0f;
+			return 1;
+		}
+	}
+	else if (currentGameState == MainMenu)
+	{
+		if (button_has_finished_moving(*levelButtons, CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 0.35f))
+		{
+			for (Button* b = levelButtons; b < levelButtons + MAX_NUMBER_OF_LEVEL; b++)
+			{
+				b->interpolationTime = 0.0f;
+			}
+			BackButton.interpolationTime = 0.0f;
+			return 1;
+		}
+	}
+	return 0;
 }
 
 int button_has_finished_moving(Button button, float destPosX, float destPosY)

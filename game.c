@@ -209,12 +209,12 @@ void game_update(void)
 
 		if (PlayButton.isMoving) // clicked on play
 		{
-			PlayButton = ui_button_movement(PlayButton, -BUTTON_WIDTH, PlayButton.buttonData.yOrigin);
+			PlayButton = ui_button_movement(PlayButton, -BUTTON_WIDTH - 1.f, PlayButton.buttonData.yOrigin);
 		}
 
 		if (QuitButton.isMoving) // clicked on play
 		{
-			QuitButton = ui_button_movement(QuitButton, CP_System_GetWindowWidth(), QuitButton.buttonData.yOrigin);
+			QuitButton = ui_button_movement(QuitButton, CP_System_GetWindowWidth() + 1.f, QuitButton.buttonData.yOrigin);
 		}
 
 		if (levelButtons->isMoving)
@@ -222,18 +222,20 @@ void game_update(void)
 			move_level_select();
 		}
 
-		if (button_has_finished_moving(PlayButton, -BUTTON_WIDTH, PlayButton.buttonData.yOrigin) &&
-			button_has_finished_moving(QuitButton, CP_System_GetWindowWidth(), QuitButton.buttonData.yOrigin))
+		if (button_has_finished_moving(PlayButton, -BUTTON_WIDTH - 1.f, PlayButton.buttonData.yOrigin) &&
+			button_has_finished_moving(QuitButton, CP_System_GetWindowWidth() + 1.f, QuitButton.buttonData.yOrigin) &&
+			level_select_finished_moving())
 		{
 			// This presumes the play button was clicked already.
 			PlayButton.isMoving = QuitButton.isMoving = levelButtons->isMoving = 0;
+			PlayButton.interpolationTime = QuitButton.interpolationTime = 0.0f;
 			currentGameState = LevelSelect;
 		}
 
 		CP_Graphics_ClearBackground(COLOR_GREY);
 		render_title_screen();
 		render_start_menu();
-		if (levelButtons->isMoving) { render_level_select_buttons(); }
+		render_level_select_buttons();
 	}
 	else if (currentGameState == LevelSelect)
 	{
@@ -445,10 +447,11 @@ void game_update(void)
 				set_building_time(BUILDING_PHASE_TIME);
 				currentGameState = Building;
 			}
-			else if (btn_is_pressed(BackButton.buttonData))
-			{
+
+		else if (btn_is_pressed(BackButton.buttonData))
+		{
 				PlayButton.isMoving = QuitButton.isMoving = levelButtons->isMoving = 1;
-			}
+		}
 		}
 
 		if (PlayButton.isMoving)
@@ -467,15 +470,17 @@ void game_update(void)
 		}
 
 		if (button_has_finished_moving(PlayButton, CP_System_GetWindowWidth() * 0.3f, CP_System_GetWindowHeight() * 0.5f) &&
-			button_has_finished_moving(QuitButton, CP_System_GetWindowWidth() * 0.6f, CP_System_GetWindowHeight() * 0.5f))
+			button_has_finished_moving(QuitButton, CP_System_GetWindowWidth() * 0.6f, CP_System_GetWindowHeight() * 0.5f) &&
+			level_select_finished_moving())
 		{
 			PlayButton.isMoving = QuitButton.isMoving = levelButtons->isMoving = 0;
+			PlayButton.interpolationTime = QuitButton.interpolationTime = 0.0f;
 			currentGameState = MainMenu;
 		}
 
 		CP_Graphics_ClearBackground(COLOR_GREY);
 		render_title_screen();
-		if (PlayButton.isMoving || QuitButton.isMoving) { render_start_menu(); }
+		render_start_menu();
 		render_level_select_buttons();
 	}
 	else if (currentGameState == Pause)
