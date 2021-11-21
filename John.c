@@ -5,6 +5,140 @@
 #include "Gabriel.h"
 #include "Anderson.h"
 
+void Basic_Ghost(enemy* r) { // setup variable for basic ghost enemy
+	r->health = 2;
+	r->max_health = 2;
+	r->speed = 30;
+	r->CurrentWaypoint = 0;
+	r->data.xOrigin = Xarray[0];
+	r->data.yOrigin = Yarray[0];
+	r->enemy_width = Game.gridWidth;
+	r->enemy_height = Game.gridHeight;
+	r->angle = 0;
+	r->type = Basic;
+	r->alpha = 255;
+	r->data.objectType = objectCircle;
+	r->data.width = Game.gridWidth;
+	r->data.height = Game.gridWidth;
+	r->state = Inactive;
+	r->timer = 0;
+	r->points = 25;
+	//for the freeze turret & enemy interaction
+	r->slow_amt = 1;
+	r->slow_timer = 0;
+	r->currentAnimState = 0;
+	reset_enemy_path(r);
+}
+
+void Fast_Ghost_init(enemy* r) { // setup variable for fast ghost enemy
+	r->health = 2;
+	r->max_health = 2;
+	r->speed = 60;
+	r->CurrentWaypoint = 0;
+	r->data.xOrigin = Xarray[0];
+	r->data.yOrigin = Yarray[0];
+	r->enemy_width = Game.gridWidth;
+	r->enemy_height = Game.gridHeight;
+	r->angle = 0;
+	r->type = Fast_Ghost;
+	r->alpha = 255;
+	r->data.objectType = objectCircle;
+	r->data.width = Game.gridWidth;
+	r->data.height = Game.gridWidth;
+	r->state = Inactive;
+	r->timer = 0;
+	r->points = 25;
+	//for the freeze turret & enemy interaction
+	r->slow_amt = 1;
+	r->slow_timer = 0;
+	r->currentAnimState = 0;
+	reset_enemy_path(r);
+}
+
+void Fat_Ghost_init(enemy* r) {
+	r->health = 20;
+	r->max_health = 20;
+	r->speed = 25;
+	r->CurrentWaypoint = 0;
+	r->data.xOrigin = Xarray[0];
+	r->data.yOrigin = Yarray[0];
+	r->enemy_width = Game.gridWidth;
+	r->enemy_height = Game.gridHeight;
+	r->angle = 0;
+	r->type = Fat_Ghost;
+	r->alpha = 255;
+	r->data.objectType = objectCircle;
+	r->data.width = Game.gridWidth;
+	r->data.height = Game.gridWidth;
+	r->state = Inactive;
+	r->timer = 0;
+	r->points = 50;
+	//for the freeze turret & enemy interaction
+	r->slow_amt = 1;
+	r->slow_timer = 0;
+	r->currentAnimState = 0;
+	reset_enemy_path(r);
+}
+
+void Reaper_minion_init(enemy* r) {
+	int a = 0;
+	for (int i = MAX_SPAWNING_ENEMIES; i < MAX_ENEMIES; i++) {
+		if (a == 0) {
+			if (Enemy[i].state == Inactive) {
+				Fast_Ghost_init(&Enemy[i]);
+				Enemy[i].data.xOrigin = Xarray[r->CurrentWaypoint];
+				Enemy[i].data.yOrigin = Yarray[r->CurrentWaypoint];
+				Enemy[i].CurrentWaypoint = r->CurrentWaypoint;
+				Enemy[i].state = Moving;
+				enemiesLeft++;
+				Enemy[i].points = 0;
+				a++;
+			}
+		}
+		else if (a == 1) {
+			if (Enemy[i].state == Inactive) {
+				Fast_Ghost_init(&Enemy[i]);
+				Enemy[i].data.xOrigin = Xarray[r->CurrentWaypoint + 1];
+				Enemy[i].data.yOrigin = Yarray[r->CurrentWaypoint + 1];
+				Enemy[i].CurrentWaypoint = r->CurrentWaypoint + 1;
+				Enemy[i].state = Moving;
+				enemiesLeft++;
+				Enemy[i].points = 0;
+				a++;
+			}
+		}
+		else if (a == 2) {
+			r->charges = Used;
+			return;
+		}
+	}
+}
+
+void grimReaper_init(enemy* r) {
+	r->health = 30;
+	r->max_health = 30;
+	r->speed = 40;
+	r->CurrentWaypoint = 0;
+	r->data.xOrigin = Xarray[0];
+	r->data.yOrigin = Yarray[0];
+	r->enemy_width = Game.gridWidth;
+	r->enemy_height = Game.gridHeight;
+	r->angle = 0;
+	r->type = grimReaper;
+	r->alpha = 255;
+	r->data.objectType = objectCircle;
+	r->data.width = Game.gridWidth;
+	r->data.height = Game.gridWidth;
+	r->state = Inactive;
+	r->timer = 0;
+	r->points = 150;
+	//for the freeze turret & enemy interaction
+	r->slow_amt = 1;
+	r->slow_timer = 0;
+	r->currentAnimState = 0;
+	r->charges = charges_1;
+	reset_enemy_path(r);
+}
 
 void Draw_enemy(enemy* r) { //Draws the enemy
 	EnemyAnimationState(r);
@@ -199,81 +333,6 @@ void Enemies_init(void) {
 	}
 }
 
-void Basic_Ghost(enemy* r) { // setup variable for basic ghost enemy
-	r->health = 4;
-	r->max_health = 4;
-	r->speed = 30;
-	r->CurrentWaypoint = 0;
-	r->data.xOrigin = Xarray[0];
-	r->data.yOrigin = Yarray[0];
-	r->enemy_width = Game.gridWidth;
-	r->enemy_height = Game.gridHeight;
-	r->angle = 0;
-	r->type = Basic;
-	r->alpha = 255;
-	r->data.objectType = objectCircle;
-	r->data.width = Game.gridWidth;
-	r->data.height = Game.gridWidth;
-	r->state = Inactive;
-	r->timer = 0;
-	r->points = 50;
-	//for the freeze turret & enemy interaction
-	r->slow_amt = 1;
-	r->slow_timer = 0;
-	r->currentAnimState = 0;
-	reset_enemy_path(r);
-}
-
-void Fast_Ghost_init(enemy* r) { // setup variable for fast ghost enemy
-	r->health = 2;
-	r->max_health = 2;
-	r->speed = 60;
-	r->CurrentWaypoint = 0;
-	r->data.xOrigin = Xarray[0];
-	r->data.yOrigin = Yarray[0];
-	r->enemy_width = Game.gridWidth;
-	r->enemy_height = Game.gridHeight;
-	r->angle = 0;
-	r->type = Fast_Ghost;
-	r->alpha = 255;
-	r->data.objectType = objectCircle;
-	r->data.width = Game.gridWidth;
-	r->data.height = Game.gridWidth;
-	r->state = Inactive;
-	r->timer = 0;
-	r->points = 50;
-	//for the freeze turret & enemy interaction
-	r->slow_amt = 1;
-	r->slow_timer = 0;
-	r->currentAnimState = 0;
-	reset_enemy_path(r);
-}
-
-void Fat_Ghost_init(enemy* r) {
-	r->health = 40;
-	r->max_health = 40;
-	r->speed = 25;
-	r->CurrentWaypoint = 0;
-	r->data.xOrigin = Xarray[0];
-	r->data.yOrigin = Yarray[0];
-	r->enemy_width = Game.gridWidth;
-	r->enemy_height = Game.gridHeight;
-	r->angle = 0;
-	r->type = Fat_Ghost;
-	r->alpha = 255;
-	r->data.objectType = objectCircle;
-	r->data.width = Game.gridWidth;
-	r->data.height = Game.gridWidth;
-	r->state = Inactive;
-	r->timer = 0;
-	r->points = 500;
-	//for the freeze turret & enemy interaction
-	r->slow_amt = 1;
-	r->slow_timer = 0;
-	r->currentAnimState = 0;
-	reset_enemy_path(r);
-}
-
 void update_enemy(void) {
 	timer += CP_System_GetDt();
 	if (timer >= 1) {
@@ -396,66 +455,6 @@ void Update_Path_Array(int CurrentGameLevel) {
 	}
 	Number_of_points = Array_count;
 	Array_count = 1;
-}
-
-void grimReaper_init(enemy* r) {
-	r->health = 30;
-	r->max_health = 30;
-	r->speed = 40;
-	r->CurrentWaypoint = 0;
-	r->data.xOrigin = Xarray[0];
-	r->data.yOrigin = Yarray[0];
-	r->enemy_width = Game.gridWidth;
-	r->enemy_height = Game.gridHeight;
-	r->angle = 0;
-	r->type = grimReaper;
-	r->alpha = 255;
-	r->data.objectType = objectCircle;
-	r->data.width = Game.gridWidth;
-	r->data.height = Game.gridWidth;
-	r->state = Inactive;
-	r->timer = 0;
-	r->points = 150;
-	//for the freeze turret & enemy interaction
-	r->slow_amt = 1;
-	r->slow_timer = 0;
-	r->currentAnimState = 0;
-	r->charges = charges_1;
-	reset_enemy_path(r);
-}
-
-void Reaper_minion_init(enemy* r) {
-	int a = 0;
-	for (int i = MAX_SPAWNING_ENEMIES; i < MAX_ENEMIES; i++) {
-		if (a == 0) {
-			if (Enemy[i].state == Inactive) {
-				Fast_Ghost_init(&Enemy[i]);
-				Enemy[i].data.xOrigin = Xarray[r->CurrentWaypoint];
-				Enemy[i].data.yOrigin = Yarray[r->CurrentWaypoint];
-				Enemy[i].CurrentWaypoint = r->CurrentWaypoint;
-				Enemy[i].state = Moving;
-				enemiesLeft++;
-				Enemy[i].points = 0;
-				a++;
-			}
-		}
-		else if (a == 1) {
-			if (Enemy[i].state == Inactive) {
-				Fast_Ghost_init(&Enemy[i]);
-				Enemy[i].data.xOrigin = Xarray[r->CurrentWaypoint + 1];
-				Enemy[i].data.yOrigin = Yarray[r->CurrentWaypoint + 1];
-				Enemy[i].CurrentWaypoint = r->CurrentWaypoint + 1;
-				Enemy[i].state = Moving;
-				enemiesLeft++;
-				Enemy[i].points = 0;
-				a++;
-			}
-		}
-		else if (a == 2) {
-			r->charges = Used;
-			return;
-		}
-	}
 }
 
 
