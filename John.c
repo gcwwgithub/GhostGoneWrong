@@ -56,8 +56,8 @@ void Fast_Ghost_init(enemy* r) { // setup variable for fast ghost enemy
 }
 
 void Fat_Ghost_init(enemy* r) {
-	r->health = 20;
-	r->max_health = 20;
+	r->health = 50;
+	r->max_health = 50;
 	r->speed = 25;
 	r->CurrentWaypoint = 0;
 	r->data.xOrigin = Xarray[0];
@@ -72,7 +72,7 @@ void Fat_Ghost_init(enemy* r) {
 	r->data.height = Game.gridWidth;
 	r->state = Inactive;
 	r->timer = 0;
-	r->points = 50;
+	r->points = 100;
 	//for the freeze turret & enemy interaction
 	r->slow_amt = 1;
 	r->slow_timer = 0;
@@ -131,7 +131,7 @@ void grimReaper_init(enemy* r) {
 	r->data.height = Game.gridWidth;
 	r->state = Inactive;
 	r->timer = 0;
-	r->points = 150;
+	r->points = 200;
 	//for the freeze turret & enemy interaction
 	r->slow_amt = 1;
 	r->slow_timer = 0;
@@ -762,7 +762,7 @@ void Env_eff_Faster_Enemies(void) {
 
 void Env_eff_Slower_Enemies(void) {
 	for (int i = 0; i < MAX_ENEMIES; i++) {
-		if (Enemy[i].env_eff == Applying && Enemy[i].health > 1) {
+		if (Enemy[i].env_eff == Applying && Enemy[i].health > 0) {
 			Enemy[i].speed /= 1.2;
 			Enemy[i].env_eff = Effected;
 		}
