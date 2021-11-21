@@ -373,6 +373,7 @@ void game_update(void)
 
 		CP_Graphics_ClearBackground(COLOR_GREY);
 		render_title_screen();
+		render_start_menu();
 		render_credits_screen();
 	}
 }
