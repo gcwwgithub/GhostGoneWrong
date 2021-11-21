@@ -245,7 +245,7 @@ void game_grid_init(void) {
 void pause_button_init(void) {
 	GameMenuObject[PauseButton].xOrigin = 0.0f;
 	GameMenuObject[PauseButton].yOrigin = 0.0f;
-	GameMenuObject[PauseButton].width = Game.xOrigin / 4;
+	GameMenuObject[PauseButton].width = LEFT_MENU_X_END;
 	GameMenuObject[PauseButton].height = (float)CP_System_GetWindowHeight() / 10;
 	GameMenuObject[PauseButton].objectType = objectRectangle;
 	GameMenuObject[PauseButton].image = pauseButtonImage;
@@ -342,6 +342,7 @@ void init_environment_object(int arrayIndex, int row, int col, LevelData* LevelX
 	Environment[arrayIndex].yOrigin = Game.yOrigin + Game.gridHeight * (row + 0.5f);
 	Environment[arrayIndex].width = Game.gridWidth;
 	Environment[arrayIndex].height = Game.gridHeight;
+
 	LevelX->grid[row][col].type = Blocked;
 }
 
@@ -357,9 +358,9 @@ void render_environment(void) {
 
 void phantomQuartz_init(void) {
 	GameMenuObject[PhantomQuartzMenu].yOrigin = 0.0f;
-	GameMenuObject[PhantomQuartzMenu].width = ((float)CP_System_GetWindowWidth() - Game.xOrigin - Game.width) / 4;
+	GameMenuObject[PhantomQuartzMenu].xOrigin = RIGHT_MENU_X_START;
 	GameMenuObject[PhantomQuartzMenu].height = (float)CP_System_GetWindowHeight() / 15;
-	GameMenuObject[PhantomQuartzMenu].xOrigin = (float)CP_System_GetWindowWidth() - 2 * GameMenuObject[PhantomQuartzMenu].width;
+	GameMenuObject[PhantomQuartzMenu].width = ((float)CP_System_GetWindowWidth() - GameMenuObject[PhantomQuartzMenu].xOrigin) / 2;
 	GameMenuObject[PhantomQuartzMenu].objectType = objectRectangle;
 }
 
@@ -439,7 +440,7 @@ void upgrade_menu_init(void) {
 	GameMenuObject[UpgradeMenu].xOrigin = GameMenuObject[BattlefieldEffects].xOrigin;
 	GameMenuObject[UpgradeMenu].yOrigin = GameMenuObject[BattlefieldEffects].yOrigin + GameMenuObject[BattlefieldEffects].height;
 	GameMenuObject[UpgradeMenu].width = GameMenuObject[BattlefieldEffects].width + GameMenuObject[MonsterRemainingDisplay].width;
-	GameMenuObject[UpgradeMenu].height = (CP_System_GetWindowHeight() - GameMenuObject[UpgradeButton].yOrigin);
+	GameMenuObject[UpgradeMenu].height = (CP_System_GetWindowHeight() - GameMenuObject[BattlefieldEffects].yOrigin);
 	GameMenuObject[UpgradeMenu].objectType = objectRectangle;
 }
 

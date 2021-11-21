@@ -12,9 +12,10 @@
 #define LEVEL4_COLS 6
 #define LEVEL4_ROWS 7
 #define LEVEL5_COLS 8
-#define LEVEL5_ROWS 8
+#define LEVEL5_ROWS 7
 int gameGridCols;
 int gameGridRows;
+
 typedef struct GameCoordinates {
 	float width;
 	float height;
@@ -117,10 +118,10 @@ LevelData Level[MAX_NUMBER_OF_LEVEL];
 int currentGameLevel;
 
 //Objects
-typedef enum ObjectShape {
+enum{
 	objectCircle,
 	objectRectangle
-}ObjectShape;
+};
 
 
 typedef struct Coordinates {
@@ -128,7 +129,7 @@ typedef struct Coordinates {
 	float height; //Width and Height are the same for Circles
 	float xOrigin;
 	float yOrigin;
-	ObjectShape objectType;
+	int objectType;
 	CP_Image image;
 }Coordinates;
 
@@ -173,5 +174,9 @@ int btn_is_pressed(Coordinates object1);
 void render_turret_menu_object(Coordinates ButtonX, enum MenuObjectType type);
 
 //graphics
+#define LEFT_MENU_X_END 140.714294
+
+#define RIGHT_MENU_X_START 998.571411
+
 
 float scalingFactor;

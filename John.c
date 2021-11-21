@@ -152,7 +152,7 @@ void EnemyDeath(enemy* r, int CurrentGameLevel) {  //function updates and checks
 
 	if (r->health <= 0) {
 		if (r->state == Hurt) {
-			Level->phantomQuartz += r->points;
+			Level[currentGameLevel].phantomQuartz += r->points;
 		}
 		r->state = Death;
 
