@@ -7,10 +7,6 @@
 
 CP_Font pixelFont;
 
-buildingTime = BUILDING_PHASE_TIME;
-dpLogoTime = DIGIPEN_LOGO_DISPLAY_TIME;
-fadeOutTime = FADE_OUT_TIME;
-
 #pragma region UI
 
 #pragma region Initialisations
@@ -189,7 +185,7 @@ int cursor_over_button(Coordinates buttonCoord)
 // Draws a background image, background is drawn with code, rest with pixel art
 void render_title_screen(void)
 {
-	RenderWithAlphaChanged(backgroundSpriteSheet, backgroundArray[0], CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.5f, CP_System_GetWindowWidth(), CP_System_GetWindowHeight(), 150);
+	RenderWithAlphaChanged(backgroundSpriteSheet, backgroundArray[0], CP_System_GetWindowWidth() * 0.5f, (float)CP_System_GetWindowHeight() * 0.5f, (float)CP_System_GetWindowWidth(), (float)CP_System_GetWindowHeight(), 150);
 	CP_Image_Draw(titleWordImage, CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.2f, 256 * scalingFactor, 256 * scalingFactor, 255);
 }
 
@@ -197,11 +193,11 @@ void render_ui_button(Button button)
 {
 	CP_Settings_Fill(COLOR_BLACK);
 
-	double mouseOverSizeModifier = cursor_over_button(button.buttonData) ? 1.1 : 1;
+	float mouseOverSizeModifier = cursor_over_button(button.buttonData) ? 1.1f : 1.0f;
 
 	// Adjusting position to account for enlarged button when moused over.
-	CP_Graphics_DrawRect(button.buttonData.xOrigin - (mouseOverSizeModifier - 1) * button.buttonData.width / 2,
-		button.buttonData.yOrigin - (mouseOverSizeModifier - 1) * button.buttonData.height / 2,
+	CP_Graphics_DrawRect(button.buttonData.xOrigin - (mouseOverSizeModifier - 1) * button.buttonData.width / 2.0f,
+		button.buttonData.yOrigin - (mouseOverSizeModifier - 1) * button.buttonData.height / 2.0f,
 		button.buttonData.width * mouseOverSizeModifier, button.buttonData.height * mouseOverSizeModifier);
 
 	(mouseOverSizeModifier - 1) ? CP_Settings_Fill(COLOR_GREY) : CP_Settings_Fill(COLOR_WHITE);
@@ -247,7 +243,7 @@ void render_credits_screen(void)
 
 	CP_Settings_Fill(COLOR_WHITE);
 	render_credit_line(CreditTexts[CreditsTitle]);
-	CP_Settings_TextSize(FONT_SIZE * 0.5);
+	CP_Settings_TextSize(FONT_SIZE * 0.5f);
 	render_credit_line(CreditTexts[CopyrightLine]);
 
 	CP_Settings_TextSize(FONT_SIZE);
@@ -290,7 +286,7 @@ void reduce_dp_logo_time(void)
 			currentGameState = MainMenu;
 		}
 		CP_Graphics_ClearBackground(CP_Color_Create(
-			(127 * (fadeOutTime / FADE_OUT_TIME)), (127 * (fadeOutTime / FADE_OUT_TIME)), (127 * (fadeOutTime / FADE_OUT_TIME)), 0));
+			(int)(127 * (fadeOutTime / FADE_OUT_TIME)), (int)(127 * (fadeOutTime / FADE_OUT_TIME)), (int)(127 * (fadeOutTime / FADE_OUT_TIME)), 0));
 	}
 	else { dpLogoTime -= CP_System_GetDt(); }
 }
@@ -320,7 +316,7 @@ void init_skip_wave_button(void)
 
 void render_wave_timer_bar(float timeLeft, float maxTime, float barWidth, float barHeight)
 {
-	double percentage = timeLeft / maxTime;
+	float percentage = timeLeft / maxTime;
 	// draw red, then green
 	CP_Settings_Fill(COLOR_RED);
 	CP_Graphics_DrawRect(CP_System_GetWindowWidth() * 0.5f - barWidth * 0.5f, 0.0f, barWidth, barHeight);
@@ -559,7 +555,7 @@ int level_select_finished_moving(void)
 {
 	if (currentGameState == LevelSelect)
 	{
-		if (button_has_finished_moving(*LevelButtons, LevelButtons->buttonData.xOrigin, CP_System_GetWindowHeight()))
+		if (button_has_finished_moving(*LevelButtons, LevelButtons->buttonData.xOrigin, (float)CP_System_GetWindowHeight()))
 		{
 			for (Button* b = LevelButtons; b < LevelButtons + MAX_NUMBER_OF_LEVEL; b++)
 			{
