@@ -78,13 +78,13 @@ void turret_init(void)
 	//set price of turrets and stuff
 	turret_purchasing[TP_PRICE][T_BASIC] = 100;
 	turret_purchasing[TP_PRICE][T_SLOW] = 250;
-	turret_purchasing[TP_PRICE][T_HOMING] = 500;
+	turret_purchasing[TP_PRICE][T_HOMING] = 200;
 	turret_purchasing[TP_PRICE][T_MINE] = 300;
 	turret_purchasing[TP_PRICE][T_WALL] = 10;
 
-	turret_purchasing[TP_UPGRADE_PRICE][T_BASIC] = 100;
+	turret_purchasing[TP_UPGRADE_PRICE][T_BASIC] = 50;
 	turret_purchasing[TP_UPGRADE_PRICE][T_SLOW] = 25;
-	turret_purchasing[TP_UPGRADE_PRICE][T_HOMING] = 100;
+	turret_purchasing[TP_UPGRADE_PRICE][T_HOMING] = 50;
 	turret_purchasing[TP_UPGRADE_PRICE][T_MINE] = 15;
 	turret_purchasing[TP_UPGRADE_PRICE][T_WALL] = 10;
 
@@ -249,7 +249,7 @@ void upgrade_turret(int t_index)
 		//turret[t_index].mod.range += turret[t_index].mod.range * 0.05f;
 		//turret[t_index].mod.shoot_rate -= 0.02f;
 		//increase the price for another upgrade
-		turret[t_index].upgrade_price += 100;
+		turret[t_index].upgrade_price += 50;
 		break;
 	case T_SLOW:
 		turret[t_index].mod.damage += 0.15f;
@@ -260,11 +260,11 @@ void upgrade_turret(int t_index)
 		turret[t_index].upgrade_price += 25;
 		break;
 	case T_HOMING:
-		turret[t_index].mod.damage += 0.0022f * turret[t_index].upgrade_price;
+		turret[t_index].mod.damage += 0.005f * turret[t_index].upgrade_price;
 		//turret[t_index].mod.range += turret[t_index].mod.range * 0.05f;
 		//turret[t_index].mod.shoot_rate -= 0.01f;
 		//increase the price for another upgrade
-		turret[t_index].upgrade_price += 100;
+		turret[t_index].upgrade_price += 50;
 		break;
 	case T_MINE:
 		turret[t_index].mod.damage += 1.f;

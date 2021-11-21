@@ -42,6 +42,7 @@ GameCoordinates Game;;
 //Game State
 typedef enum GameState
 {
+	LogoSplash,
 	MainMenu,
 	Pause,
 	Building,

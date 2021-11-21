@@ -500,7 +500,7 @@ void level1_init(void) {
 	Level[0].health = 100;
 	Level[0].phantomQuartz = 50000;
 	Level[0].goldQuartz = 0;
-	Level[0].currentWave = 7;
+	Level[0].currentWave = 8;
 	Level[0].currentEffect = NoEnvironmentalEffects;
 	Level[0].currentPowerUpLevel.morePhantomQuartz = 0;
 	Level[0].currentPowerUpLevel.reduceEnemySpeed = 0;
@@ -1061,7 +1061,7 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 			RenderNormal(basicTurretSpriteSheet, basicTurretArray[0], menuObjectX.width / 2,
 				(menuObjectX.yOrigin + menuObjectX.height / 2), 128 * scalingFactor, 128 * scalingFactor);
 			sprintf_s(temp, sizeof(temp), "%d", turret_purchasing[TP_PRICE][T_BASIC]);
-			CP_Font_DrawText(temp, menuObjectX.width / 2.5, (menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3));
+			CP_Font_DrawText(temp, menuObjectX.width / 3, (menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3));
 			RenderNormal(currencySpriteSheet, currencyArray[1], menuObjectX.width / 1.65,
 				(menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3), 45 * scalingFactor, 45 * scalingFactor);
 		}
@@ -1088,7 +1088,7 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 				(menuObjectX.yOrigin + menuObjectX.height / 2), 128 * scalingFactor,
 				128 * scalingFactor, 255, 90);
 			sprintf_s(temp, sizeof(temp), "%d", turret_purchasing[TP_PRICE][T_SLOW]);
-			CP_Font_DrawText(temp, menuObjectX.width / 2.5, (menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3));
+			CP_Font_DrawText(temp, menuObjectX.width / 3, (menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3));
 			RenderNormal(currencySpriteSheet, currencyArray[1], menuObjectX.width / 1.65,
 				(menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3), 45 * scalingFactor, 45 * scalingFactor);
 		}
@@ -1141,7 +1141,7 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 			RenderNormal(mineSpriteSheet, mineArray[0], menuObjectX.width / 2,
 				(menuObjectX.yOrigin + menuObjectX.height / 2), 128 * scalingFactor, 128 * scalingFactor);
 			sprintf_s(temp, sizeof(temp), "%d", turret_purchasing[TP_PRICE][T_MINE]);
-			CP_Font_DrawText(temp, menuObjectX.width / 2.5, (menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3));
+			CP_Font_DrawText(temp, menuObjectX.width / 3, (menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3));
 			RenderNormal(currencySpriteSheet, currencyArray[1], menuObjectX.width / 1.65,
 				(menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3), 45 * scalingFactor, 45 * scalingFactor);
 		}
@@ -1221,6 +1221,7 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 		CP_Settings_Fill(COLOR_WHITE);
 		sprintf_s(temp, sizeof(temp), "Effects");
 		CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 2, menuObjectX.yOrigin + menuObjectX.height / 5);
+		printf("%d", Level[currentGameLevel].currentEffect);
 		RenderNormal(battlefieldEffectIconSpriteSheet, battlefieldEffectIconArray[Level[currentGameLevel].currentEffect],
 			menuObjectX.xOrigin + menuObjectX.width / 2, menuObjectX.yOrigin + menuObjectX.height / 1.65,
 			85 * scalingFactor, 85 * scalingFactor);
