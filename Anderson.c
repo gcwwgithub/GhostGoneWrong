@@ -169,7 +169,7 @@ void init_credits_screen(void)
 	init_credit_line(ClaudeComair, "Claude Comair", CP_System_GetWindowWidth() * 0.7f, CP_System_GetWindowHeight() * 0.55f);
 
 	init_credit_line(Instructors, "Instructors: ", CP_System_GetWindowWidth() * 0.7f, CP_System_GetWindowHeight() * 0.6f);
-	init_credit_line(DX, "Ding Xiang Cheng", CP_System_GetWindowWidth() * 0.7f, CP_System_GetWindowHeight() * 0.65f);
+	init_credit_line(DX, "Cheng Ding Xiang", CP_System_GetWindowWidth() * 0.7f, CP_System_GetWindowHeight() * 0.65f);
 	init_credit_line(Gerald, "Gerald Wong", CP_System_GetWindowWidth() * 0.7f, CP_System_GetWindowHeight() * 0.7f);
 
 	CreditsBackButton = init_text_button(CreditsBackButton, CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * .9f - BUTTON_HEIGHT * 0.5f,
