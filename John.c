@@ -250,8 +250,8 @@ void Fast_Ghost_init(enemy* r) { // setup variable for fast ghost enemy
 }
 
 void Fat_Ghost_init(enemy* r) {
-	r->health = 10;
-	r->max_health = 10;
+	r->health = 20;
+	r->max_health = 20;
 	r->speed = 15;
 	r->CurrentWaypoint = 0;
 	r->data.xOrigin = Xarray[0];
@@ -398,8 +398,8 @@ void Update_Path_Array(int CurrentGameLevel) {
 }
 
 void grimReaper_init(enemy* r) {
-	r->health = 20;
-	r->max_health = 20;
+	r->health = 30;
+	r->max_health = 30;
 	r->speed = 20;
 	r->CurrentWaypoint = 0;
 	r->data.xOrigin = Xarray[0];
@@ -414,7 +414,7 @@ void grimReaper_init(enemy* r) {
 	r->data.height = Game.gridWidth;
 	r->state = Inactive;
 	r->timer = 0;
-	r->points = 200;
+	r->points = 150;
 	//for the freeze turret & enemy interaction
 	r->slow_amt = 1;
 	r->slow_timer = 0;
@@ -434,6 +434,7 @@ void Reaper_minion_init(enemy* r) {
 				Enemy[i].CurrentWaypoint = r->CurrentWaypoint;
 				Enemy[i].state = Moving;
 				Enemy[i].isToken = 1;
+				Enemy[i].points = 0;
 				a++;
 			}
 		}
@@ -445,6 +446,7 @@ void Reaper_minion_init(enemy* r) {
 				Enemy[i].CurrentWaypoint = r->CurrentWaypoint + 1;
 				Enemy[i].state = Moving;
 				Enemy[i].isToken = 1;
+				Enemy[i].points = 0;
 				a++;
 			}
 		}
@@ -611,20 +613,7 @@ void reset_enemy_path(enemy* r) {
 }
 
 
-/*
-NoEnvironmentalEffects,
-IncreasedPhantomQuartz,
-DecreasedPhantomQuartz,
-FasterEnemies,
-SlowerEnemies,
-IncreasedTurretDamage,
-DecreasedTurretDamage,
-MoreHP,
-LessHP,
-IncreasedTurretAttackSpeed,
-DecreasedTurretAttackSpeed,
-NoPhantomQuartz
-*/
+
 void Env_eff_IncreasedTurretDamage(void){
 	static float damage_increase[MAX_TURRET];
 	static int level_check[MAX_TURRET];
@@ -842,8 +831,8 @@ void Change_current_effect(int CurrentGameLevel) {
 void Current_wave_check(enemy* r) {
 	if (r->WavePowUp_isActive == 0) {
 		int a = Level[currentGameLevel].currentWave;
-		r->max_health += 1 * a;
-		r->health += 1 * a;
+		r->max_health *= 1 +(0.2* a);
+		r->health *= 1 +(0.2* a);
 		r->speed += 1 * a;
 		r->WavePowUp_isActive = 1;
 	}
