@@ -161,7 +161,7 @@ typedef struct Particle
 
 Particle particles[250];
 
-void create_particle(Vector2 pos, Vector2 dir, float size, float duration);
+void create_particle(Vector2 pos, Vector2 dir, float size, float duration, PARTICLE_TYPE type);
 void update_particle();
 void render_particle();
 
