@@ -8,7 +8,6 @@
 CP_Font pixelFont;
 
 buildingTime = BUILDING_PHASE_TIME;
-score = 0;
 
 #pragma region UI
 
@@ -28,7 +27,6 @@ Button init_text_button(Button button, float buttonPosX, float buttonPosY, float
 	button.buttonData.yOrigin = buttonPosY;
 	button.buttonData.width = buttonWidth;
 	button.buttonData.height = buttonHeight;
-	button.buttonData.objectType = objectRectangle;
 	button.interpolationTime = 0.0f;
 	CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_CENTER, CP_TEXT_ALIGN_V_MIDDLE);
 	button.textPositionX = button.buttonData.xOrigin + textPosX;
@@ -63,33 +61,41 @@ void init_how_to_play_screen(void)
 
 void init_main_menu(void)
 {
-	PlayButton = init_text_button(PlayButton, CP_System_GetWindowWidth() * 0.2f, CP_System_GetWindowHeight() * 0.5f,
+	PlayButton = init_text_button(PlayButton, CP_System_GetWindowWidth() * 0.25f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 0.5f,
 		BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Play");
-	QuitButton = init_text_button(QuitButton, CP_System_GetWindowWidth() * 0.65f, CP_System_GetWindowHeight() * 0.5f,
+	CreditsButton = init_text_button(CreditsButton, CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 0.5f,
+		BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Credits");
+	QuitButton = init_text_button(QuitButton, CP_System_GetWindowWidth() * 0.75f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 0.5f,
 		BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Quit");
 }
 
-// number of levels is hardcoded.
-// LSelect buttons seperated by pure vertical gap that is 25.0f units long.
 void init_level_select_buttons(void)
 {
 	int c = 0; char levelNumberText[8];
 	for (int i = 0; i < 5; i++)
 	{
-		c = snprintf(levelNumberText, 8, "Level %d", i + 1);
-		strcpy_s(levelButtons[i].textString, sizeof(levelButtons[i].textString), levelNumberText);
-		levelButtons[i] = init_text_button(levelButtons[i], CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f,
+		c = snprintf(levelNumberText, 8, "Level %d", i);
+		strcpy_s(LevelButtons[i].textString, sizeof(LevelButtons[i].textString), levelNumberText);
+		if (i > 0)
+		{
+		LevelButtons[i] = init_text_button(LevelButtons[i], CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f,
 			CP_System_GetWindowHeight() + i * (BUTTON_HEIGHT + 25.0f), BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, levelNumberText);
+		}
+		else
+		{
+			LevelButtons[i] = init_text_button(LevelButtons[i], CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f,
+				CP_System_GetWindowHeight() + i * (BUTTON_HEIGHT + 25.0f), BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Test");
+		}
 	}
-	BackButton = init_text_button(BackButton, CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 1.5f,
+	LevelSelectBackButton = init_text_button(LevelSelectBackButton, CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 1.5f,
 		BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Back");
 }
 
 void init_pause_screen(void)
 {
-	PauseBackButton = init_text_button(PauseBackButton, CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 0.3f - BUTTON_HEIGHT * 0.5f,
+	PauseScreenButtons[0] = init_text_button(PauseScreenButtons[0], CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 0.3f - BUTTON_HEIGHT * 0.5f,
 		BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Back");
-	PauseQuitButton = init_text_button(PauseQuitButton, CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 0.4f - BUTTON_HEIGHT * 0.5f,
+	PauseScreenButtons[1] = init_text_button(PauseScreenButtons[1], CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 0.4f - BUTTON_HEIGHT * 0.5f,
 		BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Quit");
 }
 
@@ -124,6 +130,50 @@ void init_end_screen(void)
 	EndScreenButtons[2].textPositionX = EndScreenButtons[2].buttonData.xOrigin + BUTTON_WIDTH * 0.5f;
 	EndScreenButtons[2].textPositionY = EndScreenButtons[2].buttonData.yOrigin + BUTTON_HEIGHT * 0.5f;
 	strcpy_s(EndScreenButtons[2].textString, sizeof(EndScreenButtons[2].textString), "Next");
+}
+
+// Note: endPos is (initialPosX, initialPosY + CP_Window_Width());
+void init_credit_line(int num, char* line, float x, float y)
+{
+	CreditTexts[num].text = line;
+	CreditTexts[num].menuPos.xOrigin = x;
+	CreditTexts[num].menuPos.yOrigin = y;
+
+	CreditTexts[num].creditPos.xOrigin = x;
+	CreditTexts[num].creditPos.yOrigin = y + CP_System_GetWindowHeight();
+
+	CreditTexts[num].initialPos.xOrigin = CreditTexts[num].creditPos.xOrigin;
+	CreditTexts[num].initialPos.yOrigin = CreditTexts[num].creditPos.yOrigin;
+}
+
+void init_credits_screen(void)
+{
+	creditRectCoords.xOrigin = CP_System_GetWindowWidth() * 0.1f; creditRectCoords.yOrigin = CP_System_GetWindowHeight() * 0.35f;
+
+	creditRectCoords.width = CP_System_GetWindowWidth() * 0.8f; creditRectCoords.height = CP_System_GetWindowHeight() * 0.5f;
+
+	// the © copyright symbol is printed as \xc2\xa9, as its UTF-8 (i.e Unicode) string literal.
+	init_credit_line(CopyrightLine, "All content \xc2\xa9 2021 DigiPen Institute of Technology Singapore, all rights reserved.",
+		CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.45f);
+
+	init_credit_line(CreditsTitle, "Credits", CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.4f);
+
+	init_credit_line(DevelopedBy, "Developed by:", CP_System_GetWindowWidth() * 0.3f, CP_System_GetWindowHeight() * 0.5f);
+	init_credit_line(ZhengWei, "Ng Zheng Wei", CP_System_GetWindowWidth() * 0.3f, CP_System_GetWindowHeight() * 0.55f);
+	init_credit_line(Samuel, "Wong Zhi Hao Samuel", CP_System_GetWindowWidth() * 0.3f, CP_System_GetWindowHeight() * 0.6f);
+	init_credit_line(John, "Lim Jing Rui John", CP_System_GetWindowWidth() * 0.3f, CP_System_GetWindowHeight() * 0.65f);
+	init_credit_line(Gabriel, "Chiok Wei Wen Gabriel", CP_System_GetWindowWidth() * 0.3f, CP_System_GetWindowHeight() * 0.7f);
+	init_credit_line(Anderson, "Phua Tai Dah Anderson", CP_System_GetWindowWidth() * 0.3f, CP_System_GetWindowHeight() * 0.75f);
+
+	init_credit_line(President, "President: ", CP_System_GetWindowWidth() * 0.7f, CP_System_GetWindowHeight() * 0.5f);
+	init_credit_line(ClaudeComair, "Claude Comair", CP_System_GetWindowWidth() * 0.7f, CP_System_GetWindowHeight() * 0.55f);
+
+	init_credit_line(Instructors, "Instructors: ", CP_System_GetWindowWidth() * 0.7f, CP_System_GetWindowHeight() * 0.6f);
+	init_credit_line(DX, "Ding Xiang Cheng", CP_System_GetWindowWidth() * 0.7f, CP_System_GetWindowHeight() * 0.65f);
+	init_credit_line(Gerald, "Gerald Wong", CP_System_GetWindowWidth() * 0.7f, CP_System_GetWindowHeight() * 0.7f);
+
+	CreditsBackButton = init_text_button(CreditsBackButton, CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * .9f - BUTTON_HEIGHT * 0.5f,
+		BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Back");
 }
 
 #pragma endregion
@@ -168,6 +218,7 @@ void render_how_to_play_screen(void)
 void render_start_menu(void)
 {
 	render_ui_button(PlayButton);
+	render_ui_button(CreditsButton);
 	render_ui_button(QuitButton);
 }
 
@@ -177,22 +228,72 @@ void render_level_select_buttons(void)
 	// render the 5 level buttons
 	for (int i = 0; i < 5; i++)
 	{
-		render_ui_button(levelButtons[i]);
+		render_ui_button(LevelButtons[i]);
 	}
-	render_ui_button(BackButton);
+	render_ui_button(LevelSelectBackButton);
+}
+
+void render_credit_line(CreditLine cLine)
+{
+	CP_Font_DrawText(cLine.text, cLine.initialPos.xOrigin, cLine.initialPos.yOrigin);
 }
 
 void render_credits_screen(void)
 {
-	// just render text and other things here
+	CP_Settings_TextSize(FONT_SIZE);
+	CP_Settings_Fill(COLOR_BLACK);
+
+	CP_Graphics_DrawRect(creditRectCoords.xOrigin, creditRectCoords.yOrigin, creditRectCoords.width, creditRectCoords.height);
+
+	CP_Settings_Fill(COLOR_WHITE);
+	//char buffer[88] = { 0 }; // the © copyright symbol is printed as \xc2\xa9, as its UTF-8 (i.e Unicode) string literal.
+	//strcpy_s(buffer,sizeof(buffer), "All content \xc2\xa9 2021 DigiPen Institute of Technology Singapore, all rights reserved.");
+	//CP_Font_DrawText("Credits", CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.4f);
+	render_credit_line(CreditTexts[CreditsTitle]);
+	CP_Settings_TextSize(FONT_SIZE * 0.5);
+
+	//CP_Font_DrawText(buffer, CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.45f);
+	render_credit_line(CreditTexts[CopyrightLine]);
+
+	CP_Settings_TextSize(FONT_SIZE);
+
+	render_credit_line(CreditTexts[DevelopedBy]);
+	CP_Settings_Fill(COLOR_YELLOW);
+	render_credit_line(CreditTexts[ZhengWei]);
+	render_credit_line(CreditTexts[Samuel]);
+	render_credit_line(CreditTexts[John]);
+	render_credit_line(CreditTexts[Gabriel]);
+	render_credit_line(CreditTexts[Anderson]);
+
+	CP_Settings_Fill(COLOR_WHITE);
+	render_credit_line(CreditTexts[Instructors]);
+	render_credit_line(CreditTexts[President]);
+	CP_Settings_Fill(COLOR_YELLOW);
+	render_credit_line(CreditTexts[DX]);
+	render_credit_line(CreditTexts[Gerald]);
+	render_credit_line(CreditTexts[ClaudeComair]);
+
+	//CP_Font_DrawText("Developed by: ", CP_System_GetWindowWidth() * 0.3f, CP_System_GetWindowHeight() * 0.5f);
+	//CP_Font_DrawText("Ng Zheng Wei", CP_System_GetWindowWidth() * 0.3f, CP_System_GetWindowHeight() * 0.55f);
+	//CP_Font_DrawText("Wong Zhi Hao Samuel", CP_System_GetWindowWidth() * 0.3f, CP_System_GetWindowHeight() * 0.6f);
+	//CP_Font_DrawText("Lim Jing Rui John", CP_System_GetWindowWidth() * 0.3f, CP_System_GetWindowHeight() * 0.65f);
+	//CP_Font_DrawText("Chiok Wei Wen Gabriel", CP_System_GetWindowWidth() * 0.3f, CP_System_GetWindowHeight() * 0.7f);
+	//CP_Font_DrawText("Phua Tai Dah Anderson", CP_System_GetWindowWidth() * 0.3f, CP_System_GetWindowHeight() * 0.75f);
+	//CP_Font_DrawText("President: ", CP_System_GetWindowWidth() * 0.7f, CP_System_GetWindowHeight() * 0.5f);
+	//CP_Font_DrawText("Claude Comair", CP_System_GetWindowWidth() * 0.7f, CP_System_GetWindowHeight() * 0.55f);
+	//CP_Font_DrawText("Instructors: ", CP_System_GetWindowWidth() * 0.7f, CP_System_GetWindowHeight() * 0.6f);
+	//CP_Font_DrawText("Ding Xiang Cheng", CP_System_GetWindowWidth() * 0.7f, CP_System_GetWindowHeight() * 0.65f);
+	//CP_Font_DrawText("Gerald Wong", CP_System_GetWindowWidth() * 0.7f, CP_System_GetWindowHeight() * 0.7f);
+
+	render_ui_button(CreditsBackButton);
 }
 
 void render_pause_screen(void)
 {
 	CP_Settings_Fill(COLOR_GREY);
 	CP_Graphics_DrawRect(CP_System_GetWindowWidth() * 0.4f, CP_System_GetWindowHeight() * 0.25f, CP_System_GetWindowWidth() * 0.2f, CP_System_GetWindowHeight() * 0.2f);
-	render_ui_button(PauseBackButton);
-	render_ui_button(PauseQuitButton);
+	render_ui_button(PauseScreenButtons[0]);
+	render_ui_button(PauseScreenButtons[1]);
 }
 
 #pragma endregion
@@ -235,7 +336,7 @@ void render_wave_timer(void)
 	CP_Settings_TextSize(FONT_SIZE);
 	render_wave_timer_bar(buildingTime, BUILDING_PHASE_TIME, CP_System_GetWindowWidth() * 0.3f, CP_System_GetWindowHeight() * 0.1f);
 	CP_Settings_Fill(COLOR_BLACK);
-	char buffer[25] = { 0 };
+	char buffer[16] = { 0 };
 	sprintf_s(buffer, sizeof(buffer), "Time Left: %.1f", buildingTime);
 	CP_Font_DrawText(buffer, CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.05f);
 }
@@ -267,11 +368,6 @@ void set_building_time(float newBuildingTime)
 {
 	// set building phase time to 0.0f
 	buildingTime = newBuildingTime;
-}
-
-void add_score_bonus(int bonus)
-{
-	score += bonus;
 }
 
 #pragma endregion
@@ -314,9 +410,9 @@ void game_win_lose_check(void)
 		// game lost
 		currentGameState = Lose;
 	}
-	else if (0 == enemiesLeft)
+	else if (enemiesLeft == 0)
 	{
-		if (Level[currentGameLevel].currentWave == MAX_NUMBER_OF_WAVES)
+		if (Level[currentGameLevel].currentWave == MAX_NUMBER_OF_WAVES - 1)
 		{
 			currentGameState = Win;
 		}
@@ -366,29 +462,62 @@ Button ui_button_movement(Button button, float destPosX, float destPosY)
 	return button;
 }
 
+Coordinates rect_movement(Coordinates coord, float destPosX, float destPosY)
+{
+	if (rectTime <= MOVE_DURATION)
+	{
+		rectTime += CP_System_GetDt();
+		coord.xOrigin = linear(coord.xOrigin, destPosX, rectTime / MOVE_DURATION);
+		coord.yOrigin = linear(coord.yOrigin, destPosY, rectTime / MOVE_DURATION);
+	}
+	else
+	{
+		// May be good to try basing this on something else instead like distance.
+		rectTime = 0.0f;
+	}
+	return coord;
+}
+
+void move_credit_texts(void)
+{
+	for (int i = 0; i < sizeof(CreditTexts) / sizeof(CreditLine); i++)
+	{
+		if (currentGameState == MainMenu)
+		{
+			CreditTexts[i].initialPos = rect_movement(CreditTexts[i].initialPos, CreditTexts[i].initialPos.xOrigin,
+				CreditTexts[i].initialPos.yOrigin - CP_System_GetWindowHeight()); // from l_select back to main menu
+		}
+		else if (currentGameState == Credits) // going to main menu
+		{
+			CreditTexts[i].initialPos = rect_movement(CreditTexts[i].initialPos, CreditTexts[i].initialPos.xOrigin,
+				CreditTexts[i].initialPos.yOrigin + CP_System_GetWindowHeight()); // from l_select back to main menu
+		}
+	}
+}
+
 void move_level_select(void)
 {
 	for (int i = 0; i < MAX_NUMBER_OF_LEVEL; i++)
 	{
 		if (currentGameState == LevelSelect) // going to main menu
 		{
-			levelButtons[i] = ui_button_movement(levelButtons[i], CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f,
+			LevelButtons[i] = ui_button_movement(LevelButtons[i], CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f,
 				CP_System_GetWindowHeight() + i * (BUTTON_HEIGHT + 25.0f)); // from l_select back to main menu
 		}
 		else if (currentGameState == MainMenu)
 		{
-			levelButtons[i] = ui_button_movement(levelButtons[i], CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f,
+			LevelButtons[i] = ui_button_movement(LevelButtons[i], CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f,
 				CP_System_GetWindowHeight() * 0.35f + i * (BUTTON_HEIGHT + 25.0f)); // from l_select back to main menu
 		}
 	}
 	if (currentGameState == LevelSelect) // going to main menu
 	{
-		BackButton = ui_button_movement(BackButton, CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f,
+		LevelSelectBackButton = ui_button_movement(LevelSelectBackButton, CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f,
 			CP_System_GetWindowHeight() * 1.50f); // from l_select back to main menu
 	}
 	else if (currentGameState == MainMenu)
 	{
-		BackButton = ui_button_movement(BackButton, CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f,
+		LevelSelectBackButton = ui_button_movement(LevelSelectBackButton, CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f,
 			CP_System_GetWindowHeight() * 0.8f); // from l_select back to main menu
 	}
 }
@@ -397,25 +526,25 @@ int level_select_finished_moving(void)
 {
 	if (currentGameState == LevelSelect)
 	{
-		if (button_has_finished_moving(*levelButtons, CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight()))
+		if (button_has_finished_moving(*LevelButtons, CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight()))
 		{
-			for (Button* b = levelButtons; b < levelButtons + MAX_NUMBER_OF_LEVEL; b++)
+			for (Button* b = LevelButtons; b < LevelButtons + MAX_NUMBER_OF_LEVEL; b++)
 			{
 				b->interpolationTime = 0.0f;
 			}
-			BackButton.interpolationTime = 0.0f;
+			LevelSelectBackButton.interpolationTime = 0.0f;
 			return 1;
 		}
 	}
 	else if (currentGameState == MainMenu)
 	{
-		if (button_has_finished_moving(*levelButtons, CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 0.35f))
+		if (button_has_finished_moving(*LevelButtons, CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 0.35f))
 		{
-			for (Button* b = levelButtons; b < levelButtons + MAX_NUMBER_OF_LEVEL; b++)
+			for (Button* b = LevelButtons; b < LevelButtons + MAX_NUMBER_OF_LEVEL; b++)
 			{
 				b->interpolationTime = 0.0f;
 			}
-			BackButton.interpolationTime = 0.0f;
+			LevelSelectBackButton.interpolationTime = 0.0f;
 			return 1;
 		}
 	}
