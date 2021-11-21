@@ -76,10 +76,10 @@ void turret_init(void)
 	}
 
 	//set price of turrets and stuff
-	turret_purchasing[TP_PRICE][T_BASIC] = 25;
-	turret_purchasing[TP_PRICE][T_SLOW] = 30;
-	turret_purchasing[TP_PRICE][T_HOMING] = 50;
-	turret_purchasing[TP_PRICE][T_MINE] = 45;
+	turret_purchasing[TP_PRICE][T_BASIC] = 20;
+	turret_purchasing[TP_PRICE][T_SLOW] = 45;
+	turret_purchasing[TP_PRICE][T_HOMING] = 100;
+	turret_purchasing[TP_PRICE][T_MINE] = 50;
 	turret_purchasing[TP_PRICE][T_WALL] = 10;
 
 	turret_purchasing[TP_UPGRADE_PRICE][T_BASIC] = 20;
@@ -129,15 +129,15 @@ void place_turret(TurretType type, int index_x, int index_y)
 		{
 		case T_BASIC:
 			turret[i].mod.range = Game.gridWidth * 2;
-			turret[i].mod.damage = 0.5f;
+			turret[i].mod.damage = 1.0f;
 			turret[i].animCounter = 0;
 			turret[i].turretAnimTimer = 0;
-			turret[i].mod.speed = 200.f;
+			turret[i].mod.speed = 250.f;
 			break;
 		case T_SLOW: // FREEZE TURRET
 			turret[i].mod.range = Game.gridWidth * 2;
 			turret[i].mod.damage = 0.5f;
-			turret[i].mod.slow_amt = 0.6f; //leaving it at 1 means no slow if slow_amt < 1 then slow
+			turret[i].mod.slow_amt = 0.7f; //leaving it at 1 means no slow if slow_amt < 1 then slow
 			turret[i].mod.slow_timer = 2.f;
 			turret[i].animCounter = 0;
 			turret[i].turretAnimTimer = 0;
@@ -145,7 +145,7 @@ void place_turret(TurretType type, int index_x, int index_y)
 			break;
 		case T_HOMING:
 			turret[i].mod.range = Game.gridWidth * 2;
-			turret[i].mod.damage = 0.7f;
+			turret[i].mod.damage = 0.6f;
 			turret[i].dir.x = -1;
 			turret[i].dir.y = -1;
 			turret[i].animCounter = 0;
@@ -243,7 +243,7 @@ void upgrade_turret(int t_index)
 	switch (turret[t_index].type)
 	{
 	case T_BASIC:
-		turret[t_index].mod.damage += 0.1f;
+		turret[t_index].mod.damage += 0.15f;
 		turret[t_index].mod.range += turret[t_index].mod.range * 0.05f;
 		turret[t_index].mod.shoot_rate -= 0.02f;
 		//increase the price for another upgrade
@@ -258,7 +258,7 @@ void upgrade_turret(int t_index)
 		turret[t_index].upgrade_price += 25;
 		break;
 	case T_HOMING:
-		turret[t_index].mod.damage += 0.3f;
+		turret[t_index].mod.damage += 0.25f;
 		turret[t_index].mod.range += turret[t_index].mod.range * 0.05f;
 		turret[t_index].mod.shoot_rate -= 0.01f;
 		//increase the price for another upgrade
@@ -658,7 +658,7 @@ void col_type_projectile(Projectile* p)
 				Enemy[i].state = Hurt;
 				Enemy[i].timer = 0;
 			}
-
+		
 		}
 		break;
 	}
