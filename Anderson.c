@@ -346,7 +346,6 @@ void reduce_building_phase_time()
 	if (buildingTime < 0.05f)
 	{
 		set_building_time(0.0f);
-		Level[currentGameLevel].currentWave += 1;
 		currentGameState = Wave;
 		if (Level[currentGameLevel].currentWave == 0) {
 			Level[currentGameLevel].currentEffect = 0;
@@ -407,19 +406,42 @@ void game_win_lose_check(void)
 	// checks portal health && number of enemies left.
 	if (Level[currentGameLevel].health <= 0)
 	{
+		// free memory
+		for (int i = 0; i < gameGridRows; i++) {
+			free(Level[currentGameLevel].grid[i]);
+		}
+		free(Level[currentGameLevel].grid);
+		//Free memory for turret_on_grid
+		for (int i = 0; i < gameGridCols; i++) {
+			free(turret_on_grid[i]);
+		}
+		free(turret_on_grid);
+
 		// game lost
 		currentGameState = Lose;
+
 	}
 	else if (enemiesLeft == 0)
 	{
 		if (Level[currentGameLevel].currentWave == MAX_NUMBER_OF_WAVES - 1)
 		{
+			// free memory
+			for (int i = 0; i < gameGridRows; i++) {
+				free(Level[currentGameLevel].grid[i]);
+			}
+			free(Level[currentGameLevel].grid);
+			//Free memory for turret_on_grid
+			for (int i = 0; i < gameGridCols; i++) {
+				free(turret_on_grid[i]);
+			}
+			free(turret_on_grid);
 			currentGameState = Win;
 		}
 		else // if still in the midst of the current level
 		{
 			set_building_time(BUILDING_PHASE_TIME);
 			currentGameState = Building;
+			Level[currentGameLevel].currentWave += 1;
 		}
 	}
 }

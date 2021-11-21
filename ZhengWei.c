@@ -500,7 +500,7 @@ void level1_init(void) {
 	Level[0].health = 100;
 	Level[0].phantomQuartz = 50000;
 	Level[0].goldQuartz = 0;
-	Level[0].currentWave = -1;// starts with building phase which increment wave by 1
+	Level[0].currentWave = 0;
 	Level[0].currentEffect = NoEnvironmentalEffects;
 	Level[0].currentPowerUpLevel.morePhantomQuartz = 0;
 	Level[0].currentPowerUpLevel.reduceEnemySpeed = 0;
@@ -518,6 +518,40 @@ void level1_init(void) {
 	general_level_enemies_init(0, 8, 30, 0, 0, 0);
 	general_level_enemies_init(0, 9, 30, 0, 0, 0);
 
+	game_grid_init();
+	isPlacingTurret = T_MAX;
+	turretSelectedToUpgrade = NO_TURRET_SELECTED;
+	powerUpMenu = FALSE;
+	pathfinding_init(&Level[currentGameLevel]);
+	environment_init(&Level[currentGameLevel]);
+
+	//turret menu items
+	pause_button_init();
+	turret_basic_button_init();
+	turret_slow_button_init();
+	turret_homing_button_init();
+	turret_mine_button_init();
+	
+	phantomQuartz_init();
+	goldQuartz_init();
+	health_init();
+	menu_swap_init();
+	wave_number_display_init();
+	battlefield_effects_display_init();
+	monster_remaining_display_init();
+	upgrade_menu_init();
+	upgrade_button_init();
+	sell_button_init();
+
+	turret_init();
+	Enemies_init();
+
+	pathfinding_reset(&Level[currentGameLevel]);
+	pathfinding_calculate_cost(&Level[currentGameLevel]);
+	pathfinding_update(&Level[currentGameLevel]);
+	
+	set_building_time(BUILDING_PHASE_TIME);
+	currentGameState = Building;
 }
 
 void level2_init(void) {
@@ -543,7 +577,7 @@ void level2_init(void) {
 	Level[1].health = 100;
 	Level[1].phantomQuartz = 50;
 	Level[1].goldQuartz = 0;
-	Level[1].currentWave = -1;// starts with building phase which increment wave by 1
+	Level[1].currentWave = 0;
 	Level[1].currentEffect = NoEnvironmentalEffects;
 	Level[1].currentPowerUpLevel.morePhantomQuartz = 0;
 	Level[1].currentPowerUpLevel.reduceEnemySpeed = 0;
@@ -562,6 +596,40 @@ void level2_init(void) {
 	general_level_enemies_init(1, 8, 30, 10, 0, 0);
 	general_level_enemies_init(1, 9, 25, 15, 0, 0);
 
+	game_grid_init();
+	isPlacingTurret = T_MAX;
+	turretSelectedToUpgrade = NO_TURRET_SELECTED;
+	powerUpMenu = FALSE;
+	pathfinding_init(&Level[currentGameLevel]);
+	environment_init(&Level[currentGameLevel]);
+
+	//turret menu items
+	pause_button_init();
+	turret_basic_button_init();
+	turret_slow_button_init();
+	turret_homing_button_init();
+	turret_mine_button_init();
+
+	phantomQuartz_init();
+	goldQuartz_init();
+	health_init();
+	menu_swap_init();
+	wave_number_display_init();
+	battlefield_effects_display_init();
+	monster_remaining_display_init();
+	upgrade_menu_init();
+	upgrade_button_init();
+	sell_button_init();
+
+	turret_init();
+	Enemies_init();
+
+	pathfinding_reset(&Level[currentGameLevel]);
+	pathfinding_calculate_cost(&Level[currentGameLevel]);
+	pathfinding_update(&Level[currentGameLevel]);
+
+	set_building_time(BUILDING_PHASE_TIME);
+	currentGameState = Building;
 }
 
 void level3_init(void) {
@@ -587,7 +655,7 @@ void level3_init(void) {
 	Level[2].health = 100;
 	Level[2].phantomQuartz = 50;
 	Level[2].goldQuartz = 0;
-	Level[2].currentWave = -1;// starts with building phase which increment wave by 1
+	Level[2].currentWave = 0;
 	Level[2].currentEffect = NoEnvironmentalEffects;
 	Level[2].currentPowerUpLevel.morePhantomQuartz = 0;
 	Level[2].currentPowerUpLevel.reduceEnemySpeed = 0;
@@ -604,6 +672,41 @@ void level3_init(void) {
 	general_level_enemies_init(2, 7, 20, 10, 5, 0);
 	general_level_enemies_init(2, 8, 20, 10, 10, 0);
 	general_level_enemies_init(2, 9, 25, 10, 10, 0);
+
+	game_grid_init();
+	isPlacingTurret = T_MAX;
+	turretSelectedToUpgrade = NO_TURRET_SELECTED;
+	powerUpMenu = FALSE;
+	pathfinding_init(&Level[currentGameLevel]);
+	environment_init(&Level[currentGameLevel]);
+
+	//turret menu items
+	pause_button_init();
+	turret_basic_button_init();
+	turret_slow_button_init();
+	turret_homing_button_init();
+	turret_mine_button_init();
+
+	phantomQuartz_init();
+	goldQuartz_init();
+	health_init();
+	menu_swap_init();
+	wave_number_display_init();
+	battlefield_effects_display_init();
+	monster_remaining_display_init();
+	upgrade_menu_init();
+	upgrade_button_init();
+	sell_button_init();
+
+	turret_init();
+	Enemies_init();
+
+	pathfinding_reset(&Level[currentGameLevel]);
+	pathfinding_calculate_cost(&Level[currentGameLevel]);
+	pathfinding_update(&Level[currentGameLevel]);
+
+	set_building_time(BUILDING_PHASE_TIME);
+	currentGameState = Building;
 
 }
 
@@ -630,7 +733,7 @@ void level4_init(void) {
 	Level[3].health = 100;
 	Level[3].phantomQuartz = 50;
 	Level[3].goldQuartz = 0;
-	Level[3].currentWave = -1;// starts with building phase which increment wave by 1
+	Level[3].currentWave = 0;
 	Level[3].currentEffect = NoEnvironmentalEffects;
 	Level[3].currentPowerUpLevel.morePhantomQuartz = 0;
 	Level[3].currentPowerUpLevel.reduceEnemySpeed = 0;
@@ -648,6 +751,41 @@ void level4_init(void) {
 	general_level_enemies_init(3, 7, 10, 10, 10, 1);
 	general_level_enemies_init(3, 8, 15, 15, 10, 2);
 	general_level_enemies_init(3, 9, 20, 10, 15, 3);
+
+	game_grid_init();
+	isPlacingTurret = T_MAX;
+	turretSelectedToUpgrade = NO_TURRET_SELECTED;
+	powerUpMenu = FALSE;
+	pathfinding_init(&Level[currentGameLevel]);
+	environment_init(&Level[currentGameLevel]);
+
+	//turret menu items
+	pause_button_init();
+	turret_basic_button_init();
+	turret_slow_button_init();
+	turret_homing_button_init();
+	turret_mine_button_init();
+
+	phantomQuartz_init();
+	goldQuartz_init();
+	health_init();
+	menu_swap_init();
+	wave_number_display_init();
+	battlefield_effects_display_init();
+	monster_remaining_display_init();
+	upgrade_menu_init();
+	upgrade_button_init();
+	sell_button_init();
+
+	turret_init();
+	Enemies_init();
+
+	pathfinding_reset(&Level[currentGameLevel]);
+	pathfinding_calculate_cost(&Level[currentGameLevel]);
+	pathfinding_update(&Level[currentGameLevel]);
+
+	set_building_time(BUILDING_PHASE_TIME);
+	currentGameState = Building;
 }
 
 void level5_init(void) {
@@ -673,7 +811,7 @@ void level5_init(void) {
 	Level[4].health = 100;
 	Level[4].phantomQuartz = 50;
 	Level[4].goldQuartz = 0;
-	Level[4].currentWave = -1;// starts with building phase which increment wave by 1
+	Level[4].currentWave = 0;
 	Level[4].currentEffect = NoEnvironmentalEffects;
 	Level[4].currentPowerUpLevel.morePhantomQuartz = 0;
 	Level[4].currentPowerUpLevel.reduceEnemySpeed = 0;
@@ -690,6 +828,41 @@ void level5_init(void) {
 	general_level_enemies_init(4, 7, 15, 10, 10, 1);
 	general_level_enemies_init(4, 8, 15, 15, 15, 2);
 	general_level_enemies_init(4, 9, 10, 10, 10, 5);
+
+	game_grid_init();
+
+	//turret menu items
+	pause_button_init();
+	turret_basic_button_init();
+	turret_slow_button_init();
+	turret_homing_button_init();
+	turret_mine_button_init();
+
+	phantomQuartz_init();
+	goldQuartz_init();
+	health_init();
+	menu_swap_init();
+	wave_number_display_init();
+	battlefield_effects_display_init();
+	monster_remaining_display_init();
+	upgrade_menu_init();
+	upgrade_button_init();
+	sell_button_init();
+
+	isPlacingTurret = T_MAX;
+	turretSelectedToUpgrade = NO_TURRET_SELECTED;
+	powerUpMenu = FALSE;
+	pathfinding_init(&Level[currentGameLevel]);
+	environment_init(&Level[currentGameLevel]);
+	turret_init();
+	Enemies_init();
+
+	pathfinding_reset(&Level[currentGameLevel]);
+	pathfinding_calculate_cost(&Level[currentGameLevel]);
+	pathfinding_update(&Level[currentGameLevel]);
+
+	set_building_time(BUILDING_PHASE_TIME);
+	currentGameState = Building;
 }
 
 void render_button_pressed(void) {
@@ -1065,7 +1238,7 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 				totalEnemies += Level[currentGameLevel].waveEnemies[Level[currentGameLevel].currentWave][i];
 			}
 			else if (currentGameState == Building) { // Forecast for next wave instead of current empty wave
-				totalEnemies += Level[currentGameLevel].waveEnemies[Level[currentGameLevel].currentWave + 1][i];
+				totalEnemies += Level[currentGameLevel].waveEnemies[Level[currentGameLevel].currentWave][i];
 			}
 		}
 		sprintf_s(temp, sizeof(temp), "%d/%d", enemiesLeft, totalEnemies);

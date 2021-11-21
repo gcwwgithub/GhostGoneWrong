@@ -56,7 +56,6 @@ void game_update(void)
 
 	if (currentGameState == Wave)
 	{
-		game_win_lose_check();
 		//do enemy update first
 		update_enemy();
 
@@ -91,6 +90,7 @@ void game_update(void)
 		for (int i = 0; i < NUMBER_OF_MENU_OBJECTS - 2; i++) {// Last object will double render game grid. Second last object is rendered seperately
 			render_turret_menu_object(GameMenuObject[i], i);
 		}
+		game_win_lose_check();
 	}
 	else if (currentGameState == Building)
 	{
@@ -148,50 +148,38 @@ void game_update(void)
 		{
 			init_next_level(currentGameLevel + 1);
 		}
-		//do enemy update first
-		update_enemy();
+		////do enemy update first
+		//update_enemy();
 
-		//do turret & projectile update next
-		update_turret();
-		update_projectile();
-
-
-		//render all the stuff
-		render_game_background(currentGameLevel);
-		render_game_grid();
-		render_path(&Level[currentGameLevel]);
-
-		render_turret_menu_object(GameMenuObject[NUMBER_OF_MENU_OBJECTS - 2], NUMBER_OF_MENU_OBJECTS - 2);// Render Upgrade menu first
-		for (int i = 0; i < NUMBER_OF_MENU_OBJECTS - 2; i++) {// Last object will double render game grid. Second last object is rendered seperately
-			render_turret_menu_object(GameMenuObject[i], i);
-		}
-		update_portal();
-
-		draw_multiple_enemies();
-		render_all_portal_effects();
-		render_turret();
-		render_projectile();
-
-		render_bullet_circles();
-
-		render_button_pressed();
+		////do turret & projectile update next
+		//update_turret();
+		//update_projectile();
 
 
-		render_environment();
+		////render all the stuff
+		//render_game_background(currentGameLevel);
+		//render_game_grid();
+		//render_path(&Level[currentGameLevel]);
+
+		//render_turret_menu_object(GameMenuObject[NUMBER_OF_MENU_OBJECTS - 2], NUMBER_OF_MENU_OBJECTS - 2);// Render Upgrade menu first
+		//for (int i = 0; i < NUMBER_OF_MENU_OBJECTS - 2; i++) {// Last object will double render game grid. Second last object is rendered seperately
+		//	render_turret_menu_object(GameMenuObject[i], i);
+		//}
+		//update_portal();
+
+		//draw_multiple_enemies();
+		//render_all_portal_effects();
+		//render_turret();
+		//render_projectile();
+
+		//render_bullet_circles();
+
+		//render_button_pressed();
+
+
+		//render_environment();
 
 		render_end_screen(); // this should pause the game by way of gameLost.
-
-		// free memory
-		for (int i = 0; i < gameGridRows; i++) {
-			free(Level[currentGameLevel].grid[i]);
-		}
-		free(Level[currentGameLevel].grid);
-		currentGameState = MainMenu;
-		//Free memory for turret_on_grid
-		for (int i = 0; i < gameGridCols; i++) {
-			free(turret_on_grid[i]);
-		}
-		free(turret_on_grid);
 
 	}
 	else if (currentGameState == MainMenu)
@@ -252,206 +240,21 @@ void game_update(void)
 			if (btn_is_pressed(LevelButtons[0].buttonData))
 			{
 				level1_init();
-				//game grid 
-				game_grid_init();
-				isPlacingTurret = T_MAX;
-				turretSelectedToUpgrade = NO_TURRET_SELECTED;
-				powerUpMenu = FALSE;
-				pathfinding_init(&Level[currentGameLevel]);
-				environment_init(&Level[currentGameLevel]);
-
-				//turret menu items
-				pause_button_init();
-				turret_basic_button_init();
-				turret_slow_button_init();
-				turret_homing_button_init();
-				turret_mine_button_init();
-				phantomQuartz_init();
-				goldQuartz_init();
-
-
-				health_init();
-				menu_swap_init();
-				wave_number_display_init();
-				battlefield_effects_display_init();
-				monster_remaining_display_init();
-				upgrade_menu_init();
-				upgrade_button_init();
-				sell_button_init();
-
-				turret_init();
-
-				//Initialise Enemies
-				Enemies_init();
-
-				pathfinding_reset(&Level[currentGameLevel]);
-				pathfinding_calculate_cost(&Level[currentGameLevel]);
-				pathfinding_update(&Level[currentGameLevel]);
-				set_building_time(BUILDING_PHASE_TIME);
-				currentGameState = Building;
 			}
 			else if (btn_is_pressed(LevelButtons[1].buttonData)) {
 				level2_init();
-				//game grid 
-				game_grid_init();
-				isPlacingTurret = T_MAX;
-				turretSelectedToUpgrade = NO_TURRET_SELECTED;
-				powerUpMenu = FALSE;
-				pathfinding_init(&Level[currentGameLevel]);
-				environment_init(&Level[currentGameLevel]);
-
-				//turret menu items
-				pause_button_init();
-				turret_basic_button_init();
-				turret_slow_button_init();
-				turret_homing_button_init();
-				turret_mine_button_init();
-				phantomQuartz_init();
-				goldQuartz_init();
-
-
-				health_init();
-				menu_swap_init();
-				wave_number_display_init();
-				battlefield_effects_display_init();
-				monster_remaining_display_init();
-				upgrade_menu_init();
-				upgrade_button_init();
-				sell_button_init();
-
-				turret_init();
-
-				//Initialise Enemies
-				Enemies_init();
-
-				pathfinding_reset(&Level[currentGameLevel]);
-				pathfinding_calculate_cost(&Level[currentGameLevel]);
-				pathfinding_update(&Level[currentGameLevel]);
-				set_building_time(BUILDING_PHASE_TIME);
-				currentGameState = Building;
 			}
 
 			else if (btn_is_pressed(LevelButtons[2].buttonData)) {
 				level3_init();
-				//game grid 
-				game_grid_init();
-				isPlacingTurret = T_MAX;
-				turretSelectedToUpgrade = NO_TURRET_SELECTED;
-				powerUpMenu = FALSE;
-				pathfinding_init(&Level[currentGameLevel]);
-				environment_init(&Level[currentGameLevel]);
-
-				//turret menu items
-				pause_button_init();
-				turret_basic_button_init();
-				turret_slow_button_init();
-				turret_homing_button_init();
-				turret_mine_button_init();
-				phantomQuartz_init();
-				goldQuartz_init();
-
-
-				health_init();
-				menu_swap_init();
-				wave_number_display_init();
-				battlefield_effects_display_init();
-				monster_remaining_display_init();
-				upgrade_menu_init();
-				upgrade_button_init();
-				sell_button_init();
-
-				turret_init();
-
-				//Initialise Enemies
-				Enemies_init();
-
-				pathfinding_reset(&Level[currentGameLevel]);
-				pathfinding_calculate_cost(&Level[currentGameLevel]);
-				pathfinding_update(&Level[currentGameLevel]);
-				set_building_time(BUILDING_PHASE_TIME);
-				currentGameState = Building;
 			}
 
 			else if (btn_is_pressed(LevelButtons[3].buttonData)) {
 				level4_init();
-				//game grid 
-				game_grid_init();
-				isPlacingTurret = T_MAX;
-				turretSelectedToUpgrade = NO_TURRET_SELECTED;
-				powerUpMenu = FALSE;
-				pathfinding_init(&Level[currentGameLevel]);
-				environment_init(&Level[currentGameLevel]);
-
-				//turret menu items
-				pause_button_init();
-				turret_basic_button_init();
-				turret_slow_button_init();
-				turret_homing_button_init();
-				turret_mine_button_init();
-				phantomQuartz_init();
-				goldQuartz_init();
-
-
-				health_init();
-				menu_swap_init();
-				wave_number_display_init();
-				battlefield_effects_display_init();
-				monster_remaining_display_init();
-				upgrade_menu_init();
-				upgrade_button_init();
-				sell_button_init();
-
-				turret_init();
-
-				//Initialise Enemies
-				Enemies_init();
-
-				pathfinding_reset(&Level[currentGameLevel]);
-				pathfinding_calculate_cost(&Level[currentGameLevel]);
-				pathfinding_update(&Level[currentGameLevel]);
-				set_building_time(BUILDING_PHASE_TIME);
-				currentGameState = Building;
 			}
 
 			else if (btn_is_pressed(LevelButtons[4].buttonData)) {
 				level5_init();
-				//game grid 
-				game_grid_init();
-				isPlacingTurret = T_MAX;
-				turretSelectedToUpgrade = NO_TURRET_SELECTED;
-				powerUpMenu = FALSE;
-				pathfinding_init(&Level[currentGameLevel]);
-				environment_init(&Level[currentGameLevel]);
-
-				//turret menu items
-				pause_button_init();
-				turret_basic_button_init();
-				turret_slow_button_init();
-				turret_homing_button_init();
-				turret_mine_button_init();
-				phantomQuartz_init();
-				goldQuartz_init();
-
-
-				health_init();
-				menu_swap_init();
-				wave_number_display_init();
-				battlefield_effects_display_init();
-				monster_remaining_display_init();
-				upgrade_menu_init();
-				upgrade_button_init();
-				sell_button_init();
-
-				turret_init();
-
-				//Initialise Enemies
-				Enemies_init();
-
-				pathfinding_reset(&Level[currentGameLevel]);
-				pathfinding_calculate_cost(&Level[currentGameLevel]);
-				pathfinding_update(&Level[currentGameLevel]);
-				set_building_time(BUILDING_PHASE_TIME);
-				currentGameState = Building;
 			}
 
 			else if (btn_is_pressed(LevelSelectBackButton.buttonData))
@@ -513,7 +316,6 @@ void game_update(void)
 				free(Level[currentGameLevel].grid[i]);
 			}
 			free(Level[currentGameLevel].grid);
-			currentGameState = MainMenu;
 			//Free memory for turret_on_grid
 			for (int i = 0; i < gameGridCols; i++) {
 				free(turret_on_grid[i]);
@@ -529,7 +331,6 @@ void game_update(void)
 				free(Level[currentGameLevel].grid[i]);
 			}
 			free(Level[currentGameLevel].grid);
-			currentGameState = MainMenu;
 			//Free memory for turret_on_grid
 			for (int i = 0; i < gameGridCols; i++) {
 				free(turret_on_grid[i]);
