@@ -55,7 +55,7 @@ void enemy_move(enemy* r, float Enemy_PathpointsX[], float Enemy_PathpointsY[], 
 	}
 	if (r->CurrentWaypoint + 1 == number_of_points && r->state != Adjusting) {
 		if (r->state != Death && r->state != Inactive && r->state != Reached) {
-			Level->health -= 10;
+			Level[CurrentGameLevel].health -= 10;
 			insert_new_node_portal(&portalEnterFirstNode, r->data.xOrigin,
 				r->data.yOrigin, 0);
 		}
@@ -202,7 +202,7 @@ void Enemies_init(void) {
 void Basic_Ghost(enemy* r) { // setup variable for basic ghost enemy
 	r->health = 4;
 	r->max_health = 4;
-	r->speed = 15;
+	r->speed = 20;
 	r->CurrentWaypoint = 0;
 	r->data.xOrigin = Xarray[0];
 	r->data.yOrigin = Yarray[0];
@@ -227,7 +227,7 @@ void Basic_Ghost(enemy* r) { // setup variable for basic ghost enemy
 void Fast_Ghost_init(enemy* r) { // setup variable for fast ghost enemy
 	r->health = 2;
 	r->max_health = 2;
-	r->speed = 40;
+	r->speed = 60;
 	r->CurrentWaypoint = 0;
 	r->data.xOrigin = Xarray[0];
 	r->data.yOrigin = Yarray[0];
@@ -266,7 +266,7 @@ void Fat_Ghost_init(enemy* r) {
 	r->data.height = Game.gridWidth;
 	r->state = Inactive;
 	r->timer = 0;
-	r->points = 300;
+	r->points = 50;
 	//for the freeze turret & enemy interaction
 	r->slow_amt = 1;
 	r->slow_timer = 0;
@@ -282,8 +282,8 @@ void update_enemy(void) {
 
 	}
 	for (int i = 0; i < MAX_ENEMIES; i++) {
-		int spawn_timer = 4;
-		if ((Enemy[i].state == Inactive) && (Enemy[i].health >= 1) && (count / spawn_timer <= MAX_ENEMIES)) {
+		int spawn_timer = 2;
+		if ((Enemy[i].state == Inactive) && (Enemy[i].health > 0) && (count / spawn_timer <= MAX_ENEMIES)) {
 			int state_check=0;
 			int b = count;
 			for (int j=0; j < MAX_ENEMIES; j++) {
@@ -400,7 +400,7 @@ void Update_Path_Array(int CurrentGameLevel) {
 void grimReaper_init(enemy* r) {
 	r->health = 20;
 	r->max_health = 20;
-	r->speed = 15;
+	r->speed = 20;
 	r->CurrentWaypoint = 0;
 	r->data.xOrigin = Xarray[0];
 	r->data.yOrigin = Yarray[0];
@@ -414,7 +414,7 @@ void grimReaper_init(enemy* r) {
 	r->data.height = Game.gridWidth;
 	r->state = Inactive;
 	r->timer = 0;
-	r->points = 300;
+	r->points = 200;
 	//for the freeze turret & enemy interaction
 	r->slow_amt = 1;
 	r->slow_timer = 0;
@@ -458,7 +458,7 @@ void Reaper_minion_init(enemy* r) {
 
 void Reaper_ability(enemy* r) {
 	if (r->type == grimReaper) {
-		if (r->health == 0.5 * r->max_health) {
+		if (r->health <= 0.5 * r->max_health) {
 			if (r->charges == charges_1) {
 				Reaper_minion_init(r);
 			}
