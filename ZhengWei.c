@@ -500,7 +500,7 @@ void level1_init(void) {
 	Level[0].health = 100;
 	Level[0].phantomQuartz = 50000;
 	Level[0].goldQuartz = 0;
-	Level[0].currentWave = 0;
+	Level[0].currentWave = 8;
 	Level[0].currentEffect = NoEnvironmentalEffects;
 	Level[0].currentPowerUpLevel.morePhantomQuartz = 0;
 	Level[0].currentPowerUpLevel.reduceEnemySpeed = 0;
@@ -1221,6 +1221,7 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 		CP_Settings_Fill(COLOR_WHITE);
 		sprintf_s(temp, sizeof(temp), "Effects");
 		CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 2, menuObjectX.yOrigin + menuObjectX.height / 5);
+		printf("%d", Level[currentGameLevel].currentEffect);
 		RenderNormal(battlefieldEffectIconSpriteSheet, battlefieldEffectIconArray[Level[currentGameLevel].currentEffect],
 			menuObjectX.xOrigin + menuObjectX.width / 2, menuObjectX.yOrigin + menuObjectX.height / 1.65,
 			85 * scalingFactor, 85 * scalingFactor);
