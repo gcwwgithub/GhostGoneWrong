@@ -556,10 +556,15 @@ void Reset_enemies(int current_level) {
 void Check_pathAdjustment(enemy* r) {
 	int XorY = 0;
 	int check = 0;
-	if (r->state != Adjusting&&r->state != Inactive&&r->state !=Death&&r->state != Reached) {
+	if (r->state != Inactive&&r->state !=Death&&r->state != Reached) {
 		for (int j = 0; j < Number_of_points; j++) {
-			if (r->EnemyPathX[r->CurrentWaypoint + 1] == Xarray[j] && r->EnemyPathY[r->CurrentWaypoint + 1] == Yarray[j]) {
+			if (r->state != Adjusting&&(r->EnemyPathX[r->CurrentWaypoint + 1] == Xarray[j] && r->EnemyPathY[r->CurrentWaypoint + 1] == Yarray[j])) {
 				check++;
+			}
+			else if (r->state == Adjusting) {
+				if (r->EnemyPathX[2] == Xarray[j] && r->EnemyPathY[2] == Yarray[j]) {
+					check++;
+				}
 			}
 		}
 		if (check < 1) {
