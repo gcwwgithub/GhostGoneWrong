@@ -429,9 +429,9 @@ void Reaper_minion_init(enemy* r) {
 		if (a == 0) {
 			if (Enemy[i].state == Inactive) {
 				Basic_Ghost(&Enemy[i]);
-				Enemy[i].data.xOrigin = Xarray[r->CurrentWaypoint - 1];
-				Enemy[i].data.yOrigin = Yarray[r->CurrentWaypoint - 1];
-				Enemy[i].CurrentWaypoint = r->CurrentWaypoint - 1;
+				Enemy[i].data.xOrigin = Xarray[r->CurrentWaypoint];
+				Enemy[i].data.yOrigin = Yarray[r->CurrentWaypoint];
+				Enemy[i].CurrentWaypoint = r->CurrentWaypoint;
 				Enemy[i].state = Moving;
 				Enemy[i].isToken = 1;
 				a++;
