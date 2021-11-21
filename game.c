@@ -20,7 +20,7 @@ void game_init(void)
 	init_linkedlist_variables();
 	init_game_font();
 	init_digipen_logo();
-	currentGameState = MainMenu;
+	currentGameState = LogoSplash;
 	buildingTime = BUILDING_PHASE_TIME;
 	dpLogoTime = DIGIPEN_LOGO_DISPLAY_TIME;
 	fadeOutTime = FADE_OUT_TIME;
