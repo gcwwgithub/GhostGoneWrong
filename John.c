@@ -282,7 +282,7 @@ void update_enemy(void) {
 
 	}
 	for (int i = 0; i < MAX_ENEMIES; i++) {
-		int spawn_timer = 5;
+		int spawn_timer = 4;
 		if ((Enemy[i].state == Inactive) && (Enemy[i].health >= 1) && (count / spawn_timer <= MAX_ENEMIES)) {
 			int state_check=0;
 			int b = count;
@@ -319,6 +319,7 @@ void update_enemy(void) {
 		EnemyDeath(&Enemy[i], currentGameLevel);
 		Reaper_ability(&Enemy[i]);
 		Environment_check(currentGameLevel);
+		Current_wave_check(&Enemy[i]);
 	}
 	enemy* En = &Enemy[0];
 }
@@ -836,6 +837,15 @@ void Environment_check(int CurrentGameLevel) {
 void Change_current_effect(int CurrentGameLevel) {
 	EnvironmentalEffects a = CP_Random_RangeInt(0, 11);
 	Level[CurrentGameLevel].currentEffect = a;
+}
+
+void Current_wave_check(enemy* r) {
+	if (r->WavePowUp_isActive == 0) {
+		int a = Level[currentGameLevel].currentWave;
+		r->max_health += 1 * a;
+		r->health += 1 * a;
+		r->WavePowUp_isActive = 1;
+	}
 }
 
 /*void movement_redone(enemy* r) {
