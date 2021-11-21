@@ -575,7 +575,7 @@ void level2_init(void) {
 	Level[1].exitRow = gameGridRows - 1;
 	Level[1].exitCol = (gameGridCols - 1);
 	Level[1].health = 100;
-	Level[1].phantomQuartz = 50;
+	Level[1].phantomQuartz = 200;
 	Level[1].goldQuartz = 0;
 	Level[1].currentWave = 0;
 	Level[1].currentEffect = NoEnvironmentalEffects;
@@ -653,7 +653,7 @@ void level3_init(void) {
 	Level[2].exitRow = 0;
 	Level[2].exitCol = 0;
 	Level[2].health = 100;
-	Level[2].phantomQuartz = 50;
+	Level[2].phantomQuartz = 200;
 	Level[2].goldQuartz = 0;
 	Level[2].currentWave = 0;
 	Level[2].currentEffect = NoEnvironmentalEffects;
@@ -731,7 +731,7 @@ void level4_init(void) {
 	Level[3].exitRow = gameGridRows - 1;
 	Level[3].exitCol = 0;
 	Level[3].health = 100;
-	Level[3].phantomQuartz = 50;
+	Level[3].phantomQuartz = 200;
 	Level[3].goldQuartz = 0;
 	Level[3].currentWave = 0;
 	Level[3].currentEffect = NoEnvironmentalEffects;
@@ -809,7 +809,7 @@ void level5_init(void) {
 	Level[4].exitRow = gameGridRows - 1;
 	Level[4].exitCol = (gameGridCols - 1)/2;
 	Level[4].health = 100;
-	Level[4].phantomQuartz = 50;
+	Level[4].phantomQuartz = 200;
 	Level[4].goldQuartz = 0;
 	Level[4].currentWave = 0;
 	Level[4].currentEffect = NoEnvironmentalEffects;
@@ -961,8 +961,8 @@ void render_button_pressed(void) {
 	case GoldQuartzMenu:
 		isPlacingTurret = T_MAX;
 		turretSelectedToUpgrade = NO_TURRET_SELECTED;
-		if (Level[currentGameLevel].phantomQuartz >= 100) {
-			Level[currentGameLevel].phantomQuartz -= 100;
+		if (Level[currentGameLevel].phantomQuartz >= 1000) {
+			Level[currentGameLevel].phantomQuartz -= 1000;
 			Level[currentGameLevel].goldQuartz += 10;
 		}
 		mouse_reset();
