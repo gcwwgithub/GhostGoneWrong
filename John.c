@@ -844,6 +844,7 @@ void Current_wave_check(enemy* r) {
 		int a = Level[currentGameLevel].currentWave;
 		r->max_health += 1 * a;
 		r->health += 1 * a;
+		r->speed += 1 * a;
 		r->WavePowUp_isActive = 1;
 	}
 }
