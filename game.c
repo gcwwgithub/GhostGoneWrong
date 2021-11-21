@@ -20,7 +20,7 @@ void game_init(void)
 	init_linkedlist_variables();
 	init_game_font();
 	init_digipen_logo();
-	currentGameState = MainMenu;
+	currentGameState = LogoSplash;
 	buildingTime = BUILDING_PHASE_TIME;
 	dpLogoTime = DIGIPEN_LOGO_DISPLAY_TIME;
 	fadeOutTime = FADE_OUT_TIME;
@@ -386,7 +386,7 @@ void game_update(void)
 		{
 			CP_Graphics_ClearBackground(COLOR_GREY);
 		}
-		CP_Image_Draw(digipenLogo, (float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2, (float)CP_Image_GetWidth(digipenLogo) / 2, (float)CP_Image_GetHeight(digipenLogo) / 2, (255 * (int)(fadeOutTime / FADE_OUT_TIME)));
+		CP_Image_Draw(digipenLogo, (float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2, (float)CP_Image_GetWidth(digipenLogo) / 2, (float)CP_Image_GetHeight(digipenLogo) / 2, (int)(255 * (fadeOutTime / FADE_OUT_TIME)));
 		reduce_dp_logo_time();
 	}
 }
