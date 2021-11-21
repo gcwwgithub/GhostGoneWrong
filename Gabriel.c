@@ -192,7 +192,7 @@ void SpriteSheetCalculation(struct SpriteSheetImage* s, CP_Image image, int pixe
 	int width = CP_Image_GetWidth(image);
 	int height = CP_Image_GetHeight(image);
 	int counter = 0;
-	printf("test\n");
+	//printf("test\n");
 	for (int j = 0; j < height / pixelHeight; j++)
 	{
 

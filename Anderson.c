@@ -8,6 +8,8 @@
 CP_Font pixelFont;
 
 buildingTime = BUILDING_PHASE_TIME;
+dpLogoTime = DIGIPEN_LOGO_DISPLAY_TIME;
+fadeOutTime = FADE_OUT_TIME;
 
 #pragma region UI
 
@@ -18,6 +20,11 @@ void init_game_font(void)
 	pixelFont = GAME_FONT;
 	CP_Font_Set(pixelFont);
 	CP_Settings_TextSize(FONT_SIZE);
+}
+
+void init_digipen_logo(void)
+{
+	digipenLogo = CP_Image_Load("./Assets/DigipenLogo.png");
 }
 
 // Assuming all buttons are rectangles
@@ -38,15 +45,9 @@ Button init_text_button(Button button, float buttonPosX, float buttonPosY, float
 
 void init_how_to_play_button(void)
 {
-	// middle of title screen(?)
-	HowToPlayButton.buttonData.xOrigin = CP_System_GetWindowWidth() * 0.5f;
-	HowToPlayButton.buttonData.yOrigin = CP_System_GetWindowHeight() * 0.5f;
-	HowToPlayButton.buttonData.width = BUTTON_WIDTH * 2;
-	HowToPlayButton.buttonData.height = BUTTON_HEIGHT;
-	HowToPlayButton.buttonData.objectType = objectRectangle;
-	HowToPlayButton.textPositionX = HowToPlayButton.buttonData.xOrigin + BUTTON_WIDTH * 0.5f;
-	HowToPlayButton.textPositionY = HowToPlayButton.buttonData.yOrigin + BUTTON_HEIGHT * 0.5f;
-	strcpy_s(HowToPlayButton.textString, sizeof(HowToPlayButton.textString), "How To Play");
+	// implemented later ?
+	//HowToPlayButton = init_text_button(HowToPlayButton,CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.5f,
+	//	BUTTON_WIDTH * 2, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "How To Play");
 }
 
 void init_how_to_play_screen(void)
@@ -279,6 +280,20 @@ void render_pause_screen(void)
 }
 
 #pragma endregion
+
+void reduce_dp_logo_time(void)
+{
+	if (dpLogoTime < 0.0f)
+	{
+		if ((fadeOutTime -= CP_System_GetDt()) < 0.0f)
+		{
+			currentGameState = MainMenu;
+		}
+		CP_Graphics_ClearBackground(CP_Color_Create(
+			(127 * (fadeOutTime / FADE_OUT_TIME)), (127 * (fadeOutTime / FADE_OUT_TIME)), (127 * (fadeOutTime / FADE_OUT_TIME)), 0));
+	}
+	else { dpLogoTime -= CP_System_GetDt(); }
+}
 
 // Terminates game.
 void exit_to_desktop(void)

@@ -8,7 +8,6 @@
 
 void game_init(void)
 {
-
 	//CP_System_ShowConsole(); //pls dont delete this cause scrub me uses printf to debug -gabriel
 	//CP_System_Fullscreen();
 	int gameWindowWidth = 1280;
@@ -20,6 +19,7 @@ void game_init(void)
 	init_spritesheet_array();
 	init_linkedlist_variables();
 	init_game_font();
+	init_digipen_logo();
 	currentGameState = MainMenu;
 
 	//Main menu, level select
@@ -375,6 +375,16 @@ void game_update(void)
 		render_title_screen();
 		render_start_menu();
 		render_credits_screen();
+	}
+	else if (currentGameState == LogoSplash)
+	{
+		// 
+		if (dpLogoTime > 0.0f)
+		{
+			CP_Graphics_ClearBackground(COLOR_GREY);
+		}
+		CP_Image_Draw(digipenLogo, CP_System_GetWindowWidth() / 2, CP_System_GetWindowHeight() / 2, CP_Image_GetWidth(digipenLogo) / 2, CP_Image_GetHeight(digipenLogo) / 2, (255 * (fadeOutTime / FADE_OUT_TIME)));
+		reduce_dp_logo_time();
 	}
 }
 
