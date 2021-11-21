@@ -175,9 +175,9 @@ int btn_is_pressed(Coordinates object1);
 void render_turret_menu_object(Coordinates ButtonX, enum MenuObjectType type);
 
 //graphics
-#define LEFT_MENU_X_END 140.714294
+#define LEFT_MENU_X_END 140.714294f
 
-#define RIGHT_MENU_X_START 998.571411
+#define RIGHT_MENU_X_START 998.571411f
 
 
 float scalingFactor;
