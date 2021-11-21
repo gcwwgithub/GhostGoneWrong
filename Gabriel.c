@@ -113,7 +113,7 @@ void insert_new_node_portal(struct node** list, float xPosInput, float yPosInput
 			portalEnterNodeKeyNumber++;
 			break;
 		}
-		newNode->next = list;
+		newNode->next = *list;
 		newNode->xPos = xPosInput;
 		newNode->yPos = yPosInput;
 		newNode->internalTimer = 0;
