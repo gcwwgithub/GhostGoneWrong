@@ -615,30 +615,7 @@ void init_next_level(int nextGameLevel)
 		break;
 	}
 
-	game_grid_init();
-	isPlacingTurret = T_MAX;
-	turretSelectedToUpgrade = NO_TURRET_SELECTED;
-	powerUpMenu = FALSE;
-	pathfinding_init(&Level[nextGameLevel]);
-	environment_init(&Level[nextGameLevel]);
-
-	//turret menu items
-	pause_button_init();
-	turret_basic_button_init();
-	turret_slow_button_init();
-	turret_homing_button_init();
-	turret_mine_button_init();
-	phantomQuartz_init();
-	goldQuartz_init();
-
-	turret_init();
-	Enemies_init();
-
-	pathfinding_reset(&Level[nextGameLevel]);
-	pathfinding_calculate_cost(&Level[nextGameLevel]);
-	pathfinding_update(&Level[nextGameLevel]);
-	set_building_time(BUILDING_PHASE_TIME);
-	currentGameState = Building;
+	
 	}
 }
 
