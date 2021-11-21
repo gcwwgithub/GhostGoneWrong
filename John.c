@@ -22,7 +22,7 @@ void Basic_Ghost(enemy* r) { // setup variable for basic ghost enemy
 	r->data.height = Game.gridWidth;
 	r->state = Inactive;
 	r->timer = 0;
-	r->points = 50;
+	r->points = 25;
 	//for the freeze turret & enemy interaction
 	r->slow_amt = 1;
 	r->slow_timer = 0;
@@ -47,7 +47,7 @@ void Fast_Ghost_init(enemy* r) { // setup variable for fast ghost enemy
 	r->data.height = Game.gridWidth;
 	r->state = Inactive;
 	r->timer = 0;
-	r->points = 50;
+	r->points = 25;
 	//for the freeze turret & enemy interaction
 	r->slow_amt = 1;
 	r->slow_timer = 0;
@@ -72,7 +72,7 @@ void Fat_Ghost_init(enemy* r) {
 	r->data.height = Game.gridWidth;
 	r->state = Inactive;
 	r->timer = 0;
-	r->points = 500;
+	r->points = 250;
 	//for the freeze turret & enemy interaction
 	r->slow_amt = 1;
 	r->slow_timer = 0;
@@ -131,7 +131,7 @@ void grimReaper_init(enemy* r) {
 	r->data.height = Game.gridWidth;
 	r->state = Inactive;
 	r->timer = 0;
-	r->points = 1000;
+	r->points = 400;
 	//for the freeze turret & enemy interaction
 	r->slow_amt = 1;
 	r->slow_timer = 0;
@@ -263,8 +263,8 @@ void EnemyDeath(enemy* r, int CurrentGameLevel) {  //function updates and checks
 	for (int i = 0; i < MAX_PROJECTILE; ++i) {
 		if (proj[i].isActive) {
 			Coordinates a = r->data;
-			a.width *= 0.7f;
-			a.height *= 0.7f;
+			a.width *= 1;
+			a.height *= 1;
 			if (Collision_Detection(a, proj[i].data) == 1) {
 				proj[i].isActive = 0;
 				col_type_projectile(&proj[i]);
@@ -502,6 +502,9 @@ void empty_enemy_init(enemy* r) {
 	for (int i = 0; i < 50; i++) {
 		r->EnemyPathX[i] = 0;
 		r->EnemyPathY[i] = 0;
+	}
+	for (int j = 0; j < 3; j++) {
+		r->Enemy_pow_up[j] = 0;
 	}
 }
 

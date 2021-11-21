@@ -1432,7 +1432,7 @@ void render_path(LevelData* LevelX) {
 	for (int i = 0; i < gameGridRows; i++) {
 		for (int j = 0; j < gameGridCols; j++) {
 			if (LevelX->grid[i][j].type == Path) {
-				color_game_square(i, j, COLOR_GREY);
+				color_game_square(i, j, COLOR_RED);
 			}
 			else if (LevelX->grid[i][j].type == Spawn) {
 				color_game_square(i, j, COLOR_RED);
