@@ -7,7 +7,7 @@
 #define MAX_TURRET 100
 #define PROJ_OFFSET Game.gridHeight * 0.4
 #define SLOW_RANGE Game.gridWidth * 2
-#define EXPLOSION_RANGE Game.gridWidth * 2
+#define EXPLOSION_RANGE Game.gridWidth * 1.5
 #define HOMING_RANGE Game.gridWidth * 3
 #define TRUE 1
 #define FALSE 0

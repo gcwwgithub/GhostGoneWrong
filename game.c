@@ -26,14 +26,14 @@ void game_init(void)
 
 	init_main_menu();
 	init_level_select_buttons();
-
+	init_credits_screen();
 	init_pause_screen();
 	init_end_screen();
 	init_skip_wave_button();
 
 	//Initialize Objects
 	mouse_init();
-	
+
 
 	// initialize price for powerups
 	powerUpPrice.morePhantomQuartz = 10;
@@ -41,7 +41,7 @@ void game_init(void)
 	powerUpPrice.reduceEnemyHealth = 10;
 	powerUpPrice.increasedMineDamage = 10;
 
-	
+
 }
 
 
@@ -147,7 +147,6 @@ void game_update(void)
 		else if (btn_is_pressed(EndScreenButtons[2].buttonData))
 		{
 			init_next_level(currentGameLevel + 1);
-			//exit_to_desktop();
 		}
 		//do enemy update first
 		update_enemy();
@@ -200,36 +199,42 @@ void game_update(void)
 		CP_Settings_NoTint();
 		if (btn_is_pressed(PlayButton.buttonData))
 		{
-			PlayButton.isMoving = QuitButton.isMoving = levelButtons->isMoving = 1;
+			PlayButton.isMoving = CreditsButton.isMoving = QuitButton.isMoving = LevelButtons->isMoving = 1;
 		}
 		else if (btn_is_pressed(QuitButton.buttonData))
 		{
 			currentGameState = MainMenu;
 			exit_to_desktop();
 		}
+		else if (btn_is_pressed(CreditsButton.buttonData))
+		{
+			currentGameState = Credits;
+		}
 
 		if (PlayButton.isMoving) // clicked on play
 		{
-			PlayButton = ui_button_movement(PlayButton, -BUTTON_WIDTH - 1.f, PlayButton.buttonData.yOrigin);
+			PlayButton = ui_button_movement(PlayButton, -BUTTON_WIDTH, PlayButton.buttonData.yOrigin);
 		}
-
+		if (CreditsButton.isMoving)
+		{
+			CreditsButton = ui_button_movement(CreditsButton, CreditsButton.buttonData.xOrigin, CP_System_GetWindowHeight());
+		}
 		if (QuitButton.isMoving) // clicked on play
 		{
-			QuitButton = ui_button_movement(QuitButton, CP_System_GetWindowWidth() + 1.f, QuitButton.buttonData.yOrigin);
+			QuitButton = ui_button_movement(QuitButton, CP_System_GetWindowWidth(), QuitButton.buttonData.yOrigin);
 		}
-
-		if (levelButtons->isMoving)
+		if (LevelButtons->isMoving)
 		{
 			move_level_select();
 		}
 
-		if (button_has_finished_moving(PlayButton, -BUTTON_WIDTH - 1.f, PlayButton.buttonData.yOrigin) &&
-			button_has_finished_moving(QuitButton, CP_System_GetWindowWidth() + 1.f, QuitButton.buttonData.yOrigin) &&
+		if (button_has_finished_moving(PlayButton, -BUTTON_WIDTH, PlayButton.buttonData.yOrigin) &&
+			button_has_finished_moving(CreditsButton, CreditsButton.buttonData.xOrigin, CP_System_GetWindowHeight()) &&
+			button_has_finished_moving(QuitButton, CP_System_GetWindowWidth(), QuitButton.buttonData.yOrigin) &&
 			level_select_finished_moving())
 		{
-			// This presumes the play button was clicked already.
-			PlayButton.isMoving = QuitButton.isMoving = levelButtons->isMoving = 0;
-			PlayButton.interpolationTime = QuitButton.interpolationTime = 0.0f;
+			PlayButton.isMoving = CreditsButton.isMoving = QuitButton.isMoving = LevelButtons->isMoving = 0;
+			PlayButton.interpolationTime = CreditsButton.interpolationTime = QuitButton.interpolationTime = 0.0f;
 			currentGameState = LevelSelect;
 		}
 
@@ -242,9 +247,9 @@ void game_update(void)
 	{
 		CP_Settings_NoTint();
 		// Level 1
-		if (!levelButtons->isMoving) // hotfix for accidental misclick
+		if (!LevelButtons->isMoving) // commenting this activates lvl 5 for some reason
 		{
-			if (btn_is_pressed(levelButtons[0].buttonData))
+			if (btn_is_pressed(LevelButtons[0].buttonData))
 			{
 				level1_init();
 				//game grid 
@@ -255,192 +260,69 @@ void game_update(void)
 				pathfinding_init(&Level[currentGameLevel]);
 				environment_init(&Level[currentGameLevel]);
 
-			//turret menu items
-			pause_button_init();
-			turret_basic_button_init();
-			turret_slow_button_init();
-			turret_homing_button_init();
-			turret_mine_button_init();
-			phantomQuartz_init();
-			goldQuartz_init();
+				//turret menu items
+				pause_button_init();
+				turret_basic_button_init();
+				turret_slow_button_init();
+				turret_homing_button_init();
+				turret_mine_button_init();
+				phantomQuartz_init();
+				goldQuartz_init();
 
 
-			health_init();
-			menu_swap_init();
-			wave_number_display_init();
-			battlefield_effects_display_init();
-			monster_remaining_display_init();
-			upgrade_menu_init();
-			upgrade_button_init();
-			sell_button_init();
+				health_init();
+				menu_swap_init();
+				wave_number_display_init();
+				battlefield_effects_display_init();
+				monster_remaining_display_init();
+				upgrade_menu_init();
+				upgrade_button_init();
+				sell_button_init();
 
-			turret_init();
+				turret_init();
 
-			//Initialise Enemies
-			Enemies_init();
+				//Initialise Enemies
+				Enemies_init();
 
-			pathfinding_reset(&Level[currentGameLevel]);
-			pathfinding_calculate_cost(&Level[currentGameLevel]);
-			pathfinding_update(&Level[currentGameLevel]);
-			set_building_time(BUILDING_PHASE_TIME);
-			currentGameState = Building;
-		}
-		else if (btn_is_pressed(levelButtons[1].buttonData)) {
-			level2_init();
-			//game grid 
-			game_grid_init();
-			isPlacingTurret = T_MAX;
-			turretSelectedToUpgrade = NO_TURRET_SELECTED;
-			powerUpMenu = FALSE;
-			pathfinding_init(&Level[currentGameLevel]);
-			environment_init(&Level[currentGameLevel]);
+				pathfinding_reset(&Level[currentGameLevel]);
+				pathfinding_calculate_cost(&Level[currentGameLevel]);
+				pathfinding_update(&Level[currentGameLevel]);
+				set_building_time(BUILDING_PHASE_TIME);
+				currentGameState = Building;
+			}
+			else if (btn_is_pressed(LevelButtons[1].buttonData)) {
+				level2_init();
+				//game grid 
+				game_grid_init();
+				isPlacingTurret = T_MAX;
+				turretSelectedToUpgrade = NO_TURRET_SELECTED;
+				powerUpMenu = FALSE;
+				pathfinding_init(&Level[currentGameLevel]);
+				environment_init(&Level[currentGameLevel]);
 
-			//turret menu items
-			pause_button_init();
-			turret_basic_button_init();
-			turret_slow_button_init();
-			turret_homing_button_init();
-			turret_mine_button_init();
-			phantomQuartz_init();
-			goldQuartz_init();
-
-
-			health_init();
-			menu_swap_init();
-			wave_number_display_init();
-			battlefield_effects_display_init();
-			monster_remaining_display_init();
-			upgrade_menu_init();
-			upgrade_button_init();
-			sell_button_init();
-
-			turret_init();
-
-			//Initialise Enemies
-			Enemies_init();
-
-			pathfinding_reset(&Level[currentGameLevel]);
-			pathfinding_calculate_cost(&Level[currentGameLevel]);
-			pathfinding_update(&Level[currentGameLevel]);
-			set_building_time(BUILDING_PHASE_TIME);
-			currentGameState = Building;
-		}
-
-		else if (btn_is_pressed(levelButtons[2].buttonData)) {
-			level3_init();
-			//game grid 
-			game_grid_init();
-			isPlacingTurret = T_MAX;
-			turretSelectedToUpgrade = NO_TURRET_SELECTED;
-			powerUpMenu = FALSE;
-			pathfinding_init(&Level[currentGameLevel]);
-			environment_init(&Level[currentGameLevel]);
-
-			//turret menu items
-			pause_button_init();
-			turret_basic_button_init();
-			turret_slow_button_init();
-			turret_homing_button_init();
-			turret_mine_button_init();
-			phantomQuartz_init();
-			goldQuartz_init();
+				//turret menu items
+				pause_button_init();
+				turret_basic_button_init();
+				turret_slow_button_init();
+				turret_homing_button_init();
+				turret_mine_button_init();
+				phantomQuartz_init();
+				goldQuartz_init();
 
 
-			health_init();
-			menu_swap_init();
-			wave_number_display_init();
-			battlefield_effects_display_init();
-			monster_remaining_display_init();
-			upgrade_menu_init();
-			upgrade_button_init();
-			sell_button_init();
+				health_init();
+				menu_swap_init();
+				wave_number_display_init();
+				battlefield_effects_display_init();
+				monster_remaining_display_init();
+				upgrade_menu_init();
+				upgrade_button_init();
+				sell_button_init();
 
-			turret_init();
+				turret_init();
 
-			//Initialise Enemies
-			Enemies_init();
-
-			pathfinding_reset(&Level[currentGameLevel]);
-			pathfinding_calculate_cost(&Level[currentGameLevel]);
-			pathfinding_update(&Level[currentGameLevel]);
-			set_building_time(BUILDING_PHASE_TIME);
-			currentGameState = Building;
-		}
-
-		else if (btn_is_pressed(levelButtons[3].buttonData)) {
-			level4_init();
-			//game grid 
-			game_grid_init();
-			isPlacingTurret = T_MAX;
-			turretSelectedToUpgrade = NO_TURRET_SELECTED;
-			powerUpMenu = FALSE;
-			pathfinding_init(&Level[currentGameLevel]);
-			environment_init(&Level[currentGameLevel]);
-
-			//turret menu items
-			pause_button_init();
-			turret_basic_button_init();
-			turret_slow_button_init();
-			turret_homing_button_init();
-			turret_mine_button_init();
-			phantomQuartz_init();
-			goldQuartz_init();
-
-
-			health_init();
-			menu_swap_init();
-			wave_number_display_init();
-			battlefield_effects_display_init();
-			monster_remaining_display_init();
-			upgrade_menu_init();
-			upgrade_button_init();
-			sell_button_init();
-
-			turret_init();
-
-			//Initialise Enemies
-			Enemies_init();
-
-			pathfinding_reset(&Level[currentGameLevel]);
-			pathfinding_calculate_cost(&Level[currentGameLevel]);
-			pathfinding_update(&Level[currentGameLevel]);
-			set_building_time(BUILDING_PHASE_TIME);
-			currentGameState = Building;
-		}
-
-		else if (btn_is_pressed(levelButtons[4].buttonData)) {
-			level5_init();
-			//game grid 
-			game_grid_init();
-			isPlacingTurret = T_MAX;
-			turretSelectedToUpgrade = NO_TURRET_SELECTED;
-			powerUpMenu = FALSE;
-			pathfinding_init(&Level[currentGameLevel]);
-			environment_init(&Level[currentGameLevel]);
-
-			//turret menu items
-			pause_button_init();
-			turret_basic_button_init();
-			turret_slow_button_init();
-			turret_homing_button_init();
-			turret_mine_button_init();
-			phantomQuartz_init();
-			goldQuartz_init();
-
-
-			health_init();
-			menu_swap_init();
-			wave_number_display_init();
-			battlefield_effects_display_init();
-			monster_remaining_display_init();
-			upgrade_menu_init();
-			upgrade_button_init();
-			sell_button_init();
-
-			turret_init();
-
-			//Initialise Enemies
-			Enemies_init();
+				//Initialise Enemies
+				Enemies_init();
 
 				pathfinding_reset(&Level[currentGameLevel]);
 				pathfinding_calculate_cost(&Level[currentGameLevel]);
@@ -449,33 +331,159 @@ void game_update(void)
 				currentGameState = Building;
 			}
 
-		else if (btn_is_pressed(BackButton.buttonData))
-		{
-				PlayButton.isMoving = QuitButton.isMoving = levelButtons->isMoving = 1;
-		}
+			else if (btn_is_pressed(LevelButtons[2].buttonData)) {
+				level3_init();
+				//game grid 
+				game_grid_init();
+				isPlacingTurret = T_MAX;
+				turretSelectedToUpgrade = NO_TURRET_SELECTED;
+				powerUpMenu = FALSE;
+				pathfinding_init(&Level[currentGameLevel]);
+				environment_init(&Level[currentGameLevel]);
+
+				//turret menu items
+				pause_button_init();
+				turret_basic_button_init();
+				turret_slow_button_init();
+				turret_homing_button_init();
+				turret_mine_button_init();
+				phantomQuartz_init();
+				goldQuartz_init();
+
+
+				health_init();
+				menu_swap_init();
+				wave_number_display_init();
+				battlefield_effects_display_init();
+				monster_remaining_display_init();
+				upgrade_menu_init();
+				upgrade_button_init();
+				sell_button_init();
+
+				turret_init();
+
+				//Initialise Enemies
+				Enemies_init();
+
+				pathfinding_reset(&Level[currentGameLevel]);
+				pathfinding_calculate_cost(&Level[currentGameLevel]);
+				pathfinding_update(&Level[currentGameLevel]);
+				set_building_time(BUILDING_PHASE_TIME);
+				currentGameState = Building;
+			}
+
+			else if (btn_is_pressed(LevelButtons[3].buttonData)) {
+				level4_init();
+				//game grid 
+				game_grid_init();
+				isPlacingTurret = T_MAX;
+				turretSelectedToUpgrade = NO_TURRET_SELECTED;
+				powerUpMenu = FALSE;
+				pathfinding_init(&Level[currentGameLevel]);
+				environment_init(&Level[currentGameLevel]);
+
+				//turret menu items
+				pause_button_init();
+				turret_basic_button_init();
+				turret_slow_button_init();
+				turret_homing_button_init();
+				turret_mine_button_init();
+				phantomQuartz_init();
+				goldQuartz_init();
+
+
+				health_init();
+				menu_swap_init();
+				wave_number_display_init();
+				battlefield_effects_display_init();
+				monster_remaining_display_init();
+				upgrade_menu_init();
+				upgrade_button_init();
+				sell_button_init();
+
+				turret_init();
+
+				//Initialise Enemies
+				Enemies_init();
+
+				pathfinding_reset(&Level[currentGameLevel]);
+				pathfinding_calculate_cost(&Level[currentGameLevel]);
+				pathfinding_update(&Level[currentGameLevel]);
+				set_building_time(BUILDING_PHASE_TIME);
+				currentGameState = Building;
+			}
+
+			else if (btn_is_pressed(LevelButtons[4].buttonData)) {
+				level5_init();
+				//game grid 
+				game_grid_init();
+				isPlacingTurret = T_MAX;
+				turretSelectedToUpgrade = NO_TURRET_SELECTED;
+				powerUpMenu = FALSE;
+				pathfinding_init(&Level[currentGameLevel]);
+				environment_init(&Level[currentGameLevel]);
+
+				//turret menu items
+				pause_button_init();
+				turret_basic_button_init();
+				turret_slow_button_init();
+				turret_homing_button_init();
+				turret_mine_button_init();
+				phantomQuartz_init();
+				goldQuartz_init();
+
+
+				health_init();
+				menu_swap_init();
+				wave_number_display_init();
+				battlefield_effects_display_init();
+				monster_remaining_display_init();
+				upgrade_menu_init();
+				upgrade_button_init();
+				sell_button_init();
+
+				turret_init();
+
+				//Initialise Enemies
+				Enemies_init();
+
+				pathfinding_reset(&Level[currentGameLevel]);
+				pathfinding_calculate_cost(&Level[currentGameLevel]);
+				pathfinding_update(&Level[currentGameLevel]);
+				set_building_time(BUILDING_PHASE_TIME);
+				currentGameState = Building;
+			}
+
+			else if (btn_is_pressed(LevelSelectBackButton.buttonData))
+			{
+				PlayButton.isMoving = CreditsButton.isMoving = QuitButton.isMoving = LevelButtons->isMoving = 1;
+			}
 		}
 
 		if (PlayButton.isMoving)
 		{
-			PlayButton = ui_button_movement(PlayButton, CP_System_GetWindowWidth() * 0.3f, CP_System_GetWindowHeight() * 0.5f);
+			PlayButton = ui_button_movement(PlayButton, CP_System_GetWindowWidth() * 0.25f - BUTTON_WIDTH * 0.5f, PlayButton.buttonData.yOrigin);
 		}
-
+		if (CreditsButton.isMoving)
+		{
+			CreditsButton = ui_button_movement(CreditsButton, CreditsButton.buttonData.xOrigin, CP_System_GetWindowHeight() * 0.5f);
+		}
 		if (QuitButton.isMoving)
 		{
-			QuitButton = ui_button_movement(QuitButton, CP_System_GetWindowWidth() * 0.6f, CP_System_GetWindowHeight() * 0.5f);
+			QuitButton = ui_button_movement(QuitButton, CP_System_GetWindowWidth() * 0.75f - BUTTON_WIDTH * 0.5f, QuitButton.buttonData.yOrigin);
 		}
-
-		if (levelButtons->isMoving)
+		if (LevelButtons->isMoving)
 		{
 			move_level_select();
 		}
 
-		if (button_has_finished_moving(PlayButton, CP_System_GetWindowWidth() * 0.3f, CP_System_GetWindowHeight() * 0.5f) &&
-			button_has_finished_moving(QuitButton, CP_System_GetWindowWidth() * 0.6f, CP_System_GetWindowHeight() * 0.5f) &&
+		if (button_has_finished_moving(PlayButton, CP_System_GetWindowWidth() * 0.25f - BUTTON_WIDTH * 0.5f, PlayButton.buttonData.yOrigin) &&
+			button_has_finished_moving(CreditsButton, CreditsButton.buttonData.xOrigin, CP_System_GetWindowHeight() * 0.5f) &&
+			button_has_finished_moving(QuitButton, CP_System_GetWindowWidth() * 0.75f - BUTTON_WIDTH * 0.5f, QuitButton.buttonData.yOrigin) &&
 			level_select_finished_moving())
 		{
-			PlayButton.isMoving = QuitButton.isMoving = levelButtons->isMoving = 0;
-			PlayButton.interpolationTime = QuitButton.interpolationTime = 0.0f;
+			PlayButton.isMoving = CreditsButton.isMoving = QuitButton.isMoving = LevelButtons->isMoving = 0;
+			PlayButton.interpolationTime = CreditsButton.interpolationTime = QuitButton.interpolationTime = 0.0f;
 			currentGameState = MainMenu;
 		}
 
@@ -498,7 +506,7 @@ void game_update(void)
 			}
 			mouse_reset();
 		}
-		else if (btn_is_pressed(PauseBackButton.buttonData))
+		else if (btn_is_pressed(PauseScreenButtons[0].buttonData))
 		{
 			//free memory
 			for (int i = 0; i < gameGridRows; i++) {
@@ -514,7 +522,7 @@ void game_update(void)
 
 			currentGameState = MainMenu;
 		}
-		else if (btn_is_pressed(PauseQuitButton.buttonData))
+		else if (btn_is_pressed(PauseScreenButtons[1].buttonData))
 		{
 			//free memory
 			for (int i = 0; i < gameGridRows; i++) {
@@ -531,6 +539,17 @@ void game_update(void)
 			exit_to_desktop();
 		}
 		render_pause_screen();
+	}
+	else if (currentGameState == Credits)
+	{
+		if (btn_is_pressed(CreditsBackButton.buttonData))
+		{
+			currentGameState = MainMenu;
+		}
+
+		CP_Graphics_ClearBackground(COLOR_GREY);
+		render_title_screen();
+		render_credits_screen();
 	}
 }
 

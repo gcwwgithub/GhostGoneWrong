@@ -2,13 +2,13 @@
 #include "game.h"
 #include "Gabriel.h"
 
-// scaled for different resolutions
-// hardcoded resolution
+// scaled for increasing resolutions
+// hardcoded small resolution
 #define BUTTON_WIDTH CP_System_GetWindowWidth() / 400 * 55.0f
 #define BUTTON_HEIGHT CP_System_GetWindowHeight() / 400 * 35.0f
 #define FONT_SIZE CP_System_GetWindowWidth() / 400 * 15.0f
 #define MOVE_DURATION 5.0f
-#define BUILDING_PHASE_TIME 3.0f
+#define BUILDING_PHASE_TIME 30.0f
 
 typedef struct Button {
 	Coordinates buttonData;
@@ -21,17 +21,52 @@ typedef struct Button {
 	char textString[16];
 }Button;
 
-float movingDuration; // how fast do the buttons go away after clicking?
+enum CreditText {
+
+	CopyrightLine,
+
+	CreditsTitle,
+
+	DevelopedBy,
+	ZhengWei,
+	Samuel,
+	John,
+	Gabriel,
+	Anderson,
+
+	Instructors,
+	DX,
+	Gerald,
+
+	President,
+	ClaudeComair
+};
+
+typedef struct CreditLine
+{
+	char* text;
+	Coordinates initialPos; // credit text will be at this position in MainMenu
+	Coordinates menuPos; // credit text will be at this position in MainMenu
+	Coordinates creditPos; // credit text will be at this position in Credits
+}CreditLine;
+
+CreditLine CreditTexts[13];
+
+// temp way to move rect, figuring smth if time permits
+Coordinates creditRectCoords;
+float rectTime; // time for creditRect moving
 
 Button PlayButton;
 Button QuitButton;
+Button CreditsButton;
 Button HowToPlayButton;
 
-Button BackButton;
-Button levelButtons[5];
+Button LevelSelectBackButton;
+Button LevelButtons[5];
 
-Button PauseQuitButton;
-Button PauseBackButton;
+Button CreditsBackButton;
+
+Button PauseScreenButtons[2];
 
 Button SkipWaveButton;
 
@@ -43,9 +78,6 @@ int enemiesInLevel;
 int basicEnemyNum;
 int fastEnemyNum;
 int fatEnemyNum;
-
-int score;
-
 float buildingTime;
 
 // Main Menu Inits
@@ -56,6 +88,7 @@ void init_main_menu(void);
 void init_how_to_play_button(void);
 void init_how_to_play_screen(void);
 void init_level_select_buttons(void);
+void init_credits_screen(void);
 
 // Main Menu Renders
 void render_ui_button(Button button);
@@ -63,6 +96,7 @@ void render_how_to_play_screen(void);
 void render_start_menu(void);
 void render_level_select_buttons(void);
 void render_pause_screen(void);
+void render_credits_screen(void);
 
 void render_wave_timer(void);
 void reduce_building_phase_time(void);
