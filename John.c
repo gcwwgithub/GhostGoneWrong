@@ -152,7 +152,7 @@ void EnemyDeath(enemy* r, int CurrentGameLevel) {  //function updates and checks
 
 	if (r->health <= 0) {
 		if (r->state == Hurt) {
-			Level[CurrentGameLevel].phantomQuartz += r->points;
+			Level[currentGameLevel].phantomQuartz += r->points;
 		}
 		r->state = Death;
 
@@ -200,8 +200,8 @@ void Enemies_init(void) {
 }
 
 void Basic_Ghost(enemy* r) { // setup variable for basic ghost enemy
-	r->health = 3;
-	r->max_health = 3;
+	r->health = 4;
+	r->max_health = 4;
 	r->speed = 15;
 	r->CurrentWaypoint = 0;
 	r->data.xOrigin = Xarray[0];
@@ -250,8 +250,8 @@ void Fast_Ghost_init(enemy* r) { // setup variable for fast ghost enemy
 }
 
 void Fat_Ghost_init(enemy* r) {
-	r->health = 7;
-	r->max_health = 7;
+	r->health = 10;
+	r->max_health = 10;
 	r->speed = 15;
 	r->CurrentWaypoint = 0;
 	r->data.xOrigin = Xarray[0];
@@ -283,7 +283,7 @@ void update_enemy(void) {
 	}
 	for (int i = 0; i < MAX_ENEMIES; i++) {
 		int spawn_timer = 5;
-		if ((Enemy[i].state == Inactive) && (Enemy[i].health > 0) && (count / spawn_timer <= MAX_ENEMIES)) {
+		if ((Enemy[i].state == Inactive) && (Enemy[i].health >= 1) && (count / spawn_timer <= MAX_ENEMIES)) {
 			int state_check=0;
 			int b = count;
 			for (int j=0; j < MAX_ENEMIES; j++) {
@@ -319,7 +319,6 @@ void update_enemy(void) {
 		EnemyDeath(&Enemy[i], currentGameLevel);
 		Reaper_ability(&Enemy[i]);
 		Environment_check(currentGameLevel);
-		Current_wave_check(&Enemy[i]);
 	}
 	enemy* En = &Enemy[0];
 }
@@ -599,7 +598,6 @@ void Check_pathAdjustment(enemy* r) {
 				r->CurrentWaypoint = 0;
 			}
 			r->state = Adjusting;
-			r->movement_timer = 0;
 		}
 	}
 }
@@ -690,25 +688,23 @@ void Env_eff_IncreasedTurretAttackSpeed(void) {
 	static float atk_spd_increase[MAX_TURRET];
 	static int level_check[MAX_TURRET];
 	for (int i = 0; i < MAX_TURRET; i++) {
-		if (turret[i].isActive) {
-			if (Level[currentGameLevel].currentEffect == IncreasedTurretAttackSpeed && turret[i].Env_effect == No_Effect) {
-				atk_spd_increase[i] = turret[i].mod.shoot_rate * 0.2;
-				turret[i].mod.shoot_rate -= atk_spd_increase[i];
-				level_check[i] = turret[i].level;
-				turret[i].Env_effect = Increased_attack_speed;
-			}
-			else if (Level[currentGameLevel].currentEffect == IncreasedTurretAttackSpeed && turret[i].Env_effect == Increased_attack_speed) {
-				if (turret[i].level != level_check[i]) {
-					turret[i].mod.shoot_rate += atk_spd_increase[i];
-					atk_spd_increase[i] = 0;
-					turret[i].Env_effect = No_Effect;
-				}
-			}
-			else if (Level[currentGameLevel].currentEffect != IncreasedTurretAttackSpeed && turret[i].Env_effect == Increased_attack_speed) {
+		if (Level[currentGameLevel].currentEffect == IncreasedTurretAttackSpeed && turret[i].Env_effect == No_Effect) {
+			atk_spd_increase[i] = turret[i].mod.shoot_rate * 0.2;
+			turret[i].mod.shoot_rate -= atk_spd_increase[i];
+			level_check[i] = turret[i].level;
+			turret[i].Env_effect = Increased_attack_speed;
+		}
+		else if (Level[currentGameLevel].currentEffect == IncreasedTurretAttackSpeed && turret[i].Env_effect == Increased_attack_speed) {
+			if (turret[i].level != level_check[i]) {
 				turret[i].mod.shoot_rate += atk_spd_increase[i];
 				atk_spd_increase[i] = 0;
 				turret[i].Env_effect = No_Effect;
 			}
+		}
+		else if (Level[currentGameLevel].currentEffect != IncreasedTurretAttackSpeed && turret[i].Env_effect == Increased_attack_speed) {
+			turret[i].mod.shoot_rate += atk_spd_increase[i];
+			atk_spd_increase[i] = 0;
+			turret[i].Env_effect = No_Effect;
 		}
 	}
 }
@@ -717,25 +713,23 @@ void Env_eff_DecreasedTurretAttackSpeed(void) {
 	static float atk_spd_decrease[MAX_TURRET];
 	static float level_check[MAX_TURRET];
 	for (int i = 0; i < MAX_TURRET; i++) {
-		if (turret[i].isActive) {
-			if (Level[currentGameLevel].currentEffect == DecreasedTurretAttackSpeed && turret[i].Env_effect == No_Effect) {
-				atk_spd_decrease[i] = turret[i].mod.shoot_rate * 0.2;
-				turret[i].mod.shoot_rate += atk_spd_decrease[i];
-				level_check[i] = turret[i].level;
-				turret[i].Env_effect = Decreased_attack_speed;
-			}
-			else if (Level[currentGameLevel].currentEffect == DecreasedTurretAttackSpeed && turret[i].Env_effect == Decreased_attack_speed) {
-				if (turret[i].level != level_check[i]) {
-					turret[i].mod.shoot_rate -= atk_spd_decrease[i];
-					atk_spd_decrease[i] = 0;
-					turret[i].Env_effect = No_Effect;
-				}
-			}
-			else if (Level[currentGameLevel].currentEffect != DecreasedTurretAttackSpeed && turret[i].Env_effect == Decreased_attack_speed) {
+		if (Level[currentGameLevel].currentEffect == DecreasedTurretAttackSpeed && turret[i].Env_effect == No_Effect) {
+			atk_spd_decrease[i] = turret[i].mod.shoot_rate * 0.2;
+			turret[i].mod.shoot_rate += atk_spd_decrease[i];
+			level_check[i] = turret[i].level;
+			turret[i].Env_effect = Decreased_attack_speed;
+		}
+		else if (Level[currentGameLevel].currentEffect == DecreasedTurretAttackSpeed && turret[i].Env_effect == Decreased_attack_speed) {
+			if (turret[i].level != level_check[i]) {
 				turret[i].mod.shoot_rate -= atk_spd_decrease[i];
 				atk_spd_decrease[i] = 0;
 				turret[i].Env_effect = No_Effect;
 			}
+		}
+		else if (Level[currentGameLevel].currentEffect != DecreasedTurretAttackSpeed && turret[i].Env_effect == Decreased_attack_speed) {
+			turret[i].mod.shoot_rate -= atk_spd_decrease[i];
+			atk_spd_decrease[i] = 0;
+			turret[i].Env_effect = No_Effect;
 		}
 	}
 }
@@ -839,19 +833,13 @@ void Environment_check(int CurrentGameLevel) {
 	}
 }
 
-
-void Current_wave_check(enemy* r) {
-	if (r->WavePowUp_isActive == 0) {
-		int a = Level[currentGameLevel].currentWave;
-		r->max_health += 1*a;
-		r->health += 1*a;
-		r->WavePowUp_isActive = 1;
-	}
+void Change_current_effect(int CurrentGameLevel) {
+	EnvironmentalEffects a = CP_Random_RangeInt(0, 11);
+	Level[CurrentGameLevel].currentEffect = a;
 }
+
 /*void movement_redone(enemy* r) {
-	if (r->state != Death || r->state != Reached || r->state != Inactive) {
-		r->movement_timer += CP_System_GetDt();
-	}
+	r->movement_timer += CP_System_GetDt();
 	int fake_distance_covered = r->speed * timer;
 	int distance_covered = fake_distance_covered - r->slowed_distance;
 	int distance_between_start_and_end = fabs((double)(r->EnemyPathX[0] - r->EnemyPathX[r->pathPoints-1]) + (r->EnemyPathY[0] - r->EnemyPathY[r->pathPoints-1]));
@@ -897,12 +885,4 @@ void Update_slow_distance(enemy* r) {
 	if (r->slow_amt < 1.0f) {
 		r->slowed_distance += (1 - r->slow_amt) * r->speed * CP_System_GetDt();
 	}
-}
-
-
-int distance_should_cover = 0;
-for (int i= 0; i < r->AdjustingWaypoint; i++) {
-	distance_should_cover += fabs(Xarray[i + 1] - Xarray[i]) + fabs(Yarray[i + 1] - Yarray[i]);
-}
-r->movement_timer = distance_should_cover / (r->speed * CP_System_GetDt);
-*/
+}*/
