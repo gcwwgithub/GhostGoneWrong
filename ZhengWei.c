@@ -1115,7 +1115,7 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 			RenderNormal(homingMissleTurretSpriteSheet, homingMissleTurretArray[0], menuObjectX.width / 2,
 				(menuObjectX.yOrigin + menuObjectX.height / 2), 128 * scalingFactor, 128 * scalingFactor);
 			sprintf_s(temp, sizeof(temp), "%d", turret_purchasing[TP_PRICE][T_HOMING]);
-			CP_Font_DrawText(temp, menuObjectX.width / 2.5, (menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3));
+			CP_Font_DrawText(temp, menuObjectX.width / 3, (menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3));
 			RenderNormal(currencySpriteSheet, currencyArray[1], menuObjectX.width / 1.65,
 				(menuObjectX.yOrigin + menuObjectX.height / 2 + 128 / 3), 45 * scalingFactor, 45 * scalingFactor);
 		}
