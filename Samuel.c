@@ -145,7 +145,7 @@ void place_turret(TurretType type, int index_x, int index_y)
 			break;
 		case T_HOMING:
 			turret[i].mod.range = Game.gridWidth * 2;
-			turret[i].mod.damage = 1;
+			turret[i].mod.damage = 0.7f;
 			turret[i].dir.x = -1;
 			turret[i].dir.y = -1;
 			turret[i].animCounter = 0;
@@ -156,7 +156,8 @@ void place_turret(TurretType type, int index_x, int index_y)
 			if (Level[currentGameLevel].grid[index_y][index_x].type != Path)
 				return;
 			turret[i].mod.range = Game.gridWidth * 2;
-			turret[i].mod.damage = 2;
+			Level[currentGameLevel].currentPowerUpLevel.increasedMineDamage = 3.f;
+			turret[i].mod.damage = Level[currentGameLevel].currentPowerUpLevel.increasedMineDamage;
 			turret[i].data.width = Game.gridWidth * 0.7f;
 			turret[i].data.width = Game.gridHeight * 0.7f;
 			turret[i].data.objectType = objectCircle;
@@ -348,6 +349,7 @@ void update_turret(void)
 
 			if (turret[i].type == T_MINE)
 			{
+				turret[i].mod.damage = Level[currentGameLevel].currentPowerUpLevel.increasedMineDamage;
 				if (Collision_Detection(turret[i].data, Enemy[j].data))
 				{
 					//set the highest waypoint
@@ -523,8 +525,19 @@ void update_projectile(void)
 				v.x = proj[i].dir.x - (Enemy[proj[i].mod.tracked_index].data.xOrigin - proj[i].data.xOrigin);
 				v.y = proj[i].dir.y - (Enemy[proj[i].mod.tracked_index].data.yOrigin - proj[i].data.yOrigin);
 
-				proj[i].dir.x -= v.x * 0.08f * dt; //gradual change of dir, magic number is the rate of change
-				proj[i].dir.y -= v.y * 0.08f * dt;
+
+				Vector2 e_dir = { .x = Enemy[proj[i].mod.tracked_index].data.xOrigin,
+								.y = Enemy[proj[i].mod.tracked_index].data.yOrigin };
+				e_dir.x -= proj[i].data.xOrigin;
+				e_dir.y -= proj[i].data.yOrigin;
+				e_dir = normalise(e_dir);
+				//printf("%f\n", acosf(dot(e_dir, proj[i].dir)) * (180.f / PI));
+				float turn_rate = 0.08f;
+				if (dot(e_dir, proj[i].dir) <= 0.2f)
+					turn_rate = 1.5f;
+
+				proj[i].dir.x -= v.x * turn_rate * dt; //gradual change of dir, magic number is the rate of change
+				proj[i].dir.y -= v.y * turn_rate * dt;
 				proj[i].dir = normalise(proj[i].dir);
 				//printf("x:%f y:%f\n", proj[i].dir.x, proj[i].dir.y);
 			}
@@ -653,16 +666,18 @@ void col_type_projectile(Projectile* p)
 		break;
 	}
 
-	//test particles
-	Vector2 pos = { .x = p->data.xOrigin, .y = p->data.yOrigin };
-	Vector2 dir = { .x = 1.f, .y = 0.f };
-	create_particle(pos, dir, 15.f, 1.f);
-	dir.x = -1.f;
-	dir.y = 0.f;
-	create_particle(pos, dir, 15.f, 1.f);
-	dir.x = 0.f;
-	dir.y = 1.f;
-	create_particle(pos, dir, 15.f, 1.f);
+	////test particles
+	//float r_num = CP_Random_GetFloat();
+	//printf("%f\n", r_num);
+	//Vector2 pos = { .x = p->data.xOrigin, .y = p->data.yOrigin };
+	//Vector2 dir = { .x = r_num, .y = 0.f };
+	//create_particle(pos, dir, 15.f, 1.f);
+	//dir.x = -CP_Random_GetFloat();
+	//dir.y = CP_Random_GetFloat();
+	//create_particle(pos, dir, 15.f, 1.f);
+	//dir.x = CP_Random_GetFloat();
+	//dir.y = CP_Random_GetFloat();
+	//create_particle(pos, dir, 15.f, 1.f);
 }
 
 void update_turretAnimation(Turret* t)
@@ -763,12 +778,15 @@ void update_particle()
 		}
 
 		//test stuff
-		particles[i].dir.y += 3 * dt;
+		//if(particles[i].timer >= particles[i].duration * 0.7)
+			particles[i].dir.y -= 1.5 * dt;
+		//else
+			//particles[i].dir.y += 3 * dt;
 		particles[i].dir.x -= particles[i].dir.x * (particles[i].timer / particles[i].duration) * dt;
 		particles[i].dir = normalise(particles[i].dir);
 
-		particles[i].pos.x += particles[i].dir.x * 50.f * dt;
-		particles[i].pos.y += particles[i].dir.y * 50.f * dt;
+		particles[i].pos.x += particles[i].dir.x * 25.f * dt;
+		particles[i].pos.y += particles[i].dir.y * 25.f * dt;
 	}
 }
 
