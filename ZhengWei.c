@@ -788,9 +788,9 @@ void render_button_pressed(void) {
 	case GoldQuartzMenu:
 		isPlacingTurret = T_MAX;
 		turretSelectedToUpgrade = NO_TURRET_SELECTED;
-		if (Level[currentGameLevel].phantomQuartz >= 10) {
-			Level[currentGameLevel].phantomQuartz -= 10;
-			Level[currentGameLevel].goldQuartz += 1;
+		if (Level[currentGameLevel].phantomQuartz >= 100) {
+			Level[currentGameLevel].phantomQuartz -= 100;
+			Level[currentGameLevel].goldQuartz += 10;
 		}
 		mouse_reset();
 		break;
