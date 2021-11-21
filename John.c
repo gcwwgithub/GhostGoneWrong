@@ -599,6 +599,7 @@ void Check_pathAdjustment(enemy* r) {
 				r->CurrentWaypoint = 0;
 			}
 			r->state = Adjusting;
+			r->movement_timer = 0;
 		}
 	}
 }
@@ -838,10 +839,6 @@ void Environment_check(int CurrentGameLevel) {
 	}
 }
 
-void Change_current_effect(int CurrentGameLevel) {
-	EnvironmentalEffects a = CP_Random_RangeInt(0, 11);
-	Level[CurrentGameLevel].currentEffect = a;
-}
 
 void Current_wave_check(enemy* r) {
 	if (r->WavePowUp_isActive == 0) {
@@ -852,7 +849,9 @@ void Current_wave_check(enemy* r) {
 	}
 }
 /*void movement_redone(enemy* r) {
-	r->movement_timer += CP_System_GetDt();
+	if (r->state != Death || r->state != Reached || r->state != Inactive) {
+		r->movement_timer += CP_System_GetDt();
+	}
 	int fake_distance_covered = r->speed * timer;
 	int distance_covered = fake_distance_covered - r->slowed_distance;
 	int distance_between_start_and_end = fabs((double)(r->EnemyPathX[0] - r->EnemyPathX[r->pathPoints-1]) + (r->EnemyPathY[0] - r->EnemyPathY[r->pathPoints-1]));
@@ -898,4 +897,12 @@ void Update_slow_distance(enemy* r) {
 	if (r->slow_amt < 1.0f) {
 		r->slowed_distance += (1 - r->slow_amt) * r->speed * CP_System_GetDt();
 	}
-}*/
+}
+
+
+int distance_should_cover = 0;
+for (int i= 0; i < r->AdjustingWaypoint; i++) {
+	distance_should_cover += fabs(Xarray[i + 1] - Xarray[i]) + fabs(Yarray[i + 1] - Yarray[i]);
+}
+r->movement_timer = distance_should_cover / (r->speed * CP_System_GetDt);
+*/
