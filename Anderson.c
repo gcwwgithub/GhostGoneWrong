@@ -333,7 +333,7 @@ void reduce_building_phase_time()
 			Level[currentGameLevel].currentEffect = 0;
 		}
 		else if (Level[currentGameLevel].currentWave < 5) {
-			Level[currentGameLevel].currentEffect = CP_Random_RangeInt(4, 4);
+			Level[currentGameLevel].currentEffect = CP_Random_RangeInt(0, 10);
 		}
 		else {
 			Level[currentGameLevel].currentEffect = CP_Random_RangeInt(0, 11);
