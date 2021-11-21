@@ -202,7 +202,7 @@ void Enemies_init(void) {
 void Basic_Ghost(enemy* r) { // setup variable for basic ghost enemy
 	r->health = 4;
 	r->max_health = 4;
-	r->speed = 20;
+	r->speed = 30;
 	r->CurrentWaypoint = 0;
 	r->data.xOrigin = Xarray[0];
 	r->data.yOrigin = Yarray[0];
@@ -227,7 +227,7 @@ void Basic_Ghost(enemy* r) { // setup variable for basic ghost enemy
 void Fast_Ghost_init(enemy* r) { // setup variable for fast ghost enemy
 	r->health = 2;
 	r->max_health = 2;
-	r->speed = 60;
+	r->speed =60;
 	r->CurrentWaypoint = 0;
 	r->data.xOrigin = Xarray[0];
 	r->data.yOrigin = Yarray[0];
@@ -252,7 +252,7 @@ void Fast_Ghost_init(enemy* r) { // setup variable for fast ghost enemy
 void Fat_Ghost_init(enemy* r) {
 	r->health = 20;
 	r->max_health = 20;
-	r->speed = 15;
+	r->speed = 25;
 	r->CurrentWaypoint = 0;
 	r->data.xOrigin = Xarray[0];
 	r->data.yOrigin = Yarray[0];
@@ -400,7 +400,7 @@ void Update_Path_Array(int CurrentGameLevel) {
 void grimReaper_init(enemy* r) {
 	r->health = 30;
 	r->max_health = 30;
-	r->speed = 20;
+	r->speed = 40;
 	r->CurrentWaypoint = 0;
 	r->data.xOrigin = Xarray[0];
 	r->data.yOrigin = Yarray[0];
@@ -433,7 +433,7 @@ void Reaper_minion_init(enemy* r) {
 				Enemy[i].data.yOrigin = Yarray[r->CurrentWaypoint];
 				Enemy[i].CurrentWaypoint = r->CurrentWaypoint;
 				Enemy[i].state = Moving;
-				Enemy[i].isToken = 1;
+				enemiesLeft++;
 				Enemy[i].points = 0;
 				a++;
 			}
@@ -445,7 +445,7 @@ void Reaper_minion_init(enemy* r) {
 				Enemy[i].data.yOrigin = Yarray[r->CurrentWaypoint + 1];
 				Enemy[i].CurrentWaypoint = r->CurrentWaypoint + 1;
 				Enemy[i].state = Moving;
-				Enemy[i].isToken = 1;
+				enemiesLeft++;
 				Enemy[i].points = 0;
 				a++;
 			}
