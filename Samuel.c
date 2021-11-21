@@ -246,7 +246,7 @@ void upgrade_turret(int t_index)
 	{
 	case T_BASIC:
 		turret[t_index].mod.damage += 0.011f * turret[t_index].upgrade_price;
-		turret[t_index].mod.range += turret[t_index].mod.range * 0.05f;
+		//turret[t_index].mod.range += turret[t_index].mod.range * 0.05f;
 		//turret[t_index].mod.shoot_rate -= 0.02f;
 		//increase the price for another upgrade
 		turret[t_index].upgrade_price += 100;
@@ -261,7 +261,7 @@ void upgrade_turret(int t_index)
 		break;
 	case T_HOMING:
 		turret[t_index].mod.damage += 0.0022f * turret[t_index].upgrade_price;
-		turret[t_index].mod.range += turret[t_index].mod.range * 0.05f;
+		//turret[t_index].mod.range += turret[t_index].mod.range * 0.05f;
 		//turret[t_index].mod.shoot_rate -= 0.01f;
 		//increase the price for another upgrade
 		turret[t_index].upgrade_price += 100;
