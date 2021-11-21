@@ -14,7 +14,7 @@ typedef struct Button {
 	Coordinates buttonData;
 	float textPositionX;
 	float textPositionY;
-	float interpolationTime; // time to move from one position to another
+	float movementTime; // time to move from one position to another
 
 	int isMoving;
 
@@ -45,16 +45,17 @@ enum CreditText {
 typedef struct CreditLine
 {
 	char* text;
-	Coordinates initialPos; // credit text will be at this position in MainMenu
-	Coordinates menuPos; // credit text will be at this position in MainMenu
+	Coordinates mainMenuPos; // credit text will be at this position in MainMenu
+	Coordinates currentPos; // credit text will be at this position in MainMenu
 	Coordinates creditPos; // credit text will be at this position in Credits
 }CreditLine;
 
 CreditLine CreditTexts[13];
 
 // temp way to move rect, figuring smth if time permits
-Coordinates creditRectCoords;
-float rectTime; // time for creditRect moving
+// creditRectCoordsMenu keeps values for tweening
+Coordinates creditRectCoords, creditRectCoordsMenu;
+float creditTextMoveTime; // time for creditRect moving
 
 Button PlayButton;
 Button QuitButton;
@@ -117,6 +118,9 @@ Button ui_button_movement(Button button, float destPosX, float destPosY);
 void move_level_select(void);
 int level_select_finished_moving(void);
 int button_has_finished_moving(Button button, float destPosX, float destPosY);
+
+void move_credits_screen(void);
+
 
 void init_next_level(int nextGameLevel);
 void exit_to_desktop(void);

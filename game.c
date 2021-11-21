@@ -196,7 +196,7 @@ void game_update(void)
 		}
 		else if (btn_is_pressed(CreditsButton.buttonData))
 		{
-			currentGameState = Credits;
+			CreditsBackButton.isMoving = 1;
 		}
 
 		if (PlayButton.isMoving) // clicked on play
@@ -211,25 +211,41 @@ void game_update(void)
 		{
 			QuitButton = ui_button_movement(QuitButton, CP_System_GetWindowWidth(), QuitButton.buttonData.yOrigin);
 		}
+
+		if (CreditsBackButton.isMoving)
+		{
+			move_credits_screen();
+		}
+
 		if (LevelButtons->isMoving)
 		{
 			move_level_select();
 		}
 
+		// Clicked on Play, and checking if the Play,Quit buttons have left and Level Select buttons have come
 		if (button_has_finished_moving(PlayButton, -BUTTON_WIDTH, PlayButton.buttonData.yOrigin) &&
 			button_has_finished_moving(CreditsButton, CreditsButton.buttonData.xOrigin, CP_System_GetWindowHeight()) &&
 			button_has_finished_moving(QuitButton, CP_System_GetWindowWidth(), QuitButton.buttonData.yOrigin) &&
 			level_select_finished_moving())
 		{
 			PlayButton.isMoving = CreditsButton.isMoving = QuitButton.isMoving = LevelButtons->isMoving = 0;
-			PlayButton.interpolationTime = CreditsButton.interpolationTime = QuitButton.interpolationTime = 0.0f;
+			PlayButton.movementTime = CreditsButton.movementTime = QuitButton.movementTime = 0.0f;
 			currentGameState = LevelSelect;
 		}
+
+		if (button_has_finished_moving(CreditsBackButton, CreditsBackButton.buttonData.xOrigin, CP_System_GetWindowHeight() * 0.9f))
+		{
+			CreditsBackButton.isMoving = 0;
+			CreditsBackButton.movementTime = creditTextMoveTime = 0.0f;
+			currentGameState = Credits;
+		}
+
 
 		CP_Graphics_ClearBackground(COLOR_GREY);
 		render_title_screen();
 		render_start_menu();
 		render_level_select_buttons();
+		render_credits_screen();
 	}
 	else if (currentGameState == LevelSelect)
 	{
@@ -244,19 +260,15 @@ void game_update(void)
 			else if (btn_is_pressed(LevelButtons[1].buttonData)) {
 				level2_init();
 			}
-
 			else if (btn_is_pressed(LevelButtons[2].buttonData)) {
 				level3_init();
 			}
-
 			else if (btn_is_pressed(LevelButtons[3].buttonData)) {
 				level4_init();
 			}
-
 			else if (btn_is_pressed(LevelButtons[4].buttonData)) {
 				level5_init();
 			}
-
 			else if (btn_is_pressed(LevelSelectBackButton.buttonData))
 			{
 				PlayButton.isMoving = CreditsButton.isMoving = QuitButton.isMoving = LevelButtons->isMoving = 1;
@@ -286,7 +298,7 @@ void game_update(void)
 			level_select_finished_moving())
 		{
 			PlayButton.isMoving = CreditsButton.isMoving = QuitButton.isMoving = LevelButtons->isMoving = 0;
-			PlayButton.interpolationTime = CreditsButton.interpolationTime = QuitButton.interpolationTime = 0.0f;
+			PlayButton.movementTime = CreditsButton.movementTime = QuitButton.movementTime = 0.0f;
 			currentGameState = MainMenu;
 		}
 
@@ -345,8 +357,19 @@ void game_update(void)
 	{
 		if (btn_is_pressed(CreditsBackButton.buttonData))
 		{
+			CreditsBackButton.isMoving = 1;
+		}
+		if (CreditsBackButton.isMoving)
+		{
+			move_credits_screen();
+		}
+		if (button_has_finished_moving(CreditsBackButton, CreditsBackButton.buttonData.xOrigin, CP_System_GetWindowHeight() * 2.0f))
+		{
+			CreditsBackButton.isMoving = 0;
+			CreditsBackButton.movementTime = creditTextMoveTime = 0.0f;
 			currentGameState = MainMenu;
 		}
+
 
 		CP_Graphics_ClearBackground(COLOR_GREY);
 		render_title_screen();

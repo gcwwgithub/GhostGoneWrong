@@ -27,7 +27,7 @@ Button init_text_button(Button button, float buttonPosX, float buttonPosY, float
 	button.buttonData.yOrigin = buttonPosY;
 	button.buttonData.width = buttonWidth;
 	button.buttonData.height = buttonHeight;
-	button.interpolationTime = 0.0f;
+	button.movementTime = 0.0f;
 	CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_CENTER, CP_TEXT_ALIGN_V_MIDDLE);
 	button.textPositionX = button.buttonData.xOrigin + textPosX;
 	button.textPositionY = button.buttonData.yOrigin + textPosY;
@@ -78,8 +78,8 @@ void init_level_select_buttons(void)
 		strcpy_s(LevelButtons[i].textString, sizeof(LevelButtons[i].textString), levelNumberText);
 		if (i > 0)
 		{
-		LevelButtons[i] = init_text_button(LevelButtons[i], CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f,
-			CP_System_GetWindowHeight() + i * (BUTTON_HEIGHT + 25.0f), BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, levelNumberText);
+			LevelButtons[i] = init_text_button(LevelButtons[i], CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f,
+				CP_System_GetWindowHeight() + i * (BUTTON_HEIGHT + 25.0f), BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, levelNumberText);
 		}
 		else
 		{
@@ -136,21 +136,22 @@ void init_end_screen(void)
 void init_credit_line(int num, char* line, float x, float y)
 {
 	CreditTexts[num].text = line;
-	CreditTexts[num].menuPos.xOrigin = x;
-	CreditTexts[num].menuPos.yOrigin = y;
+	CreditTexts[num].mainMenuPos.xOrigin = x;
+	CreditTexts[num].mainMenuPos.yOrigin = y + CP_System_GetWindowHeight();
 
 	CreditTexts[num].creditPos.xOrigin = x;
-	CreditTexts[num].creditPos.yOrigin = y + CP_System_GetWindowHeight();
+	CreditTexts[num].creditPos.yOrigin = y;
 
-	CreditTexts[num].initialPos.xOrigin = CreditTexts[num].creditPos.xOrigin;
-	CreditTexts[num].initialPos.yOrigin = CreditTexts[num].creditPos.yOrigin;
+	CreditTexts[num].currentPos.xOrigin = CreditTexts[num].mainMenuPos.xOrigin;
+	CreditTexts[num].currentPos.yOrigin = CreditTexts[num].mainMenuPos.yOrigin;
 }
 
 void init_credits_screen(void)
 {
-	creditRectCoords.xOrigin = CP_System_GetWindowWidth() * 0.1f; creditRectCoords.yOrigin = CP_System_GetWindowHeight() * 0.35f;
-
+	creditRectCoords.xOrigin = CP_System_GetWindowWidth() * 0.1f; creditRectCoords.yOrigin = CP_System_GetWindowHeight() * 1.35f;
 	creditRectCoords.width = CP_System_GetWindowWidth() * 0.8f; creditRectCoords.height = CP_System_GetWindowHeight() * 0.5f;
+
+	//creditRectCoordsMenu = creditRectCoords; creditRectCoordsMenu.yOrigin = creditRectCoords.yOrigin + CP_System_GetWindowHeight();
 
 	// the © copyright symbol is printed as \xc2\xa9, as its UTF-8 (i.e Unicode) string literal.
 	init_credit_line(CopyrightLine, "All content \xc2\xa9 2021 DigiPen Institute of Technology Singapore, all rights reserved.",
@@ -172,7 +173,7 @@ void init_credits_screen(void)
 	init_credit_line(DX, "Cheng Ding Xiang", CP_System_GetWindowWidth() * 0.7f, CP_System_GetWindowHeight() * 0.65f);
 	init_credit_line(Gerald, "Gerald Wong", CP_System_GetWindowWidth() * 0.7f, CP_System_GetWindowHeight() * 0.7f);
 
-	CreditsBackButton = init_text_button(CreditsBackButton, CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * .9f - BUTTON_HEIGHT * 0.5f,
+	CreditsBackButton = init_text_button(CreditsBackButton, CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 1.9f - BUTTON_HEIGHT * 0.5f,
 		BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Back");
 }
 
@@ -235,7 +236,7 @@ void render_level_select_buttons(void)
 
 void render_credit_line(CreditLine cLine)
 {
-	CP_Font_DrawText(cLine.text, cLine.menuPos.xOrigin, cLine.menuPos.yOrigin);
+	CP_Font_DrawText(cLine.text, cLine.currentPos.xOrigin, cLine.currentPos.yOrigin);
 }
 
 void render_credits_screen(void)
@@ -246,13 +247,8 @@ void render_credits_screen(void)
 	CP_Graphics_DrawRect(creditRectCoords.xOrigin, creditRectCoords.yOrigin, creditRectCoords.width, creditRectCoords.height);
 
 	CP_Settings_Fill(COLOR_WHITE);
-	//char buffer[88] = { 0 }; // the © copyright symbol is printed as \xc2\xa9, as its UTF-8 (i.e Unicode) string literal.
-	//strcpy_s(buffer,sizeof(buffer), "All content \xc2\xa9 2021 DigiPen Institute of Technology Singapore, all rights reserved.");
-	//CP_Font_DrawText("Credits", CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.4f);
 	render_credit_line(CreditTexts[CreditsTitle]);
 	CP_Settings_TextSize(FONT_SIZE * 0.5);
-
-	//CP_Font_DrawText(buffer, CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.45f);
 	render_credit_line(CreditTexts[CopyrightLine]);
 
 	CP_Settings_TextSize(FONT_SIZE);
@@ -350,7 +346,7 @@ void reduce_building_phase_time()
 		if (Level[currentGameLevel].currentWave == 0) {
 			Level[currentGameLevel].currentEffect = 0;
 		}
-		else if (Level[currentGameLevel].currentWave < 5){
+		else if (Level[currentGameLevel].currentWave < 5) {
 			Level[currentGameLevel].currentEffect = CP_Random_RangeInt(0, 10);
 		}
 		else {
@@ -467,53 +463,65 @@ float linear(float start, float end, float value)
 
 Button ui_button_movement(Button button, float destPosX, float destPosY)
 {
-	if (button.interpolationTime <= MOVE_DURATION)
+	if (button.movementTime <= MOVE_DURATION)
 	{
-		button.interpolationTime += CP_System_GetDt();
-		button.buttonData.xOrigin = linear(button.buttonData.xOrigin, destPosX, button.interpolationTime / MOVE_DURATION);
-		button.buttonData.yOrigin = linear(button.buttonData.yOrigin, destPosY, button.interpolationTime / MOVE_DURATION);
-		button.textPositionX = linear(button.textPositionX, destPosX + BUTTON_WIDTH * 0.5f, button.interpolationTime / MOVE_DURATION);
-		button.textPositionY = linear(button.textPositionY, destPosY + BUTTON_HEIGHT * 0.5f, button.interpolationTime / MOVE_DURATION);
+		button.movementTime += CP_System_GetDt();
+		button.buttonData.xOrigin = linear(button.buttonData.xOrigin, destPosX, button.movementTime / MOVE_DURATION);
+		button.buttonData.yOrigin = linear(button.buttonData.yOrigin, destPosY, button.movementTime / MOVE_DURATION);
+		button.textPositionX = linear(button.textPositionX, destPosX + BUTTON_WIDTH * 0.5f, button.movementTime / MOVE_DURATION);
+		button.textPositionY = linear(button.textPositionY, destPosY + BUTTON_HEIGHT * 0.5f, button.movementTime / MOVE_DURATION);
 	}
 	else
 	{
 		// Most buttons take ~3-4s to finish moving.
 		// May be good to try basing this on something else instead like distance.
-		button.interpolationTime = 0.0f;
+		button.movementTime = 0.0f;
 	}
 	return button;
 }
 
-Coordinates rect_movement(Coordinates coord, float destPosX, float destPosY)
+Coordinates coord_movement(Coordinates coord, float destPosX, float destPosY)
 {
-	if (rectTime <= MOVE_DURATION)
+	if (creditTextMoveTime <= MOVE_DURATION)
 	{
-		rectTime += CP_System_GetDt();
-		coord.xOrigin = linear(coord.xOrigin, destPosX, rectTime / MOVE_DURATION);
-		coord.yOrigin = linear(coord.yOrigin, destPosY, rectTime / MOVE_DURATION);
+		creditTextMoveTime += CP_System_GetDt();
+		coord.xOrigin = linear(coord.xOrigin, destPosX, creditTextMoveTime / MOVE_DURATION);
+		coord.yOrigin = linear(coord.yOrigin, destPosY, creditTextMoveTime / MOVE_DURATION);
 	}
 	else
 	{
 		// May be good to try basing this on something else instead like distance.
-		rectTime = 0.0f;
+		creditTextMoveTime = 0.0f;
 	}
 	return coord;
 }
 
-void move_credit_texts(void)
+// A note: moving stops when the credit screen's back button has finished moving.
+void move_credits_screen(void)
 {
 	for (int i = 0; i < sizeof(CreditTexts) / sizeof(CreditLine); i++)
 	{
 		if (currentGameState == MainMenu)
 		{
-			CreditTexts[i].initialPos = rect_movement(CreditTexts[i].initialPos, CreditTexts[i].initialPos.xOrigin,
-				CreditTexts[i].initialPos.yOrigin - CP_System_GetWindowHeight()); // from l_select back to main menu
+			CreditTexts[i].currentPos = coord_movement(CreditTexts[i].currentPos, CreditTexts[i].creditPos.xOrigin,
+				CreditTexts[i].creditPos.yOrigin); // from l_select back to main menu
 		}
 		else if (currentGameState == Credits) // going to main menu
 		{
-			CreditTexts[i].initialPos = rect_movement(CreditTexts[i].initialPos, CreditTexts[i].initialPos.xOrigin,
-				CreditTexts[i].initialPos.yOrigin + CP_System_GetWindowHeight()); // from l_select back to main menu
+			CreditTexts[i].currentPos = coord_movement(CreditTexts[i].currentPos, CreditTexts[i].mainMenuPos.xOrigin,
+				CreditTexts[i].mainMenuPos.yOrigin); // from l_select back to main menu
 		}
+	}
+
+	if (currentGameState == MainMenu)
+	{
+		creditRectCoords = coord_movement(creditRectCoords, creditRectCoords.xOrigin, CP_System_GetWindowHeight() * 0.35f);
+		CreditsBackButton = ui_button_movement(CreditsBackButton, CreditsBackButton.buttonData.xOrigin, CP_System_GetWindowHeight() * 0.9f);
+	}
+	else if (currentGameState == Credits)
+	{
+		creditRectCoords = coord_movement(creditRectCoords, creditRectCoords.xOrigin, CP_System_GetWindowHeight() * 1.35f);
+		CreditsBackButton = ui_button_movement(CreditsBackButton, CreditsBackButton.buttonData.xOrigin, CP_System_GetWindowHeight() * 2.0f);
 	}
 }
 
@@ -544,29 +552,30 @@ void move_level_select(void)
 	}
 }
 
+
 int level_select_finished_moving(void)
 {
 	if (currentGameState == LevelSelect)
 	{
-		if (button_has_finished_moving(*LevelButtons, CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight()))
+		if (button_has_finished_moving(*LevelButtons, LevelButtons->buttonData.xOrigin, CP_System_GetWindowHeight()))
 		{
 			for (Button* b = LevelButtons; b < LevelButtons + MAX_NUMBER_OF_LEVEL; b++)
 			{
-				b->interpolationTime = 0.0f;
+				b->movementTime = 0.0f;
 			}
-			LevelSelectBackButton.interpolationTime = 0.0f;
+			LevelSelectBackButton.movementTime = 0.0f;
 			return 1;
 		}
 	}
 	else if (currentGameState == MainMenu)
 	{
-		if (button_has_finished_moving(*LevelButtons, CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 0.35f))
+		if (button_has_finished_moving(*LevelButtons, LevelButtons->buttonData.xOrigin, CP_System_GetWindowHeight() * 0.35f))
 		{
 			for (Button* b = LevelButtons; b < LevelButtons + MAX_NUMBER_OF_LEVEL; b++)
 			{
-				b->interpolationTime = 0.0f;
+				b->movementTime = 0.0f;
 			}
-			LevelSelectBackButton.interpolationTime = 0.0f;
+			LevelSelectBackButton.movementTime = 0.0f;
 			return 1;
 		}
 	}
