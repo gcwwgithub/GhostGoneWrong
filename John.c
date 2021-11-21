@@ -6,8 +6,8 @@
 #include "Anderson.h"
 
 void Basic_Ghost(enemy* r) { // setup variable for basic ghost enemy
-	r->health = 2;
-	r->max_health = 2;
+	r->health = 4;
+	r->max_health = 4;
 	r->speed = 30;
 	r->CurrentWaypoint = 0;
 	r->data.xOrigin = Xarray[0];
@@ -56,8 +56,8 @@ void Fast_Ghost_init(enemy* r) { // setup variable for fast ghost enemy
 }
 
 void Fat_Ghost_init(enemy* r) {
-	r->health = 20;
-	r->max_health = 20;
+	r->health = 40;
+	r->max_health = 40;
 	r->speed = 25;
 	r->CurrentWaypoint = 0;
 	r->data.xOrigin = Xarray[0];
