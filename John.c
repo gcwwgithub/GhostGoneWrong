@@ -48,7 +48,7 @@ int Check_state(enemy* r) {
 void enemy_move(enemy* r, float Enemy_PathpointsX[], float Enemy_PathpointsY[], int number_of_points, int CurrentGameLevel) { //Enemy movement
 	float Speed = (r->speed) * r->slow_amt * CP_System_GetDt();
 	update_point_num(Enemy_PathpointsX, Enemy_PathpointsY, r);
-	if (r->CurrentWaypoint>=2 && r->state == Adjusting) {
+	if (r->CurrentWaypoint >= 2 && r->state == Adjusting) {
 		r->state = Moving;
 		reset_enemy_path(r);
 		r->CurrentWaypoint = r->adjustingWaypoint;
@@ -86,7 +86,7 @@ void enemy_move(enemy* r, float Enemy_PathpointsX[], float Enemy_PathpointsY[], 
 Direction direction_to_next_point(float Enemy_PathpointsX[], float Enemy_PathpointsY[], enemy* r) {   //Which direction to move depending on points
 	float Xdistance_between_points = (Enemy_PathpointsX[r->CurrentWaypoint + 1] - Enemy_PathpointsX[r->CurrentWaypoint]);
 	float Ydistance_between_points = (Enemy_PathpointsY[r->CurrentWaypoint + 1] - Enemy_PathpointsY[r->CurrentWaypoint]);
-	if (r->state == Death||r->state==Reached) {
+	if (r->state == Death || r->state == Reached) {
 		return NoMove;
 	}
 	if (Xdistance_between_points == 0) {
@@ -200,8 +200,8 @@ void Enemies_init(void) {
 }
 
 void Basic_Ghost(enemy* r) { // setup variable for basic ghost enemy
-	r->health = 4;
-	r->max_health = 4;
+	r->health = 2;
+	r->max_health = 2;
 	r->speed = 30;
 	r->CurrentWaypoint = 0;
 	r->data.xOrigin = Xarray[0];
@@ -227,7 +227,7 @@ void Basic_Ghost(enemy* r) { // setup variable for basic ghost enemy
 void Fast_Ghost_init(enemy* r) { // setup variable for fast ghost enemy
 	r->health = 2;
 	r->max_health = 2;
-	r->speed =60;
+	r->speed = 60;
 	r->CurrentWaypoint = 0;
 	r->data.xOrigin = Xarray[0];
 	r->data.yOrigin = Yarray[0];
@@ -284,9 +284,9 @@ void update_enemy(void) {
 	for (int i = 0; i < MAX_ENEMIES; i++) {
 		int spawn_timer = 2;
 		if ((Enemy[i].state == Inactive) && (Enemy[i].health > 0) && (count / spawn_timer <= MAX_ENEMIES)) {
-			int state_check=0;
+			int state_check = 0;
 			int b = count;
-			for (int j=0; j < MAX_ENEMIES; j++) {
+			for (int j = 0; j < MAX_ENEMIES; j++) {
 				if (Enemy[j].state == Inactive) {
 					state_check++;
 				}
@@ -320,6 +320,7 @@ void update_enemy(void) {
 		Reaper_ability(&Enemy[i]);
 		Environment_check(currentGameLevel);
 		Current_wave_check(&Enemy[i]);
+		Power_Up_check(&Enemy[i]);
 	}
 	enemy* En = &Enemy[0];
 }
@@ -556,9 +557,9 @@ void Reset_enemies(int current_level) {
 void Check_pathAdjustment(enemy* r) {
 	int XorY = 0;
 	int check = 0;
-	if (r->state != Inactive&&r->state !=Death&&r->state != Reached) {
+	if (r->state != Inactive && r->state != Death && r->state != Reached) {
 		for (int j = 0; j < Number_of_points; j++) {
-			if (r->state != Adjusting&&(r->EnemyPathX[r->CurrentWaypoint + 1] == Xarray[j] && r->EnemyPathY[r->CurrentWaypoint + 1] == Yarray[j])) {
+			if (r->state != Adjusting && (r->EnemyPathX[r->CurrentWaypoint + 1] == Xarray[j] && r->EnemyPathY[r->CurrentWaypoint + 1] == Yarray[j])) {
 				check++;
 			}
 			else if (r->state == Adjusting) {
@@ -619,7 +620,7 @@ void reset_enemy_path(enemy* r) {
 
 
 
-void Env_eff_IncreasedTurretDamage(void){
+void Env_eff_IncreasedTurretDamage(void) {
 	static float damage_increase[MAX_TURRET];
 	static int level_check[MAX_TURRET];
 	for (int i = 0; i < MAX_TURRET; i++) {
@@ -836,10 +837,26 @@ void Change_current_effect(int CurrentGameLevel) {
 void Current_wave_check(enemy* r) {
 	if (r->WavePowUp_isActive == 0) {
 		int a = Level[currentGameLevel].currentWave;
-		r->max_health *= 1 +(0.2* a);
-		r->health *= 1 +(0.2* a);
+		r->max_health *= 1 + (0.2 * a);
+		r->health *= 1 + (0.2 * a);
 		r->speed += 1 * a;
 		r->WavePowUp_isActive = 1;
+	}
+}
+
+void Power_Up_check(enemy* r) {
+	if (r->Enemy_pow_up[0] == 0) {
+		r->health *= (1 - (Level[currentGameLevel].currentPowerUpLevel.reduceEnemyHealth * 0.05));
+		r->max_health *= (1 - (Level[currentGameLevel].currentPowerUpLevel.reduceEnemyHealth * 0.05));
+		r->Enemy_pow_up[0] = 1;
+	}
+	if (r->Enemy_pow_up[1] == 0) {
+		r->speed *= (1 - (Level[currentGameLevel].currentPowerUpLevel.reduceEnemySpeed * 0.05));
+		r->Enemy_pow_up[1] = 1;
+	}
+	if (r->Enemy_pow_up[2] == 0) {
+		r->points *= 1+(Level[currentGameLevel].currentPowerUpLevel.morePhantomQuartz *0.05);
+		r->Enemy_pow_up[2] = 1;
 	}
 }
 
