@@ -319,6 +319,7 @@ void update_enemy(void) {
 		EnemyDeath(&Enemy[i], currentGameLevel);
 		Reaper_ability(&Enemy[i]);
 		Environment_check(currentGameLevel);
+		Current_wave_check(&Enemy[i]);
 	}
 	enemy* En = &Enemy[0];
 }
@@ -688,23 +689,25 @@ void Env_eff_IncreasedTurretAttackSpeed(void) {
 	static float atk_spd_increase[MAX_TURRET];
 	static int level_check[MAX_TURRET];
 	for (int i = 0; i < MAX_TURRET; i++) {
-		if (Level[currentGameLevel].currentEffect == IncreasedTurretAttackSpeed && turret[i].Env_effect == No_Effect) {
-			atk_spd_increase[i] = turret[i].mod.shoot_rate * 0.2;
-			turret[i].mod.shoot_rate -= atk_spd_increase[i];
-			level_check[i] = turret[i].level;
-			turret[i].Env_effect = Increased_attack_speed;
-		}
-		else if (Level[currentGameLevel].currentEffect == IncreasedTurretAttackSpeed && turret[i].Env_effect == Increased_attack_speed) {
-			if (turret[i].level != level_check[i]) {
+		if (turret[i].isActive) {
+			if (Level[currentGameLevel].currentEffect == IncreasedTurretAttackSpeed && turret[i].Env_effect == No_Effect) {
+				atk_spd_increase[i] = turret[i].mod.shoot_rate * 0.2;
+				turret[i].mod.shoot_rate -= atk_spd_increase[i];
+				level_check[i] = turret[i].level;
+				turret[i].Env_effect = Increased_attack_speed;
+			}
+			else if (Level[currentGameLevel].currentEffect == IncreasedTurretAttackSpeed && turret[i].Env_effect == Increased_attack_speed) {
+				if (turret[i].level != level_check[i]) {
+					turret[i].mod.shoot_rate += atk_spd_increase[i];
+					atk_spd_increase[i] = 0;
+					turret[i].Env_effect = No_Effect;
+				}
+			}
+			else if (Level[currentGameLevel].currentEffect != IncreasedTurretAttackSpeed && turret[i].Env_effect == Increased_attack_speed) {
 				turret[i].mod.shoot_rate += atk_spd_increase[i];
 				atk_spd_increase[i] = 0;
 				turret[i].Env_effect = No_Effect;
 			}
-		}
-		else if (Level[currentGameLevel].currentEffect != IncreasedTurretAttackSpeed && turret[i].Env_effect == Increased_attack_speed) {
-			turret[i].mod.shoot_rate += atk_spd_increase[i];
-			atk_spd_increase[i] = 0;
-			turret[i].Env_effect = No_Effect;
 		}
 	}
 }
@@ -713,23 +716,25 @@ void Env_eff_DecreasedTurretAttackSpeed(void) {
 	static float atk_spd_decrease[MAX_TURRET];
 	static float level_check[MAX_TURRET];
 	for (int i = 0; i < MAX_TURRET; i++) {
-		if (Level[currentGameLevel].currentEffect == DecreasedTurretAttackSpeed && turret[i].Env_effect == No_Effect) {
-			atk_spd_decrease[i] = turret[i].mod.shoot_rate * 0.2;
-			turret[i].mod.shoot_rate += atk_spd_decrease[i];
-			level_check[i] = turret[i].level;
-			turret[i].Env_effect = Decreased_attack_speed;
-		}
-		else if (Level[currentGameLevel].currentEffect == DecreasedTurretAttackSpeed && turret[i].Env_effect == Decreased_attack_speed) {
-			if (turret[i].level != level_check[i]) {
+		if (turret[i].isActive) {
+			if (Level[currentGameLevel].currentEffect == DecreasedTurretAttackSpeed && turret[i].Env_effect == No_Effect) {
+				atk_spd_decrease[i] = turret[i].mod.shoot_rate * 0.2;
+				turret[i].mod.shoot_rate += atk_spd_decrease[i];
+				level_check[i] = turret[i].level;
+				turret[i].Env_effect = Decreased_attack_speed;
+			}
+			else if (Level[currentGameLevel].currentEffect == DecreasedTurretAttackSpeed && turret[i].Env_effect == Decreased_attack_speed) {
+				if (turret[i].level != level_check[i]) {
+					turret[i].mod.shoot_rate -= atk_spd_decrease[i];
+					atk_spd_decrease[i] = 0;
+					turret[i].Env_effect = No_Effect;
+				}
+			}
+			else if (Level[currentGameLevel].currentEffect != DecreasedTurretAttackSpeed && turret[i].Env_effect == Decreased_attack_speed) {
 				turret[i].mod.shoot_rate -= atk_spd_decrease[i];
 				atk_spd_decrease[i] = 0;
 				turret[i].Env_effect = No_Effect;
 			}
-		}
-		else if (Level[currentGameLevel].currentEffect != DecreasedTurretAttackSpeed && turret[i].Env_effect == Decreased_attack_speed) {
-			turret[i].mod.shoot_rate -= atk_spd_decrease[i];
-			atk_spd_decrease[i] = 0;
-			turret[i].Env_effect = No_Effect;
 		}
 	}
 }
@@ -838,6 +843,14 @@ void Change_current_effect(int CurrentGameLevel) {
 	Level[CurrentGameLevel].currentEffect = a;
 }
 
+void Current_wave_check(enemy* r) {
+	if (r->WavePowUp_isActive == 0) {
+		int a = Level[currentGameLevel].currentWave;
+		r->max_health += 1*a;
+		r->health += 1*a;
+		r->WavePowUp_isActive = 1;
+	}
+}
 /*void movement_redone(enemy* r) {
 	r->movement_timer += CP_System_GetDt();
 	int fake_distance_covered = r->speed * timer;

@@ -91,6 +91,7 @@ void Reaper_minion_init(enemy* r);
 void empty_enemy_init(enemy* r);
 //void Level0_waveEnemies_init(void);
 void Reset_enemies(int current_level);
+void Current_wave_check(enemy* r);
 
 void wave_enemy_init(int Basic_Ghost_count, int Fast_Ghost_count, int Fat_Ghost_count, int Grim_Reaper_count, LevelData Level);
 
