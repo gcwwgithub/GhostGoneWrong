@@ -9,6 +9,8 @@
 #define FONT_SIZE CP_System_GetWindowWidth() / 400 * 15.0f
 #define MOVE_DURATION 5.0f
 #define BUILDING_PHASE_TIME 30.0f
+#define DIGIPEN_LOGO_DISPLAY_TIME 4.0f
+#define FADE_OUT_TIME 1.0f
 
 typedef struct Button {
 	Coordinates buttonData;
@@ -57,6 +59,8 @@ CreditLine CreditTexts[13];
 Coordinates creditRectCoords;
 float creditTextMoveTime; // time for creditRect moving
 
+CP_Image digipenLogo;
+
 Button PlayButton;
 Button QuitButton;
 Button CreditsButton;
@@ -80,6 +84,9 @@ int basicEnemyNum;
 int fastEnemyNum;
 int fatEnemyNum;
 float buildingTime;
+float dpLogoTime;
+
+float fadeOutTime;
 
 // Main Menu Inits
 void render_title_screen(void);
@@ -89,6 +96,7 @@ void init_main_menu(void);
 void init_how_to_play_button(void);
 void init_how_to_play_screen(void);
 void init_level_select_buttons(void);
+void init_pause_screen(void);
 void init_credits_screen(void);
 
 // Main Menu Renders
@@ -105,7 +113,8 @@ void set_building_time(float newBuildingTime);
 void init_skip_wave_button(void);
 
 void init_game_font(void);
-void init_pause_screen(void);
+void init_digipen_logo(void);
+void reduce_dp_logo_time(void);
 
 void game_win_lose_check(void);
 void init_end_screen(void);
