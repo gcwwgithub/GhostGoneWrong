@@ -1162,18 +1162,30 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 			CP_Settings_TextSize(35.0f * scalingFactor);
 
 			//Upgrade Price
-			if (turret[turretSelectedToUpgrade].type != T_MINE) {
-				sprintf_s(temp, sizeof(temp), "%4d", turret[turretSelectedToUpgrade].upgrade_price);
-				CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 5.5, menuObjectX.yOrigin + menuObjectX.height / 1.65);
-				RenderNormal(currencySpriteSheet, currencyArray[1], menuObjectX.xOrigin + menuObjectX.width / 2.95,
-					menuObjectX.yOrigin + menuObjectX.height / 1.65, 40 * scalingFactor, 40 * scalingFactor);
+			if (turret[turretSelectedToUpgrade].level == 10)
+			{
+				sprintf_s(temp, sizeof(temp), "MAX");
+				CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 3.75, menuObjectX.yOrigin + menuObjectX.height / 1.65);
 			}
 
+			else
+			{
+				if (turret[turretSelectedToUpgrade].type != T_MINE) {
+					sprintf_s(temp, sizeof(temp), "%4d", turret[turretSelectedToUpgrade].upgrade_price);
+					CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 5.5, menuObjectX.yOrigin + menuObjectX.height / 1.65);
+					RenderNormal(currencySpriteSheet, currencyArray[1], menuObjectX.xOrigin + menuObjectX.width / 2.95,
+						menuObjectX.yOrigin + menuObjectX.height / 1.65, 40 * scalingFactor, 40 * scalingFactor);
+				}
+			
+			}
 			//Sell Price
 			sprintf_s(temp, sizeof(temp), "%4d", turret[turretSelectedToUpgrade].sell_price);
 			CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 1.45, menuObjectX.yOrigin + menuObjectX.height / 1.65);
 			RenderNormal(currencySpriteSheet, currencyArray[1], menuObjectX.xOrigin + menuObjectX.width / 1.15,
 				menuObjectX.yOrigin + menuObjectX.height / 1.65, 40 * scalingFactor, 40 * scalingFactor);
+
+			
+			
 		}
 		break;
 	case UpgradeButton:
