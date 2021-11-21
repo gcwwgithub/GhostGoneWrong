@@ -235,7 +235,7 @@ void render_level_select_buttons(void)
 
 void render_credit_line(CreditLine cLine)
 {
-	CP_Font_DrawText(cLine.text, cLine.initialPos.xOrigin, cLine.initialPos.yOrigin);
+	CP_Font_DrawText(cLine.text, cLine.menuPos.xOrigin, cLine.menuPos.yOrigin);
 }
 
 void render_credits_screen(void)
