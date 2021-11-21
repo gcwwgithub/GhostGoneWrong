@@ -848,7 +848,6 @@ void Current_wave_check(enemy* r) {
 void Power_Up_check(enemy* r) {
 	if (r->Enemy_pow_up[0] == 0) {
 		r->health *= (1 - (Level[currentGameLevel].currentPowerUpLevel.reduceEnemyHealth * 0.05f));
-		r->max_health *= (1 - (Level[currentGameLevel].currentPowerUpLevel.reduceEnemyHealth * 0.05f));
 		r->Enemy_pow_up[0] = 1;
 	}
 	if (r->Enemy_pow_up[1] == 0) {
