@@ -381,7 +381,6 @@ void update_enemy(void) {
 		Current_wave_check(&Enemy[i]);
 		Power_Up_check(&Enemy[i]);
 	}
-	enemy* En = &Enemy[0];
 }
 void draw_multiple_enemies(void) {
 	for (int i = 0; i < MAX_ENEMIES; i++) {
@@ -497,8 +496,8 @@ void empty_enemy_init(enemy* r) {
 	//r->Enemy_pow_up.SpeedDown = 0;
 	r->WavePowUp_isActive = 0;
 	r->isToken = 0;
-	int pathPoints;
-	float slowed_distance;
+	//int pathPoints;
+	//float slowed_distance;
 	for (int i = 0; i < 50; i++) {
 		r->EnemyPathX[i] = 0;
 		r->EnemyPathY[i] = 0;
@@ -511,13 +510,13 @@ void empty_enemy_init(enemy* r) {
 
 
 
-void wave_enemy_init(int Basic_Ghost_count, int Fast_Ghost_count, int Fat_Ghost_count, int Grim_Reaper_count, LevelData Level) {
+void wave_enemy_init(int Basic_Ghost_count, int Fast_Ghost_count, int Fat_Ghost_count, int Grim_Reaper_count, LevelData E_Level) {
 	timer = 0;
 	count = 0;
 	Enemy_node = NULL;
 	wave_timer = 0;
-	Xarray[0] = (Game.xOrigin + Game.gridWidth * (0.5 + Level.spawnCol));
-	Yarray[0] = (Game.yOrigin + Game.gridHeight * (0.5 + Level.spawnRow));
+	Xarray[0] = (Game.xOrigin + Game.gridWidth * (0.5 + E_Level.spawnCol));
+	Yarray[0] = (Game.yOrigin + Game.gridHeight * (0.5 + E_Level.spawnRow));
 
 	for (int i = 0; i < MAX_ENEMIES; i++) {
 		empty_enemy_init(&Enemy[i]);
@@ -525,8 +524,8 @@ void wave_enemy_init(int Basic_Ghost_count, int Fast_Ghost_count, int Fat_Ghost_
 	int a = Basic_Ghost_count + Fast_Ghost_count;
 	int b = a + Fat_Ghost_count;
 	int c = b + Grim_Reaper_count;
-	Xarray[0] = (Game.xOrigin + Game.gridWidth * (0.5 + Level.spawnCol));
-	Yarray[0] = (Game.yOrigin + Game.gridHeight * (0.5 + Level.spawnRow));
+	Xarray[0] = (Game.xOrigin + Game.gridWidth * (0.5 + E_Level.spawnCol));
+	Yarray[0] = (Game.yOrigin + Game.gridHeight * (0.5 + E_Level.spawnRow));
 	for (int i = 0; i < Basic_Ghost_count; i++) {
 		Basic_Ghost(&Enemy[i]);
 	}
@@ -757,7 +756,7 @@ void Env_eff_Less_HP(void) {
 void Env_eff_Faster_Enemies(void) {
 	for (int i = 0; i < MAX_ENEMIES; i++) {
 		if (Enemy[i].env_eff == Applying && Enemy[i].health > 1) {
-			Enemy[i].speed *= 1.2;
+			Enemy[i].speed *= 1.2f;
 			Enemy[i].env_eff = Effected;
 		}
 	}
@@ -766,7 +765,7 @@ void Env_eff_Faster_Enemies(void) {
 void Env_eff_Slower_Enemies(void) {
 	for (int i = 0; i < MAX_ENEMIES; i++) {
 		if (Enemy[i].env_eff == Applying && Enemy[i].health > 1) {
-			Enemy[i].speed /= 1.2;
+			Enemy[i].speed /= 1.2f;
 			Enemy[i].env_eff = Effected;
 		}
 	}
