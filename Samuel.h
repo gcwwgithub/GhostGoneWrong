@@ -138,6 +138,14 @@ void col_type_projectile(Projectile* p);
 void update_turretAnimation(Turret* t);
 
 //particle test
+typedef enum PARTICLE_TYPE
+{
+	PAR_BASIC,
+	PAR_SLOW,
+	PAR_HOMING,
+	PAR_MAX
+}PARTICLE_TYPE;
+
 typedef struct Particle
 {
 	Vector2 dir;
@@ -145,10 +153,13 @@ typedef struct Particle
 	float size;
 	float timer;
 	float duration;
+	float alpha;
 	int isActive;
+	PARTICLE_TYPE type;
 } Particle;
 
-Particle particles[200];
+
+Particle particles[250];
 
 void create_particle(Vector2 pos, Vector2 dir, float size, float duration);
 void update_particle();

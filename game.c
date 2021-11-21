@@ -62,7 +62,7 @@ void game_update(void)
 		//do turret & projectile update next
 		update_turret();
 		update_projectile();
-
+		update_particle();
 
 		//render all the stuff
 		render_game_background(currentGameLevel);
@@ -75,7 +75,7 @@ void game_update(void)
 		render_all_portal_effects();
 		render_turret();
 		render_projectile();
-
+		render_particle();
 		render_bullet_circles();
 
 		if (!turret[turretSelectedToUpgrade].isActive) { // Close mine menu when it explodes
@@ -104,7 +104,7 @@ void game_update(void)
 		//do turret & projectile update next
 		update_turret();
 		update_projectile();
-
+		update_particle();
 		//render all the stuff
 		render_game_background(currentGameLevel);
 		render_game_grid();
@@ -113,7 +113,7 @@ void game_update(void)
 		render_environment();
 		render_turret();
 		render_projectile();
-
+		render_particle();
 		render_bullet_circles();
 
 		render_button_pressed();
