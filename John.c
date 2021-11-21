@@ -855,7 +855,7 @@ void Power_Up_check(enemy* r) {
 		r->Enemy_pow_up[1] = 1;
 	}
 	if (r->Enemy_pow_up[2] == 0) {
-		r->points *= 1+(Level[currentGameLevel].currentPowerUpLevel.morePhantomQuartz *0.05);
+		r->points *= 1+(Level[currentGameLevel].currentPowerUpLevel.morePhantomQuartz *0.10);
 		r->Enemy_pow_up[2] = 1;
 	}
 }
