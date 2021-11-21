@@ -153,7 +153,7 @@ typedef struct Particle
 	float size;
 	float timer;
 	float duration;
-	float alpha;
+	int alpha;
 	int isActive;
 	PARTICLE_TYPE type;
 } Particle;

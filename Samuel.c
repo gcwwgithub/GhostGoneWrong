@@ -92,9 +92,11 @@ void turret_init(void)
 	for (int i = 0; i < T_MAX; ++i)
 		turret_purchasing[TP_UPGRADE_MAX_LEVEL][i] = 10;
 
+
 	for (int i = 0; i < sizeof(particles) / sizeof(particles[0]); ++i)
 	{
-		Vector2 v = { v.x = 0.f, v.y = 0.f };
+		v.x = 0.f;
+		v.y = 0.f;
 		particles[i].dir = v;
 		particles[i].pos = v;
 		particles[i].isActive = FALSE;
@@ -156,7 +158,7 @@ void place_turret(TurretType type, int index_x, int index_y)
 			if (Level[currentGameLevel].grid[index_y][index_x].type != Path)
 				return;
 			turret[i].mod.range = Game.gridWidth * 2;
-			turret[i].mod.damage = 10 + Level[currentGameLevel].currentPowerUpLevel.increasedMineDamage * 20;
+			turret[i].mod.damage = (float)(10 + Level[currentGameLevel].currentPowerUpLevel.increasedMineDamage * 20);
 			turret[i].data.width = Game.gridWidth * 0.7f;
 			turret[i].data.width = Game.gridHeight * 0.7f;
 			turret[i].data.objectType = objectCircle;
@@ -217,7 +219,7 @@ void sell_turret(int t_index)
 	int y = (int)((turret[t_index].data.yOrigin - Game.yOrigin) / Game.gridHeight);
 	float sell_price;
 
-	sell_price = (int)(turret[t_index].total_price * 0.7f);
+	sell_price = (turret[t_index].total_price * 0.7f);
 	//if (turret[t_index].level != 1)
 	//	sell_price = (turret[t_index].upgrade_price + turret_purchasing[TP_PRICE][turret[t_index].type]) * 0.7f;
 	//else
@@ -316,7 +318,7 @@ void render_turret(void)
 
 	if (turretSelectedToUpgrade != NO_TURRET_SELECTED)
 	{
-		CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255 * 0.5f));
+		CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255 / 2));
 		CP_Graphics_DrawCircle(turret[turretSelectedToUpgrade].data.xOrigin,
 			turret[turretSelectedToUpgrade].data.yOrigin, turret[turretSelectedToUpgrade].mod.range * 2);
 	}
@@ -351,7 +353,7 @@ void update_turret(void)
 
 			if (turret[i].type == T_MINE)
 			{
-				turret[i].mod.damage = 10 + Level[currentGameLevel].currentPowerUpLevel.increasedMineDamage * 20;
+				turret[i].mod.damage = (float)(10 + Level[currentGameLevel].currentPowerUpLevel.increasedMineDamage * 20);
 				if (Collision_Detection(turret[i].data, Enemy[j].data))
 				{
 					//set the highest waypoint
@@ -546,7 +548,7 @@ void update_projectile(void)
 			else//update the projectile targeting
 			{
 				Vector2 v;
-				int dist = Game.width * 10, tmp = 0; //abritrary large number
+				float dist = Game.width * 10, tmp = 0; //abritrary large number
 				for (int j = 0; j < MAX_ENEMIES; ++j)
 				{
 					if (Enemy[j].state == Death || Enemy[j].state == Inactive)
@@ -776,7 +778,7 @@ void update_particle()
 			continue;
 
 		particles[i].timer += dt;
-		particles[i].alpha -= 255 / particles[i].duration * dt; //(max alpha / duration) to get rate of change
+		particles[i].alpha -= (int)(255 / particles[i].duration * dt); //(max alpha / duration) to get rate of change
 		if (particles[i].timer >= particles[i].duration)
 		{
 			particles[i].timer = 0.f;
@@ -785,7 +787,7 @@ void update_particle()
 		}
 
 
-		particles[i].dir.y -= 1.5 * dt;
+		particles[i].dir.y -= 1.5f * dt;
 		particles[i].dir.x -= particles[i].dir.x * (particles[i].timer / particles[i].duration) * dt;
 		particles[i].dir = normalise(particles[i].dir);
 
