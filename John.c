@@ -428,7 +428,7 @@ void Reaper_minion_init(enemy* r) {
 	for (int i = MAX_SPAWNING_ENEMIES; i < MAX_ENEMIES; i++) {
 		if (a == 0) {
 			if (Enemy[i].state == Inactive) {
-				Basic_Ghost(&Enemy[i]);
+				Fast_Ghost_init(&Enemy[i]);
 				Enemy[i].data.xOrigin = Xarray[r->CurrentWaypoint];
 				Enemy[i].data.yOrigin = Yarray[r->CurrentWaypoint];
 				Enemy[i].CurrentWaypoint = r->CurrentWaypoint;
@@ -440,7 +440,7 @@ void Reaper_minion_init(enemy* r) {
 		}
 		else if (a == 1) {
 			if (Enemy[i].state == Inactive) {
-				Basic_Ghost(&Enemy[i]);
+				Fast_Ghost_init(&Enemy[i]);
 				Enemy[i].data.xOrigin = Xarray[r->CurrentWaypoint + 1];
 				Enemy[i].data.yOrigin = Yarray[r->CurrentWaypoint + 1];
 				Enemy[i].CurrentWaypoint = r->CurrentWaypoint + 1;
@@ -520,7 +520,7 @@ void wave_enemy_init(int Basic_Ghost_count, int Fast_Ghost_count, int Fat_Ghost_
 		empty_enemy_init(&Enemy[i]);
 	}
 	int a = Basic_Ghost_count + Fast_Ghost_count;
-	int b = a + Fast_Ghost_count;
+	int b = a + Fat_Ghost_count;
 	int c = b + Grim_Reaper_count;
 	Xarray[0] = (Game.xOrigin + Game.gridWidth * (0.5 + Level.spawnCol));
 	Yarray[0] = (Game.yOrigin + Game.gridHeight * (0.5 + Level.spawnRow));
