@@ -76,9 +76,9 @@ void turret_init(void)
 	}
 
 	//set price of turrets and stuff
-	turret_purchasing[TP_PRICE][T_BASIC] = 20;
-	turret_purchasing[TP_PRICE][T_SLOW] = 45;
-	turret_purchasing[TP_PRICE][T_HOMING] = 100;
+	turret_purchasing[TP_PRICE][T_BASIC] = 25;
+	turret_purchasing[TP_PRICE][T_SLOW] = 50;
+	turret_purchasing[TP_PRICE][T_HOMING] = 150;
 	turret_purchasing[TP_PRICE][T_MINE] = 50;
 	turret_purchasing[TP_PRICE][T_WALL] = 10;
 
@@ -137,7 +137,7 @@ void place_turret(TurretType type, int index_x, int index_y)
 		case T_SLOW: // FREEZE TURRET
 			turret[i].mod.range = Game.gridWidth * 2;
 			turret[i].mod.damage = 0.5f;
-			turret[i].mod.slow_amt = 0.7f; //leaving it at 1 means no slow if slow_amt < 1 then slow
+			turret[i].mod.slow_amt = 0.8f; //leaving it at 1 means no slow if slow_amt < 1 then slow
 			turret[i].mod.slow_timer = 2.f;
 			turret[i].animCounter = 0;
 			turret[i].turretAnimTimer = 0;
@@ -194,6 +194,9 @@ void place_turret(TurretType type, int index_x, int index_y)
 
 void remove_turret(int index_x, int index_y)
 {
+	if (turret_on_grid == NULL)
+		return;
+
 	int index = turret_on_grid[index_x][index_y];
 	if (index < 0)
 		return;
