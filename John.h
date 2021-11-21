@@ -42,9 +42,9 @@ typedef enum EnvironmentEffectEnemy {
 
 
 typedef struct Enemy {
-	int CurrentWaypoint, health, alpha, points;
+	int CurrentWaypoint, alpha, points;
 	float xOrigin, yOrigin, enemy_width, enemy_height,
-		max_health, angle, speed, slow_amt, slow_timer;
+		health,max_health, angle, speed, slow_amt, slow_timer;
 	Coordinates data;
 	EnemyState state;
 	EnemyTypes type;

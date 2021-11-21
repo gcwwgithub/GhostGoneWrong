@@ -152,7 +152,7 @@ void EnemyDeath(enemy* r, int CurrentGameLevel) {  //function updates and checks
 
 	if (r->health <= 0) {
 		if (r->state == Hurt) {
-			Level->phantomQuartz += r->points;
+			Level[CurrentGameLevel].phantomQuartz += r->points;
 		}
 		r->state = Death;
 
@@ -200,8 +200,8 @@ void Enemies_init(void) {
 }
 
 void Basic_Ghost(enemy* r) { // setup variable for basic ghost enemy
-	r->health = 4;
-	r->max_health = 4;
+	r->health = 3;
+	r->max_health = 3;
 	r->speed = 15;
 	r->CurrentWaypoint = 0;
 	r->data.xOrigin = Xarray[0];
@@ -250,8 +250,8 @@ void Fast_Ghost_init(enemy* r) { // setup variable for fast ghost enemy
 }
 
 void Fat_Ghost_init(enemy* r) {
-	r->health = 10;
-	r->max_health = 10;
+	r->health = 7;
+	r->max_health = 7;
 	r->speed = 15;
 	r->CurrentWaypoint = 0;
 	r->data.xOrigin = Xarray[0];
@@ -283,7 +283,7 @@ void update_enemy(void) {
 	}
 	for (int i = 0; i < MAX_ENEMIES; i++) {
 		int spawn_timer = 5;
-		if ((Enemy[i].state == Inactive) && (Enemy[i].health >= 1) && (count / spawn_timer <= MAX_ENEMIES)) {
+		if ((Enemy[i].state == Inactive) && (Enemy[i].health > 0) && (count / spawn_timer <= MAX_ENEMIES)) {
 			int state_check=0;
 			int b = count;
 			for (int j=0; j < MAX_ENEMIES; j++) {
