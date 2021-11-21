@@ -1049,8 +1049,8 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 		sprintf_s(temp, sizeof(temp), "Effects");
 		CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 2, menuObjectX.yOrigin + menuObjectX.height / 5);
 		RenderNormal(battlefieldEffectIconSpriteSheet, battlefieldEffectIconArray[Level[currentGameLevel].currentEffect],
-			menuObjectX.xOrigin + menuObjectX.width / 2, menuObjectX.yOrigin + menuObjectX.height / 2,
-			110 * scalingFactor, 110 * scalingFactor);
+			menuObjectX.xOrigin + menuObjectX.width / 2, menuObjectX.yOrigin + menuObjectX.height / 1.65,
+			85 * scalingFactor, 85 * scalingFactor);
 		break;
 	case MonsterRemainingDisplay:
 		RenderNormal(backgroundUIFatSpriteSheet, backgroundUIFatArray[0], menuObjectX.xOrigin + menuObjectX.width / 2,
