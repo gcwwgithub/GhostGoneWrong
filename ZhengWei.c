@@ -173,7 +173,7 @@ void render_game_grid_press(LevelData* LevelX) {
 		}
 	}
 	if (isPlacingTurret != T_MAX) {
-		if (isPositionEmpty == TRUE) {
+		if (isPositionEmpty == TRUE && LevelX->grid[drawY][drawX].type != Blocked) {
 			if (isPlacingTurret != T_MINE) {
 				LevelX->grid[drawY][drawX].type = Blocked;
 				pathfinding_reset(LevelX);
@@ -344,6 +344,7 @@ void init_environment_object(int arrayIndex, int row, int col, LevelData* LevelX
 	Environment[arrayIndex].height = Game.gridHeight;
 
 	LevelX->grid[row][col].type = Blocked;
+	LevelX->grid[row][col].type = Blocked;
 }
 
 void render_environment(void) {
@@ -500,7 +501,7 @@ void level1_init(void) {
 	Level[0].health = 100;
 	Level[0].phantomQuartz = 50000;
 	Level[0].goldQuartz = 0;
-	Level[0].currentWave = 8;
+	Level[0].currentWave = 0;
 	Level[0].currentEffect = NoEnvironmentalEffects;
 	Level[0].currentPowerUpLevel.morePhantomQuartz = 0;
 	Level[0].currentPowerUpLevel.reduceEnemySpeed = 0;
