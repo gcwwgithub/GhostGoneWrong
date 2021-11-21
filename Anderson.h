@@ -54,7 +54,7 @@ CreditLine CreditTexts[13];
 
 // temp way to move rect, figuring smth if time permits
 // creditRectCoordsMenu keeps values for tweening
-Coordinates creditRectCoords, creditRectCoordsMenu;
+Coordinates creditRectCoords;
 float creditTextMoveTime; // time for creditRect moving
 
 Button PlayButton;

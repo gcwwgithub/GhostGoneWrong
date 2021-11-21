@@ -151,9 +151,7 @@ void init_credits_screen(void)
 	creditRectCoords.xOrigin = CP_System_GetWindowWidth() * 0.1f; creditRectCoords.yOrigin = CP_System_GetWindowHeight() * 1.35f;
 	creditRectCoords.width = CP_System_GetWindowWidth() * 0.8f; creditRectCoords.height = CP_System_GetWindowHeight() * 0.5f;
 
-	//creditRectCoordsMenu = creditRectCoords; creditRectCoordsMenu.yOrigin = creditRectCoords.yOrigin + CP_System_GetWindowHeight();
-
-	// the © copyright symbol is printed as \xc2\xa9, as its UTF-8 (i.e Unicode) string literal.
+	// the © copyright symbol is printed as \xc2\xa9, as its UTF-8 (i.e Unicode) string literal counterpart.
 	init_credit_line(CopyrightLine, "All content \xc2\xa9 2021 DigiPen Institute of Technology Singapore, all rights reserved.",
 		CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.45f);
 
@@ -268,18 +266,6 @@ void render_credits_screen(void)
 	render_credit_line(CreditTexts[DX]);
 	render_credit_line(CreditTexts[Gerald]);
 	render_credit_line(CreditTexts[ClaudeComair]);
-
-	//CP_Font_DrawText("Developed by: ", CP_System_GetWindowWidth() * 0.3f, CP_System_GetWindowHeight() * 0.5f);
-	//CP_Font_DrawText("Ng Zheng Wei", CP_System_GetWindowWidth() * 0.3f, CP_System_GetWindowHeight() * 0.55f);
-	//CP_Font_DrawText("Wong Zhi Hao Samuel", CP_System_GetWindowWidth() * 0.3f, CP_System_GetWindowHeight() * 0.6f);
-	//CP_Font_DrawText("Lim Jing Rui John", CP_System_GetWindowWidth() * 0.3f, CP_System_GetWindowHeight() * 0.65f);
-	//CP_Font_DrawText("Chiok Wei Wen Gabriel", CP_System_GetWindowWidth() * 0.3f, CP_System_GetWindowHeight() * 0.7f);
-	//CP_Font_DrawText("Phua Tai Dah Anderson", CP_System_GetWindowWidth() * 0.3f, CP_System_GetWindowHeight() * 0.75f);
-	//CP_Font_DrawText("President: ", CP_System_GetWindowWidth() * 0.7f, CP_System_GetWindowHeight() * 0.5f);
-	//CP_Font_DrawText("Claude Comair", CP_System_GetWindowWidth() * 0.7f, CP_System_GetWindowHeight() * 0.55f);
-	//CP_Font_DrawText("Instructors: ", CP_System_GetWindowWidth() * 0.7f, CP_System_GetWindowHeight() * 0.6f);
-	//CP_Font_DrawText("Ding Xiang Cheng", CP_System_GetWindowWidth() * 0.7f, CP_System_GetWindowHeight() * 0.65f);
-	//CP_Font_DrawText("Gerald Wong", CP_System_GetWindowWidth() * 0.7f, CP_System_GetWindowHeight() * 0.7f);
 
 	render_ui_button(CreditsBackButton);
 }
@@ -455,6 +441,8 @@ void game_win_lose_check(void)
 //	Level[currentGameLevel].phantomQuartz += goldAmtToConvert / conversionRate;
 //}
 
+#pragma region UI Movement
+
 float linear(float start, float end, float value)
 {
 	// taken from easing.h, credit goes to prof gerald
@@ -552,7 +540,6 @@ void move_level_select(void)
 	}
 }
 
-
 int level_select_finished_moving(void)
 {
 	if (currentGameState == LevelSelect)
@@ -643,3 +630,5 @@ void init_next_level(int nextGameLevel)
 	currentGameState = Building;
 	}
 }
+
+#pragma endregion
