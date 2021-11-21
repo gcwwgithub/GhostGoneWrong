@@ -416,7 +416,7 @@ void game_win_lose_check(void)
 	}
 	else if (enemiesLeft == 0)
 	{
-		if (Level[currentGameLevel].currentWave == MAX_NUMBER_OF_WAVES - 1)
+		if (Level[currentGameLevel].currentWave == MAX_NUMBER_OF_WAVES-1)
 		{
 			// free memory
 			for (int i = 0; i < gameGridRows; i++) {

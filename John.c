@@ -56,8 +56,8 @@ void Fast_Ghost_init(enemy* r) { // setup variable for fast ghost enemy
 }
 
 void Fat_Ghost_init(enemy* r) {
-	r->health = 40;
-	r->max_health = 40;
+	r->health = 30;
+	r->max_health = 30;
 	r->speed = 25;
 	r->CurrentWaypoint = 0;
 	r->data.xOrigin = Xarray[0];
@@ -544,7 +544,7 @@ void wave_enemy_init(int Basic_Ghost_count, int Fast_Ghost_count, int Fat_Ghost_
 void Reset_enemies(int current_level) {
 	if (currentGameState == Building) {
 		Update_Path_Array(currentGameLevel);
-		if (buildingTime > 0.05f && Level[current_level].currentWave + 1 < MAX_NUMBER_OF_WAVES) {
+		if (buildingTime > 0.05f && Level[current_level].currentWave < MAX_NUMBER_OF_WAVES) {
 			int BasicCount = Level[current_level].waveEnemies[Level[current_level].currentWave][Basic];
 			int FastCount = Level[current_level].waveEnemies[Level[current_level].currentWave][Fast_Ghost];
 			int FatCount = Level[current_level].waveEnemies[Level[current_level].currentWave][Fat_Ghost];

@@ -77,14 +77,14 @@ void turret_init(void)
 
 	//set price of turrets and stuff
 	turret_purchasing[TP_PRICE][T_BASIC] = 100;
-	turret_purchasing[TP_PRICE][T_SLOW] = 250;
-	turret_purchasing[TP_PRICE][T_HOMING] = 500;
-	turret_purchasing[TP_PRICE][T_MINE] = 300;
+	turret_purchasing[TP_PRICE][T_SLOW] = 200;
+	turret_purchasing[TP_PRICE][T_HOMING] = 200;
+	turret_purchasing[TP_PRICE][T_MINE] = 100;
 	turret_purchasing[TP_PRICE][T_WALL] = 10;
 
-	turret_purchasing[TP_UPGRADE_PRICE][T_BASIC] = 100;
-	turret_purchasing[TP_UPGRADE_PRICE][T_SLOW] = 25;
-	turret_purchasing[TP_UPGRADE_PRICE][T_HOMING] = 100;
+	turret_purchasing[TP_UPGRADE_PRICE][T_BASIC] = 50;
+	turret_purchasing[TP_UPGRADE_PRICE][T_SLOW] = 50;
+	turret_purchasing[TP_UPGRADE_PRICE][T_HOMING] = 50;
 	turret_purchasing[TP_UPGRADE_PRICE][T_MINE] = 15;
 	turret_purchasing[TP_UPGRADE_PRICE][T_WALL] = 10;
 
@@ -156,7 +156,7 @@ void place_turret(TurretType type, int index_x, int index_y)
 			if (Level[currentGameLevel].grid[index_y][index_x].type != Path)
 				return;
 			turret[i].mod.range = Game.gridWidth * 2;
-			turret[i].mod.damage = 5 + Level[currentGameLevel].currentPowerUpLevel.increasedMineDamage * 10;
+			turret[i].mod.damage = 10 + Level[currentGameLevel].currentPowerUpLevel.increasedMineDamage * 20;
 			turret[i].data.width = Game.gridWidth * 0.7f;
 			turret[i].data.width = Game.gridHeight * 0.7f;
 			turret[i].data.objectType = objectCircle;
@@ -249,7 +249,7 @@ void upgrade_turret(int t_index)
 		//turret[t_index].mod.range += turret[t_index].mod.range * 0.05f;
 		//turret[t_index].mod.shoot_rate -= 0.02f;
 		//increase the price for another upgrade
-		turret[t_index].upgrade_price += 100;
+		turret[t_index].upgrade_price += 50;
 		break;
 	case T_SLOW:
 		turret[t_index].mod.damage += 0.15f;
@@ -257,14 +257,14 @@ void upgrade_turret(int t_index)
 		turret[t_index].mod.slow_amt -= 0.05f;
 		//turret[t_index].mod.shoot_rate -= 0.02f;
 		//increase the price for another upgrade
-		turret[t_index].upgrade_price += 25;
+		turret[t_index].upgrade_price += 50;
 		break;
 	case T_HOMING:
-		turret[t_index].mod.damage += 0.0022f * turret[t_index].upgrade_price;
+		turret[t_index].mod.damage += 0.005f * turret[t_index].upgrade_price;
 		//turret[t_index].mod.range += turret[t_index].mod.range * 0.05f;
 		//turret[t_index].mod.shoot_rate -= 0.01f;
 		//increase the price for another upgrade
-		turret[t_index].upgrade_price += 100;
+		turret[t_index].upgrade_price += 50;
 		break;
 	case T_MINE:
 		turret[t_index].mod.damage += 1.f;
@@ -351,7 +351,7 @@ void update_turret(void)
 
 			if (turret[i].type == T_MINE)
 			{
-				turret[i].mod.damage = 5 + Level[currentGameLevel].currentPowerUpLevel.increasedMineDamage * 10;
+				turret[i].mod.damage = 10 + Level[currentGameLevel].currentPowerUpLevel.increasedMineDamage * 20;
 				if (Collision_Detection(turret[i].data, Enemy[j].data))
 				{
 					//set the highest waypoint

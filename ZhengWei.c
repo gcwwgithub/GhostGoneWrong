@@ -173,7 +173,7 @@ void render_game_grid_press(LevelData* LevelX) {
 		}
 	}
 	if (isPlacingTurret != T_MAX) {
-		if (isPositionEmpty == TRUE) {
+		if (isPositionEmpty == TRUE && LevelX->grid[drawY][drawX].type != Blocked) {
 			if (isPlacingTurret != T_MINE) {
 				LevelX->grid[drawY][drawX].type = Blocked;
 				pathfinding_reset(LevelX);
@@ -343,6 +343,7 @@ void init_environment_object(int arrayIndex, int row, int col, LevelData* LevelX
 	Environment[arrayIndex].width = Game.gridWidth;
 	Environment[arrayIndex].height = Game.gridHeight;
 
+	LevelX->grid[row][col].type = Blocked;
 	LevelX->grid[row][col].type = Blocked;
 }
 
@@ -1221,6 +1222,7 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 		CP_Settings_Fill(COLOR_WHITE);
 		sprintf_s(temp, sizeof(temp), "Effects");
 		CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 2, menuObjectX.yOrigin + menuObjectX.height / 5);
+		printf("%d", Level[currentGameLevel].currentEffect);
 		RenderNormal(battlefieldEffectIconSpriteSheet, battlefieldEffectIconArray[Level[currentGameLevel].currentEffect],
 			menuObjectX.xOrigin + menuObjectX.width / 2, menuObjectX.yOrigin + menuObjectX.height / 1.65,
 			85 * scalingFactor, 85 * scalingFactor);
