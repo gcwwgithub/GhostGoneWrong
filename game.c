@@ -21,6 +21,9 @@ void game_init(void)
 	init_game_font();
 	init_digipen_logo();
 	currentGameState = MainMenu;
+	buildingTime = BUILDING_PHASE_TIME;
+	dpLogoTime = DIGIPEN_LOGO_DISPLAY_TIME;
+	fadeOutTime = FADE_OUT_TIME;
 
 	//Main menu, level select
 
@@ -205,11 +208,11 @@ void game_update(void)
 		}
 		if (CreditsButton.isMoving)
 		{
-			CreditsButton = ui_button_movement(CreditsButton, CreditsButton.buttonData.xOrigin, CP_System_GetWindowHeight());
+			CreditsButton = ui_button_movement(CreditsButton, CreditsButton.buttonData.xOrigin, (float)CP_System_GetWindowHeight());
 		}
 		if (QuitButton.isMoving) // clicked on play
 		{
-			QuitButton = ui_button_movement(QuitButton, CP_System_GetWindowWidth(), QuitButton.buttonData.yOrigin);
+			QuitButton = ui_button_movement(QuitButton, (float)CP_System_GetWindowWidth(), QuitButton.buttonData.yOrigin);
 		}
 
 		if (CreditsBackButton.isMoving)
@@ -224,8 +227,8 @@ void game_update(void)
 
 		// Clicked on Play, and checking if the Play,Quit buttons have left and Level Select buttons have come
 		if (button_has_finished_moving(PlayButton, -BUTTON_WIDTH, PlayButton.buttonData.yOrigin) &&
-			button_has_finished_moving(CreditsButton, CreditsButton.buttonData.xOrigin, CP_System_GetWindowHeight()) &&
-			button_has_finished_moving(QuitButton, CP_System_GetWindowWidth(), QuitButton.buttonData.yOrigin) &&
+			button_has_finished_moving(CreditsButton, CreditsButton.buttonData.xOrigin, (float)CP_System_GetWindowHeight()) &&
+			button_has_finished_moving(QuitButton, (float)CP_System_GetWindowWidth(), QuitButton.buttonData.yOrigin) &&
 			level_select_finished_moving())
 		{
 			PlayButton.isMoving = CreditsButton.isMoving = QuitButton.isMoving = LevelButtons->isMoving = 0;
@@ -383,7 +386,7 @@ void game_update(void)
 		{
 			CP_Graphics_ClearBackground(COLOR_GREY);
 		}
-		CP_Image_Draw(digipenLogo, CP_System_GetWindowWidth() / 2, CP_System_GetWindowHeight() / 2, CP_Image_GetWidth(digipenLogo) / 2, CP_Image_GetHeight(digipenLogo) / 2, (255 * (fadeOutTime / FADE_OUT_TIME)));
+		CP_Image_Draw(digipenLogo, (float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2, (float)CP_Image_GetWidth(digipenLogo) / 2, (float)CP_Image_GetHeight(digipenLogo) / 2, (255 * (int)(fadeOutTime / FADE_OUT_TIME)));
 		reduce_dp_logo_time();
 	}
 }

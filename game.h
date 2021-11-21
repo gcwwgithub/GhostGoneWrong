@@ -173,6 +173,7 @@ Coordinates Environment[MAX_ENVIRONMENT_OBJECT];
 int Collision_Detection(Coordinates object1, Coordinates object2);
 int btn_is_pressed(Coordinates object1);
 void render_turret_menu_object(Coordinates ButtonX, enum MenuObjectType type);
+void mouse_reset(void);
 
 //graphics
 #define LEFT_MENU_X_END 140.714294f
