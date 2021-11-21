@@ -98,6 +98,7 @@ void game_update(void)
 		if (btn_is_pressed(SkipWaveButton.buttonData))
 		{
 			set_building_time(0.0f);
+			mouse_reset();
 		}
 
 		//do turret & projectile update next
