@@ -103,7 +103,7 @@ int isPortalEffectSpawn;
 void insert_new_node(struct node**list, float xPos, float yPos, int typeOfBullet);
 void insert_new_node_portal(struct node** list, float xPosInput, float yPosInput, int portalEffect);
 struct node* delete_node(struct node* list,int key);
-int isEmpty(void);
+int isEmpty(struct node* currentNode);
 
 void init_all_images(void);
 void init_linkedlist_variables(void);
