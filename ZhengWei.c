@@ -500,7 +500,7 @@ void level1_init(void) {
 	Level[0].health = 100;
 	Level[0].phantomQuartz = 50000;
 	Level[0].goldQuartz = 0;
-	Level[0].currentWave = 0;
+	Level[0].currentWave = 7;
 	Level[0].currentEffect = NoEnvironmentalEffects;
 	Level[0].currentPowerUpLevel.morePhantomQuartz = 0;
 	Level[0].currentPowerUpLevel.reduceEnemySpeed = 0;
