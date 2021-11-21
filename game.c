@@ -21,6 +21,9 @@ void game_init(void)
 	init_game_font();
 	init_digipen_logo();
 	currentGameState = MainMenu;
+	buildingTime = BUILDING_PHASE_TIME;
+	dpLogoTime = DIGIPEN_LOGO_DISPLAY_TIME;
+	fadeOutTime = FADE_OUT_TIME;
 
 	//Main menu, level select
 

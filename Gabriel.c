@@ -378,293 +378,293 @@ void render_game_background(int currentLevel)
 	case 0:
 		# pragma region Level 1 Objects
 		CP_Settings_Tint(CP_Color_Create(0, 0, 0, 75));
-		RenderWithAlphaChanged(backgroundSpriteSheet, backgroundArray[1], CP_System_GetWindowWidth() * 0.5,
-			CP_System_GetWindowHeight() * 0.5, CP_System_GetWindowWidth(), CP_System_GetWindowHeight(), 255);
+		RenderWithAlphaChanged(backgroundSpriteSheet, backgroundArray[1], CP_System_GetWindowWidth() * 0.5f,
+			CP_System_GetWindowHeight() * 0.5f, (float)CP_System_GetWindowWidth(), (float)CP_System_GetWindowHeight(), 255);
 		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[1], 
-			CP_System_GetWindowWidth() * 0.85, CP_System_GetWindowHeight() * 0.85, 
-			CP_System_GetWindowWidth() * 0.3, CP_System_GetWindowWidth() * 0.3);
+			CP_System_GetWindowWidth() * 0.85f, CP_System_GetWindowHeight() * 0.85f, 
+			CP_System_GetWindowWidth() * 0.3f, CP_System_GetWindowWidth() * 0.3f);
 
 		RenderWithAlphaChanged(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[0],
-			CP_System_GetWindowWidth() * 0.15, CP_System_GetWindowHeight() * 0.1,
+			CP_System_GetWindowWidth() * 0.15f, CP_System_GetWindowHeight() * 0.1f,
 			128 * scalingFactor, 128 * scalingFactor, 200);
 		RenderWithAlphaChanged(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[0],
-			CP_System_GetWindowWidth() * 0.25, CP_System_GetWindowHeight() * 0.11,
+			CP_System_GetWindowWidth() * 0.25f, CP_System_GetWindowHeight() * 0.11f,
 			128 * scalingFactor, 128 * scalingFactor, 200);
 		RenderWithAlphaChanged(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[0],
-			CP_System_GetWindowWidth() * 0.35, CP_System_GetWindowHeight() * 0.1,
+			CP_System_GetWindowWidth() * 0.35f, CP_System_GetWindowHeight() * 0.1f,
 			128 * scalingFactor, 128 * scalingFactor, 200);
 		RenderWithAlphaChanged(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[0],
-			CP_System_GetWindowWidth() * 0.65, CP_System_GetWindowHeight() * 0.1,
+			CP_System_GetWindowWidth() * 0.65f, CP_System_GetWindowHeight() * 0.1f,
 			128 * scalingFactor, 128 * scalingFactor, 200);
 		RenderWithAlphaChanged(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[0],
-			CP_System_GetWindowWidth() * 0.75, CP_System_GetWindowHeight() * 0.11,
+			CP_System_GetWindowWidth() * 0.75f, CP_System_GetWindowHeight() * 0.11f,
 			128 * scalingFactor, 128 * scalingFactor, 200);
 
 		RenderWithAlphaChanged(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[0],
-			CP_System_GetWindowWidth() * 0.15, CP_System_GetWindowHeight() * 0.9,
+			CP_System_GetWindowWidth() * 0.15f, CP_System_GetWindowHeight() * 0.9f,
 			128 * scalingFactor, 128 * scalingFactor, 200);
 		RenderWithAlphaChanged(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[0],
-			CP_System_GetWindowWidth() * 0.25, CP_System_GetWindowHeight() * 0.89,
+			CP_System_GetWindowWidth() * 0.25f, CP_System_GetWindowHeight() * 0.89f,
 			128 * scalingFactor, 128 * scalingFactor, 200);
 		RenderWithAlphaChanged(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[0],
-			CP_System_GetWindowWidth() * 0.35, CP_System_GetWindowHeight() * 0.9,
+			CP_System_GetWindowWidth() * 0.35f, CP_System_GetWindowHeight() * 0.9f,
 			128 * scalingFactor, 128 * scalingFactor, 200);
 		RenderWithAlphaChanged(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[0],
-			CP_System_GetWindowWidth() * 0.45, CP_System_GetWindowHeight() * 0.9,
+			CP_System_GetWindowWidth() * 0.45f, CP_System_GetWindowHeight() * 0.9f,
 			128 * scalingFactor, 128 * scalingFactor, 200);
 		RenderWithAlphaChanged(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[0],
-			CP_System_GetWindowWidth() * 0.55, CP_System_GetWindowHeight() * 0.89,
+			CP_System_GetWindowWidth() * 0.55f, CP_System_GetWindowHeight() * 0.89f,
 			128 * scalingFactor, 128 * scalingFactor, 200);
-
-		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[2],
-			CP_System_GetWindowWidth() * 0.3, CP_System_GetWindowHeight() * 0.3,
-			64 * scalingFactor, 64 * scalingFactor, 255);
 
 		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[2],
-			CP_System_GetWindowWidth() * 0.3, CP_System_GetWindowHeight() * 0.5,
+			CP_System_GetWindowWidth() * 0.3f, CP_System_GetWindowHeight() * 0.3f,
 			64 * scalingFactor, 64 * scalingFactor);
 
 		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[2],
-			CP_System_GetWindowWidth() * 0.7, CP_System_GetWindowHeight() * 0.6,
+			CP_System_GetWindowWidth() * 0.3f, CP_System_GetWindowHeight() * 0.5f,
 			64 * scalingFactor, 64 * scalingFactor);
 
 		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[2],
-			CP_System_GetWindowWidth() * 0.85, CP_System_GetWindowHeight() * 0.5,
+			CP_System_GetWindowWidth() * 0.7f, CP_System_GetWindowHeight() * 0.6f,
+			64 * scalingFactor, 64 * scalingFactor);
+
+		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[2],
+			CP_System_GetWindowWidth() * 0.85f, CP_System_GetWindowHeight() * 0.5f,
 			64 * scalingFactor, 64 * scalingFactor);
 
 		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[8],
-			CP_System_GetWindowWidth() * 0.95, CP_System_GetWindowHeight() * 0.55,
+			CP_System_GetWindowWidth() * 0.95f, CP_System_GetWindowHeight() * 0.55f,
 			64 * scalingFactor, 64 * scalingFactor);
 
 		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[8],
-			CP_System_GetWindowWidth() * 0.69, CP_System_GetWindowHeight() * 0.9,
+			CP_System_GetWindowWidth() * 0.69f, CP_System_GetWindowHeight() * 0.9f,
 			64 * scalingFactor, 64 * scalingFactor);
 
 		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[8],
-			CP_System_GetWindowWidth() * 0.25, CP_System_GetWindowHeight() * 0.75,
+			CP_System_GetWindowWidth() * 0.25f, CP_System_GetWindowHeight() * 0.75f,
 			64 * scalingFactor, 64 * scalingFactor);
 #pragma endregion
 		break;
 	case 1:
 		#pragma region Level 2 Objects
 		CP_Settings_Tint(CP_Color_Create(0, 0, 0, 75));
-		RenderWithAlphaChanged(backgroundSpriteSheet, backgroundArray[2], CP_System_GetWindowWidth() * 0.5,
-			CP_System_GetWindowHeight() * 0.5, CP_System_GetWindowWidth(), CP_System_GetWindowHeight(), 255);
+		RenderWithAlphaChanged(backgroundSpriteSheet, backgroundArray[2], CP_System_GetWindowWidth() * 0.5f,
+			CP_System_GetWindowHeight() * 0.5f, (float)CP_System_GetWindowWidth(), (float)CP_System_GetWindowHeight(), 255);
 
 		RenderWithAlphaChanged(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[0],
-			CP_System_GetWindowWidth() * 0.15, CP_System_GetWindowHeight() * 0.1,
+			CP_System_GetWindowWidth() * 0.15f, CP_System_GetWindowHeight() * 0.1f,
 			128 * scalingFactor, 128 * scalingFactor, 200);
 		RenderWithAlphaChanged(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[0],
-			CP_System_GetWindowWidth() * 0.25, CP_System_GetWindowHeight() * 0.1,
+			CP_System_GetWindowWidth() * 0.25f, CP_System_GetWindowHeight() * 0.1f,
 			128 * scalingFactor, 128 * scalingFactor, 200);
 		RenderWithAlphaChanged(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[0],
-			CP_System_GetWindowWidth() * 0.35, CP_System_GetWindowHeight() * 0.1,
+			CP_System_GetWindowWidth() * 0.35f, CP_System_GetWindowHeight() * 0.1f,
 			128 * scalingFactor, 128 * scalingFactor, 200);
 		RenderWithAlphaChanged(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[0],
-			CP_System_GetWindowWidth() * 0.15, CP_System_GetWindowHeight() * 0.9,
+			CP_System_GetWindowWidth() * 0.15f, CP_System_GetWindowHeight() * 0.9f,
 			128 * scalingFactor, 128 * scalingFactor, 200);
 		RenderWithAlphaChanged(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[0],
-			CP_System_GetWindowWidth() * 0.25, CP_System_GetWindowHeight() * 0.9,
+			CP_System_GetWindowWidth() * 0.25f, CP_System_GetWindowHeight() * 0.9f,
 			128 * scalingFactor, 128 * scalingFactor, 200);
 		RenderWithAlphaChanged(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[0],
-			CP_System_GetWindowWidth() * 0.35, CP_System_GetWindowHeight() * 0.9,
+			CP_System_GetWindowWidth() * 0.35f, CP_System_GetWindowHeight() * 0.9f,
 			128 * scalingFactor, 128 * scalingFactor, 200);
 
-
-		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[2],
-			CP_System_GetWindowWidth() * 0.3, CP_System_GetWindowHeight() * 0.3,
-			64 * scalingFactor, 64 * scalingFactor, 255);
-		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[2],
-			CP_System_GetWindowWidth() * 0.25, CP_System_GetWindowHeight() * 0.4,
-			64 * scalingFactor, 64 * scalingFactor, 255);
 
 		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[2],
-			CP_System_GetWindowWidth() * 0.22, CP_System_GetWindowHeight() * 0.72,
-			64 * scalingFactor, 64 * scalingFactor, 255);
+			CP_System_GetWindowWidth() * 0.3f, CP_System_GetWindowHeight() * 0.3f,
+			64 * scalingFactor, 64 * scalingFactor);
+		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[2],
+			CP_System_GetWindowWidth() * 0.25f, CP_System_GetWindowHeight() * 0.4f,
+			64 * scalingFactor, 64 * scalingFactor);
 
 		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[2],
-			CP_System_GetWindowWidth() * 0.65, CP_System_GetWindowHeight() * 0.50,
-			64 * scalingFactor, 64 * scalingFactor, 255);
+			CP_System_GetWindowWidth() * 0.22f, CP_System_GetWindowHeight() * 0.72f,
+			64 * scalingFactor, 64 * scalingFactor);
+
+		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[2],
+			CP_System_GetWindowWidth() * 0.65f, CP_System_GetWindowHeight() * 0.50f,
+			64 * scalingFactor, 64 * scalingFactor);
 
 		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[4],
-			CP_System_GetWindowWidth() * 0.85, CP_System_GetWindowHeight() * 0.45,
+			CP_System_GetWindowWidth() * 0.85f, CP_System_GetWindowHeight() * 0.45f,
 			128 * scalingFactor, 128 * scalingFactor);
 		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[4],
-			CP_System_GetWindowWidth() * 0.7, CP_System_GetWindowHeight() * 0.1,
+			CP_System_GetWindowWidth() * 0.7f, CP_System_GetWindowHeight() * 0.1f,
 			128 * scalingFactor, 128 * scalingFactor);
 		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[4],
-			CP_System_GetWindowWidth() * 0.9, CP_System_GetWindowHeight() * 0.9,
+			CP_System_GetWindowWidth() * 0.9f, CP_System_GetWindowHeight() * 0.9f,
 			128 * scalingFactor, 128 * scalingFactor);
 
 		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[6],
-			CP_System_GetWindowWidth() * 0.45, CP_System_GetWindowHeight() * 0.85,
+			CP_System_GetWindowWidth() * 0.45f, CP_System_GetWindowHeight() * 0.85f,
 			80 * scalingFactor, 64 * scalingFactor);
 
 		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[6],
-			CP_System_GetWindowWidth() * 0.3, CP_System_GetWindowHeight() * 0.75,
+			CP_System_GetWindowWidth() * 0.3f, CP_System_GetWindowHeight() * 0.75f,
 			80 * scalingFactor, 64 * scalingFactor);
 		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[8],
-			CP_System_GetWindowWidth() * 0.25, CP_System_GetWindowHeight() * 0.55,
+			CP_System_GetWindowWidth() * 0.25f, CP_System_GetWindowHeight() * 0.55f,
 			64 * scalingFactor, 64 * scalingFactor);
 		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[8],
-			CP_System_GetWindowWidth() * 0.15, CP_System_GetWindowHeight() * 0.5,
+			CP_System_GetWindowWidth() * 0.15f, CP_System_GetWindowHeight() * 0.5f,
 			64 * scalingFactor, 64 * scalingFactor);
 		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[8],
-			CP_System_GetWindowWidth() * 0.75, CP_System_GetWindowHeight() * 0.3,
+			CP_System_GetWindowWidth() * 0.75f, CP_System_GetWindowHeight() * 0.3f,
 			64 * scalingFactor, 64 * scalingFactor);
 
 		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[8],
-			CP_System_GetWindowWidth() * 0.85, CP_System_GetWindowHeight() * 0.65,
+			CP_System_GetWindowWidth() * 0.85f, CP_System_GetWindowHeight() * 0.65f,
 			64 * scalingFactor, 64 * scalingFactor);
 		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[8],
-			CP_System_GetWindowWidth() * 0.6, CP_System_GetWindowHeight() * 0.9,
+			CP_System_GetWindowWidth() * 0.6f, CP_System_GetWindowHeight() * 0.9f,
 			64 * scalingFactor, 64 * scalingFactor);
 
 		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[9],
-			CP_System_GetWindowWidth() * 0.8, CP_System_GetWindowHeight() * 0.8,
+			CP_System_GetWindowWidth() * 0.8f, CP_System_GetWindowHeight() * 0.8f,
 			64 * scalingFactor, 64 * scalingFactor);
 #pragma endregion
 		break;
 	case 2:
 		#pragma region Level 3 Objects
 		CP_Settings_Tint(CP_Color_Create(0, 0, 0, 75));
-		RenderWithAlphaChanged(backgroundSpriteSheet, backgroundArray[3], CP_System_GetWindowWidth() * 0.5,
-			CP_System_GetWindowHeight() * 0.5, CP_System_GetWindowWidth(), CP_System_GetWindowHeight(), 200);
+		RenderWithAlphaChanged(backgroundSpriteSheet, backgroundArray[3], CP_System_GetWindowWidth() * 0.5f,
+			CP_System_GetWindowHeight() * 0.5f, (float)CP_System_GetWindowWidth(), (float)CP_System_GetWindowHeight(), 200);
 		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[3],
-			CP_System_GetWindowWidth() * 0.15, CP_System_GetWindowHeight() * 0.19,
-			300* scalingFactor, 300 * scalingFactor, 255);
+			CP_System_GetWindowWidth() * 0.15f, CP_System_GetWindowHeight() * 0.19f,
+			300* scalingFactor, 300 * scalingFactor);
 		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[7],
-			CP_System_GetWindowWidth() * 0.9, CP_System_GetWindowHeight() * 0.65,
+			CP_System_GetWindowWidth() * 0.9f, CP_System_GetWindowHeight() * 0.65f,
 			200 * scalingFactor, 200 * scalingFactor);
 
 		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[5],
-			CP_System_GetWindowWidth() * 0.15, CP_System_GetWindowHeight() * 0.5,
+			CP_System_GetWindowWidth() * 0.15f, CP_System_GetWindowHeight() * 0.5f,
 			64 * scalingFactor, 64 * scalingFactor);
 		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[5],
-			CP_System_GetWindowWidth() * 0.25, CP_System_GetWindowHeight() * 0.65,
+			CP_System_GetWindowWidth() * 0.25f, CP_System_GetWindowHeight() * 0.65f,
 			64 * scalingFactor, 64 * scalingFactor);
 		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[5],
-			CP_System_GetWindowWidth() * 0.2, CP_System_GetWindowHeight() * 0.85,
+			CP_System_GetWindowWidth() * 0.2f, CP_System_GetWindowHeight() * 0.85f,
 			64 * scalingFactor, 64 * scalingFactor);
 		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[5],
-			CP_System_GetWindowWidth() * 0.7, CP_System_GetWindowHeight() * 0.2,
+			CP_System_GetWindowWidth() * 0.7f, CP_System_GetWindowHeight() * 0.2f,
 			64 * scalingFactor, 64 * scalingFactor);
 		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[5],
-			CP_System_GetWindowWidth() * 0.75, CP_System_GetWindowHeight() * 0.4,
+			CP_System_GetWindowWidth() * 0.75f, CP_System_GetWindowHeight() * 0.4f,
 			64 * scalingFactor, 64 * scalingFactor);
 		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[5],
-			CP_System_GetWindowWidth() * 0.8, CP_System_GetWindowHeight() * 0.85,
+			CP_System_GetWindowWidth() * 0.8f, CP_System_GetWindowHeight() * 0.85f,
 			64 * scalingFactor, 64 * scalingFactor);
 		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[5],
-			CP_System_GetWindowWidth() * 0.7, CP_System_GetWindowHeight() * 0.65,
+			CP_System_GetWindowWidth() * 0.7f, CP_System_GetWindowHeight() * 0.65f,
 			64 * scalingFactor, 64 * scalingFactor);
 
 		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[9],
-			CP_System_GetWindowWidth() * 0.5, CP_System_GetWindowHeight() * 0.8,
+			CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.8f,
 			64 * scalingFactor, 64 * scalingFactor);
 		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[9],
-			CP_System_GetWindowWidth() * 0.65, CP_System_GetWindowHeight() * 0.5,
+			CP_System_GetWindowWidth() * 0.65f, CP_System_GetWindowHeight() * 0.5f,
 			64 * scalingFactor, 64 * scalingFactor);
 		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[9],
-			CP_System_GetWindowWidth() * 0.35, CP_System_GetWindowHeight() * 0.9,
+			CP_System_GetWindowWidth() * 0.35f, CP_System_GetWindowHeight() * 0.9f,
 			64 * scalingFactor, 64 * scalingFactor);
 		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[9],
-			CP_System_GetWindowWidth() * 0.4, CP_System_GetWindowHeight() * 0.1,
+			CP_System_GetWindowWidth() * 0.4f, CP_System_GetWindowHeight() * 0.1f,
 			64 * scalingFactor, 64 * scalingFactor);
 		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[9],
-			CP_System_GetWindowWidth() * 0.9, CP_System_GetWindowHeight() * 0.9,
+			CP_System_GetWindowWidth() * 0.9f, CP_System_GetWindowHeight() * 0.9f,
 			64 * scalingFactor, 64 * scalingFactor);
 
 		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[8],
-			CP_System_GetWindowWidth() * 0.6, CP_System_GetWindowHeight() * 0.1,
+			CP_System_GetWindowWidth() * 0.6f, CP_System_GetWindowHeight() * 0.1f,
 			64 * scalingFactor, 64 * scalingFactor);
 		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[8],
-			CP_System_GetWindowWidth() * 0.25, CP_System_GetWindowHeight() * 0.1,
+			CP_System_GetWindowWidth() * 0.25f, CP_System_GetWindowHeight() * 0.1f,
 			64 * scalingFactor, 64 * scalingFactor);
 		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[8],
-			CP_System_GetWindowWidth() * 0.2, CP_System_GetWindowHeight() * 0.4,
+			CP_System_GetWindowWidth() * 0.2f, CP_System_GetWindowHeight() * 0.4f,
 			64 * scalingFactor, 64 * scalingFactor);
 		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[8],
-			CP_System_GetWindowWidth() * 0.15, CP_System_GetWindowHeight() * 0.4,
+			CP_System_GetWindowWidth() * 0.15f, CP_System_GetWindowHeight() * 0.4f,
 			64 * scalingFactor, 64 * scalingFactor);
 #pragma endregion
 		break;
 	case 3:
 		#pragma region Level 4 Objects
 		CP_Settings_Tint(CP_Color_Create(0, 0, 0, 75));
-		RenderWithAlphaChanged(backgroundSpriteSheet, backgroundArray[4], CP_System_GetWindowWidth() * 0.5,
-			CP_System_GetWindowHeight() * 0.5, CP_System_GetWindowWidth(), CP_System_GetWindowHeight(), 200);
+		RenderWithAlphaChanged(backgroundSpriteSheet, backgroundArray[4], CP_System_GetWindowWidth() * 0.5f,
+			CP_System_GetWindowHeight() * 0.5f, (float)CP_System_GetWindowWidth(), (float)CP_System_GetWindowHeight(), 200);
 		
 		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[5],
-			CP_System_GetWindowWidth() * 0.15, CP_System_GetWindowHeight() * 0.15,
+			CP_System_GetWindowWidth() * 0.15f, CP_System_GetWindowHeight() * 0.15f,
 			64 * scalingFactor, 64 * scalingFactor);
 		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[5],
-			CP_System_GetWindowWidth() * 0.25, CP_System_GetWindowHeight() * 0.25,
+			CP_System_GetWindowWidth() * 0.25f, CP_System_GetWindowHeight() * 0.25f,
 			64 * scalingFactor, 64 * scalingFactor);
 		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[5],
-			CP_System_GetWindowWidth() * 0.2, CP_System_GetWindowHeight() * 0.4,
+			CP_System_GetWindowWidth() * 0.2f, CP_System_GetWindowHeight() * 0.4f,
 			64 * scalingFactor, 64 * scalingFactor);
 		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[5],
-			CP_System_GetWindowWidth() * 0.14, CP_System_GetWindowHeight() * 0.65,
+			CP_System_GetWindowWidth() * 0.14f, CP_System_GetWindowHeight() * 0.65f,
 			64 * scalingFactor, 64 * scalingFactor);
 		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[5],
-			CP_System_GetWindowWidth() * 0.23, CP_System_GetWindowHeight() * 0.8,
+			CP_System_GetWindowWidth() * 0.23f, CP_System_GetWindowHeight() * 0.8f,
 			64 * scalingFactor, 64 * scalingFactor);
 		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[9],
-			CP_System_GetWindowWidth() * 0.25, CP_System_GetWindowHeight() * 0.65,
+			CP_System_GetWindowWidth() * 0.25f, CP_System_GetWindowHeight() * 0.65f,
 			64 * scalingFactor, 64 * scalingFactor);
 		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[9],
-			CP_System_GetWindowWidth() * 0.5, CP_System_GetWindowHeight() * 0.9,
+			CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.9f,
 			64 * scalingFactor, 64 * scalingFactor);
 		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[9],
-			CP_System_GetWindowWidth() * 0.4, CP_System_GetWindowHeight() * 0.1,
+			CP_System_GetWindowWidth() * 0.4f, CP_System_GetWindowHeight() * 0.1f,
 			64 * scalingFactor, 64 * scalingFactor);
 		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[8],
-			CP_System_GetWindowWidth() * 0.3, CP_System_GetWindowHeight() * 0.1,
+			CP_System_GetWindowWidth() * 0.3f, CP_System_GetWindowHeight() * 0.1f,
 			64 * scalingFactor, 64 * scalingFactor);
 		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[8],
-			CP_System_GetWindowWidth() * 0.4, CP_System_GetWindowHeight() * 0.9,
+			CP_System_GetWindowWidth() * 0.4f, CP_System_GetWindowHeight() * 0.9f,
 			64 * scalingFactor, 64 * scalingFactor);
 
 		for (int i = 0; i < 8; i++)
 		{
 			RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[4],
-				CP_System_GetWindowWidth() * 0.7, (CP_System_GetWindowHeight() * (0.05 + i*0.12)),
+				CP_System_GetWindowWidth() * 0.7f, (CP_System_GetWindowHeight() * (0.05f + i*0.12f)),
 				48 * scalingFactor, 48 * scalingFactor);
 			RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[5],
-				CP_System_GetWindowWidth() * 0.7, (CP_System_GetWindowHeight() * (0.1 + i * 0.12)),
+				CP_System_GetWindowWidth() * 0.7f, (CP_System_GetWindowHeight() * (0.1f + i * 0.12f)),
 				48 * scalingFactor, 48 * scalingFactor);
 		}
 		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[1],
-			CP_System_GetWindowWidth() * 0.85, (CP_System_GetWindowHeight() * 0.85),
+			CP_System_GetWindowWidth() * 0.85f, (CP_System_GetWindowHeight() * 0.85f),
 			48 * scalingFactor, 48 * scalingFactor);
 
 		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[1],
-			CP_System_GetWindowWidth() * 0.87, (CP_System_GetWindowHeight() * 0.85),
+			CP_System_GetWindowWidth() * 0.87f, (CP_System_GetWindowHeight() * 0.85f),
 			48 * scalingFactor, 48 * scalingFactor);
 
 		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[1],
-			CP_System_GetWindowWidth() * 0.89, (CP_System_GetWindowHeight() * 0.85),
+			CP_System_GetWindowWidth() * 0.89f, (CP_System_GetWindowHeight() * 0.85f),
 			48 * scalingFactor, 48 * scalingFactor);
 
 		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[3],
-			CP_System_GetWindowWidth() * 0.85, (CP_System_GetWindowHeight() * 0.65),
+			CP_System_GetWindowWidth() * 0.85f, (CP_System_GetWindowHeight() * 0.65f),
 			56 * scalingFactor, 56 * scalingFactor);
 
 		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[3],
-			CP_System_GetWindowWidth() * 0.75, (CP_System_GetWindowHeight() * 0.45),
+			CP_System_GetWindowWidth() * 0.75f, (CP_System_GetWindowHeight() * 0.45f),
 			56 * scalingFactor, 56 * scalingFactor);
 
 		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[0],
-			CP_System_GetWindowWidth() * 0.85, (CP_System_GetWindowHeight() * 0.45),
+			CP_System_GetWindowWidth() * 0.85f, (CP_System_GetWindowHeight() * 0.45f),
 			56 * scalingFactor, 56 * scalingFactor);
 
 		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[2],
-			CP_System_GetWindowWidth() * 0.3, (CP_System_GetWindowHeight() * 0.5),
+			CP_System_GetWindowWidth() * 0.3f, (CP_System_GetWindowHeight() * 0.5f),
 			56 * scalingFactor, 56 * scalingFactor);
 
 		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[6],
-			CP_System_GetWindowWidth() * 0.5, (CP_System_GetWindowHeight() * 0.15),
+			CP_System_GetWindowWidth() * 0.5f, (CP_System_GetWindowHeight() * 0.15f),
 			56 * scalingFactor, 56 * scalingFactor);
 
 #pragma endregion
@@ -673,110 +673,110 @@ void render_game_background(int currentLevel)
 		#pragma region Level 5 Objects
 
 		CP_Settings_Tint(CP_Color_Create(0, 0, 0, 75));
-		RenderWithAlphaChanged(backgroundSpriteSheet, backgroundArray[5], CP_System_GetWindowWidth() * 0.5,
-			CP_System_GetWindowHeight() * 0.5, CP_System_GetWindowWidth(), CP_System_GetWindowHeight(), 200);
+		RenderWithAlphaChanged(backgroundSpriteSheet, backgroundArray[5], CP_System_GetWindowWidth() * 0.5f,
+			CP_System_GetWindowHeight() * 0.5f, (float)CP_System_GetWindowWidth(), (float)CP_System_GetWindowHeight(), 200);
 
 		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[8],
-			CP_System_GetWindowWidth() * 0.85, CP_System_GetWindowHeight() * 0.85,
+			CP_System_GetWindowWidth() * 0.85f, CP_System_GetWindowHeight() * 0.85f,
 			75 * scalingFactor, 75 * scalingFactor);
 
 		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[8],
-			CP_System_GetWindowWidth() * 0.15, CP_System_GetWindowHeight() * 0.35,
+			CP_System_GetWindowWidth() * 0.15f, CP_System_GetWindowHeight() * 0.35f,
 			75 * scalingFactor, 75 * scalingFactor);
 
 		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[3],
-			CP_System_GetWindowWidth() * 0.85, (CP_System_GetWindowHeight() * 0.45),
+			CP_System_GetWindowWidth() * 0.85f, (CP_System_GetWindowHeight() * 0.45f),
 			56 * scalingFactor, 56 * scalingFactor);
 
 		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[7],
-			CP_System_GetWindowWidth() * 0.85, (CP_System_GetWindowHeight() * 0.55),
+			CP_System_GetWindowWidth() * 0.85f, (CP_System_GetWindowHeight() * 0.55f),
 			64 * scalingFactor, 64 * scalingFactor);
 		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[6],
-			CP_System_GetWindowWidth() * 0.9, (CP_System_GetWindowHeight() * 0.6),
+			CP_System_GetWindowWidth() * 0.9f, (CP_System_GetWindowHeight() * 0.6f),
 			48 * scalingFactor, 48 * scalingFactor);
 		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[6],
-			CP_System_GetWindowWidth() * 0.85, (CP_System_GetWindowHeight() * 0.65),
+			CP_System_GetWindowWidth() * 0.85f, (CP_System_GetWindowHeight() * 0.65f),
 			48 * scalingFactor, 48 * scalingFactor);
 
 
 		for (int i = 0; i < 8; i++)
 		{
 			RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[4],
-				CP_System_GetWindowWidth() * 0.3, (CP_System_GetWindowHeight() * (0.05 + i * 0.12)),
+				CP_System_GetWindowWidth() * 0.3f, (CP_System_GetWindowHeight() * (0.05f + i * 0.12f)),
 				48 * scalingFactor, 48 * scalingFactor);
 			RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[5],
-				CP_System_GetWindowWidth() * 0.3, (CP_System_GetWindowHeight() * (0.1 + i * 0.12)),
+				CP_System_GetWindowWidth() * 0.3f, (CP_System_GetWindowHeight() * (0.1f + i * 0.12f)),
 				48 * scalingFactor, 48 * scalingFactor);
 			RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[4],
-				CP_System_GetWindowWidth() * 0.7, (CP_System_GetWindowHeight() * (0.05 + i * 0.12)),
+				CP_System_GetWindowWidth() * 0.7f, (CP_System_GetWindowHeight() * (0.05f + i * 0.12f)),
 				48 * scalingFactor, 48 * scalingFactor);
 			RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[5],
-				CP_System_GetWindowWidth() * 0.7, (CP_System_GetWindowHeight() * (0.1 + i * 0.12)),
+				CP_System_GetWindowWidth() * 0.7f, (CP_System_GetWindowHeight() * (0.1f + i * 0.12f)),
 				48 * scalingFactor, 48 * scalingFactor);
 
 		}
 		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[7],
-			CP_System_GetWindowWidth() * 0.15, (CP_System_GetWindowHeight() * 0.1),
+			CP_System_GetWindowWidth() * 0.15f, (CP_System_GetWindowHeight() * 0.1f),
 			64 * scalingFactor, 64 * scalingFactor);
 		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[6],
-			CP_System_GetWindowWidth() * 0.2, (CP_System_GetWindowHeight() * 0.1),
+			CP_System_GetWindowWidth() * 0.2f, (CP_System_GetWindowHeight() * 0.1f),
 			48 * scalingFactor, 48 * scalingFactor);
 		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[6],
-			CP_System_GetWindowWidth() * 0.15, (CP_System_GetWindowHeight() * 0.15),
+			CP_System_GetWindowWidth() * 0.15f, (CP_System_GetWindowHeight() * 0.15f),
 			48 * scalingFactor, 48 * scalingFactor);
 
 		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[7],
-			CP_System_GetWindowWidth() * 0.15, (CP_System_GetWindowHeight() * 0.8),
+			CP_System_GetWindowWidth() * 0.15f, (CP_System_GetWindowHeight() * 0.8f),
 			64 * scalingFactor, 64 * scalingFactor);
 		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[6],
-			CP_System_GetWindowWidth() * 0.2, (CP_System_GetWindowHeight() * 0.8),
+			CP_System_GetWindowWidth() * 0.2f, (CP_System_GetWindowHeight() * 0.8f),
 			48 * scalingFactor, 48 * scalingFactor);
 		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[6],
-			CP_System_GetWindowWidth() * 0.15, (CP_System_GetWindowHeight() * 0.85),
+			CP_System_GetWindowWidth() * 0.15f, (CP_System_GetWindowHeight() * 0.85f),
 			48 * scalingFactor, 48 * scalingFactor);
 
 		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[0],
-			CP_System_GetWindowWidth() * 0.4, (CP_System_GetWindowHeight() * 0.15),
+			CP_System_GetWindowWidth() * 0.4f, (CP_System_GetWindowHeight() * 0.15f),
 			56 * scalingFactor, 56 * scalingFactor);
 		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[1],
-			CP_System_GetWindowWidth() * 0.35, (CP_System_GetWindowHeight() * 0.2),
+			CP_System_GetWindowWidth() * 0.35f, (CP_System_GetWindowHeight() * 0.2f),
 			56 * scalingFactor, 56 * scalingFactor);
 		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[1],
-			CP_System_GetWindowWidth() * 0.45, (CP_System_GetWindowHeight() * 0.15),
+			CP_System_GetWindowWidth() * 0.45f, (CP_System_GetWindowHeight() * 0.15f),
 			56 * scalingFactor, 56 * scalingFactor);
 		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[0],
-			CP_System_GetWindowWidth() * 0.5, (CP_System_GetWindowHeight() * 0.1),
+			CP_System_GetWindowWidth() * 0.5f, (CP_System_GetWindowHeight() * 0.1f),
 			56 * scalingFactor, 56 * scalingFactor);
 		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[2],
-			CP_System_GetWindowWidth() * 0.6, (CP_System_GetWindowHeight() * 0.15),
+			CP_System_GetWindowWidth() * 0.6f, (CP_System_GetWindowHeight() * 0.15f),
 			56 * scalingFactor, 56 * scalingFactor);
 		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[3],
-			CP_System_GetWindowWidth() * 0.55, (CP_System_GetWindowHeight() * 0.15),
+			CP_System_GetWindowWidth() * 0.55f, (CP_System_GetWindowHeight() * 0.15f),
 			56 * scalingFactor, 56 * scalingFactor);
 		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[3],
-			CP_System_GetWindowWidth() * 0.65, (CP_System_GetWindowHeight() * 0.12),
+			CP_System_GetWindowWidth() * 0.65f, (CP_System_GetWindowHeight() * 0.12f),
 			56 * scalingFactor, 56 * scalingFactor);
 
 		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[1],
-			CP_System_GetWindowWidth() * 0.41, (CP_System_GetWindowHeight() * 0.85),
+			CP_System_GetWindowWidth() * 0.41f, (CP_System_GetWindowHeight() * 0.85f),
 			56 * scalingFactor, 56 * scalingFactor);
 		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[0],
-			CP_System_GetWindowWidth() * 0.35, (CP_System_GetWindowHeight() * 0.9),
+			CP_System_GetWindowWidth() * 0.35f, (CP_System_GetWindowHeight() * 0.9f),
 			56 * scalingFactor, 56 * scalingFactor);
 		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[1],
-			CP_System_GetWindowWidth() * 0.42, (CP_System_GetWindowHeight() * 0.94),
+			CP_System_GetWindowWidth() * 0.42f, (CP_System_GetWindowHeight() * 0.94f),
 			56 * scalingFactor, 56 * scalingFactor);
 		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[3],
-			CP_System_GetWindowWidth() * 0.52, (CP_System_GetWindowHeight() * 0.8),
+			CP_System_GetWindowWidth() * 0.52f, (CP_System_GetWindowHeight() * 0.8f),
 			56 * scalingFactor, 56 * scalingFactor);
 		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[2],
-			CP_System_GetWindowWidth() * 0.63, (CP_System_GetWindowHeight() * 0.91),
+			CP_System_GetWindowWidth() * 0.63f, (CP_System_GetWindowHeight() * 0.91f),
 			56 * scalingFactor, 56 * scalingFactor);
 		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[1],
-			CP_System_GetWindowWidth() * 0.51, (CP_System_GetWindowHeight() * 0.83),
+			CP_System_GetWindowWidth() * 0.51f, (CP_System_GetWindowHeight() * 0.83f),
 			56 * scalingFactor, 56 * scalingFactor);
 		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[3],
-			CP_System_GetWindowWidth() * 0.65, (CP_System_GetWindowHeight() * 0.82),
+			CP_System_GetWindowWidth() * 0.65f, (CP_System_GetWindowHeight() * 0.82f),
 			56 * scalingFactor, 56 * scalingFactor);
 #pragma endregion
 		break;
