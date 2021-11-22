@@ -10,6 +10,7 @@ void game_init(void)
 {
 	//CP_System_ShowConsole(); //pls dont delete this cause scrub me uses printf to debug -gabriel
 	//CP_System_Fullscreen();
+	CP_System_SetWindowTitle("Ghost Gone Wrong");
 	int gameWindowWidth = 1280;
 	int gameWindowHeight = (int)(gameWindowWidth * 1080.0f / 1920.0f);//To apply uniform scaling
 	scalingFactor = gameWindowWidth / 1280.0f;//Game is scaled according to 1280 width being 1;
