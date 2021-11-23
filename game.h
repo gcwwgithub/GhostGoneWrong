@@ -5,22 +5,22 @@
 #ifndef GAME_HEADER
 #define GAME_HEADER
 
-//Variables used to initialize others game.h variables. These are usable only in game.h
-static enum PathType {
+//Variables used to initialize others game.h variables.
+enum PathType {
 	Clear,
 	Blocked,
 	Spawn,
 	Exit,
 	Path
 };
-static struct Grids {
+struct Grids {
 	int cost;
 	int parentRow;
 	int parentCol;
 	int visited;
 	enum PathType type;
 };
-static enum Environmentaleffects {
+enum Environmentaleffects {
 	NoEnvironmentalEffects,
 	IncreasedPhantomQuartz,
 	DecreasedPhantomQuartz,
@@ -34,7 +34,7 @@ static enum Environmentaleffects {
 	DecreasedTurretAttackSpeed,
 	NoPhantomQuartz
 };
-static struct PowerUps {
+struct PowerUps {
 	int morePhantomQuartz;
 	int reduceEnemySpeed;
 	int reduceEnemyHealth;

@@ -361,7 +361,7 @@ void environment_init(LevelData* LevelX) {
 
 void render_environment(void) {
 	for (int i = 0; i < MAX_ENVIRONMENT_OBJECT; i++) {
-		if (Environment[i].image != environmentObjectsSpriteSheet)
+		if (Environment[i].image == environmentObjectsSpriteSheet)
 		{
 			RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[8], Environment[i].xOrigin, Environment[i].yOrigin, Environment[i].width, Environment[i].height);
 		}
