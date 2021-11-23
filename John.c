@@ -53,7 +53,7 @@ void Fast_Ghost_init(enemy* r) { // setup variable for fast ghost enemy
 	reset_enemy_path(r);
 }
 
-void Fat_Ghost_init(enemy* r) {
+void Fat_Ghost_init(enemy* r) {// setup variable for fat ghost enemy
 	r->health = 30;
 	r->max_health = 30;
 	r->speed = 25;
@@ -78,7 +78,7 @@ void Fat_Ghost_init(enemy* r) {
 	reset_enemy_path(r);
 }
 
-void Reaper_minion_init(enemy* r) {
+void Reaper_minion_init(enemy* r) {// setup variable for Reaper summons enemy
 	int a = 0;
 	for (int i = MAX_SPAWNING_ENEMIES; i < MAX_ENEMIES; i++) {
 		if (a == 0) {
@@ -112,7 +112,7 @@ void Reaper_minion_init(enemy* r) {
 	}
 }
 
-void grimReaper_init(enemy* r) {
+void grimReaper_init(enemy* r) {// setup variable for Reaper enemy
 	r->health = 50;
 	r->max_health = 50;
 	r->speed = 40;
@@ -152,7 +152,7 @@ void Draw_enemy(enemy* r) { //Draws the enemy
 	}
 }
 
-void EnemyAnimationState(enemy* r)
+void EnemyAnimationState(enemy* r)  //Update Enemy state if Hurt back to Moving
 {
 	int i = Check_state(r);
 	if (i == 1) {
@@ -163,7 +163,7 @@ void EnemyAnimationState(enemy* r)
 	r->currentAnimState = i;
 
 }
-int Check_state(enemy* r) {
+int Check_state(enemy* r) { //Checks Enemy state
 	switch (r->state) {
 	case Moving:
 		return 0;
@@ -215,7 +215,7 @@ void enemy_move(enemy* r, float Enemy_PathpointsX[], float Enemy_PathpointsY[], 
 }
 
 
-Direction direction_to_next_point(float Enemy_PathpointsX[], float Enemy_PathpointsY[], enemy* r) {   //Which direction to move depending on points
+Direction direction_to_next_point(float Enemy_PathpointsX[], float Enemy_PathpointsY[], enemy* r) {   //Which direction to move depending on current waypoint to next waypoints
 	float Xdistance_between_points = (Enemy_PathpointsX[r->CurrentWaypoint + 1] - Enemy_PathpointsX[r->CurrentWaypoint]);
 	float Ydistance_between_points = (Enemy_PathpointsY[r->CurrentWaypoint + 1] - Enemy_PathpointsY[r->CurrentWaypoint]);
 	if (r->state == Death || r->state == Reached) {
@@ -240,7 +240,7 @@ Direction direction_to_next_point(float Enemy_PathpointsX[], float Enemy_Pathpoi
 	return 0;
 }
 
-int update_point_num(float Enemy_PathpointsX[], float Enemy_PathpointsY[], enemy* r) { //Update position to move towards next point 
+int update_point_num(float Enemy_PathpointsX[], float Enemy_PathpointsY[], enemy* r) { //Update Waypoint if next waypoint is reached
 	float covered_distanceX = (float)fabs((double)r->data.xOrigin - (Enemy_PathpointsX[r->CurrentWaypoint]));
 	float distance_between_pointsX = (float)fabs((double)Enemy_PathpointsX[r->CurrentWaypoint + 1] - (Enemy_PathpointsX[r->CurrentWaypoint]));
 	float covered_distanceY = (float)fabs((double)r->data.yOrigin - (Enemy_PathpointsY[r->CurrentWaypoint]));
@@ -316,7 +316,7 @@ void EnemyDeath(enemy* r, int CurrentGameLevel) {  //function updates and checks
 	}
 }
 
-void Enemies_init(void) {
+void Enemies_init(void) {  //Setup empty enemy array and needed variables
 	timer = 0;
 	count = 0;
 	Enemy_node = NULL;
@@ -331,7 +331,7 @@ void Enemies_init(void) {
 	}
 }
 
-void update_enemy(void) {
+void update_enemy(void) { //All updates for enemies
 	timer += CP_System_GetDt();
 	if (timer >= 1) {
 		count++;
@@ -380,7 +380,7 @@ void update_enemy(void) {
 		Power_Up_check(&Enemy[i]);
 	}
 }
-void draw_multiple_enemies(void) {
+void draw_multiple_enemies(void) { //Render for enemies
 	for (int i = 0; i < MAX_ENEMIES; i++) {
 		if (Enemy[i].state == Inactive) {
 			continue;
@@ -414,7 +414,7 @@ void draw_multiple_enemies(void) {
 	}
 }
 
-void update_enemy_health_bar(enemy* r)
+void update_enemy_health_bar(enemy* r) //Render for enemy health bar
 {
 	if (r->health > 0)
 	{
@@ -434,7 +434,7 @@ void update_enemy_health_bar(enemy* r)
 
 }
 
-void Update_Path_Array(int CurrentGameLevel) {
+void Update_Path_Array(int CurrentGameLevel) { //Update enemy pathpoints based on global path
 	int nextPathRow = 1, nextPathCol = 1;
 	for (int currentCost = 1; currentCost <= Level[CurrentGameLevel].grid[Level[CurrentGameLevel].exitRow][Level[CurrentGameLevel].exitCol].cost; currentCost++) {
 		for (int currentRow = 0; currentRow < gameGridRows; currentRow++) {
@@ -455,7 +455,7 @@ void Update_Path_Array(int CurrentGameLevel) {
 }
 
 
-void Reaper_ability(enemy* r) {
+void Reaper_ability(enemy* r) { //Apply reaper ability to summon minions
 	if (r->type == grimReaper) {
 		if (r->health <= 0.5 * r->max_health) {
 			if (r->charges == charges_1) {
@@ -465,7 +465,7 @@ void Reaper_ability(enemy* r) {
 	}
 }
 
-void empty_enemy_init(enemy* r) {
+void empty_enemy_init(enemy* r) { //Setup variable for empty enemy
 	r->health = 0;
 	r->max_health = 0;
 	r->speed = 0;
@@ -508,7 +508,7 @@ void empty_enemy_init(enemy* r) {
 
 
 
-void wave_enemy_init(int Basic_Ghost_count, int Fast_Ghost_count, int Fat_Ghost_count, int Grim_Reaper_count, LevelData E_Level) {
+void wave_enemy_init(int Basic_Ghost_count, int Fast_Ghost_count, int Fat_Ghost_count, int Grim_Reaper_count, LevelData E_Level) { //Initialises enemy variables for next wave
 	timer = 0;
 	count = 0;
 	Enemy_node = NULL;
@@ -538,7 +538,7 @@ void wave_enemy_init(int Basic_Ghost_count, int Fast_Ghost_count, int Fat_Ghost_
 	}
 }
 
-void Reset_enemies(int current_level) {
+void Reset_enemies(int current_level) { //Checks WaveEnemy array to check how many of each type to initialise
 	if (currentGameState == Building) {
 		Update_Path_Array(currentGameLevel);
 		if (buildingTime > 0.05f && Level[current_level].currentWave < MAX_NUMBER_OF_WAVES) {
@@ -553,7 +553,7 @@ void Reset_enemies(int current_level) {
 }
 
 
-void Check_pathAdjustment(enemy* r) {
+void Check_pathAdjustment(enemy* r) { //Check if path was adjusted during wave and sets up waypoint to move back onto the path
 	int XorY = 0;
 	int check = 0;
 	if (r->state != Inactive && r->state != Death && r->state != Reached) {
@@ -610,7 +610,7 @@ void Check_pathAdjustment(enemy* r) {
 	}
 }
 
-void reset_enemy_path(enemy* r) {
+void reset_enemy_path(enemy* r) { //Reset path of enemy to global path
 	for (int i = 0; i < 50; i++) {
 		r->EnemyPathX[i] = Xarray[i];
 		r->EnemyPathY[i] = Yarray[i];
@@ -619,7 +619,7 @@ void reset_enemy_path(enemy* r) {
 
 
 
-void Env_eff_IncreasedTurretDamage(void) {
+void Env_eff_IncreasedTurretDamage(void) { //Environment Effect to increase turret damage
 	static float damage_increase[MAX_TURRET];
 	static int level_check[MAX_TURRET];
 	for (int i = 0; i < MAX_TURRET; i++) {
@@ -646,7 +646,7 @@ void Env_eff_IncreasedTurretDamage(void) {
 	}
 }
 
-void Env_eff_DecreasedTurretDamage(void) {
+void Env_eff_DecreasedTurretDamage(void) {//Environment Effect to decrease turret damage
 	static float damage_decrease[MAX_TURRET];
 	static int level_check[MAX_TURRET];
 	for (int i = 0; i < MAX_TURRET; i++) {
@@ -679,7 +679,7 @@ void Env_eff_DecreasedTurretDamage(void) {
 	}
 }
 
-void Env_eff_IncreasedTurretAttackSpeed(void) {
+void Env_eff_IncreasedTurretAttackSpeed(void) {//Environment Effect to increase turret attack speed
 	static float atk_spd_increase[MAX_TURRET];
 	static int level_check[MAX_TURRET];
 	for (int i = 0; i < MAX_TURRET; i++) {
@@ -704,7 +704,7 @@ void Env_eff_IncreasedTurretAttackSpeed(void) {
 	}
 }
 
-void Env_eff_DecreasedTurretAttackSpeed(void) {
+void Env_eff_DecreasedTurretAttackSpeed(void) {//Environment Effect to decrease turret attack speed
 	static float atk_spd_decrease[MAX_TURRET];
 	static float level_check[MAX_TURRET];
 	for (int i = 0; i < MAX_TURRET; i++) {
@@ -729,7 +729,7 @@ void Env_eff_DecreasedTurretAttackSpeed(void) {
 	}
 }
 
-void Env_eff_More_HP(void) {
+void Env_eff_More_HP(void) {//Environment Effect to increase enemy health
 	for (int i = 0; i < MAX_ENEMIES; i++) {
 		if (Enemy[i].env_eff == Applying && Enemy[i].health > 1) {
 			int increase_hp = (int)(Enemy[i].max_health * 0.3);
@@ -740,7 +740,7 @@ void Env_eff_More_HP(void) {
 	}
 }
 
-void Env_eff_Less_HP(void) {
+void Env_eff_Less_HP(void) {//Environment Effect to decrease enemy health
 	for (int i = 0; i < MAX_ENEMIES; i++) {
 		if (Enemy[i].env_eff == Applying && Enemy[i].health > 1) {
 			int decrease_hp = (int)(Enemy[i].max_health * 0.2);
@@ -751,7 +751,7 @@ void Env_eff_Less_HP(void) {
 	}
 }
 
-void Env_eff_Faster_Enemies(void) {
+void Env_eff_Faster_Enemies(void) {//Environment Effect to increase enemy speed
 	for (int i = 0; i < MAX_ENEMIES; i++) {
 		if (Enemy[i].env_eff == Applying && Enemy[i].health > 1) {
 			Enemy[i].speed *= 1.2f;
@@ -760,7 +760,7 @@ void Env_eff_Faster_Enemies(void) {
 	}
 }
 
-void Env_eff_Slower_Enemies(void) {
+void Env_eff_Slower_Enemies(void) {//Environment Effect to decrease enemy speed
 	for (int i = 0; i < MAX_ENEMIES; i++) {
 		if (Enemy[i].env_eff == Applying && Enemy[i].health > 1) {
 			Enemy[i].speed /= 1.2f;
@@ -769,7 +769,7 @@ void Env_eff_Slower_Enemies(void) {
 	}
 }
 
-void Env_eff_Increased_Phantom_quartz(void) {
+void Env_eff_Increased_Phantom_quartz(void) {//Environment Effect to increase enemy points given to player
 	for (int i = 0; i < MAX_ENEMIES; i++) {
 		if (Enemy[i].env_eff == Applying && Enemy[i].health > 1) {
 			Enemy[i].points = (int)(Enemy[i].points*1.2);
@@ -778,7 +778,7 @@ void Env_eff_Increased_Phantom_quartz(void) {
 	}
 }
 
-void Env_eff_Decreased_Phantom_quartz(void) {
+void Env_eff_Decreased_Phantom_quartz(void) {//Environment Effect to decrease enemy points given to player
 	for (int i = 0; i < MAX_ENEMIES; i++) {
 		if (Enemy[i].env_eff == Applying && Enemy[i].health > 1) {
 			Enemy[i].points /= (int)(Enemy[i].points / 1.2);
@@ -786,7 +786,7 @@ void Env_eff_Decreased_Phantom_quartz(void) {
 		}
 	}
 }
-void Env_eff_No_Phantom_quartz(void) {
+void Env_eff_No_Phantom_quartz(void) {//Environment Effect to remove enemy points given to player
 	for (int i = 0; i < MAX_ENEMIES; i++) {
 		if (Enemy[i].env_eff == Applying && Enemy[i].health > 1) {
 			Enemy[i].points = 0;
@@ -795,7 +795,7 @@ void Env_eff_No_Phantom_quartz(void) {
 	}
 }
 
-void Environment_check(int CurrentGameLevel) {
+void Environment_check(int CurrentGameLevel) {//Apply correct Environment Effect for level
 	Env_eff_IncreasedTurretAttackSpeed();
 	Env_eff_DecreasedTurretAttackSpeed();
 	Env_eff_IncreasedTurretDamage();
@@ -828,11 +828,8 @@ void Environment_check(int CurrentGameLevel) {
 	}
 }
 
-void Change_current_effect(int CurrentGameLevel) {
-	Level[CurrentGameLevel].currentEffect = CP_Random_RangeInt(0, 11);
-}
 
-void Current_wave_check(enemy* r) {
+void Current_wave_check(enemy* r) {  //Increase Enemy power as wave number increases
 	if (r->WavePowUp_isActive == 0) {
 		int a = Level[currentGameLevel].currentWave;
 		r->max_health = (float)(r->max_health * (1 + (0.2 * a)));
@@ -842,7 +839,7 @@ void Current_wave_check(enemy* r) {
 	}
 }
 
-void Power_Up_check(enemy* r) {
+void Power_Up_check(enemy* r) { //Apply changes based on powerups bought (need to adjust for if bought halfway)
 	if (r->Enemy_pow_up[0] == 0) {
 		r->health *= (1 - (Level[currentGameLevel].currentPowerUpLevel.reduceEnemyHealth * 0.05f));
 		r->Enemy_pow_up[0] = 1;
