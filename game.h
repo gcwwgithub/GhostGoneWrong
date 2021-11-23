@@ -291,6 +291,7 @@ enum MenuObjectType {
 	MonsterRemainingDisplay,
 	UpgradeButton,
 	SellButton,
+	TurretDetailsDisplay, //Rendered when mouse is hovered on button
 	UpgradeMenu,// Rendered seperately from the render loop
 	GameGrid,//Not included in the render loop
 	ButtonMax

@@ -87,8 +87,9 @@ void game_update(void)
 		render_environment();
 
 		CP_Settings_NoTint();
+		render_turret_details_display(); //render turret description when hovered
 		render_turret_menu_object(GameMenuObject[ButtonMax - 2], ButtonMax - 2);// Render Upgrade menu first
-		for (int i = 0; i < ButtonMax - 2; i++) {// Last object will double render game grid. Second last object is rendered seperately
+		for (int i = 0; i < ButtonMax - 3; i++) {// Last object will double render game grid. Second and third last object is rendered seperately
 			render_turret_menu_object(GameMenuObject[i], i);
 		}
 		game_win_lose_check();
@@ -123,8 +124,9 @@ void game_update(void)
 		render_wave_timer();
 		render_ui_button(SkipWaveButton);
 
+		render_turret_details_display(); //render turret description when hovered
 		render_turret_menu_object(GameMenuObject[ButtonMax - 2], ButtonMax - 2);// Render Upgrade menu first
-		for (int i = 0; i < ButtonMax - 2; i++) {// Last object will double render game grid. Second last object is rendered seperately
+		for (int i = 0; i < ButtonMax - 3; i++) {// Last object will double render game grid. Second and third last object is rendered seperately
 			render_turret_menu_object(GameMenuObject[i], i);
 		}
 

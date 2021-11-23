@@ -20,6 +20,7 @@ void render_game_grid(void);
 void render_path(LevelData* LevelX);
 void render_button_pressed(void);
 void pathfinding_update(LevelData* LevelX);
+void render_turret_details_display(void);
 
 int isPlacingTurret;
 int powerUpMenu;

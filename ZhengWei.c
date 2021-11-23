@@ -377,7 +377,6 @@ void phantomQuartz_init(void) {
 	GameMenuObject[PhantomQuartzMenu].objectType = objectRectangle;
 }
 
-
 void goldQuartz_init(void) {
 	GameMenuObject[GoldQuartzMenu].width = GameMenuObject[PhantomQuartzMenu].width;
 	GameMenuObject[GoldQuartzMenu].height = GameMenuObject[PhantomQuartzMenu].height;
@@ -385,7 +384,6 @@ void goldQuartz_init(void) {
 	GameMenuObject[GoldQuartzMenu].yOrigin = GameMenuObject[PhantomQuartzMenu].yOrigin;
 	GameMenuObject[GoldQuartzMenu].objectType = objectRectangle;
 }
-
 
 void health_init(void) {
 	GameMenuObject[HealthMenu].xOrigin = GameMenuObject[PhantomQuartzMenu].xOrigin;
@@ -494,6 +492,61 @@ void powerup_price_init(void) {
 	powerUpPrice.increasedMineDamage = 10;
 }
 
+void turret_details_init(enum MenuObjectType turretButton) {
+	GameMenuObject[TurretDetailsDisplay].xOrigin = GameMenuObject[turretButton].xOrigin + GameMenuObject[turretButton].width;
+	GameMenuObject[TurretDetailsDisplay].yOrigin = GameMenuObject[turretButton].yOrigin;
+	GameMenuObject[TurretDetailsDisplay].width = GameMenuObject[turretButton].width;
+	GameMenuObject[TurretDetailsDisplay].height = GameMenuObject[turretButton].height;
+	GameMenuObject[TurretDetailsDisplay].objectType = objectRectangle;
+}
+
+void render_turret_details_display(void) {
+	float tempMouseX = MouseInput.xOrigin, tempMouseY = MouseInput.yOrigin;
+	MouseInput.xOrigin = CP_Input_GetMouseX();
+	MouseInput.yOrigin = CP_Input_GetMouseY();
+	turret_details_init(check_game_button_pressed());
+	switch (check_game_button_pressed()) {
+	case TurretButtonBasic:
+		CP_Settings_RectMode(CP_POSITION_CORNER);
+		CP_Settings_Fill(COLOR_WHITE);
+		CP_Graphics_DrawRect(GameMenuObject[TurretDetailsDisplay].xOrigin, GameMenuObject[TurretDetailsDisplay].yOrigin, GameMenuObject[TurretDetailsDisplay].width, GameMenuObject[TurretDetailsDisplay].height);
+		CP_Settings_Fill(COLOR_BLACK);
+		CP_Settings_TextSize(20.0f * scalingFactor);
+		CP_Font_DrawText("BASIC TURRET", GameMenuObject[TurretDetailsDisplay].xOrigin + GameMenuObject[TurretDetailsDisplay].width / 2.5f, (GameMenuObject[TurretDetailsDisplay].yOrigin + GameMenuObject[TurretDetailsDisplay].height / 3));
+		CP_Font_DrawText("Single Target Damage", GameMenuObject[TurretDetailsDisplay].xOrigin + GameMenuObject[TurretDetailsDisplay].width / 2.5f, (GameMenuObject[TurretDetailsDisplay].yOrigin + GameMenuObject[TurretDetailsDisplay].height * 2 / 3));
+		break;
+	case TurretButtonSlow:
+		CP_Settings_RectMode(CP_POSITION_CORNER);
+		CP_Settings_Fill(COLOR_WHITE);
+		CP_Graphics_DrawRect(GameMenuObject[TurretDetailsDisplay].xOrigin, GameMenuObject[TurretDetailsDisplay].yOrigin, GameMenuObject[TurretDetailsDisplay].width, GameMenuObject[TurretDetailsDisplay].height);
+		CP_Settings_Fill(COLOR_BLACK);
+		CP_Settings_TextSize(20.0f * scalingFactor);
+		CP_Font_DrawText("Slow TURRET", GameMenuObject[TurretDetailsDisplay].xOrigin + GameMenuObject[TurretDetailsDisplay].width / 2.5f, (GameMenuObject[TurretDetailsDisplay].yOrigin + GameMenuObject[TurretDetailsDisplay].height / 3));
+		CP_Font_DrawText("Slow Enemies", GameMenuObject[TurretDetailsDisplay].xOrigin + GameMenuObject[TurretDetailsDisplay].width / 2.5f, (GameMenuObject[TurretDetailsDisplay].yOrigin + GameMenuObject[TurretDetailsDisplay].height * 2 / 3)); 
+		break;
+	case TurretButtonHoming:
+		CP_Settings_RectMode(CP_POSITION_CORNER);
+		CP_Settings_Fill(COLOR_WHITE);
+		CP_Graphics_DrawRect(GameMenuObject[TurretDetailsDisplay].xOrigin, GameMenuObject[TurretDetailsDisplay].yOrigin, GameMenuObject[TurretDetailsDisplay].width, GameMenuObject[TurretDetailsDisplay].height);
+		CP_Settings_Fill(COLOR_BLACK);
+		CP_Settings_TextSize(20.0f * scalingFactor);
+		CP_Font_DrawText("Homing TURRET", GameMenuObject[TurretDetailsDisplay].xOrigin + GameMenuObject[TurretDetailsDisplay].width / 2.5f, (GameMenuObject[TurretDetailsDisplay].yOrigin + GameMenuObject[TurretDetailsDisplay].height / 3));
+		CP_Font_DrawText("Splash Damage", GameMenuObject[TurretDetailsDisplay].xOrigin + GameMenuObject[TurretDetailsDisplay].width / 2.5f, (GameMenuObject[TurretDetailsDisplay].yOrigin + GameMenuObject[TurretDetailsDisplay].height * 2 / 3)); 
+		break;
+	case TurretButtonMine:
+		CP_Settings_RectMode(CP_POSITION_CORNER);
+		CP_Settings_Fill(COLOR_WHITE);
+		CP_Graphics_DrawRect(GameMenuObject[TurretDetailsDisplay].xOrigin, GameMenuObject[TurretDetailsDisplay].yOrigin, GameMenuObject[TurretDetailsDisplay].width, GameMenuObject[TurretDetailsDisplay].height);
+		CP_Settings_Fill(COLOR_BLACK);
+		CP_Settings_TextSize(20.0f * scalingFactor);
+		CP_Font_DrawText("Mine", GameMenuObject[TurretDetailsDisplay].xOrigin + GameMenuObject[TurretDetailsDisplay].width / 2.5f, (GameMenuObject[TurretDetailsDisplay].yOrigin + GameMenuObject[TurretDetailsDisplay].height / 3));
+		CP_Font_DrawText("Single Use", GameMenuObject[TurretDetailsDisplay].xOrigin + GameMenuObject[TurretDetailsDisplay].width / 2.5f, (GameMenuObject[TurretDetailsDisplay].yOrigin + GameMenuObject[TurretDetailsDisplay].height * 2 / 3)); 
+		break;
+	}
+	MouseInput.xOrigin = tempMouseX;
+	MouseInput.yOrigin = tempMouseY;
+}
+
 void level1_init(void) {
 	gameGridCols = LEVEL1_COLS;
 	gameGridRows = LEVEL1_ROWS;
@@ -551,7 +604,7 @@ void level1_init(void) {
 	turret_slow_button_init();
 	turret_homing_button_init();
 	turret_mine_button_init();
-	
+
 	phantomQuartz_init();
 	goldQuartz_init();
 	health_init();
@@ -569,7 +622,7 @@ void level1_init(void) {
 	pathfinding_reset(&Level[currentGameLevel]);
 	pathfinding_calculate_cost(&Level[currentGameLevel]);
 	pathfinding_update(&Level[currentGameLevel]);
-	
+
 	set_building_time(BUILDING_PHASE_TIME);
 	currentGameState = Building;
 }
@@ -827,7 +880,7 @@ void level5_init(void) {
 	Level[4].spawnRow = 0;
 	Level[4].spawnCol = (gameGridCols - 1) / 2;
 	Level[4].exitRow = gameGridRows - 1;
-	Level[4].exitCol = (gameGridCols - 1)/2;
+	Level[4].exitCol = (gameGridCols - 1) / 2;
 	Level[4].health = 100;
 	Level[4].phantomQuartz = 200;
 	Level[4].goldQuartz = 0;
@@ -1277,7 +1330,7 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 
 			//Level Icon
 			RenderNormal(turretStatsIconSpriteSheet, turretStatsIconArray[0], menuObjectX.xOrigin + menuObjectX.width / 1.75f,
-				menuObjectX.yOrigin + menuObjectX.height /5.75f, 64 * scalingFactor, 64 * scalingFactor);
+				menuObjectX.yOrigin + menuObjectX.height / 5.75f, 64 * scalingFactor, 64 * scalingFactor);
 			if (turret[turretSelectedToUpgrade].level == 10)
 			{
 				sprintf_s(temp, sizeof(temp), "MAX");
@@ -1309,7 +1362,7 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 				sprintf_s(temp, sizeof(temp), "Slow");
 				CP_Font_DrawText(temp, menuObjectX.xOrigin + menuObjectX.width / 2, menuObjectX.yOrigin + menuObjectX.height / 18);
 				CP_Image_DrawAdvanced(slowTurretImageArray[0], menuObjectX.xOrigin + menuObjectX.width / 4,
-					menuObjectX.yOrigin + menuObjectX.height /5.75f, 110 * scalingFactor, 110 * scalingFactor, 255,90);
+					menuObjectX.yOrigin + menuObjectX.height / 5.75f, 110 * scalingFactor, 110 * scalingFactor, 255, 90);
 				RenderNormal(turretStatsIconSpriteSheet, turretStatsIconArray[2], menuObjectX.xOrigin + menuObjectX.width / 5,
 					menuObjectX.yOrigin + menuObjectX.height / 3.25f, 64 * scalingFactor, 64 * scalingFactor);
 				sprintf_s(temp, sizeof(temp), "%.2f", turret[turretSelectedToUpgrade].mod.slow_amt);
@@ -1370,7 +1423,7 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 					RenderNormal(currencySpriteSheet, currencyArray[1], menuObjectX.xOrigin + menuObjectX.width / 2.95f,
 						menuObjectX.yOrigin + menuObjectX.height / 1.65f, 40 * scalingFactor, 40 * scalingFactor);
 				}
-			
+
 			}
 			//Sell Price
 			sprintf_s(temp, sizeof(temp), "%4d", turret[turretSelectedToUpgrade].sell_price);
@@ -1378,8 +1431,8 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 			RenderNormal(currencySpriteSheet, currencyArray[1], menuObjectX.xOrigin + menuObjectX.width / 1.15f,
 				menuObjectX.yOrigin + menuObjectX.height / 1.65f, 40 * scalingFactor, 40 * scalingFactor);
 
-			
-			
+
+
 		}
 		break;
 	case UpgradeButton:
