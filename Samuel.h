@@ -3,104 +3,13 @@
 #include "game.h"
 
 //change value as need
-#define MAX_PROJECTILE 100
-#define MAX_TURRET 100
 #define PROJ_OFFSET Game.gridHeight * 0.4
 #define SLOW_RANGE Game.gridWidth * 2
 #define EXPLOSION_RANGE Game.gridWidth * 1.5
 #define HOMING_RANGE Game.gridWidth * 3
-#define TRUE 1
-#define FALSE 0
-
-//enum of turret types
-typedef enum TurretType
-{
-	T_BASIC,
-	T_SLOW,
-	T_HOMING,
-	T_MINE,
-	T_WALL,
-	T_MAX
-} TurretType;
-
-//enum of projectile types
-typedef enum ProjectileType
-{
-	P_BASIC,
-	P_SLOW,
-	P_HOMING,
-	P_MINE,
-} ProjectileType;
-
-typedef enum TriangleAnimState
-{
-	INACTIVE,
-	SHOOTING,
-	ACTIVE
-} TriangleAnimState;
-
-typedef enum TurretPurchase
-{
-	TP_PRICE,
-	TP_UPGRADE_PRICE,
-	TP_UPGRADE_MAX_LEVEL,
-	TP_MAX
-}TurretPurchase;
-
-typedef struct Modifiers
-{
-	int tracked_index;
-	float damage, speed, range, shoot_rate,
-		slow_amt, slow_timer;
-} Modifiers;
-
-//For battlefield effects
-typedef enum Turret_Env_effects {
-	No_Effect,
-	Increased_damage,
-	Increased_attack_speed,
-	Decreased_damage,
-	Decreased_attack_speed
-}Turret_Env_effects;
-
-typedef struct Turret
-{
-	int isActive;
-	float size, angle;
-	//flaot range, cooldown, damage;
-	//float t_slow_amt, t_slow_timer; //for slow turret
-	Modifiers mod;
-	Vector2 dir;
-	Coordinates data;
-	TurretType type;
-	TriangleAnimState currentAnimState;
-	float turretAnimTimer;
-	CP_Image turret_img;
-	int animCounter;
-	// sell price, upgrade price , 
-	// total accumulated price (each upgrades + base price) 
-	int sell_price, upgrade_price, total_price;
-	int level;
-
-	//For Battlefield effects
-	Turret_Env_effects Env_effect;
-} Turret;
-
-typedef struct Projectile
-{
-	int isActive;
-	float size, lifetime;
-	//float damage, speed, ;
-	//float p_slow_amt, p_slow_timer; //for slow projectile
-	Modifiers mod;
-	Coordinates data;
-	Vector2 dir;
-	ProjectileType type;
-} Projectile;
 
 //init turret and projectiles
 void turret_init(void);
-
 /*
 	use this to place turret/spawn turret (pass in type and the grid index)
 	E.g to place on grid[0][1] pass in type, 0, 1
@@ -164,8 +73,3 @@ Particle particles[250];
 void create_particle(Vector2 pos, Vector2 dir, float size, float duration, PARTICLE_TYPE type);
 void update_particle();
 void render_particle();
-
-Projectile proj[MAX_PROJECTILE];
-Turret turret[MAX_TURRET];
-int** turret_on_grid;
-int turret_purchasing[TP_MAX][T_MAX];

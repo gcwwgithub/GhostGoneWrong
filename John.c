@@ -1,9 +1,7 @@
 #include "cprocessing.h"
 #include <math.h>
 #include "John.h"
-#include "Samuel.h"
 #include "Gabriel.h"
-#include "Anderson.h"
 
 void Basic_Ghost(enemy* r) { // setup variable for basic ghost enemy
 	r->health = 4;
@@ -55,7 +53,7 @@ void Fast_Ghost_init(enemy* r) { // setup variable for fast ghost enemy
 	reset_enemy_path(r);
 }
 
-void Fat_Ghost_init(enemy* r) {// setup variable for fat ghost enemy
+void Fat_Ghost_init(enemy* r) {
 	r->health = 30;
 	r->max_health = 30;
 	r->speed = 25;
@@ -80,7 +78,7 @@ void Fat_Ghost_init(enemy* r) {// setup variable for fat ghost enemy
 	reset_enemy_path(r);
 }
 
-void Reaper_minion_init(enemy* r) {// setup variable for Reaper summons
+void Reaper_minion_init(enemy* r) {
 	int a = 0;
 	for (int i = MAX_SPAWNING_ENEMIES; i < MAX_ENEMIES; i++) {
 		if (a == 0) {
@@ -114,7 +112,7 @@ void Reaper_minion_init(enemy* r) {// setup variable for Reaper summons
 	}
 }
 
-void grimReaper_init(enemy* r) { // setup variable for Reaper enemy
+void grimReaper_init(enemy* r) {
 	r->health = 50;
 	r->max_health = 50;
 	r->speed = 40;
@@ -627,7 +625,7 @@ void Env_eff_IncreasedTurretDamage(void) {
 	for (int i = 0; i < MAX_TURRET; i++) {
 		if (turret[i].isActive) {
 			if (Level[currentGameLevel].currentEffect == IncreasedTurretDamage && turret[i].Env_effect == No_Effect) {
-				damage_increase[i] = (float)turret[i].mod.damage * 0.2f;
+				damage_increase[i] = turret[i].mod.damage * 0.2f;
 				turret[i].mod.damage += damage_increase[i];
 				level_check[i] = turret[i].level;
 				turret[i].Env_effect = Increased_damage;
@@ -660,7 +658,7 @@ void Env_eff_DecreasedTurretDamage(void) {
 					damage_decrease[i] = 0;
 					continue;
 				}
-				damage_decrease[i] = (float)turret[i].mod.damage * 0.2f;
+				damage_decrease[i] = turret[i].mod.damage * 0.2f;
 				turret[i].mod.damage -= damage_decrease[i];
 				turret[i].Env_effect = Decreased_damage;
 				level_check[i] = turret[i].level;
@@ -686,7 +684,7 @@ void Env_eff_IncreasedTurretAttackSpeed(void) {
 	static int level_check[MAX_TURRET];
 	for (int i = 0; i < MAX_TURRET; i++) {
 		if (Level[currentGameLevel].currentEffect == IncreasedTurretAttackSpeed && turret[i].Env_effect == No_Effect) {
-			atk_spd_increase[i] = (float)turret[i].mod.shoot_rate * 0.2f;
+			atk_spd_increase[i] = turret[i].mod.shoot_rate * 0.2f;
 			turret[i].mod.shoot_rate -= atk_spd_increase[i];
 			level_check[i] = turret[i].level;
 			turret[i].Env_effect = Increased_attack_speed;
@@ -711,7 +709,7 @@ void Env_eff_DecreasedTurretAttackSpeed(void) {
 	static float level_check[MAX_TURRET];
 	for (int i = 0; i < MAX_TURRET; i++) {
 		if (Level[currentGameLevel].currentEffect == DecreasedTurretAttackSpeed && turret[i].Env_effect == No_Effect) {
-			atk_spd_decrease[i] = (float)turret[i].mod.shoot_rate * 0.2f;
+			atk_spd_decrease[i] = turret[i].mod.shoot_rate * 0.2f;
 			turret[i].mod.shoot_rate += atk_spd_decrease[i];
 			level_check[i] = (float)turret[i].level;
 			turret[i].Env_effect = Decreased_attack_speed;
@@ -734,7 +732,7 @@ void Env_eff_DecreasedTurretAttackSpeed(void) {
 void Env_eff_More_HP(void) {
 	for (int i = 0; i < MAX_ENEMIES; i++) {
 		if (Enemy[i].env_eff == Applying && Enemy[i].health > 1) {
-			float increase_hp = Enemy[i].max_health * 0.3f;
+			int increase_hp = (int)(Enemy[i].max_health * 0.3);
 			Enemy[i].max_health += increase_hp;
 			Enemy[i].health += increase_hp;
 			Enemy[i].env_eff = Effected;
@@ -745,7 +743,7 @@ void Env_eff_More_HP(void) {
 void Env_eff_Less_HP(void) {
 	for (int i = 0; i < MAX_ENEMIES; i++) {
 		if (Enemy[i].env_eff == Applying && Enemy[i].health > 1) {
-			float decrease_hp = Enemy[i].max_health * 0.2f;
+			int decrease_hp = (int)(Enemy[i].max_health * 0.2);
 			Enemy[i].max_health -= decrease_hp;
 			Enemy[i].health -= decrease_hp;
 			Enemy[i].env_eff = Effected;
@@ -774,7 +772,7 @@ void Env_eff_Slower_Enemies(void) {
 void Env_eff_Increased_Phantom_quartz(void) {
 	for (int i = 0; i < MAX_ENEMIES; i++) {
 		if (Enemy[i].env_eff == Applying && Enemy[i].health > 1) {
-			Enemy[i].points += (int)(Enemy[i].points * 1.2f);
+			Enemy[i].points = (int)(Enemy[i].points*1.2);
 			Enemy[i].env_eff = Effected;
 		}
 	}
@@ -783,7 +781,7 @@ void Env_eff_Increased_Phantom_quartz(void) {
 void Env_eff_Decreased_Phantom_quartz(void) {
 	for (int i = 0; i < MAX_ENEMIES; i++) {
 		if (Enemy[i].env_eff == Applying && Enemy[i].health > 1) {
-			Enemy[i].points -= (int)(Enemy[i].points * 1.2f);
+			Enemy[i].points /= (int)(Enemy[i].points / 1.2);
 			Enemy[i].env_eff = Effected;
 		}
 	}
@@ -831,15 +829,14 @@ void Environment_check(int CurrentGameLevel) {
 }
 
 void Change_current_effect(int CurrentGameLevel) {
-	EnvironmentalEffects a = CP_Random_RangeInt(0, 11);
-	Level[CurrentGameLevel].currentEffect = a;
+	Level[CurrentGameLevel].currentEffect = CP_Random_RangeInt(0, 11);
 }
 
 void Current_wave_check(enemy* r) {
 	if (r->WavePowUp_isActive == 0) {
 		int a = Level[currentGameLevel].currentWave;
-		r->max_health *= 1 + (0.2f * a);
-		r->health *= 1 + (0.2f * a);
+		r->max_health = (float)(r->max_health * (1 + (0.2 * a)));
+		r->health = (float)(r->health*(1 + (0.2 * a)));
 		r->speed += 1 * a;
 		r->WavePowUp_isActive = 1;
 	}
@@ -848,7 +845,6 @@ void Current_wave_check(enemy* r) {
 void Power_Up_check(enemy* r) {
 	if (r->Enemy_pow_up[0] == 0) {
 		r->health *= (1 - (Level[currentGameLevel].currentPowerUpLevel.reduceEnemyHealth * 0.05f));
-		r->max_health *= (1 - (Level[currentGameLevel].currentPowerUpLevel.reduceEnemyHealth * 0.05f));
 		r->Enemy_pow_up[0] = 1;
 	}
 	if (r->Enemy_pow_up[1] == 0) {
@@ -856,7 +852,7 @@ void Power_Up_check(enemy* r) {
 		r->Enemy_pow_up[1] = 1;
 	}
 	if (r->Enemy_pow_up[2] == 0) {
-		r->points = (int)(r->points * (1+(Level[currentGameLevel].currentPowerUpLevel.morePhantomQuartz *0.10f)));
+		r->points = (int)(r->points *( 1+(Level[currentGameLevel].currentPowerUpLevel.morePhantomQuartz *0.10)));
 		r->Enemy_pow_up[2] = 1;
 	}
 }

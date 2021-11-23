@@ -1,11 +1,8 @@
 #include <math.h>
-
 #include "cprocessing.h"
+#include "game.h"
 #include "Samuel.h"
-#include "John.h"
 #include "Gabriel.h"
-#include "ZhengWei.h"
-#include "Anderson.h"
 
 #if _DEBUG
 #include <stdio.h>

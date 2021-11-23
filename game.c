@@ -10,6 +10,7 @@ void game_init(void)
 {
 	//CP_System_ShowConsole(); //pls dont delete this cause scrub me uses printf to debug -gabriel
 	//CP_System_Fullscreen();
+	CP_System_SetWindowTitle("Ghost Gone Wrong");
 	int gameWindowWidth = 1280;
 	int gameWindowHeight = (int)(gameWindowWidth * 1080.0f / 1920.0f);//To apply uniform scaling
 	scalingFactor = gameWindowWidth / 1280.0f;//Game is scaled according to 1280 width being 1;
@@ -39,10 +40,7 @@ void game_init(void)
 
 
 	// initialize price for powerups
-	powerUpPrice.morePhantomQuartz = 10;
-	powerUpPrice.reduceEnemySpeed = 10;
-	powerUpPrice.reduceEnemyHealth = 10;
-	powerUpPrice.increasedMineDamage = 10;
+	powerup_price_init();
 
 
 }
@@ -89,8 +87,8 @@ void game_update(void)
 		render_environment();
 
 		CP_Settings_NoTint();
-		render_turret_menu_object(GameMenuObject[NUMBER_OF_MENU_OBJECTS - 2], NUMBER_OF_MENU_OBJECTS - 2);// Render Upgrade menu first
-		for (int i = 0; i < NUMBER_OF_MENU_OBJECTS - 2; i++) {// Last object will double render game grid. Second last object is rendered seperately
+		render_turret_menu_object(GameMenuObject[ButtonMax - 2], ButtonMax - 2);// Render Upgrade menu first
+		for (int i = 0; i < ButtonMax - 2; i++) {// Last object will double render game grid. Second last object is rendered seperately
 			render_turret_menu_object(GameMenuObject[i], i);
 		}
 		game_win_lose_check();
@@ -125,8 +123,8 @@ void game_update(void)
 		render_wave_timer();
 		render_ui_button(SkipWaveButton);
 
-		render_turret_menu_object(GameMenuObject[NUMBER_OF_MENU_OBJECTS - 2], NUMBER_OF_MENU_OBJECTS - 2);// Render Upgrade menu first
-		for (int i = 0; i < NUMBER_OF_MENU_OBJECTS - 2; i++) {// Last object will double render game grid. Second last object is rendered seperately
+		render_turret_menu_object(GameMenuObject[ButtonMax - 2], ButtonMax - 2);// Render Upgrade menu first
+		for (int i = 0; i < ButtonMax - 2; i++) {// Last object will double render game grid. Second last object is rendered seperately
 			render_turret_menu_object(GameMenuObject[i], i);
 		}
 
