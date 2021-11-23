@@ -55,7 +55,7 @@ void Fast_Ghost_init(enemy* r) { // setup variable for fast ghost enemy
 	reset_enemy_path(r);
 }
 
-void Fat_Ghost_init(enemy* r) {
+void Fat_Ghost_init(enemy* r) {// setup variable for fat ghost enemy
 	r->health = 30;
 	r->max_health = 30;
 	r->speed = 25;
@@ -80,7 +80,7 @@ void Fat_Ghost_init(enemy* r) {
 	reset_enemy_path(r);
 }
 
-void Reaper_minion_init(enemy* r) {
+void Reaper_minion_init(enemy* r) {// setup variable for Reaper summons
 	int a = 0;
 	for (int i = MAX_SPAWNING_ENEMIES; i < MAX_ENEMIES; i++) {
 		if (a == 0) {
@@ -114,7 +114,7 @@ void Reaper_minion_init(enemy* r) {
 	}
 }
 
-void grimReaper_init(enemy* r) {
+void grimReaper_init(enemy* r) { // setup variable for Reaper enemy
 	r->health = 50;
 	r->max_health = 50;
 	r->speed = 40;
