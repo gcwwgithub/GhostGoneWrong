@@ -1,9 +1,7 @@
 #include "cprocessing.h"
 #include <math.h>
 #include "John.h"
-#include "Samuel.h"
 #include "Gabriel.h"
-#include "Anderson.h"
 
 void Basic_Ghost(enemy* r) { // setup variable for basic ghost enemy
 	r->health = 4;
@@ -831,8 +829,7 @@ void Environment_check(int CurrentGameLevel) {
 }
 
 void Change_current_effect(int CurrentGameLevel) {
-	EnvironmentalEffects a = CP_Random_RangeInt(0, 11);
-	Level[CurrentGameLevel].currentEffect = a;
+	Level[CurrentGameLevel].currentEffect = CP_Random_RangeInt(0, 11);
 }
 
 void Current_wave_check(enemy* r) {

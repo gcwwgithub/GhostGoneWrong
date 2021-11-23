@@ -1,9 +1,6 @@
 #include "cprocessing.h"
 #include "game.h"
 #include "Anderson.h"
-#include "ZhengWei.h"
-#include "John.h"
-#include "Samuel.h"
 
 CP_Font pixelFont;
 

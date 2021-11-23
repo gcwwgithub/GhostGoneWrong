@@ -2,27 +2,9 @@
 #include"game.h"
 
 // Max Number of Turret Type
-
-void game_grid_init(void);
-void pathfinding_init(LevelData* LevelX);
-void pause_button_init(void);
-void turret_basic_button_init(void);
-void turret_slow_button_init(void);
-void turret_homing_button_init(void);
-void turret_mine_button_init(void);
 void mouse_init(void);
-void init_environment_object(int arrayIndex, int row, int col, LevelData* LevelX);
 void environment_init(LevelData* LevelX);
-void phantomQuartz_init(void);
-void goldQuartz_init(void);
-void health_init(void);
-void menu_swap_init(void);
-void wave_number_display_init(void);
-void battlefield_effects_display_init(void);
-void monster_remaining_display_init(void);
-void upgrade_menu_init(void);
-void upgrade_button_init(void);
-void sell_button_init(void);
+void powerup_price_init(void);
 void level1_init(void);
 void level2_init(void);
 void level3_init(void);
@@ -36,9 +18,19 @@ void render_game_grid(void);
 void render_path(LevelData* LevelX);
 void render_button_pressed(void);
 void pathfinding_update(LevelData* LevelX);
-void general_level_enemies_init(int level, int wave, int basic, int fast, int fat, int grim);
 
 int isPlacingTurret;
 int powerUpMenu;
-#define NO_TURRET_SELECTED -1
-int turretSelectedToUpgrade; //Use the turret index of the turret selected
+
+#define COLOR_BLUE CP_Color_Create(0, 0, 255, 255)
+
+#define LEVEL1_COLS 6
+#define LEVEL1_ROWS 7
+#define LEVEL2_COLS 6
+#define LEVEL2_ROWS 7
+#define LEVEL3_COLS 6
+#define LEVEL3_ROWS 7
+#define LEVEL4_COLS 6
+#define LEVEL4_ROWS 7
+#define LEVEL5_COLS 8
+#define LEVEL5_ROWS 7

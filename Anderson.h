@@ -8,7 +8,6 @@
 #define BUTTON_HEIGHT CP_System_GetWindowHeight() / 400 * 35.0f
 #define FONT_SIZE CP_System_GetWindowWidth() / 400 * 15.0f
 #define MOVE_DURATION 5.0f
-#define BUILDING_PHASE_TIME 30.0f
 #define DIGIPEN_LOGO_DISPLAY_TIME 4.0f
 #define FADE_OUT_TIME 1.0f
 
@@ -77,13 +76,7 @@ Button SkipWaveButton;
 
 Button EndScreenButtons[3];
 
-
-int enemiesLeft;
 int enemiesInLevel;
-int basicEnemyNum;
-int fastEnemyNum;
-int fatEnemyNum;
-float buildingTime;
 float dpLogoTime;
 
 float fadeOutTime;
@@ -136,3 +129,6 @@ void exit_to_desktop(void);
 
 Button init_text_button(Button button, float buttonPosX, float buttonPosY, float buttonWidth, float buttonHeight, float textPosX, float textPosY, char string[]);
 //void gold_to_phantom_quartz_conversion(int goldAmtToConvert, int conversionRate);
+
+#define COLOR_GREY CP_Color_Create(128, 128, 128, 255)
+#define COLOR_YELLOW CP_Color_Create(255,255, 0, 255)

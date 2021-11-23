@@ -1,6 +1,5 @@
 #include"cprocessing.h"
 #include"game.h"
-#define MAX_ENEMIES 60
 #define MAX_SPAWNING_ENEMIES MAX_ENEMIES-10
 
 typedef enum Direction {
@@ -11,64 +10,10 @@ typedef enum Direction {
 	Right
 }Direction;
 
-typedef enum EnemyTypes {
-	Basic,
-	Fast_Ghost,
-	Fat_Ghost,
-	grimReaper
-} EnemyTypes;
-
-typedef enum EnemyState {
-	Inactive,
-	Moving,
-	Hurt,
-	Death,
-	Reached,
-	Adjusting
-
-}EnemyState;
-
-typedef enum AbilityUsed{
-	Used,
-	charges_1,
-	charges_2
-}Ability_charge;
-
 typedef enum EnvironmentEffectEnemy {
 	Effected,
 	Applying
 }EnvironmentEffectEnemy;
-
-
-
-typedef struct Enemy {
-	int CurrentWaypoint, alpha, points;
-	float xOrigin, yOrigin, enemy_width, enemy_height,
-		health,max_health, angle, speed, slow_amt, slow_timer;
-	Coordinates data;
-	EnemyState state;
-	EnemyTypes type;
-	CP_Image Render_Enemy;
-	Ability_charge charges;
-	EnvironmentEffectEnemy env_eff;
-	int Enemy_pow_up[3];//Update to number of power ups
-
-	int isToken;
-
-	int WavePowUp_isActive;
-	int currentAnimState;
-
-	float EnemyPathX[50];
-	float EnemyPathY[50];
-	int pathPoints;
-	float slowed_distance;
-
-	int adjustingWaypoint;
-	
-	float movement_timer;
-	float timer;
-}enemy;
-
 
 void Draw_enemy(enemy* r);
 void enemy_move(enemy* r, float Enemy_PathpointsX[], float Enemy_PathpointsY[], int number_of_points, int CurrentGameLevel);
@@ -111,8 +56,10 @@ float timer;
 int wave_timer;
 int Array_count;
 int Number_of_points;
-enemy Enemy[MAX_ENEMIES];
 enemy Reaper_minions[10];
+int basicEnemyNum;
+int fastEnemyNum;
+int fatEnemyNum;
 
 
 void update_enemy_health_bar(enemy* r);
