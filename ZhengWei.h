@@ -1,5 +1,7 @@
-#pragma once
 #include"game.h"
+
+#ifndef  ZHENGWEI_HEADER
+#define ZHENGWEI_HEADER
 
 // Max Number of Turret Type
 void mouse_init(void);
@@ -41,3 +43,5 @@ int powerUpMenu;
 //Environment
 #define MAX_ENVIRONMENT_OBJECT 10
 Coordinates Environment[MAX_ENVIRONMENT_OBJECT];
+
+#endif // ! ZHENGWEI_HEADER
