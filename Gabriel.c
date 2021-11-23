@@ -55,6 +55,9 @@ void init_linkedlist_variables(void)
 	portalSpawnFirstNode = NULL;
 	portalSpawnNodeKeyNumber = 0;
 	isPortalEffectSpawn = 0;
+	battleFieldSizeTextMax = 45 * scalingFactor;
+	battleFieldSizeTextMin = 0;
+	battleFieldTimer = 0;
 }
 
 #pragma region LinkedList
@@ -192,7 +195,6 @@ void SpriteSheetCalculation(struct SpriteSheetImage* s, CP_Image image, int pixe
 	int width = CP_Image_GetWidth(image);
 	int height = CP_Image_GetHeight(image);
 	int counter = 0;
-	//printf("test\n");
 	for (int j = 0; j < height / pixelHeight; j++)
 	{
 
@@ -783,4 +785,133 @@ void render_game_background(int currentLevel)
 		
 	}
 	
+}
+
+
+float BattlefieldEffectLinear(float start, float end, float value)
+{
+	return (1.f - value) * start + value * end;
+}
+
+void StartBattleFieldEffectTimer(int effect)
+{
+	battleFieldTimer = 0;
+	battleFieldSizeTextMin = 0;
+	switch (effect)
+	{
+	case 1:
+		battleFieldSizeTextMax = 60 * scalingFactor;//
+		break;
+	case 2:
+		battleFieldSizeTextMax = 60 * scalingFactor;//
+		break;
+	case 3:
+		battleFieldSizeTextMax = 60 * scalingFactor;
+		break;
+	case 4:
+		battleFieldSizeTextMax = 60 * scalingFactor;
+		break;
+	case 5:
+		battleFieldSizeTextMax = 50 * scalingFactor;
+		break;
+	case 6:
+		battleFieldSizeTextMax = 50* scalingFactor;
+		break;
+	case 7:
+		battleFieldSizeTextMax = 60 * scalingFactor;
+		break;
+	case 8:
+		battleFieldSizeTextMax = 60 * scalingFactor;
+		break;
+	case 9:
+		battleFieldSizeTextMax = 45 * scalingFactor;
+		break;
+	case 10:
+		battleFieldSizeTextMax = 45 * scalingFactor;
+		break;
+	case 11:
+		battleFieldSizeTextMax = 55 * scalingFactor;
+		break;
+	}
+}
+void RenderBattlefieldEffect(int effect)
+{
+	char temp[100];
+	static float timer = 0;
+	float sizeTimer = 0;
+	float duration = 0.5;
+	float stayOnScreenDuration = 3;
+
+	if (battleFieldTimer <= (stayOnScreenDuration + 2 * duration))
+	{
+		timer += CP_System_GetDt();
+		battleFieldTimer += CP_System_GetDt();
+		sizeTimer = timer;
+		if (timer >= duration)
+		{
+			sizeTimer = duration;
+			if (timer >= duration + stayOnScreenDuration)
+			{
+				float temp = 0;
+				temp = battleFieldSizeTextMax;
+				battleFieldSizeTextMax = battleFieldSizeTextMin;
+				battleFieldSizeTextMin = temp;
+				timer = 0;
+			}
+		}
+
+		float currentSize = BattlefieldEffectLinear(battleFieldSizeTextMin, battleFieldSizeTextMax, sizeTimer/ duration);
+
+		CP_Settings_Fill(COLOR_WHITE);
+		CP_Settings_TextSize(currentSize);
+		switch (effect)
+		{
+		case 1:
+			sprintf_s(temp, sizeof(temp), "MORE QUARTZ EARNED THIS WAVE");
+			break;
+		case 2:
+			sprintf_s(temp, sizeof(temp), "LESS QUARTZ EARNED THIS WAVE");
+			break;
+		case 3:
+			sprintf_s(temp, sizeof(temp), "FASTER ENEMIES THIS WAVE");
+			break;
+		case 4:
+			sprintf_s(temp, sizeof(temp), "SLOWER ENEMIES THIS WAVE");
+			break;
+		case 5:
+			sprintf_s(temp, sizeof(temp), "TURRET DAMAGE INCREASED THIS WAVE");
+			break;
+		case 6:
+			sprintf_s(temp, sizeof(temp), "TURRET DAMAGE DECREASED THIS WAVE");
+			break;
+		case 7:
+			sprintf_s(temp, sizeof(temp), "GHOST HAS MORE HP THIS WAVE");
+			break;
+		case 8:
+			sprintf_s(temp, sizeof(temp), "GHOST HAS LESS HP THIS WAVE");
+			break;
+		case 9:
+			sprintf_s(temp, sizeof(temp), "TURRET ATTACK SPEED INCREASED THIS WAVE");
+			break;
+		case 10:
+			sprintf_s(temp, sizeof(temp), "TURRET ATTACK SPEED DECREASED THIS WAVE");
+			break;
+		case 11:
+			sprintf_s(temp, sizeof(temp), "NO QUARTZ WILL DROP THIS WAVE");
+			break;
+		}
+
+
+		CP_Font_DrawText(temp, (float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 5);
+	}
+
+	else
+	{
+		timer = 0;
+		
+	}
+
+
+
+
 }

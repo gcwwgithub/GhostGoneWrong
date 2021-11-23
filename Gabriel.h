@@ -118,4 +118,8 @@ void RenderNormal(CP_Image image, struct SpriteSheetImage s, float xPos, float y
 void RenderWithAlphaChanged(CP_Image image, struct SpriteSheetImage s, float xPos, float yPos, float sizeOfImageX, float sizeOfImageY, int alphaValue);
 void update_portal(void);
 void render_game_background(int currentLevel);
-
+float BattlefieldEffectLinear(float start, float end, float value);
+void RenderBattlefieldEffect(int effect);
+float battleFieldSizeTextMin;
+float battleFieldSizeTextMax;
+float battleFieldTimer;
