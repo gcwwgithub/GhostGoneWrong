@@ -61,6 +61,7 @@ typedef struct Coordinates {
 int Collision_Detection(Coordinates object1, Coordinates object2);
 int btn_is_pressed(Coordinates object1);
 void mouse_reset(void);
+void set_building_time(float newBuildingTime);
 
 //Boolean
 #define TRUE 1

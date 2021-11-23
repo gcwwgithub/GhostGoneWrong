@@ -102,7 +102,6 @@ void render_credits_screen(void);
 
 void render_wave_timer(void);
 void reduce_building_phase_time(void);
-void set_building_time(float newBuildingTime);
 void init_skip_wave_button(void);
 
 void init_game_font(void);
