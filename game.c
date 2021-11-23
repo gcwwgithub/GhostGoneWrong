@@ -20,10 +20,10 @@ void game_init(void)
 	init_spritesheet_array();
 	init_linkedlist_variables();
 	init_game_font();
-	init_digipen_logo();
-	currentGameState = MainMenu;
+	init_splash_logos();
+	currentGameState = LogoSplash;
 	buildingTime = BUILDING_PHASE_TIME;
-	dpLogoTime = DIGIPEN_LOGO_DISPLAY_TIME;
+	dpLogoTime = teamLogoTime = LOGO_DISPLAY_TIME;
 	fadeOutTime = FADE_OUT_TIME;
 
 	//Main menu, level select
@@ -49,7 +49,8 @@ void game_init(void)
 void game_update(void)
 {
 	//Input
-	if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
+	if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT))
+	{
 		MouseInput.xOrigin = CP_Input_GetMouseX();
 		MouseInput.yOrigin = CP_Input_GetMouseY();
 	}
@@ -151,36 +152,6 @@ void game_update(void)
 		{
 			init_next_level(currentGameLevel + 1);
 		}
-		////do enemy update first
-		//update_enemy();
-
-		////do turret & projectile update next
-		//update_turret();
-		//update_projectile();
-
-
-		////render all the stuff
-		//render_game_background(currentGameLevel);
-		//render_game_grid();
-		//render_path(&Level[currentGameLevel]);
-
-		//render_turret_menu_object(GameMenuObject[NUMBER_OF_MENU_OBJECTS - 2], NUMBER_OF_MENU_OBJECTS - 2);// Render Upgrade menu first
-		//for (int i = 0; i < NUMBER_OF_MENU_OBJECTS - 2; i++) {// Last object will double render game grid. Second last object is rendered seperately
-		//	render_turret_menu_object(GameMenuObject[i], i);
-		//}
-		//update_portal();
-
-		//draw_multiple_enemies();
-		//render_all_portal_effects();
-		//render_turret();
-		//render_projectile();
-
-		//render_bullet_circles();
-
-		//render_button_pressed();
-
-
-		//render_environment();
 
 		render_end_screen(); // this should pause the game by way of gameLost.
 
@@ -374,13 +345,7 @@ void game_update(void)
 	}
 	else if (currentGameState == LogoSplash)
 	{
-		// 
-		if (dpLogoTime > 0.0f)
-		{
-			CP_Graphics_ClearBackground(COLOR_GREY);
-		}
-		CP_Image_Draw(digipenLogo, (float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2, (float)CP_Image_GetWidth(digipenLogo) / 2, (float)CP_Image_GetHeight(digipenLogo) / 2, (int)(255 * (fadeOutTime / FADE_OUT_TIME)));
-		reduce_dp_logo_time();
+		show_logos();
 	}
 }
 

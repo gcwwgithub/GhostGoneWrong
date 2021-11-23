@@ -15,9 +15,10 @@ void init_game_font(void)
 	CP_Settings_TextSize(FONT_SIZE);
 }
 
-void init_digipen_logo(void)
+void init_splash_logos(void)
 {
-	digipenLogo = CP_Image_Load("./Assets/DigipenLogo.png");
+	DigipenLogo = CP_Image_Load("./Assets/DigipenLogo.png");
+	DownNOutLogo = CP_Image_Load("./Assets/DownNOut.png");
 }
 
 // Assuming all buttons are rectangles
@@ -73,13 +74,13 @@ void init_level_select_buttons(void)
 		if (i > 0)
 		{
 			LevelButtons[i] = init_text_button(LevelButtons[i],
-				CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f,CP_System_GetWindowHeight() + i * (BUTTON_HEIGHT + 25.0f), 
+				CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() + i * (BUTTON_HEIGHT + 25.0f),
 				BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, levelNumberText);
 		}
 		else
 		{
-			LevelButtons[i] = init_text_button(LevelButtons[i], 
-				CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f,CP_System_GetWindowHeight() + i * (BUTTON_HEIGHT + 25.0f), 
+			LevelButtons[i] = init_text_button(LevelButtons[i],
+				CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() + i * (BUTTON_HEIGHT + 25.0f),
 				BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Tutorial");
 		}
 	}
@@ -282,18 +283,33 @@ void render_pause_screen(void)
 
 #pragma endregion
 
-void reduce_dp_logo_time(void)
+void show_logos(void)
 {
+	CP_Graphics_ClearBackground(COLOR_BLACK);
 	if (dpLogoTime < 0.0f)
 	{
-		if ((fadeOutTime -= CP_System_GetDt()) < 0.0f)
+		show_team_logo();
+		if (teamLogoTime < 0.0f)
 		{
-			currentGameState = MainMenu;
+			if ((fadeOutTime -= CP_System_GetDt()) < 0.0f)
+			{
+				currentGameState = MainMenu;
+			}
 		}
-		CP_Graphics_ClearBackground(CP_Color_Create(
-			(int)(127 * (fadeOutTime / FADE_OUT_TIME)), (int)(127 * (fadeOutTime / FADE_OUT_TIME)), (int)(127 * (fadeOutTime / FADE_OUT_TIME)), 0));
+		else
+		{
+			teamLogoTime -= CP_System_GetDt();
+		}
 	}
-	else { dpLogoTime -= CP_System_GetDt(); }
+	else if ((dpLogoTime -= CP_System_GetDt()) > 0.0f)
+	{
+		CP_Image_Draw(DigipenLogo, (float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2, (float)CP_Image_GetWidth(DigipenLogo) / 2, (float)CP_Image_GetHeight(DigipenLogo) / 2, (int)(255 * (fadeOutTime / FADE_OUT_TIME)));
+	}
+}
+
+void show_team_logo(void)
+{
+	CP_Image_Draw(DownNOutLogo, (float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2, (float)CP_Image_GetWidth(DownNOutLogo), (float)CP_Image_GetHeight(DownNOutLogo), (int)(255 * (fadeOutTime / FADE_OUT_TIME)));
 }
 
 // Terminates game.
