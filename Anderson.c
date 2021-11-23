@@ -56,41 +56,49 @@ void init_how_to_play_screen(void)
 void init_main_menu(void)
 {
 	PlayButton = init_text_button(PlayButton, CP_System_GetWindowWidth() * 0.25f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 0.5f,
-		BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Play");
+		BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Start Game");
 	CreditsButton = init_text_button(CreditsButton, CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 0.5f,
 		BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Credits");
 	QuitButton = init_text_button(QuitButton, CP_System_GetWindowWidth() * 0.75f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 0.5f,
-		BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Quit");
+		BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Quit Game");
 }
 
 void init_level_select_buttons(void)
 {
 	int c = 0; char levelNumberText[8];
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < MAX_NUMBER_OF_LEVEL; i++)
 	{
 		c = snprintf(levelNumberText, 8, "Level %d", i);
 		strcpy_s(LevelButtons[i].textString, sizeof(LevelButtons[i].textString), levelNumberText);
 		if (i > 0)
 		{
-			LevelButtons[i] = init_text_button(LevelButtons[i], CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f,
-				CP_System_GetWindowHeight() + i * (BUTTON_HEIGHT + 25.0f), BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, levelNumberText);
+			LevelButtons[i] = init_text_button(LevelButtons[i],
+				CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f,CP_System_GetWindowHeight() + i * (BUTTON_HEIGHT + 25.0f), 
+				BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, levelNumberText);
 		}
 		else
 		{
-			LevelButtons[i] = init_text_button(LevelButtons[i], CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f,
-				CP_System_GetWindowHeight() + i * (BUTTON_HEIGHT + 25.0f), BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Test");
+			LevelButtons[i] = init_text_button(LevelButtons[i], 
+				CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f,CP_System_GetWindowHeight() + i * (BUTTON_HEIGHT + 25.0f), 
+				BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Tutorial");
 		}
 	}
+
+
 	LevelSelectBackButton = init_text_button(LevelSelectBackButton, CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 1.5f,
 		BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Back");
 }
 
 void init_pause_screen(void)
 {
-	PauseScreenButtons[0] = init_text_button(PauseScreenButtons[0], CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 0.3f - BUTTON_HEIGHT * 0.5f,
-		BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Back");
-	PauseScreenButtons[1] = init_text_button(PauseScreenButtons[1], CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 0.4f - BUTTON_HEIGHT * 0.5f,
-		BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Quit");
+	// Resume
+	PauseScreenButtons[0] = init_text_button(PauseScreenButtons[0],
+		CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 0.2f - BUTTON_HEIGHT * 0.5f,
+		BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Resume Game");
+	// Exit Level
+	PauseScreenButtons[1] = init_text_button(PauseScreenButtons[1],
+		CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 0.3f - BUTTON_HEIGHT * 0.5f,
+		BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Exit Level");
 }
 
 void init_end_screen(void)
@@ -165,7 +173,7 @@ void init_credits_screen(void)
 	init_credit_line(DX, "Cheng Ding Xiang", CP_System_GetWindowWidth() * 0.7f, CP_System_GetWindowHeight() * 0.65f);
 	init_credit_line(Gerald, "Gerald Wong", CP_System_GetWindowWidth() * 0.7f, CP_System_GetWindowHeight() * 0.7f);
 
-	CreditsBackButton = init_text_button(CreditsBackButton, CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 1.9f - BUTTON_HEIGHT * 0.5f,
+	CreditsBackButton = init_text_button(CreditsBackButton, CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 1.85f - BUTTON_HEIGHT * 0.5f,
 		BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Back");
 }
 
@@ -199,7 +207,7 @@ void render_ui_button(Button button)
 
 	(mouseOverSizeModifier - 1) ? CP_Settings_Fill(COLOR_GREY) : CP_Settings_Fill(COLOR_WHITE);
 
-	CP_Settings_TextSize(FONT_SIZE);
+	CP_Settings_TextSize(cursor_over_button(button.buttonData) ? FONT_SIZE * mouseOverSizeModifier : FONT_SIZE);
 	CP_Font_DrawText(button.textString, button.textPositionX, button.textPositionY);
 }
 
@@ -267,7 +275,7 @@ void render_credits_screen(void)
 void render_pause_screen(void)
 {
 	CP_Settings_Fill(COLOR_GREY);
-	CP_Graphics_DrawRect(CP_System_GetWindowWidth() * 0.4f, CP_System_GetWindowHeight() * 0.25f, CP_System_GetWindowWidth() * 0.2f, CP_System_GetWindowHeight() * 0.2f);
+	CP_Graphics_DrawRect(CP_System_GetWindowWidth() * 0.3f, CP_System_GetWindowHeight() * 0.15f, CP_System_GetWindowWidth() * 0.4f, CP_System_GetWindowHeight() * 0.2f);
 	render_ui_button(PauseScreenButtons[0]);
 	render_ui_button(PauseScreenButtons[1]);
 }
@@ -413,7 +421,7 @@ void game_win_lose_check(void)
 	}
 	else if (enemiesLeft == 0)
 	{
-		if (Level[currentGameLevel].currentWave == MAX_NUMBER_OF_WAVES-1)
+		if (Level[currentGameLevel].currentWave == MAX_NUMBER_OF_WAVES - 1)
 		{
 			// free memory
 			for (int i = 0; i < gameGridRows; i++) {
@@ -437,17 +445,6 @@ void game_win_lose_check(void)
 }
 
 #pragma endregion
-
-//void quartz_change(int quartzTypeQuantity, int changeInQuartz)
-//{
-//	quartzTypeQuantity += changeInQuartz;
-//}
-//
-//void gold_to_phantom_quartz_conversion(int goldAmtToConvert, int conversionRate)
-//{
-//	Level[currentGameLevel].goldQuartz -= goldAmtToConvert;
-//	Level[currentGameLevel].phantomQuartz += goldAmtToConvert / conversionRate;
-//}
 
 #pragma region UI Movement
 
@@ -612,7 +609,7 @@ void init_next_level(int nextGameLevel)
 		break;
 	}
 
-	
+
 	}
 }
 

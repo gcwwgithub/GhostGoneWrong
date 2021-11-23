@@ -21,7 +21,7 @@ void game_init(void)
 	init_linkedlist_variables();
 	init_game_font();
 	init_digipen_logo();
-	currentGameState = LogoSplash;
+	currentGameState = MainMenu;
 	buildingTime = BUILDING_PHASE_TIME;
 	dpLogoTime = DIGIPEN_LOGO_DISPLAY_TIME;
 	fadeOutTime = FADE_OUT_TIME;
@@ -186,18 +186,24 @@ void game_update(void)
 	else if (currentGameState == MainMenu)
 	{
 		CP_Settings_NoTint();
+
 		if (btn_is_pressed(PlayButton.buttonData))
 		{
-			PlayButton.isMoving = CreditsButton.isMoving = QuitButton.isMoving = LevelButtons->isMoving = 1;
+			if (!CreditsBackButton.isMoving)
+			{
+				PlayButton.isMoving = CreditsButton.isMoving = QuitButton.isMoving = LevelButtons->isMoving = 1;
+			}
 		}
 		else if (btn_is_pressed(QuitButton.buttonData))
 		{
-			currentGameState = MainMenu;
 			exit_to_desktop();
 		}
 		else if (btn_is_pressed(CreditsButton.buttonData))
 		{
-			CreditsBackButton.isMoving = 1;
+			if (!PlayButton.isMoving)
+			{
+				CreditsBackButton.isMoving = 1;
+			}
 		}
 
 		if (PlayButton.isMoving) // clicked on play
@@ -212,12 +218,10 @@ void game_update(void)
 		{
 			QuitButton = ui_button_movement(QuitButton, (float)CP_System_GetWindowWidth(), QuitButton.buttonData.yOrigin);
 		}
-
 		if (CreditsBackButton.isMoving)
 		{
 			move_credits_screen();
 		}
-
 		if (LevelButtons->isMoving)
 		{
 			move_level_select();
@@ -322,22 +326,11 @@ void game_update(void)
 			}
 			mouse_reset();
 		}
-		else if (btn_is_pressed(PauseScreenButtons[0].buttonData))
+		else if (btn_is_pressed(PauseScreenButtons[0].buttonData)) // Resume
 		{
-			//free memory
-			for (int i = 0; i < gameGridRows; i++) {
-				free(Level[currentGameLevel].grid[i]);
-			}
-			free(Level[currentGameLevel].grid);
-			//Free memory for turret_on_grid
-			for (int i = 0; i < gameGridCols; i++) {
-				free(turret_on_grid[i]);
-			}
-			free(turret_on_grid);
-
-			currentGameState = MainMenu;
+			currentGameState = (buildingTime) ? Building : Wave;
 		}
-		else if (btn_is_pressed(PauseScreenButtons[1].buttonData))
+		else if (btn_is_pressed(PauseScreenButtons[1].buttonData)) // Level Select
 		{
 			//free memory
 			for (int i = 0; i < gameGridRows; i++) {
@@ -350,7 +343,7 @@ void game_update(void)
 			}
 			free(turret_on_grid);
 
-			exit_to_desktop();
+			currentGameState = LevelSelect;
 		}
 		render_pause_screen();
 	}
