@@ -34,3 +34,10 @@ int powerUpMenu;
 #define LEVEL4_ROWS 7
 #define LEVEL5_COLS 8
 #define LEVEL5_ROWS 7
+
+#define LEFT_MENU_X_END 140.714294f
+#define RIGHT_MENU_X_START 998.571411f
+
+//Environment
+#define MAX_ENVIRONMENT_OBJECT 10
+Coordinates Environment[MAX_ENVIRONMENT_OBJECT];

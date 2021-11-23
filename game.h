@@ -269,18 +269,12 @@ struct PowerUps powerUpPrice;
 int enemiesLeft;
 float buildingTime;
 
-//Environment
-#define MAX_ENVIRONMENT_OBJECT 10
-Coordinates Environment[MAX_ENVIRONMENT_OBJECT];
-
 //Input
 Coordinates MouseInput;
 
 //Graphics
 
 //Game Menus
-#define LEFT_MENU_X_END 140.714294f
-#define RIGHT_MENU_X_START 998.571411f
 enum MenuObjectType {
 	PauseButton,
 	TurretButtonBasic,
