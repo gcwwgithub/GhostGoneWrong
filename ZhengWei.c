@@ -573,20 +573,20 @@ void level1_init(void) {
 	Level[0].health = 100;
 	Level[0].phantomQuartz = 50000;
 	Level[0].goldQuartz = 0;
-	Level[0].currentWave = 0;
+	Level[0].currentWave = 1;
 	Level[0].currentEffect = NoEnvironmentalEffects;
 	Level[0].currentPowerUpLevel.morePhantomQuartz = 0;
 	Level[0].currentPowerUpLevel.reduceEnemySpeed = 0;
 	Level[0].currentPowerUpLevel.reduceEnemyHealth = 0;
 	Level[0].currentPowerUpLevel.increasedMineDamage = 0;
 
-	general_level_enemies_init(0, 0, 10, 0, 0, 0);
-	general_level_enemies_init(0, 1, 10, 0, 0, 0);
-	general_level_enemies_init(0, 2, 15, 0, 0, 0);
-	general_level_enemies_init(0, 3, 15, 0, 0, 0);
-	general_level_enemies_init(0, 4, 20, 0, 0, 0);
-	general_level_enemies_init(0, 5, 20, 0, 0, 0);
-	general_level_enemies_init(0, 6, 25, 0, 0, 0);
+	general_level_enemies_init(0, 0, 2, 0, 0, 0);
+	general_level_enemies_init(0, 1, 2, 0, 0, 0);
+	general_level_enemies_init(0, 2, 2, 0, 0, 0);
+	general_level_enemies_init(0, 3, 2, 0, 0, 0);
+	general_level_enemies_init(0, 4, 2, 0, 0, 0);
+	general_level_enemies_init(0, 5, 2, 0, 0, 0);
+	general_level_enemies_init(0, 6, 2, 0, 0, 0);
 	general_level_enemies_init(0, 7, 25, 0, 0, 0);
 	general_level_enemies_init(0, 8, 30, 0, 0, 0);
 	general_level_enemies_init(0, 9, 30, 0, 0, 0);

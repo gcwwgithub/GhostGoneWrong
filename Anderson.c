@@ -370,6 +370,7 @@ void reduce_building_phase_time()
 		else {
 			Level[currentGameLevel].currentEffect = CP_Random_RangeInt(0, 11);
 		}
+		StartBattleFieldEffectTimer(Level[currentGameLevel].currentEffect);
 	}
 	else
 	{

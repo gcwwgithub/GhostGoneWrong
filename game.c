@@ -86,7 +86,7 @@ void game_update(void)
 		render_button_pressed();
 
 		render_environment();
-
+		RenderBattlefieldEffect(Level[currentGameLevel].currentEffect);
 		CP_Settings_NoTint();
 		render_turret_details_display(); //render turret description when hovered
 		render_turret_menu_object(GameMenuObject[ButtonMax - 2], ButtonMax - 2);// Render Upgrade menu first
@@ -94,6 +94,7 @@ void game_update(void)
 			render_turret_menu_object(GameMenuObject[i], i);
 		}
 		game_win_lose_check();
+
 	}
 	else if (currentGameState == Building)
 	{
