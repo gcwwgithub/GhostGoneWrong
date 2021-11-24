@@ -361,16 +361,16 @@ void reduce_building_phase_time()
 	{
 		SetBuildingTime(0.0f);
 		current_game_state = kWave;
-		if (Level[current_game_level].current_wave == 0) {
-			Level[current_game_level].current_effect = 0;
+		if (Level.current_wave == 0) {
+			Level.current_effect = 0;
 		}
-		else if (Level[current_game_level].current_wave < 5) {
-			Level[current_game_level].current_effect = CP_Random_RangeInt(0, 10);
+		else if (Level.current_wave < 5) {
+			Level.current_effect = CP_Random_RangeInt(0, 10);
 		}
 		else {
-			Level[current_game_level].current_effect = CP_Random_RangeInt(0, 11);
+			Level.current_effect = CP_Random_RangeInt(0, 11);
 		}
-		StartBattleFieldEffectTimer(Level[current_game_level].current_effect);
+		StartBattleFieldEffectTimer(Level.current_effect);
 	}
 	else
 	{
@@ -419,13 +419,13 @@ void render_end_screen(void)
 void game_win_lose_check(void)
 {
 	// checks portal health && number of enemies left.
-	if (Level[current_game_level].health <= 0)
+	if (Level.health <= 0)
 	{
 		// free memory
 		for (int i = 0; i < level_grid_rows; i++) {
-			free(Level[current_game_level].grid[i]);
+			free(Level.grid[i]);
 		}
-		free(Level[current_game_level].grid);
+		free(Level.grid);
 		//Free memory for turret_on_grid
 		for (int i = 0; i < level_grid_cols; i++) {
 			free(turret_on_grid[i]);
@@ -438,13 +438,13 @@ void game_win_lose_check(void)
 	}
 	else if (enemies_left == 0)
 	{
-		if (Level[current_game_level].current_wave == kMaxNumberOfWave - 1)
+		if (Level.current_wave == kMaxNumberOfWave - 1)
 		{
 			// free memory
 			for (int i = 0; i < level_grid_rows; i++) {
-				free(Level[current_game_level].grid[i]);
+				free(Level.grid[i]);
 			}
-			free(Level[current_game_level].grid);
+			free(Level.grid);
 			//Free memory for turret_on_grid
 			for (int i = 0; i < level_grid_cols; i++) {
 				free(turret_on_grid[i]);
@@ -456,7 +456,7 @@ void game_win_lose_check(void)
 		{
 			SetBuildingTime(kFullBuildingPhaseTime);
 			current_game_state = kBuilding;
-			Level[current_game_level].current_wave += 1;
+			Level.current_wave += 1;
 		}
 	}
 }

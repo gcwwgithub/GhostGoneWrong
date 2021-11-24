@@ -68,7 +68,7 @@ void game_update(void)
 		//render all the stuff
 		RenderLevelEnvironment(current_game_level);
 		RenderGameGrid();
-		RenderEnemyPath(&Level[current_game_level]);
+		RenderEnemyPath(&Level);
 
 		UpdatePortalAnimation();
 
@@ -85,7 +85,7 @@ void game_update(void)
 		ButtonPressedUpdate();
 
 		RenderEnvironment();
-		RenderBattlefieldEffectText(Level[current_game_level].current_effect);
+		RenderBattlefieldEffectText(Level.current_effect);
 		CP_Settings_NoTint();
 		RenderTurretDetailsDisplay(); //render turret description when hovered
 		render_turret_menu_object(game_menu_object[kButtonMax - 2], kButtonMax - 2);// Render Upgrade menu first
@@ -111,7 +111,7 @@ void game_update(void)
 		//render all the stuff
 		RenderLevelEnvironment(current_game_level);
 		RenderGameGrid();
-		RenderEnemyPath(&Level[current_game_level]);
+		RenderEnemyPath(&Level);
 		UpdatePortalAnimation();
 		RenderEnvironment();
 		render_turret();
@@ -307,9 +307,9 @@ void game_update(void)
 		{
 			//free memory
 			for (int i = 0; i < level_grid_rows; i++) {
-				free(Level[current_game_level].grid[i]);
+				free(Level.grid[i]);
 			}
-			free(Level[current_game_level].grid);
+			free(Level.grid);
 			//Free memory for turret_on_grid
 			for (int i = 0; i < level_grid_cols; i++) {
 				free(turret_on_grid[i]);

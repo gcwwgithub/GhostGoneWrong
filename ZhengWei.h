@@ -36,7 +36,7 @@ void Level3Init(void);
 void Level4Init(void);
 void Level5Init(void);
 void PathFindingReset(LevelData* LevelX);
-void PathFindingCalculateCost(LevelData* LevelX);
+void PathFindingCalculateCost(void);
 void PathFindingUpdate(LevelData* LevelX);
 void ButtonPressedUpdate(void);
 void RenderGameGrid(void);

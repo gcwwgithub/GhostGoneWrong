@@ -270,7 +270,7 @@ typedef struct LevelData {
 	enum EnvironmentalEffects current_effect;
 	struct PowerUps current_power_up_level;
 }LevelData;
-LevelData Level[kMaxNumberOfLevel];
+LevelData Level;
 int current_game_level; //The current level selected by the player
 struct PowerUps power_up_price; //Price of power ups
 int enemies_left;// enemies remaining in the current round
