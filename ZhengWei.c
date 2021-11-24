@@ -614,7 +614,7 @@ void Level1Init(void) {
 	is_placing_turret = kTMax;
 	turretSelectedToUpgrade = kNoTurretSelected;
 	power_up_menu = kFalse;
-	pathfinding_init(&Level);
+	pathfinding_init();
 	EnvironmentInit(&Level);
 
 	//turret menu items
@@ -692,7 +692,7 @@ void Level2Init(void) {
 	is_placing_turret = kTMax;
 	turretSelectedToUpgrade = kNoTurretSelected;
 	power_up_menu = kFalse;
-	pathfinding_init(&Level);
+	pathfinding_init();
 	EnvironmentInit(&Level);
 
 	//turret menu items
@@ -769,7 +769,7 @@ void Level3Init(void) {
 	is_placing_turret = kTMax;
 	turretSelectedToUpgrade = kNoTurretSelected;
 	power_up_menu = kFalse;
-	pathfinding_init(&Level);
+	pathfinding_init();
 	EnvironmentInit(&Level);
 
 	//turret menu items
@@ -848,7 +848,7 @@ void Level4Init(void) {
 	is_placing_turret = kTMax;
 	turretSelectedToUpgrade = kNoTurretSelected;
 	power_up_menu = kFalse;
-	pathfinding_init(&Level);
+	pathfinding_init();
 	EnvironmentInit(&Level);
 
 	//turret menu items
@@ -944,7 +944,7 @@ void Level5Init(void) {
 	is_placing_turret = kTMax;
 	turretSelectedToUpgrade = kNoTurretSelected;
 	power_up_menu = kFalse;
-	pathfinding_init(&Level);
+	pathfinding_init();
 	EnvironmentInit(&Level);
 	turret_init();
 	Enemies_init();
