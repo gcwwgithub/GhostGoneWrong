@@ -67,11 +67,12 @@ typedef struct Coordinates {
 }Coordinates;
 //Common Functions
 int CollisionDetection(Coordinates object1, Coordinates object2);
-int BtnIsPressed(Coordinates object1);
+Boolean BtnIsPressed(Coordinates object1);
 void MouseReset(void);//Set last click position to out of screen
 //Set the current building time of building phase
 void SetBuildingTime(float newBuildingTime);
 int CheckGameButtonPressed(void);//Check which button is pressed in menu
+float FloatAbs(float x);
 
 //Common Variables
 //GameStates

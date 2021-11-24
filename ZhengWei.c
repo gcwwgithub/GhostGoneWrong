@@ -3,65 +3,84 @@
 #include "Gabriel.h"
 
 #include "cprocessing.h"
-//Tools
-//Reset Mouse
 
+//Initialize global variables
 const float kLeftGameMenuXWidth = 140.714294f;
 const float kRightGameMenuXOrigin = 998.571411f;
-
+//Tools
+//Reset Mouse
 void MouseReset(void) {
 	mouse_input.x_origin = -1;
 	mouse_input.y_origin = -1;
 }
 //Return positive value of float
-float myabs(float x) {
+float FloatAbs(float x) {
 	return x < 0 ? x * -1 : x;
 }
 
 //Check if button is pressed
-int BtnIsPressed(Coordinates object1) {
-	if (((object1.x_origin <= mouse_input.x_origin) && (mouse_input.x_origin <= object1.x_origin + object1.width)) && ((object1.y_origin <= mouse_input.y_origin) && (mouse_input.y_origin <= object1.y_origin + object1.height))) {
+Boolean BtnIsPressed(Coordinates object) {
+	if (((object.x_origin <= mouse_input.x_origin)
+		&& (mouse_input.x_origin <= object.x_origin + object.width))
+		&& ((object.y_origin <= mouse_input.y_origin)
+			&& (mouse_input.y_origin <= object.y_origin + object.height))) {
 		return 1;
 	}
 	else {
 		return 0;
 	}
 }
-
-void color_game_square(int rectRow, int rectCol, CP_Color squareColor)
+//Color game square to square_color
+static void ColorGameSquare(
+	int rect_row, int rect_col, CP_Color square_color)
 {
 	CP_Settings_RectMode(CP_POSITION_CORNER);
-	CP_Settings_Fill(squareColor);
-	CP_Graphics_DrawRect((game.x_origin + game.grid_width * rectCol), (game.y_origin + game.grid_height * rectRow), (game.grid_width), (game.grid_height));
+	CP_Settings_Fill(square_color);
+	CP_Graphics_DrawRect((game.x_origin + game.grid_width * rect_col),
+		(game.y_origin + game.grid_height * rect_row),
+		(game.grid_width), (game.grid_height));
 }
 
 //Path Finding
 //Check if destination is reachable
-int is_destination_updated(LevelData* LevelX) {
-	return LevelX->grid[LevelX->exit_row][LevelX->exit_col].visited;
+Boolean isDestinationUpdated(void) {
+	return Level[current_game_level].
+		grid[Level[current_game_level].exit_row]
+		[Level[current_game_level].exit_col].visited;
 }
 
-//Update neighbors cost
-void pathfinding_update_neighbor_cost(int gridRow, int gridCol, int generation, LevelData* LevelX) {
+//Update cost of neighbor base on own cost
+void PathFindingUpdateNeighborCost(
+	int gridRow, int gridCol, int generation) {
 	//Update Row Neighbor
 	for (int i = -1; i <= 1; i++) {
 		if (gridRow + i >= 0 && gridRow + i < level_grid_rows) {
-			if (LevelX->grid[gridRow + i][gridCol].visited == 0) {
-				LevelX->grid[gridRow + i][gridCol].cost = generation + 1;
-				LevelX->grid[gridRow + i][gridCol].parent_row = gridRow;
-				LevelX->grid[gridRow + i][gridCol].parent_col = gridCol;
-				LevelX->grid[gridRow + i][gridCol].visited = 1;
+			if (Level[current_game_level].
+				grid[gridRow + i][gridCol].visited == 0) {
+				Level[current_game_level].
+					grid[gridRow + i][gridCol].cost = generation + 1;
+				Level[current_game_level].
+					grid[gridRow + i][gridCol].parent_row = gridRow;
+				Level[current_game_level].
+					grid[gridRow + i][gridCol].parent_col = gridCol;
+				Level[current_game_level].
+					grid[gridRow + i][gridCol].visited = 1;
 			}
 		}
 	}
 	//Update Col Neighbor
 	for (int i = -1; i <= 1; i++) {
 		if (gridCol + i >= 0 && gridCol + i < level_grid_cols) {
-			if (LevelX->grid[gridRow][gridCol + i].visited == 0) {
-				LevelX->grid[gridRow][gridCol + i].cost = generation + 1;
-				LevelX->grid[gridRow][gridCol + i].parent_row = gridRow;
-				LevelX->grid[gridRow][gridCol + i].parent_col = gridCol;
-				LevelX->grid[gridRow][gridCol + i].visited = 1;
+			if (Level[current_game_level].
+				grid[gridRow][gridCol + i].visited == 0) {
+				Level[current_game_level].
+					grid[gridRow][gridCol + i].cost = generation + 1;
+				Level[current_game_level].
+					grid[gridRow][gridCol + i].parent_row = gridRow;
+				Level[current_game_level].
+					grid[gridRow][gridCol + i].parent_col = gridCol;
+				Level[current_game_level].
+					grid[gridRow][gridCol + i].visited = 1;
 			}
 		}
 	}
@@ -69,11 +88,11 @@ void pathfinding_update_neighbor_cost(int gridRow, int gridCol, int generation, 
 
 //Calculate all grid cost. Find the squares in the same generation and call a function to update neighbors.
 void PathFindingCalculateCost(LevelData* LevelX) {
-	for (int currentCost = 0; !is_destination_updated(LevelX) && currentCost <= level_grid_rows * level_grid_cols; currentCost++) {
+	for (int currentCost = 0; !isDestinationUpdated() && currentCost <= level_grid_rows * level_grid_cols; currentCost++) {
 		for (int i = 0; i < level_grid_rows; i++) {
 			for (int j = 0; j < level_grid_cols; j++) {
 				if (LevelX->grid[i][j].cost == currentCost) {
-					pathfinding_update_neighbor_cost(i, j, currentCost, LevelX);
+					PathFindingUpdateNeighborCost(i, j, currentCost);
 				}
 			}
 		}
@@ -105,9 +124,9 @@ int CollisionDetection(Coordinates object1, Coordinates object2) {
 	else if (object1.object_type == kObjectCircle || object2.object_type == kObjectCircle) {
 		float  distanceX, distanceY, circleRadius, rectWidthtoCheck, rectHeightToCheck, collisionDistanceX, collisionDistanceY, radiusSquared, distanceToCornerSquaredX, distanceToCornerSquaredY;
 		distanceX = object1.x_origin - object2.x_origin;
-		distanceX = myabs(distanceX);
+		distanceX = FloatAbs(distanceX);
 		distanceY = object1.y_origin - object2.y_origin;
-		distanceY = myabs(distanceY);
+		distanceY = FloatAbs(distanceY);
 		if (object1.object_type == kObjectCircle) {
 			circleRadius = 0.5f * object1.width;
 			rectWidthtoCheck = 0.5f * object2.width;
@@ -150,9 +169,9 @@ int CollisionDetection(Coordinates object1, Coordinates object2) {
 		collisionDistanceX = (rect1WidthtoCheck + rect2WidthtoCheck);
 		collisionDistanceY = (rect1HeighttoCheck + rect2HeighttoCheck);
 		distanceX = (object1.x_origin - object2.x_origin);
-		distanceX = myabs(distanceX);
+		distanceX = FloatAbs(distanceX);
 		distanceY = (object1.y_origin - object2.y_origin);
-		distanceY = myabs(distanceY);
+		distanceY = FloatAbs(distanceY);
 		if (collisionDistanceX >= distanceX && collisionDistanceY >= distanceY) {
 			return 1;
 		}
@@ -186,7 +205,7 @@ void render_game_grid_press(LevelData* LevelX) {
 				PathFindingReset(LevelX);
 				PathFindingCalculateCost(LevelX);
 			}
-			if (!is_destination_updated(LevelX)) {
+			if (!isDestinationUpdated()) {
 				LevelX->grid[drawY][drawX].type = kClear;
 				PathFindingReset(LevelX);
 				PathFindingCalculateCost(LevelX);
@@ -234,7 +253,7 @@ void general_level_enemies_init(int level, int wave, int basic, int fast, int fa
 }
 
 //function to assign environment object
-void init_environment_object(int arrayIndex, int row, int col,int object_type,LevelData* LevelX)
+void init_environment_object(int arrayIndex, int row, int col, int object_type, LevelData* LevelX)
 {
 	Environment[arrayIndex].image = grid_environment_objects_spritesheet;
 	Environment[arrayIndex].x_origin = game.x_origin + game.grid_width * (col + 0.5f);
@@ -322,27 +341,27 @@ void EnvironmentInit(LevelData* LevelX) {
 	switch (current_game_level)
 	{
 	case 0:
-		init_environment_object(0, 2, 2,8, LevelX);
+		init_environment_object(0, 2, 2, 8, LevelX);
 		init_environment_object(1, 3, 4, 8, LevelX);
 		init_environment_object(2, 5, 1, 8, LevelX);
 		break;
 	case 1:
-		init_environment_object(0, 0, 1,8, LevelX);
-		init_environment_object(1, 1, 4,8,  LevelX);
-		init_environment_object(2, 5, 1,8, LevelX);
-		init_environment_object(3, 5, 5,8, LevelX);
-		init_environment_object(4, 2, 2,8,  LevelX);
+		init_environment_object(0, 0, 1, 8, LevelX);
+		init_environment_object(1, 1, 4, 8, LevelX);
+		init_environment_object(2, 5, 1, 8, LevelX);
+		init_environment_object(3, 5, 5, 8, LevelX);
+		init_environment_object(4, 2, 2, 8, LevelX);
 		break;
 	case 2:
-		init_environment_object(0, 3, 3,8,  LevelX);
-		init_environment_object(1, 3, 4,9,  LevelX);
+		init_environment_object(0, 3, 3, 8, LevelX);
+		init_environment_object(1, 3, 4, 9, LevelX);
 		init_environment_object(2, 2, 1, 8, LevelX);
-		init_environment_object(3, 5, 5,8,  LevelX);
+		init_environment_object(3, 5, 5, 8, LevelX);
 		init_environment_object(4, 2, 2, 9, LevelX);
 		init_environment_object(5, 4, 0, 8, LevelX);
 		break;
 	case 3:
-	init_environment_object(0, 2, 2, 8, LevelX);
+		init_environment_object(0, 2, 2, 8, LevelX);
 		init_environment_object(1, 3, 3, 4, LevelX);
 		init_environment_object(2, 1, 0, 8, LevelX);
 		init_environment_object(3, 5, 2, 3, LevelX);
@@ -500,9 +519,9 @@ void PowerUpPriceInit(void) {
 
 void turret_details_init(enum MenuObjectType turretButton) {
 	game_menu_object[kTurretDetailsDisplay].x_origin = game_menu_object[turretButton].x_origin + game_menu_object[turretButton].width;
-	game_menu_object[kTurretDetailsDisplay].y_origin = game_menu_object[turretButton].y_origin + game_menu_object[turretButton].width/4;
-	game_menu_object[kTurretDetailsDisplay].width = game_menu_object[turretButton].width*1.25f;
-	game_menu_object[kTurretDetailsDisplay].height = game_menu_object[turretButton].height/2;
+	game_menu_object[kTurretDetailsDisplay].y_origin = game_menu_object[turretButton].y_origin + game_menu_object[turretButton].width / 4;
+	game_menu_object[kTurretDetailsDisplay].width = game_menu_object[turretButton].width * 1.25f;
+	game_menu_object[kTurretDetailsDisplay].height = game_menu_object[turretButton].height / 2;
 	game_menu_object[kTurretDetailsDisplay].object_type = kObjectRectangle;
 }
 
@@ -528,7 +547,7 @@ void RenderTurretDetailsDisplay(void) {
 		CP_Settings_Fill(COLOR_BLACK);
 		CP_Settings_TextSize(20.0f * scaling_factor);
 		CP_Font_DrawText("Slow Turret", game_menu_object[kTurretDetailsDisplay].x_origin + game_menu_object[kTurretDetailsDisplay].width / 2, (game_menu_object[kTurretDetailsDisplay].y_origin + game_menu_object[kTurretDetailsDisplay].height / 3));
-		CP_Font_DrawText("Slow Enemies", game_menu_object[kTurretDetailsDisplay].x_origin + game_menu_object[kTurretDetailsDisplay].width / 2, (game_menu_object[kTurretDetailsDisplay].y_origin + game_menu_object[kTurretDetailsDisplay].height * 2 / 3)); 
+		CP_Font_DrawText("Slow Enemies", game_menu_object[kTurretDetailsDisplay].x_origin + game_menu_object[kTurretDetailsDisplay].width / 2, (game_menu_object[kTurretDetailsDisplay].y_origin + game_menu_object[kTurretDetailsDisplay].height * 2 / 3));
 		break;
 	case kTurretButtonHoming:
 		CP_Settings_RectMode(CP_POSITION_CORNER);
@@ -537,7 +556,7 @@ void RenderTurretDetailsDisplay(void) {
 		CP_Settings_Fill(COLOR_BLACK);
 		CP_Settings_TextSize(20.0f * scaling_factor);
 		CP_Font_DrawText("Homing Turret", game_menu_object[kTurretDetailsDisplay].x_origin + game_menu_object[kTurretDetailsDisplay].width / 2, (game_menu_object[kTurretDetailsDisplay].y_origin + game_menu_object[kTurretDetailsDisplay].height / 3));
-		CP_Font_DrawText("Splash Damage", game_menu_object[kTurretDetailsDisplay].x_origin + game_menu_object[kTurretDetailsDisplay].width / 2, (game_menu_object[kTurretDetailsDisplay].y_origin + game_menu_object[kTurretDetailsDisplay].height * 2 / 3)); 
+		CP_Font_DrawText("Splash Damage", game_menu_object[kTurretDetailsDisplay].x_origin + game_menu_object[kTurretDetailsDisplay].width / 2, (game_menu_object[kTurretDetailsDisplay].y_origin + game_menu_object[kTurretDetailsDisplay].height * 2 / 3));
 		break;
 	case kTurretButtonMine:
 		CP_Settings_RectMode(CP_POSITION_CORNER);
@@ -546,7 +565,7 @@ void RenderTurretDetailsDisplay(void) {
 		CP_Settings_Fill(COLOR_BLACK);
 		CP_Settings_TextSize(20.0f * scaling_factor);
 		CP_Font_DrawText("Mine", game_menu_object[kTurretDetailsDisplay].x_origin + game_menu_object[kTurretDetailsDisplay].width / 2, (game_menu_object[kTurretDetailsDisplay].y_origin + game_menu_object[kTurretDetailsDisplay].height / 3));
-		CP_Font_DrawText("Single Use", game_menu_object[kTurretDetailsDisplay].x_origin + game_menu_object[kTurretDetailsDisplay].width / 2, (game_menu_object[kTurretDetailsDisplay].y_origin + game_menu_object[kTurretDetailsDisplay].height * 2 / 3)); 
+		CP_Font_DrawText("Single Use", game_menu_object[kTurretDetailsDisplay].x_origin + game_menu_object[kTurretDetailsDisplay].width / 2, (game_menu_object[kTurretDetailsDisplay].y_origin + game_menu_object[kTurretDetailsDisplay].height * 2 / 3));
 		break;
 	}
 	mouse_input.x_origin = tempMouseX;
@@ -1504,10 +1523,10 @@ void RenderEnemyPath(LevelData* LevelX) {
 	for (int i = 0; i < level_grid_rows; i++) {
 		for (int j = 0; j < level_grid_cols; j++) {
 			if (LevelX->grid[i][j].type == kPath) {
-				color_game_square(i, j, COLOR_RED);
+				ColorGameSquare(i, j, COLOR_RED);
 			}
 			else if (LevelX->grid[i][j].type == kSpawn) {
-				color_game_square(i, j, COLOR_RED);
+				ColorGameSquare(i, j, COLOR_RED);
 				portal_variables_array[1].portal_x_coordinate = ((game.x_origin + game.grid_width * j) +
 					(game.x_origin + game.grid_width * (j + 1))) / 2;
 				portal_variables_array[1].portal_y_coordinate = ((game.y_origin + game.grid_height * i) +
@@ -1516,7 +1535,7 @@ void RenderEnemyPath(LevelData* LevelX) {
 				portal_variables_array[1].portal_image_height = game.grid_height;
 			}
 			else if (LevelX->grid[i][j].type == kExit) {
-				color_game_square(i, j, COLOR_BLUE);
+				ColorGameSquare(i, j, COLOR_BLUE);
 				portal_variables_array[0].portal_x_coordinate = ((game.x_origin + game.grid_width * j) +
 					(game.x_origin + game.grid_width * (j + 1))) / 2;
 				portal_variables_array[0].portal_y_coordinate = ((game.y_origin + game.grid_height * i) +
