@@ -1,4 +1,6 @@
-#include"game.h"
+#include "game.h"
+
+#include "cprocessing.h"
 
 #ifndef GhostGoneWrong_CURRENTHEADERFILES_ZHENGWEI_H
 #define GhostGoneWrong_CURRENTHEADERFILES_ZHENGWEI_H
@@ -6,8 +8,7 @@
 #define COLOR_BLUE CP_Color_Create(0, 0, 255, 255)
 // The turret selected to place
 TurretType is_placing_turret;
-//Check if power up menu is selected
-int power_up_menu;
+Boolean power_up_menu;
 enum {
 	kLevel1Cols = 6,
 	kLevel1Rows = 7,
@@ -45,4 +46,4 @@ void RenderTurretDetailsDisplay(void);
 void render_turret_menu_object(
 	Coordinates menuObjectX, enum MenuObjectType type);
 
-#endif // ! GhostGoneWrong_CURRENTHEADERFILES_ZHENGWEI_H
+#endif // !GhostGoneWrong_CURRENTHEADERFILES_ZHENGWEI_H

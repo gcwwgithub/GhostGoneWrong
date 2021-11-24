@@ -24,14 +24,14 @@ void init_splash_logos(void)
 // Assuming all buttons are rectangles
 Button init_text_button(Button button, float buttonPosX, float buttonPosY, float buttonWidth, float buttonHeight, float textPosX, float textPosY, char string[])
 {
-	button.buttonData.xOrigin = buttonPosX;
-	button.buttonData.yOrigin = buttonPosY;
+	button.buttonData.x_origin = buttonPosX;
+	button.buttonData.y_origin = buttonPosY;
 	button.buttonData.width = buttonWidth;
 	button.buttonData.height = buttonHeight;
 	button.movementTime = 0.0f;
 	CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_CENTER, CP_TEXT_ALIGN_V_MIDDLE);
-	button.textPositionX = button.buttonData.xOrigin + textPosX;
-	button.textPositionY = button.buttonData.yOrigin + textPosY;
+	button.textPositionX = button.buttonData.x_origin + textPosX;
+	button.textPositionY = button.buttonData.y_origin + textPosY;
 	strcpy_s(button.textString, sizeof(button.textString), string);
 
 	return button;
@@ -105,33 +105,33 @@ void init_pause_screen(void)
 void init_end_screen(void)
 {
 	// Back to Main Menu
-	EndScreenButtons[0].buttonData.xOrigin = CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f;
-	EndScreenButtons[0].buttonData.yOrigin = CP_System_GetWindowHeight() * 0.5f - BUTTON_HEIGHT * 0.5f;
+	EndScreenButtons[0].buttonData.x_origin = CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f;
+	EndScreenButtons[0].buttonData.y_origin = CP_System_GetWindowHeight() * 0.5f - BUTTON_HEIGHT * 0.5f;
 	EndScreenButtons[0].buttonData.width = BUTTON_WIDTH;
 	EndScreenButtons[0].buttonData.height = BUTTON_HEIGHT;
-	EndScreenButtons[0].buttonData.objectType = objectRectangle;
-	EndScreenButtons[0].textPositionX = EndScreenButtons[0].buttonData.xOrigin + BUTTON_WIDTH * 0.5f;
-	EndScreenButtons[0].textPositionY = EndScreenButtons[0].buttonData.yOrigin + BUTTON_HEIGHT * 0.5f;
+	EndScreenButtons[0].buttonData.object_type = kObjectRectangle;
+	EndScreenButtons[0].textPositionX = EndScreenButtons[0].buttonData.x_origin + BUTTON_WIDTH * 0.5f;
+	EndScreenButtons[0].textPositionY = EndScreenButtons[0].buttonData.y_origin + BUTTON_HEIGHT * 0.5f;
 	strcpy_s(EndScreenButtons[0].textString, sizeof(EndScreenButtons[0].textString), "Back");
 
 	// Restart
-	EndScreenButtons[1].buttonData.xOrigin = CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f;
-	EndScreenButtons[1].buttonData.yOrigin = CP_System_GetWindowHeight() * 0.6f - BUTTON_HEIGHT * 0.5f;
+	EndScreenButtons[1].buttonData.x_origin = CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f;
+	EndScreenButtons[1].buttonData.y_origin = CP_System_GetWindowHeight() * 0.6f - BUTTON_HEIGHT * 0.5f;
 	EndScreenButtons[1].buttonData.width = BUTTON_WIDTH;
 	EndScreenButtons[1].buttonData.height = BUTTON_HEIGHT;
-	EndScreenButtons[1].buttonData.objectType = objectRectangle;
-	EndScreenButtons[1].textPositionX = EndScreenButtons[1].buttonData.xOrigin + BUTTON_WIDTH * 0.5f;
-	EndScreenButtons[1].textPositionY = EndScreenButtons[1].buttonData.yOrigin + BUTTON_HEIGHT * 0.5f;
+	EndScreenButtons[1].buttonData.object_type = kObjectRectangle;
+	EndScreenButtons[1].textPositionX = EndScreenButtons[1].buttonData.x_origin + BUTTON_WIDTH * 0.5f;
+	EndScreenButtons[1].textPositionY = EndScreenButtons[1].buttonData.y_origin + BUTTON_HEIGHT * 0.5f;
 	strcpy_s(EndScreenButtons[1].textString, sizeof(EndScreenButtons[1].textString), "Restart");
 
 	// Next Level
-	EndScreenButtons[2].buttonData.xOrigin = CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f;
-	EndScreenButtons[2].buttonData.yOrigin = CP_System_GetWindowHeight() * 0.7f - BUTTON_HEIGHT * 0.5f;
+	EndScreenButtons[2].buttonData.x_origin = CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f;
+	EndScreenButtons[2].buttonData.y_origin = CP_System_GetWindowHeight() * 0.7f - BUTTON_HEIGHT * 0.5f;
 	EndScreenButtons[2].buttonData.width = BUTTON_WIDTH;
 	EndScreenButtons[2].buttonData.height = BUTTON_HEIGHT;
-	EndScreenButtons[2].buttonData.objectType = objectRectangle;
-	EndScreenButtons[2].textPositionX = EndScreenButtons[2].buttonData.xOrigin + BUTTON_WIDTH * 0.5f;
-	EndScreenButtons[2].textPositionY = EndScreenButtons[2].buttonData.yOrigin + BUTTON_HEIGHT * 0.5f;
+	EndScreenButtons[2].buttonData.object_type = kObjectRectangle;
+	EndScreenButtons[2].textPositionX = EndScreenButtons[2].buttonData.x_origin + BUTTON_WIDTH * 0.5f;
+	EndScreenButtons[2].textPositionY = EndScreenButtons[2].buttonData.y_origin + BUTTON_HEIGHT * 0.5f;
 	strcpy_s(EndScreenButtons[2].textString, sizeof(EndScreenButtons[2].textString), "Next");
 }
 
@@ -139,19 +139,19 @@ void init_end_screen(void)
 void init_credit_line(int num, char* line, float x, float y)
 {
 	CreditTexts[num].text = line;
-	CreditTexts[num].mainMenuPos.xOrigin = x;
-	CreditTexts[num].mainMenuPos.yOrigin = y + CP_System_GetWindowHeight();
+	CreditTexts[num].mainMenuPos.x_origin = x;
+	CreditTexts[num].mainMenuPos.y_origin = y + CP_System_GetWindowHeight();
 
-	CreditTexts[num].creditPos.xOrigin = x;
-	CreditTexts[num].creditPos.yOrigin = y;
+	CreditTexts[num].creditPos.x_origin = x;
+	CreditTexts[num].creditPos.y_origin = y;
 
-	CreditTexts[num].currentPos.xOrigin = CreditTexts[num].mainMenuPos.xOrigin;
-	CreditTexts[num].currentPos.yOrigin = CreditTexts[num].mainMenuPos.yOrigin;
+	CreditTexts[num].currentPos.x_origin = CreditTexts[num].mainMenuPos.x_origin;
+	CreditTexts[num].currentPos.y_origin = CreditTexts[num].mainMenuPos.y_origin;
 }
 
 void init_credits_screen(void)
 {
-	creditRectCoords.xOrigin = CP_System_GetWindowWidth() * 0.1f; creditRectCoords.yOrigin = CP_System_GetWindowHeight() * 1.35f;
+	creditRectCoords.x_origin = CP_System_GetWindowWidth() * 0.1f; creditRectCoords.y_origin = CP_System_GetWindowHeight() * 1.35f;
 	creditRectCoords.width = CP_System_GetWindowWidth() * 0.8f; creditRectCoords.height = CP_System_GetWindowHeight() * 0.5f;
 
 	// the © copyright symbol is printed as \xc2\xa9, as its UTF-8 (i.e Unicode) string literal counterpart.
@@ -184,8 +184,8 @@ void init_credits_screen(void)
 
 int cursor_over_button(Coordinates buttonCoord)
 {
-	return ((CP_Input_GetMouseX() > buttonCoord.xOrigin) && (CP_Input_GetMouseX() < buttonCoord.xOrigin + buttonCoord.width)
-		&& (CP_Input_GetMouseY() > buttonCoord.yOrigin) && (CP_Input_GetMouseY() < buttonCoord.yOrigin + buttonCoord.height));
+	return ((CP_Input_GetMouseX() > buttonCoord.x_origin) && (CP_Input_GetMouseX() < buttonCoord.x_origin + buttonCoord.width)
+		&& (CP_Input_GetMouseY() > buttonCoord.y_origin) && (CP_Input_GetMouseY() < buttonCoord.y_origin + buttonCoord.height));
 }
 
 // Draws a background image, background is drawn with code, rest with pixel art
@@ -202,8 +202,8 @@ void render_ui_button(Button button)
 	float mouseOverSizeModifier = cursor_over_button(button.buttonData) ? 1.1f : 1.0f;
 
 	// Adjusting position to account for enlarged button when moused over.
-	CP_Graphics_DrawRect(button.buttonData.xOrigin - (mouseOverSizeModifier - 1) * button.buttonData.width / 2.0f,
-		button.buttonData.yOrigin - (mouseOverSizeModifier - 1) * button.buttonData.height / 2.0f,
+	CP_Graphics_DrawRect(button.buttonData.x_origin - (mouseOverSizeModifier - 1) * button.buttonData.width / 2.0f,
+		button.buttonData.y_origin - (mouseOverSizeModifier - 1) * button.buttonData.height / 2.0f,
 		button.buttonData.width * mouseOverSizeModifier, button.buttonData.height * mouseOverSizeModifier);
 
 	(mouseOverSizeModifier - 1) ? CP_Settings_Fill(COLOR_GREY) : CP_Settings_Fill(COLOR_WHITE);
@@ -237,7 +237,7 @@ void render_level_select_buttons(void)
 
 void render_credit_line(CreditLine cLine)
 {
-	CP_Font_DrawText(cLine.text, cLine.currentPos.xOrigin, cLine.currentPos.yOrigin);
+	CP_Font_DrawText(cLine.text, cLine.currentPos.x_origin, cLine.currentPos.y_origin);
 }
 
 void render_credits_screen(void)
@@ -245,7 +245,7 @@ void render_credits_screen(void)
 	CP_Settings_TextSize(FONT_SIZE);
 	CP_Settings_Fill(COLOR_BLACK);
 
-	CP_Graphics_DrawRect(creditRectCoords.xOrigin, creditRectCoords.yOrigin, creditRectCoords.width, creditRectCoords.height);
+	CP_Graphics_DrawRect(creditRectCoords.x_origin, creditRectCoords.y_origin, creditRectCoords.width, creditRectCoords.height);
 
 	CP_Settings_Fill(COLOR_WHITE);
 	render_credit_line(CreditTexts[CreditsTitle]);
@@ -293,7 +293,7 @@ void show_logos(void)
 		{
 			if ((fadeOutTime -= CP_System_GetDt()) < 0.0f)
 			{
-				currentGameState = MainMenu;
+				current_game_state = kMainMenu;
 			}
 		}
 		else
@@ -320,18 +320,18 @@ void exit_to_desktop(void)
 
 #pragma endregion
 
-#pragma region Building / Wave Phase System
+#pragma region kBuilding / kWave Phase System
 
 void init_skip_wave_button(void)
 {
 	// Init skip wave button's position.
-	SkipWaveButton.buttonData.xOrigin = CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f;
-	SkipWaveButton.buttonData.yOrigin = CP_System_GetWindowHeight() * 0.1f;
+	SkipWaveButton.buttonData.x_origin = CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f;
+	SkipWaveButton.buttonData.y_origin = CP_System_GetWindowHeight() * 0.1f;
 	SkipWaveButton.buttonData.width = BUTTON_WIDTH;
 	SkipWaveButton.buttonData.height = BUTTON_HEIGHT;
 
-	SkipWaveButton.textPositionX = SkipWaveButton.buttonData.xOrigin + BUTTON_WIDTH * 0.5f;
-	SkipWaveButton.textPositionY = SkipWaveButton.buttonData.yOrigin + BUTTON_HEIGHT * 0.5f;
+	SkipWaveButton.textPositionX = SkipWaveButton.buttonData.x_origin + BUTTON_WIDTH * 0.5f;
+	SkipWaveButton.textPositionY = SkipWaveButton.buttonData.y_origin + BUTTON_HEIGHT * 0.5f;
 	strcpy_s(SkipWaveButton.textString, sizeof(SkipWaveButton.textString), "Skip");
 }
 
@@ -359,8 +359,8 @@ void reduce_building_phase_time()
 {
 	if (buildingTime < 0.05f)
 	{
-		set_building_time(0.0f);
-		currentGameState = Wave;
+		SetBuildingTime(0.0f);
+		current_game_state = kWave;
 		if (Level[currentGameLevel].currentWave == 0) {
 			Level[currentGameLevel].currentEffect = 0;
 		}
@@ -374,11 +374,11 @@ void reduce_building_phase_time()
 	}
 	else
 	{
-		set_building_time(buildingTime - CP_System_GetDt());
+		SetBuildingTime(buildingTime - CP_System_GetDt());
 	}
 }
 
-void set_building_time(float newBuildingTime)
+void SetBuildingTime(float newBuildingTime)
 {
 	// set building phase time to 0.0f
 	buildingTime = newBuildingTime;
@@ -386,7 +386,7 @@ void set_building_time(float newBuildingTime)
 
 #pragma endregion
 
-#pragma region Win / Lose Conditions
+#pragma region kWin / kLose Conditions
 
 void render_end_screen(void)
 {
@@ -397,11 +397,11 @@ void render_end_screen(void)
 	CP_Graphics_DrawRect(CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.5f, CP_System_GetWindowWidth() * 0.2f, CP_System_GetWindowHeight() * 0.5f);
 
 	CP_Settings_Fill(COLOR_BLACK);
-	if (currentGameState == Lose)
+	if (current_game_state == kLose)
 	{
 		CP_Font_DrawText("Game Lost!", CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.4f);
 	}
-	else if (currentGameState == Win)
+	else if (current_game_state == kWin)
 	{
 		CP_Font_DrawText("Game Won!", CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.4f);
 	}
@@ -422,18 +422,18 @@ void game_win_lose_check(void)
 	if (Level[currentGameLevel].health <= 0)
 	{
 		// free memory
-		for (int i = 0; i < gameGridRows; i++) {
+		for (int i = 0; i < level_grid_rows; i++) {
 			free(Level[currentGameLevel].grid[i]);
 		}
 		free(Level[currentGameLevel].grid);
 		//Free memory for turret_on_grid
-		for (int i = 0; i < gameGridCols; i++) {
+		for (int i = 0; i < level_grid_cols; i++) {
 			free(turret_on_grid[i]);
 		}
 		free(turret_on_grid);
 
 		// game lost
-		currentGameState = Lose;
+		current_game_state = kLose;
 
 	}
 	else if (enemiesLeft == 0)
@@ -441,21 +441,21 @@ void game_win_lose_check(void)
 		if (Level[currentGameLevel].currentWave == MAX_NUMBER_OF_WAVES - 1)
 		{
 			// free memory
-			for (int i = 0; i < gameGridRows; i++) {
+			for (int i = 0; i < level_grid_rows; i++) {
 				free(Level[currentGameLevel].grid[i]);
 			}
 			free(Level[currentGameLevel].grid);
 			//Free memory for turret_on_grid
-			for (int i = 0; i < gameGridCols; i++) {
+			for (int i = 0; i < level_grid_cols; i++) {
 				free(turret_on_grid[i]);
 			}
 			free(turret_on_grid);
-			currentGameState = Win;
+			current_game_state = kWin;
 		}
 		else // if still in the midst of the current level
 		{
-			set_building_time(BUILDING_PHASE_TIME);
-			currentGameState = Building;
+			SetBuildingTime(BUILDING_PHASE_TIME);
+			current_game_state = kBuilding;
 			Level[currentGameLevel].currentWave += 1;
 		}
 	}
@@ -476,8 +476,8 @@ Button ui_button_movement(Button button, float destPosX, float destPosY)
 	if (button.movementTime <= MOVE_DURATION)
 	{
 		button.movementTime += CP_System_GetDt();
-		button.buttonData.xOrigin = linear(button.buttonData.xOrigin, destPosX, button.movementTime / MOVE_DURATION);
-		button.buttonData.yOrigin = linear(button.buttonData.yOrigin, destPosY, button.movementTime / MOVE_DURATION);
+		button.buttonData.x_origin = linear(button.buttonData.x_origin, destPosX, button.movementTime / MOVE_DURATION);
+		button.buttonData.y_origin = linear(button.buttonData.y_origin, destPosY, button.movementTime / MOVE_DURATION);
 		button.textPositionX = linear(button.textPositionX, destPosX + BUTTON_WIDTH * 0.5f, button.movementTime / MOVE_DURATION);
 		button.textPositionY = linear(button.textPositionY, destPosY + BUTTON_HEIGHT * 0.5f, button.movementTime / MOVE_DURATION);
 	}
@@ -495,8 +495,8 @@ Coordinates coord_movement(Coordinates coord, float destPosX, float destPosY)
 	if (creditTextMoveTime <= MOVE_DURATION)
 	{
 		creditTextMoveTime += CP_System_GetDt();
-		coord.xOrigin = linear(coord.xOrigin, destPosX, creditTextMoveTime / MOVE_DURATION);
-		coord.yOrigin = linear(coord.yOrigin, destPosY, creditTextMoveTime / MOVE_DURATION);
+		coord.x_origin = linear(coord.x_origin, destPosX, creditTextMoveTime / MOVE_DURATION);
+		coord.y_origin = linear(coord.y_origin, destPosY, creditTextMoveTime / MOVE_DURATION);
 	}
 	else
 	{
@@ -511,27 +511,27 @@ void move_credits_screen(void)
 {
 	for (int i = 0; i < sizeof(CreditTexts) / sizeof(CreditLine); i++)
 	{
-		if (currentGameState == MainMenu)
+		if (current_game_state == kMainMenu)
 		{
-			CreditTexts[i].currentPos = coord_movement(CreditTexts[i].currentPos, CreditTexts[i].creditPos.xOrigin,
-				CreditTexts[i].creditPos.yOrigin); // from l_select back to main menu
+			CreditTexts[i].currentPos = coord_movement(CreditTexts[i].currentPos, CreditTexts[i].creditPos.x_origin,
+				CreditTexts[i].creditPos.y_origin); // from l_select back to main menu
 		}
-		else if (currentGameState == Credits) // going to main menu
+		else if (current_game_state == kCredits) // going to main menu
 		{
-			CreditTexts[i].currentPos = coord_movement(CreditTexts[i].currentPos, CreditTexts[i].mainMenuPos.xOrigin,
-				CreditTexts[i].mainMenuPos.yOrigin); // from l_select back to main menu
+			CreditTexts[i].currentPos = coord_movement(CreditTexts[i].currentPos, CreditTexts[i].mainMenuPos.x_origin,
+				CreditTexts[i].mainMenuPos.y_origin); // from l_select back to main menu
 		}
 	}
 
-	if (currentGameState == MainMenu)
+	if (current_game_state == kMainMenu)
 	{
-		creditRectCoords = coord_movement(creditRectCoords, creditRectCoords.xOrigin, CP_System_GetWindowHeight() * 0.35f);
-		CreditsBackButton = ui_button_movement(CreditsBackButton, CreditsBackButton.buttonData.xOrigin, CP_System_GetWindowHeight() * 0.9f);
+		creditRectCoords = coord_movement(creditRectCoords, creditRectCoords.x_origin, CP_System_GetWindowHeight() * 0.35f);
+		CreditsBackButton = ui_button_movement(CreditsBackButton, CreditsBackButton.buttonData.x_origin, CP_System_GetWindowHeight() * 0.9f);
 	}
-	else if (currentGameState == Credits)
+	else if (current_game_state == kCredits)
 	{
-		creditRectCoords = coord_movement(creditRectCoords, creditRectCoords.xOrigin, CP_System_GetWindowHeight() * 1.35f);
-		CreditsBackButton = ui_button_movement(CreditsBackButton, CreditsBackButton.buttonData.xOrigin, CP_System_GetWindowHeight() * 2.0f);
+		creditRectCoords = coord_movement(creditRectCoords, creditRectCoords.x_origin, CP_System_GetWindowHeight() * 1.35f);
+		CreditsBackButton = ui_button_movement(CreditsBackButton, CreditsBackButton.buttonData.x_origin, CP_System_GetWindowHeight() * 2.0f);
 	}
 }
 
@@ -539,23 +539,23 @@ void move_level_select(void)
 {
 	for (int i = 0; i < MAX_NUMBER_OF_LEVEL; i++)
 	{
-		if (currentGameState == LevelSelect) // going to main menu
+		if (current_game_state == kLevelSelect) // going to main menu
 		{
 			LevelButtons[i] = ui_button_movement(LevelButtons[i], CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f,
 				CP_System_GetWindowHeight() + i * (BUTTON_HEIGHT + 25.0f)); // from l_select back to main menu
 		}
-		else if (currentGameState == MainMenu)
+		else if (current_game_state == kMainMenu)
 		{
 			LevelButtons[i] = ui_button_movement(LevelButtons[i], CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f,
 				CP_System_GetWindowHeight() * 0.35f + i * (BUTTON_HEIGHT + 25.0f)); // from l_select back to main menu
 		}
 	}
-	if (currentGameState == LevelSelect) // going to main menu
+	if (current_game_state == kLevelSelect) // going to main menu
 	{
 		LevelSelectBackButton = ui_button_movement(LevelSelectBackButton, CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f,
 			CP_System_GetWindowHeight() * 1.50f); // from l_select back to main menu
 	}
-	else if (currentGameState == MainMenu)
+	else if (current_game_state == kMainMenu)
 	{
 		LevelSelectBackButton = ui_button_movement(LevelSelectBackButton, CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f,
 			CP_System_GetWindowHeight() * 0.8f); // from l_select back to main menu
@@ -564,9 +564,9 @@ void move_level_select(void)
 
 int level_select_finished_moving(void)
 {
-	if (currentGameState == LevelSelect)
+	if (current_game_state == kLevelSelect)
 	{
-		if (button_has_finished_moving(*LevelButtons, LevelButtons->buttonData.xOrigin, (float)CP_System_GetWindowHeight()))
+		if (button_has_finished_moving(*LevelButtons, LevelButtons->buttonData.x_origin, (float)CP_System_GetWindowHeight()))
 		{
 			for (Button* b = LevelButtons; b < LevelButtons + MAX_NUMBER_OF_LEVEL; b++)
 			{
@@ -576,9 +576,9 @@ int level_select_finished_moving(void)
 			return 1;
 		}
 	}
-	else if (currentGameState == MainMenu)
+	else if (current_game_state == kMainMenu)
 	{
-		if (button_has_finished_moving(*LevelButtons, LevelButtons->buttonData.xOrigin, CP_System_GetWindowHeight() * 0.35f))
+		if (button_has_finished_moving(*LevelButtons, LevelButtons->buttonData.x_origin, CP_System_GetWindowHeight() * 0.35f))
 		{
 			for (Button* b = LevelButtons; b < LevelButtons + MAX_NUMBER_OF_LEVEL; b++)
 			{
@@ -593,7 +593,7 @@ int level_select_finished_moving(void)
 
 int button_has_finished_moving(Button button, float destPosX, float destPosY)
 {
-	return (button.buttonData.xOrigin == destPosX && button.buttonData.yOrigin == destPosY);
+	return (button.buttonData.x_origin == destPosX && button.buttonData.y_origin == destPosY);
 }
 
 void init_next_level(int nextGameLevel)

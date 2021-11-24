@@ -2,170 +2,173 @@
 #include <stdio.h>
 #include "vector.h"
 
-#ifndef GAME_HEADER
-#define GAME_HEADER
+#ifndef GOSTGONEWRONG_CURRENTHEADERFILES_GAME_H
+#define GOSTGONEWRONG_CURRENTHEADERFILES_GAME_H
 
 //Variables used to initialize others game.h variables.
 enum PathType {
-	Clear,
-	Blocked,
-	Spawn,
-	Exit,
-	Path
+	kClear,
+	kBlocked,
+	kSpawn,
+	kExit,
+	kPath
 };
+//Used for pathfinding
 struct Grids {
 	int cost;
-	int parentRow;
-	int parentCol;
+	int parent_row;
+	int parent_col;
 	int visited;
 	enum PathType type;
 };
 enum Environmentaleffects {
-	NoEnvironmentalEffects,
-	IncreasedPhantomQuartz,
-	DecreasedPhantomQuartz,
-	FasterEnemies,
-	SlowerEnemies,
-	IncreasedTurretDamage,
-	DecreasedTurretDamage,
-	MoreHP,
-	LessHP,
-	IncreasedTurretAttackSpeed,
-	DecreasedTurretAttackSpeed,
-	NoPhantomQuartz
+	kNoEnvironmentalEffects,
+	kIncreasedPhantomQuartz,
+	kDecreasedPhantomQuartz,
+	kFasterEnemies,
+	kSlowerEnemies,
+	kIncreasedTurretDamage,
+	kDecreasedTurretDamage,
+	kMoreHP,
+	kLessHP,
+	kIncreasedTurretAttackSpeed,
+	kDecreasedTurretAttackSpeed,
+	kNoPhantomQuartz
 };
 struct PowerUps {
-	int morePhantomQuartz;
-	int reduceEnemySpeed;
-	int reduceEnemyHealth;
-	int increasedMineDamage;
+	int more_phantom_quartz;
+	int reduce_enemy_speed;
+	int reduce_enemy_health;
+	int increased_mine_damage;
 };
 
 //Common Tools
-
-//enum object type
+//Used for collision Detection
 enum {
-	objectCircle,
-	objectRectangle
+	kObjectCircle,
+	kObjectRectangle
 };
 typedef struct Coordinates {
 	float width; //Width and Height are the same for Circles
 	float height; //Width and Height are the same for Circles
-	float xOrigin;
-	float yOrigin;
-	int objectType;
+	float x_origin;
+	float y_origin;
+	int object_type;
 	CP_Image image;
 }Coordinates;
-
 //Common Functions
-int Collision_Detection(Coordinates object1, Coordinates object2);
-int btn_is_pressed(Coordinates object1);
-void mouse_reset(void);
-void set_building_time(float newBuildingTime);
-int check_game_button_pressed(void);
-
+int CollisionDetection(Coordinates object1, Coordinates object2);
+int BtnIsPressed(Coordinates object1);
+void MouseReset(void);//Set last click position to out of screen
+//Set the current building time of building phase
+void SetBuildingTime(float newBuildingTime);
+int CheckGameButtonPressed(void);//Check which button is pressed in menu
 //Boolean
-#define TRUE 1
-#define FALSE 0
+typedef enum Boolean {
+	kFalse,
+	kTrue
+}Boolean;
 
 //Common Variables
-
 //GameStates
 enum
 {
-	LogoSplash,
-	MainMenu,
-	Pause,
-	Building,
-	Wave,
-	Win,
-	Lose,
-	LevelSelect,
-	Credits
-}currentGameState;
-
+	kLogoSplash,
+	kMainMenu,
+	kPause,
+	kBuilding,
+	kWave,
+	kWin,
+	kLose,
+	kLevelSelect,
+	kCredits
+}current_game_state;
 //Game Grid
-int gameGridCols;
-int gameGridRows;
+int level_grid_cols;
+int level_grid_rows;
 struct {
 	float width;
 	float height;
-	float xOrigin;
-	float yOrigin;
-	float gridWidth;
-	float gridHeight;
-}Game;
-
+	float x_origin;
+	float y_origin;
+	float grid_width;
+	float grid_height;
+}game;
 //Enemies
-#define MAX_ENEMIES 60
+enum {
+	kMaxEnemies = 60
+};
 typedef enum EnemyTypes {
-	Basic,
-	Fast_Ghost,
-	Fat_Ghost,
-	grimReaper,
-	Max_Enemy_Type
+	kBasic,
+	kFastGhost,
+	kFatGhost,
+	kGrimReaper,
+	kMaxEnemyType
 } EnemyTypes;
-
 typedef enum EnemyState {
-	Inactive,
-	Moving,
-	Hurt,
-	Death,
-	Reached,
-	Adjusting
-
+	kEnemyInactive,
+	kEnemyMoving,
+	kEnemyHurt,
+	kEnemyDeath,
+	kEnemyReached,
+	kEnemyAdjusting
 }EnemyState;
-
-typedef enum AbilityUsed {
-	Used,
-	charges_1,
-	charges_2
-}Ability_charge;
-
+//Ability tracker of the Grim Reaper enemy
+typedef enum AbilityCharge {
+	kUsed,
+	kCharges1,
+	kCharges2
+}AbilityCharge;
 typedef struct Enemy {
-	int CurrentWaypoint, alpha, points;
-	float xOrigin, yOrigin, enemy_width, enemy_height,
-		health, max_health, angle, speed, slow_amt, slow_timer;
+	int current_way_point;
+	int alpha;
+	int points;
+	float x_origin; 
+	float y_origin; 
+	float enemy_width;
+	float enemy_height;
+	float health;
+	float max_health;
+	float angle;
+	float speed;
+	float slow_amt;
+	float slow_timer;
 	Coordinates data;
 	EnemyState state;
 	EnemyTypes type;
-	CP_Image Render_Enemy;
-	Ability_charge charges;
+	CP_Image render_enemy;
+	AbilityCharge charges;
 	enum EnvironmentEffectEnemy env_eff;
-	int Enemy_pow_up[3];//Update to number of power ups
-
-	int isToken;
-
-	int WavePowUp_isActive;
-	int currentAnimState;
-
-	float EnemyPathX[50];
-	float EnemyPathY[50];
-	int pathPoints;
+	int enemy_pow_up[3];//Update to number of power ups
+	int is_token;
+	int wave_pow_up_is_active;
+	int current_aim_state;
+	float enemy_path_x[50];
+	float enemy_path_y[50];
+	int path_points;
 	float slowed_distance;
-
-	int adjustingWaypoint;
-
+	int adjusting_waypoint;
 	float movement_timer;
 	float timer;
-}enemy;
-enemy Enemy[MAX_ENEMIES];
-
+}Enemy;
+Enemy enemy[kMaxEnemies];
 //Turret
 typedef struct Modifiers
 {
 	int tracked_index;
-	float damage, speed, range, shoot_rate,
-		slow_amt, slow_timer;
+	float damage;
+	float speed;
+	float range;
+	float shoot_rate;
+	float slow_amt;
+	float slow_timer;
 } Modifiers;
-
 typedef enum TriangleAnimState
 {
-	INACTIVE,
-	SHOOTING,
-	ACTIVE
-} TriangleAnimState;
-
+	kTurretInactive,
+	kTurretShooting,
+	kTurretActive
+} TriangleAnimState;//Turret current action
 //For battlefield effects
 typedef enum Turret_Env_effects {
 	No_Effect,
@@ -200,7 +203,7 @@ typedef struct Turret
 	Vector2 dir;
 	Coordinates data;
 	TurretType type;
-	TriangleAnimState currentAnimState;
+	TriangleAnimState current_aim_state;
 	float turretAnimTimer;
 	CP_Image turret_img;
 	int animCounter;
@@ -259,7 +262,7 @@ typedef struct LevelData {
 	int goldQuartz;
 	int health;
 	int currentWave;
-	int waveEnemies[MAX_NUMBER_OF_WAVES][Max_Enemy_Type];
+	int waveEnemies[MAX_NUMBER_OF_WAVES][kMaxEnemyType];
 	enum EnvironmentalEffects currentEffect;
 	struct PowerUps currentPowerUpLevel;
 }LevelData;
@@ -308,4 +311,4 @@ float scalingFactor;
 //Font
 #define GAME_FONT CP_Font_Load("Assets/VT323-Regular.ttf")
 
-#endif // !GAMEHEADER
+#endif // !GOSTGONEWRONG_CURRENTHEADERFILES_GAME_H

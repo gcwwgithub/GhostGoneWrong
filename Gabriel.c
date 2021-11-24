@@ -864,37 +864,37 @@ void RenderBattlefieldEffectText(const int effect)
 		CP_Settings_TextSize(currentSize);
 		switch (effect)
 		{
-		case IncreasedPhantomQuartz:
+		case kIncreasedPhantomQuartz:
 			sprintf_s(temp, sizeof(temp), "MORE QUARTZ EARNED THIS WAVE");
 			break;
-		case DecreasedPhantomQuartz:
+		case kDecreasedPhantomQuartz:
 			sprintf_s(temp, sizeof(temp), "LESS QUARTZ EARNED THIS WAVE");
 			break;
-		case FasterEnemies:
+		case kFasterEnemies:
 			sprintf_s(temp, sizeof(temp), "FASTER ENEMIES THIS WAVE");
 			break;
-		case SlowerEnemies:
+		case kSlowerEnemies:
 			sprintf_s(temp, sizeof(temp), "SLOWER ENEMIES THIS WAVE");
 			break;
-		case IncreasedTurretDamage:
+		case kIncreasedTurretDamage:
 			sprintf_s(temp, sizeof(temp), "TURRET DAMAGE INCREASED THIS WAVE");
 			break;
-		case DecreasedTurretDamage:
+		case kDecreasedTurretDamage:
 			sprintf_s(temp, sizeof(temp), "TURRET DAMAGE DECREASED THIS WAVE");
 			break;
-		case MoreHP:
+		case kMoreHP:
 			sprintf_s(temp, sizeof(temp), "GHOST HAS MORE HP THIS WAVE");
 			break;
-		case LessHP:
+		case kLessHP:
 			sprintf_s(temp, sizeof(temp), "GHOST HAS LESS HP THIS WAVE");
 			break;
-		case IncreasedTurretAttackSpeed:
+		case kIncreasedTurretAttackSpeed:
 			sprintf_s(temp, sizeof(temp), "TURRET ATTACK SPEED INCREASED THIS WAVE");
 			break;
-		case DecreasedTurretAttackSpeed:
+		case kDecreasedTurretAttackSpeed:
 			sprintf_s(temp, sizeof(temp), "TURRET ATTACK SPEED DECREASED THIS WAVE");
 			break;
-		case NoPhantomQuartz:
+		case kNoPhantomQuartz:
 			sprintf_s(temp, sizeof(temp), "NO QUARTZ WILL DROP THIS WAVE");
 			break;
 		}
