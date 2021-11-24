@@ -602,27 +602,27 @@ void init_next_level(int nextGameLevel)
 	{
 	case 0:
 	{
-		level1_init();
+		Level1Init();
 		break;
 	}
 	case 1:
 	{
-		level2_init();
+		Level2Init();
 		break;
 	}
 	case 2:
 	{
-		level3_init();
+		Level3Init();
 		break;
 	}
 	case 3:
 	{
-		level4_init();
+		Level4Init();
 		break;
 	}
 	case 4:
 	{
-		level5_init();
+		Level5Init();
 		break;
 	}
 

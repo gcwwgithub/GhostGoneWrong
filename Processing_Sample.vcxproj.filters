@@ -7,7 +7,7 @@
     <ClCompile Include="main.c">
       <Filter>C Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ZhengWei.c">
+    <ClCompile Include="zhengwei.c">
       <Filter>C Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Anderson.c">
@@ -47,7 +47,7 @@
     <ClInclude Include="game.h">
       <Filter>C Source Files\Current header files</Filter>
     </ClInclude>
-    <ClInclude Include="ZhengWei.h">
+    <ClInclude Include="zhengwei.h">
       <Filter>C Source Files\Current header files</Filter>
     </ClInclude>
     <ClInclude Include="Anderson.h">

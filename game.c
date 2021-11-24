@@ -4,7 +4,7 @@
 #include "John.h"
 #include"Anderson.h"
 #include "Gabriel.h"
-#include"ZhengWei.h"
+#include "zhengwei.h"
 
 void game_init(void)
 {
@@ -36,13 +36,11 @@ void game_init(void)
 	init_skip_wave_button();
 
 	//Initialize Objects
-	mouse_init();
+	MouseInit();
 
 
 	// initialize price for powerups
-	powerup_price_init();
-
-
+	PowerUpPriceInit();
 }
 
 
@@ -68,8 +66,8 @@ void game_update(void)
 
 		//render all the stuff
 		RenderLevelEnvironment(currentGameLevel);
-		render_game_grid();
-		render_path(&Level[currentGameLevel]);
+		RenderGameGrid();
+		RenderEnemyPath(&Level[currentGameLevel]);
 
 		UpdatePortalAnimation();
 
@@ -83,12 +81,12 @@ void game_update(void)
 		if (!turret[turretSelectedToUpgrade].isActive) { // Close mine menu when it explodes
 			turretSelectedToUpgrade = NO_TURRET_SELECTED;
 		}
-		render_button_pressed();
+		ButtonPressedUpdate();
 
-		render_environment();
+		RenderEnvironment();
 		RenderBattlefieldEffectText(Level[currentGameLevel].currentEffect);
 		CP_Settings_NoTint();
-		render_turret_details_display(); //render turret description when hovered
+		RenderTurretDetailsDisplay(); //render turret description when hovered
 		render_turret_menu_object(GameMenuObject[ButtonMax - 2], ButtonMax - 2);// Render Upgrade menu first
 		for (int i = 0; i < ButtonMax - 3; i++) {// Last object will double render game grid. Second and third last object is rendered seperately
 			render_turret_menu_object(GameMenuObject[i], i);
@@ -111,22 +109,22 @@ void game_update(void)
 		update_particle();
 		//render all the stuff
 		RenderLevelEnvironment(currentGameLevel);
-		render_game_grid();
-		render_path(&Level[currentGameLevel]);
+		RenderGameGrid();
+		RenderEnemyPath(&Level[currentGameLevel]);
 		UpdatePortalAnimation();
-		render_environment();
+		RenderEnvironment();
 		render_turret();
 		render_projectile();
 		render_particle();
 		RenderAndUpdateBulletCircles();
 
-		render_button_pressed();
+		ButtonPressedUpdate();
 
 		CP_Settings_NoTint();
 		render_wave_timer();
 		render_ui_button(SkipWaveButton);
 
-		render_turret_details_display(); //render turret description when hovered
+		RenderTurretDetailsDisplay(); //render turret description when hovered
 		render_turret_menu_object(GameMenuObject[ButtonMax - 2], ButtonMax - 2);// Render Upgrade menu first
 		for (int i = 0; i < ButtonMax - 3; i++) {// Last object will double render game grid. Second and third last object is rendered seperately
 			render_turret_menu_object(GameMenuObject[i], i);
@@ -234,19 +232,19 @@ void game_update(void)
 		{
 			if (btn_is_pressed(LevelButtons[0].buttonData))
 			{
-				level1_init();
+				Level1Init();
 			}
 			else if (btn_is_pressed(LevelButtons[1].buttonData)) {
-				level2_init();
+				Level2Init();
 			}
 			else if (btn_is_pressed(LevelButtons[2].buttonData)) {
-				level3_init();
+				Level3Init();
 			}
 			else if (btn_is_pressed(LevelButtons[3].buttonData)) {
-				level4_init();
+				Level4Init();
 			}
 			else if (btn_is_pressed(LevelButtons[4].buttonData)) {
-				level5_init();
+				Level5Init();
 			}
 			else if (btn_is_pressed(LevelSelectBackButton.buttonData))
 			{

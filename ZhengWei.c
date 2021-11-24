@@ -1,9 +1,13 @@
 #include "cprocessing.h"
-#include"ZhengWei.h"
+#include "zhengwei.h"
 #include "game.h"
 #include "Gabriel.h"
 //Tools
 //Reset Mouse
+
+const float kLeftGameMenuXWidth = 140.714294f;
+const float kRightGameMenuXOrigin = 998.571411f;
+
 void mouse_reset(void) {
 	MouseInput.xOrigin = -1;
 	MouseInput.yOrigin = -1;
@@ -63,7 +67,7 @@ void pathfinding_update_neighbor_cost(int gridRow, int gridCol, int generation, 
 }
 
 //Calculate all grid cost. Find the squares in the same generation and call a function to update neighbors.
-void pathfinding_calculate_cost(LevelData* LevelX) {
+void PathFindingCalculateCost(LevelData* LevelX) {
 	for (int currentCost = 0; !is_destination_updated(LevelX) && currentCost <= gameGridRows * gameGridCols; currentCost++) {
 		for (int i = 0; i < gameGridRows; i++) {
 			for (int j = 0; j < gameGridCols; j++) {
@@ -174,24 +178,24 @@ void render_game_grid_press(LevelData* LevelX) {
 			isPositionEmpty = FALSE;
 		}
 	}
-	if (isPlacingTurret != T_MAX) {
+	if (is_placing_turret != T_MAX) {
 		if (isPositionEmpty == TRUE && LevelX->grid[drawY][drawX].type != Blocked) {
-			if (isPlacingTurret != T_MINE) {
+			if (is_placing_turret != T_MINE) {
 				LevelX->grid[drawY][drawX].type = Blocked;
-				pathfinding_reset(LevelX);
-				pathfinding_calculate_cost(LevelX);
+				PathFindingReset(LevelX);
+				PathFindingCalculateCost(LevelX);
 			}
 			if (!is_destination_updated(LevelX)) {
 				LevelX->grid[drawY][drawX].type = Clear;
-				pathfinding_reset(LevelX);
-				pathfinding_calculate_cost(LevelX);
+				PathFindingReset(LevelX);
+				PathFindingCalculateCost(LevelX);
 			}
 			else {
-				place_turret(isPlacingTurret, drawX, drawY);
-				Level[currentGameLevel].phantomQuartz -= turret_purchasing[TP_PRICE][isPlacingTurret];
-				isPlacingTurret = T_MAX;
+				place_turret(is_placing_turret, drawX, drawY);
+				Level[currentGameLevel].phantomQuartz -= turret_purchasing[TP_PRICE][is_placing_turret];
+				is_placing_turret = T_MAX;
 			}
-			pathfinding_update(LevelX);
+			PathFindingUpdate(LevelX);
 		}
 		mouse_reset();
 	}
@@ -243,7 +247,7 @@ void init_environment_object(int arrayIndex, int row, int col,int objectType,Lev
 }
 
 //Graphics
-void mouse_init(void) {
+void MouseInit(void) {
 	MouseInput.width = 0.0f;
 	MouseInput.height = 0.0f;
 	MouseInput.objectType = objectCircle;
@@ -270,7 +274,7 @@ void game_grid_init(void) {
 void pause_button_init(void) {
 	GameMenuObject[PauseButton].xOrigin = 0.0f;
 	GameMenuObject[PauseButton].yOrigin = 0.0f;
-	GameMenuObject[PauseButton].width = LEFT_MENU_X_END;
+	GameMenuObject[PauseButton].width = kLeftGameMenuXWidth;
 	GameMenuObject[PauseButton].height = (float)CP_System_GetWindowHeight() / 10;
 	GameMenuObject[PauseButton].objectType = objectRectangle;
 	GameMenuObject[PauseButton].image = pause_button_image;
@@ -313,7 +317,7 @@ void turret_mine_button_init(void) {
 	GameMenuObject[TurretButtonMine].image = slow_turret_image_array[0];
 }
 
-void environment_init(LevelData* LevelX) {
+void EnvironmentInit(LevelData* LevelX) {
 	switch (currentGameLevel)
 	{
 	case 0:
@@ -360,8 +364,8 @@ void environment_init(LevelData* LevelX) {
 
 }
 
-void render_environment(void) {
-	for (int i = 0; i < MAX_ENVIRONMENT_OBJECT; i++) {
+void RenderEnvironment(void) {
+	for (int i = 0; i < kMaxEnvironmentObject; i++) {
 		if (Environment[i].image == grid_environment_objects_spritesheet)
 		{
 			RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[Environment[i].objectType], Environment[i].xOrigin, Environment[i].yOrigin, Environment[i].width, Environment[i].height);
@@ -372,7 +376,7 @@ void render_environment(void) {
 
 void phantomQuartz_init(void) {
 	GameMenuObject[PhantomQuartzMenu].yOrigin = 0.0f;
-	GameMenuObject[PhantomQuartzMenu].xOrigin = RIGHT_MENU_X_START;
+	GameMenuObject[PhantomQuartzMenu].xOrigin = kRightGameMenuXOrigin;
 	GameMenuObject[PhantomQuartzMenu].height = (float)CP_System_GetWindowHeight() / 15;
 	GameMenuObject[PhantomQuartzMenu].width = ((float)CP_System_GetWindowWidth() - GameMenuObject[PhantomQuartzMenu].xOrigin) / 2;
 	GameMenuObject[PhantomQuartzMenu].objectType = objectRectangle;
@@ -486,7 +490,7 @@ void sell_button_init(void) {
 	GameMenuObject[SellButton].objectType = objectRectangle;*/
 }
 
-void powerup_price_init(void) {
+void PowerUpPriceInit(void) {
 	powerUpPrice.morePhantomQuartz = 10;
 	powerUpPrice.reduceEnemySpeed = 10;
 	powerUpPrice.reduceEnemyHealth = 10;
@@ -501,7 +505,7 @@ void turret_details_init(enum MenuObjectType turretButton) {
 	GameMenuObject[TurretDetailsDisplay].objectType = objectRectangle;
 }
 
-void render_turret_details_display(void) {
+void RenderTurretDetailsDisplay(void) {
 	float tempMouseX = MouseInput.xOrigin, tempMouseY = MouseInput.yOrigin;
 	MouseInput.xOrigin = CP_Input_GetMouseX();
 	MouseInput.yOrigin = CP_Input_GetMouseY();
@@ -548,9 +552,9 @@ void render_turret_details_display(void) {
 	MouseInput.yOrigin = tempMouseY;
 }
 
-void level1_init(void) {
-	gameGridCols = LEVEL1_COLS;
-	gameGridRows = LEVEL1_ROWS;
+void Level1Init(void) {
+	gameGridCols = kLevel1Cols;
+	gameGridRows = kLevel1Rows;
 	currentGameLevel = 0;
 	Level[currentGameLevel].grid = (struct Grids**)calloc(gameGridRows, sizeof(int*));// using size of pointers so that lower bits operating system do not require so much malloc
 	for (int i = 0; i < gameGridRows; i++) {
@@ -593,11 +597,11 @@ void level1_init(void) {
 	general_level_enemies_init(0, 9, 30, 0, 0, 0);
 
 	game_grid_init();
-	isPlacingTurret = T_MAX;
+	is_placing_turret = T_MAX;
 	turretSelectedToUpgrade = NO_TURRET_SELECTED;
-	powerUpMenu = FALSE;
+	power_up_menu = FALSE;
 	pathfinding_init(&Level[currentGameLevel]);
-	environment_init(&Level[currentGameLevel]);
+	EnvironmentInit(&Level[currentGameLevel]);
 
 	//turret menu items
 	pause_button_init();
@@ -620,17 +624,17 @@ void level1_init(void) {
 	turret_init();
 	Enemies_init();
 
-	pathfinding_reset(&Level[currentGameLevel]);
-	pathfinding_calculate_cost(&Level[currentGameLevel]);
-	pathfinding_update(&Level[currentGameLevel]);
+	PathFindingReset(&Level[currentGameLevel]);
+	PathFindingCalculateCost(&Level[currentGameLevel]);
+	PathFindingUpdate(&Level[currentGameLevel]);
 
 	set_building_time(BUILDING_PHASE_TIME);
 	currentGameState = Building;
 }
 
-void level2_init(void) {
-	gameGridCols = LEVEL2_COLS;
-	gameGridRows = LEVEL2_ROWS;
+void Level2Init(void) {
+	gameGridCols = kLevel2Cols;
+	gameGridRows = kLevel2Rows;
 	currentGameLevel = 1;
 	Level[currentGameLevel].grid = (struct Grids**)calloc(gameGridRows, sizeof(int*));// using size of pointers so that lower bits operating system do not require so much malloc
 	for (int i = 0; i < gameGridRows; i++) {
@@ -671,11 +675,11 @@ void level2_init(void) {
 	general_level_enemies_init(1, 9, 25, 15, 0, 0);
 
 	game_grid_init();
-	isPlacingTurret = T_MAX;
+	is_placing_turret = T_MAX;
 	turretSelectedToUpgrade = NO_TURRET_SELECTED;
-	powerUpMenu = FALSE;
+	power_up_menu = FALSE;
 	pathfinding_init(&Level[currentGameLevel]);
-	environment_init(&Level[currentGameLevel]);
+	EnvironmentInit(&Level[currentGameLevel]);
 
 	//turret menu items
 	pause_button_init();
@@ -698,17 +702,17 @@ void level2_init(void) {
 	turret_init();
 	Enemies_init();
 
-	pathfinding_reset(&Level[currentGameLevel]);
-	pathfinding_calculate_cost(&Level[currentGameLevel]);
-	pathfinding_update(&Level[currentGameLevel]);
+	PathFindingReset(&Level[currentGameLevel]);
+	PathFindingCalculateCost(&Level[currentGameLevel]);
+	PathFindingUpdate(&Level[currentGameLevel]);
 
 	set_building_time(BUILDING_PHASE_TIME);
 	currentGameState = Building;
 }
 
-void level3_init(void) {
-	gameGridCols = LEVEL3_COLS;
-	gameGridRows = LEVEL3_ROWS;
+void Level3Init(void) {
+	gameGridCols = kLevel3Cols;
+	gameGridRows = kLevel3Rows;
 	currentGameLevel = 2;
 	Level[currentGameLevel].grid = (struct Grids**)calloc(gameGridRows, sizeof(int*));// using size of pointers so that lower bits operating system do not require so much malloc
 	for (int i = 0; i < gameGridRows; i++) {
@@ -748,11 +752,11 @@ void level3_init(void) {
 	general_level_enemies_init(2, 9, 25, 10, 10, 0);
 
 	game_grid_init();
-	isPlacingTurret = T_MAX;
+	is_placing_turret = T_MAX;
 	turretSelectedToUpgrade = NO_TURRET_SELECTED;
-	powerUpMenu = FALSE;
+	power_up_menu = FALSE;
 	pathfinding_init(&Level[currentGameLevel]);
-	environment_init(&Level[currentGameLevel]);
+	EnvironmentInit(&Level[currentGameLevel]);
 
 	//turret menu items
 	pause_button_init();
@@ -775,18 +779,18 @@ void level3_init(void) {
 	turret_init();
 	Enemies_init();
 
-	pathfinding_reset(&Level[currentGameLevel]);
-	pathfinding_calculate_cost(&Level[currentGameLevel]);
-	pathfinding_update(&Level[currentGameLevel]);
+	PathFindingReset(&Level[currentGameLevel]);
+	PathFindingCalculateCost(&Level[currentGameLevel]);
+	PathFindingUpdate(&Level[currentGameLevel]);
 
 	set_building_time(BUILDING_PHASE_TIME);
 	currentGameState = Building;
 
 }
 
-void level4_init(void) {
-	gameGridCols = LEVEL4_COLS;
-	gameGridRows = LEVEL4_ROWS;
+void Level4Init(void) {
+	gameGridCols = kLevel4Cols;
+	gameGridRows = kLevel4Rows;
 	currentGameLevel = 3;
 	Level[currentGameLevel].grid = (struct Grids**)calloc(gameGridRows, sizeof(int*));// using size of pointers so that lower bits operating system do not require so much malloc
 	for (int i = 0; i < gameGridRows; i++) {
@@ -827,11 +831,11 @@ void level4_init(void) {
 	general_level_enemies_init(3, 9, 20, 10, 15, 3);
 
 	game_grid_init();
-	isPlacingTurret = T_MAX;
+	is_placing_turret = T_MAX;
 	turretSelectedToUpgrade = NO_TURRET_SELECTED;
-	powerUpMenu = FALSE;
+	power_up_menu = FALSE;
 	pathfinding_init(&Level[currentGameLevel]);
-	environment_init(&Level[currentGameLevel]);
+	EnvironmentInit(&Level[currentGameLevel]);
 
 	//turret menu items
 	pause_button_init();
@@ -854,17 +858,17 @@ void level4_init(void) {
 	turret_init();
 	Enemies_init();
 
-	pathfinding_reset(&Level[currentGameLevel]);
-	pathfinding_calculate_cost(&Level[currentGameLevel]);
-	pathfinding_update(&Level[currentGameLevel]);
+	PathFindingReset(&Level[currentGameLevel]);
+	PathFindingCalculateCost(&Level[currentGameLevel]);
+	PathFindingUpdate(&Level[currentGameLevel]);
 
 	set_building_time(BUILDING_PHASE_TIME);
 	currentGameState = Building;
 }
 
-void level5_init(void) {
-	gameGridCols = LEVEL5_COLS;
-	gameGridRows = LEVEL5_ROWS;
+void Level5Init(void) {
+	gameGridCols = kLevel5Cols;
+	gameGridRows = kLevel5Rows;
 	currentGameLevel = 4;
 	Level[currentGameLevel].grid = (struct Grids**)calloc(gameGridRows, sizeof(int*));// using size of pointers so that lower bits operating system do not require so much malloc
 	for (int i = 0; i < gameGridRows; i++) {
@@ -923,23 +927,23 @@ void level5_init(void) {
 	upgrade_button_init();
 	sell_button_init();
 
-	isPlacingTurret = T_MAX;
+	is_placing_turret = T_MAX;
 	turretSelectedToUpgrade = NO_TURRET_SELECTED;
-	powerUpMenu = FALSE;
+	power_up_menu = FALSE;
 	pathfinding_init(&Level[currentGameLevel]);
-	environment_init(&Level[currentGameLevel]);
+	EnvironmentInit(&Level[currentGameLevel]);
 	turret_init();
 	Enemies_init();
 
-	pathfinding_reset(&Level[currentGameLevel]);
-	pathfinding_calculate_cost(&Level[currentGameLevel]);
-	pathfinding_update(&Level[currentGameLevel]);
+	PathFindingReset(&Level[currentGameLevel]);
+	PathFindingCalculateCost(&Level[currentGameLevel]);
+	PathFindingUpdate(&Level[currentGameLevel]);
 
 	set_building_time(BUILDING_PHASE_TIME);
 	currentGameState = Building;
 }
 
-void render_button_pressed(void) {
+void ButtonPressedUpdate(void) {
 	switch (check_game_button_pressed())
 	{
 	case GameGrid:
@@ -951,89 +955,89 @@ void render_button_pressed(void) {
 		break;
 
 	case TurretButtonBasic:
-		if (turret_purchasing[TP_PRICE][T_BASIC] <= Level[currentGameLevel].phantomQuartz && powerUpMenu == FALSE) { // Currently hardcoded 
-			isPlacingTurret = T_BASIC;
+		if (turret_purchasing[TP_PRICE][T_BASIC] <= Level[currentGameLevel].phantomQuartz && power_up_menu == FALSE) { // Currently hardcoded 
+			is_placing_turret = T_BASIC;
 			turretSelectedToUpgrade = NO_TURRET_SELECTED;
 			RenderImageFromSpriteSheet(basic_turret_spritesheet, basic_turret_spritesheet_array[0], CP_Input_GetMouseX(), CP_Input_GetMouseY(), Game.gridWidth, Game.gridHeight);
 		}
-		else if (powerUpMenu == TRUE && Level[currentGameLevel].goldQuartz >= powerUpPrice.morePhantomQuartz) {
+		else if (power_up_menu == TRUE && Level[currentGameLevel].goldQuartz >= powerUpPrice.morePhantomQuartz) {
 			Level[currentGameLevel].currentPowerUpLevel.morePhantomQuartz += 1;
 			Level[currentGameLevel].goldQuartz -= powerUpPrice.morePhantomQuartz;
 			mouse_reset();
-			isPlacingTurret = T_MAX;
+			is_placing_turret = T_MAX;
 			turretSelectedToUpgrade = NO_TURRET_SELECTED;
 		}
 		else {
-			isPlacingTurret = T_MAX;
+			is_placing_turret = T_MAX;
 			turretSelectedToUpgrade = NO_TURRET_SELECTED;
 		}
 		break;
 
 	case TurretButtonSlow:
-		if (turret_purchasing[TP_PRICE][T_SLOW] <= Level[currentGameLevel].phantomQuartz && powerUpMenu == FALSE) {
-			isPlacingTurret = T_SLOW;
+		if (turret_purchasing[TP_PRICE][T_SLOW] <= Level[currentGameLevel].phantomQuartz && power_up_menu == FALSE) {
+			is_placing_turret = T_SLOW;
 			turretSelectedToUpgrade = NO_TURRET_SELECTED;
 			CP_Image_DrawAdvanced(GameMenuObject[check_game_button_pressed()].image, CP_Input_GetMouseX(), CP_Input_GetMouseY(), Game.gridWidth, Game.gridHeight, 255, 0);
 		}
-		else if (powerUpMenu == TRUE && Level[currentGameLevel].goldQuartz >= powerUpPrice.reduceEnemySpeed) {
+		else if (power_up_menu == TRUE && Level[currentGameLevel].goldQuartz >= powerUpPrice.reduceEnemySpeed) {
 			Level[currentGameLevel].currentPowerUpLevel.reduceEnemySpeed += 1;
 			Level[currentGameLevel].goldQuartz -= powerUpPrice.reduceEnemySpeed;
 			mouse_reset();
-			isPlacingTurret = T_MAX;
+			is_placing_turret = T_MAX;
 			turretSelectedToUpgrade = NO_TURRET_SELECTED;
 		}
 		else {
-			isPlacingTurret = T_MAX;
+			is_placing_turret = T_MAX;
 			turretSelectedToUpgrade = NO_TURRET_SELECTED;
 		}
 		break;
 
 	case TurretButtonHoming:
-		if (turret_purchasing[TP_PRICE][T_HOMING] <= Level[currentGameLevel].phantomQuartz && powerUpMenu == FALSE) {
-			isPlacingTurret = T_HOMING;
+		if (turret_purchasing[TP_PRICE][T_HOMING] <= Level[currentGameLevel].phantomQuartz && power_up_menu == FALSE) {
+			is_placing_turret = T_HOMING;
 			turretSelectedToUpgrade = NO_TURRET_SELECTED;
 			RenderImageFromSpriteSheet(homing_missle_turret_spritesheet, homing_missle_turret_spritesheet_array[0], CP_Input_GetMouseX(), CP_Input_GetMouseY(), Game.gridWidth, Game.gridHeight);
 		}
-		else if (powerUpMenu == TRUE && Level[currentGameLevel].goldQuartz >= powerUpPrice.reduceEnemyHealth) {
+		else if (power_up_menu == TRUE && Level[currentGameLevel].goldQuartz >= powerUpPrice.reduceEnemyHealth) {
 			Level[currentGameLevel].currentPowerUpLevel.reduceEnemyHealth += 1;
 			Level[currentGameLevel].goldQuartz -= powerUpPrice.reduceEnemyHealth;
 			mouse_reset();
-			isPlacingTurret = T_MAX;
+			is_placing_turret = T_MAX;
 			turretSelectedToUpgrade = NO_TURRET_SELECTED;
 		}
 		else {
-			isPlacingTurret = T_MAX;
+			is_placing_turret = T_MAX;
 			turretSelectedToUpgrade = NO_TURRET_SELECTED;
 		}
 		break;
 	case TurretButtonMine:
-		if (turret_purchasing[TP_PRICE][T_MINE] <= Level[currentGameLevel].phantomQuartz && powerUpMenu == FALSE) {
-			isPlacingTurret = T_MINE;
+		if (turret_purchasing[TP_PRICE][T_MINE] <= Level[currentGameLevel].phantomQuartz && power_up_menu == FALSE) {
+			is_placing_turret = T_MINE;
 			turretSelectedToUpgrade = NO_TURRET_SELECTED;
 			RenderImageFromSpriteSheet(mine_spritesheet, mine_spritesheet_array[0], CP_Input_GetMouseX(), CP_Input_GetMouseY(), Game.gridWidth, Game.gridHeight);
 		}
-		else if (powerUpMenu == TRUE && Level[currentGameLevel].goldQuartz >= powerUpPrice.increasedMineDamage) {
+		else if (power_up_menu == TRUE && Level[currentGameLevel].goldQuartz >= powerUpPrice.increasedMineDamage) {
 			Level[currentGameLevel].currentPowerUpLevel.increasedMineDamage += 1;
 			Level[currentGameLevel].goldQuartz -= powerUpPrice.increasedMineDamage;
 			mouse_reset();
-			isPlacingTurret = T_MAX;
+			is_placing_turret = T_MAX;
 			turretSelectedToUpgrade = NO_TURRET_SELECTED;
 		}
 		else {
-			isPlacingTurret = T_MAX;
+			is_placing_turret = T_MAX;
 			turretSelectedToUpgrade = NO_TURRET_SELECTED;
 		}
 		break;
 
 	case SwapButton:
-		isPlacingTurret = T_MAX;
+		is_placing_turret = T_MAX;
 		turretSelectedToUpgrade = NO_TURRET_SELECTED;
-		powerUpMenu = !powerUpMenu;
+		power_up_menu = !power_up_menu;
 		mouse_reset();
 		break;
 
 	case GoldQuartzMenu:
-		isPlacingTurret = T_MAX;
+		is_placing_turret = T_MAX;
 		turretSelectedToUpgrade = NO_TURRET_SELECTED;
 		if (Level[currentGameLevel].phantomQuartz >= 1000) {
 			Level[currentGameLevel].phantomQuartz -= 1000;
@@ -1043,7 +1047,7 @@ void render_button_pressed(void) {
 		break;
 
 	case UpgradeMenu:
-		isPlacingTurret = T_MAX;
+		is_placing_turret = T_MAX;
 		break;
 
 	case UpgradeButton:
@@ -1056,16 +1060,16 @@ void render_button_pressed(void) {
 						upgrade_turret(turretSelectedToUpgrade);
 					}
 
-					isPlacingTurret = T_MAX;
+					is_placing_turret = T_MAX;
 					//call upgrade function
 				}
 			}
 			else {
-				isPlacingTurret = T_MAX;
+				is_placing_turret = T_MAX;
 			}
 		}
 		else {
-			isPlacingTurret = T_MAX;
+			is_placing_turret = T_MAX;
 			turretSelectedToUpgrade = NO_TURRET_SELECTED;
 		}
 		break;
@@ -1077,26 +1081,26 @@ void render_button_pressed(void) {
 			drawY = (int)((turret[turretSelectedToUpgrade].data.yOrigin - Game.yOrigin) / Game.gridHeight);
 			sell_turret(turretSelectedToUpgrade);
 			Level[currentGameLevel].grid[drawY][drawX].type = Clear;
-			pathfinding_reset(&Level[currentGameLevel]);
-			pathfinding_calculate_cost(&Level[currentGameLevel]);
-			pathfinding_update(&Level[currentGameLevel]);
+			PathFindingReset(&Level[currentGameLevel]);
+			PathFindingCalculateCost(&Level[currentGameLevel]);
+			PathFindingUpdate(&Level[currentGameLevel]);
 			mouse_reset();
-			isPlacingTurret = T_MAX;
+			is_placing_turret = T_MAX;
 		}
 		else {
-			isPlacingTurret = T_MAX;
+			is_placing_turret = T_MAX;
 			turretSelectedToUpgrade = NO_TURRET_SELECTED;
 		}
 		break;
 
 	default:
-		isPlacingTurret = T_MAX;
+		is_placing_turret = T_MAX;
 		turretSelectedToUpgrade = NO_TURRET_SELECTED;
 		break;
 	}
 }
 
-void render_game_grid(void)
+void RenderGameGrid(void)
 {
 	int currentGridRow = 0, currentGridCol = 0;
 	CP_Graphics_ClearBackground(COLOR_WHITE);
@@ -1131,7 +1135,7 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 	case TurretButtonBasic:
 		CP_Image_Draw(turret_button_background, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 2),
 			138 * scalingFactor, 144 * scalingFactor, 255);
-		if (powerUpMenu == FALSE) {
+		if (power_up_menu == FALSE) {
 			RenderImageFromSpriteSheet(basic_turret_spritesheet, basic_turret_spritesheet_array[0], menuObjectX.width / 2,
 				(menuObjectX.yOrigin + menuObjectX.height / 2), 128 * scalingFactor, 128 * scalingFactor);
 			sprintf_s(temp, sizeof(temp), "%d", turret_purchasing[TP_PRICE][T_BASIC]);
@@ -1157,7 +1161,7 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 	case TurretButtonSlow:
 		CP_Image_Draw(turret_button_background, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 2),
 			138 * scalingFactor, 144 * scalingFactor, 255);
-		if (powerUpMenu == FALSE) {
+		if (power_up_menu == FALSE) {
 			CP_Image_DrawAdvanced(menuObjectX.image, menuObjectX.width / 2,
 				(menuObjectX.yOrigin + menuObjectX.height / 2), 128 * scalingFactor,
 				128 * scalingFactor, 255, 90);
@@ -1185,7 +1189,7 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 	case  TurretButtonHoming:
 		CP_Image_Draw(turret_button_background, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 2),
 			138 * scalingFactor, 144 * scalingFactor, 255);
-		if (powerUpMenu == FALSE) {
+		if (power_up_menu == FALSE) {
 			RenderImageFromSpriteSheet(homing_missle_turret_spritesheet, homing_missle_turret_spritesheet_array[0], menuObjectX.width / 2,
 				(menuObjectX.yOrigin + menuObjectX.height / 2), 128 * scalingFactor, 128 * scalingFactor);
 			sprintf_s(temp, sizeof(temp), "%d", turret_purchasing[TP_PRICE][T_HOMING]);
@@ -1211,7 +1215,7 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 	case TurretButtonMine:
 		CP_Image_Draw(turret_button_background, menuObjectX.width / 2, (menuObjectX.yOrigin + menuObjectX.height / 2),
 			138 * scalingFactor, 144 * scalingFactor, 255);
-		if (powerUpMenu == FALSE) {
+		if (power_up_menu == FALSE) {
 			RenderImageFromSpriteSheet(mine_spritesheet, mine_spritesheet_array[0], menuObjectX.width / 2,
 				(menuObjectX.yOrigin + menuObjectX.height / 2), 128 * scalingFactor, 128 * scalingFactor);
 			sprintf_s(temp, sizeof(temp), "%d", turret_purchasing[TP_PRICE][T_MINE]);
@@ -1459,7 +1463,7 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 
 //Level
 //reset data in pathfinding
-void pathfinding_reset(LevelData* LevelX) {
+void PathFindingReset(LevelData* LevelX) {
 	for (int i = 0; i < gameGridRows; i++) {
 		for (int j = 0; j < gameGridCols; j++) {
 			LevelX->grid[i][j].visited = 0;
@@ -1479,7 +1483,7 @@ void pathfinding_reset(LevelData* LevelX) {
 	LevelX->grid[LevelX->spawnRow][LevelX->spawnCol].visited = 1;
 }
 //update path for pathfinding
-void pathfinding_update(LevelData* LevelX) {
+void PathFindingUpdate(LevelData* LevelX) {
 	int pathRow, pathCol;
 	pathRow = LevelX->grid[LevelX->exitRow][LevelX->exitCol].parentRow;
 	pathCol = LevelX->grid[LevelX->exitRow][LevelX->exitCol].parentCol;
@@ -1495,7 +1499,7 @@ void pathfinding_update(LevelData* LevelX) {
 		}
 	}
 }
-void render_path(LevelData* LevelX) {
+void RenderEnemyPath(LevelData* LevelX) {
 	for (int i = 0; i < gameGridRows; i++) {
 		for (int j = 0; j < gameGridCols; j++) {
 			if (LevelX->grid[i][j].type == Path) {

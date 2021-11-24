@@ -62,6 +62,7 @@ int Collision_Detection(Coordinates object1, Coordinates object2);
 int btn_is_pressed(Coordinates object1);
 void mouse_reset(void);
 void set_building_time(float newBuildingTime);
+int check_game_button_pressed(void);
 
 //Boolean
 #define TRUE 1
