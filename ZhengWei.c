@@ -81,7 +81,8 @@ void PathFindingUpdateNeighborCost(
 
 //Calculate all grid cost. Find the squares in the same generation and call a function to update neighbors.
 void PathFindingCalculateCost(void) {
-	for (int currentCost = 0; !isDestinationUpdated() && currentCost <= level_grid_rows * level_grid_cols; currentCost++) {
+	for (int currentCost = 0; !isDestinationUpdated() 
+		&& currentCost <= level_grid_rows * level_grid_cols; currentCost++) {
 		for (int i = 0; i < level_grid_rows; i++) {
 			for (int j = 0; j < level_grid_cols; j++) {
 				if (Level.grid[i][j].cost == currentCost) {
@@ -92,11 +93,11 @@ void PathFindingCalculateCost(void) {
 	}
 }
 
-void pathfinding_init(LevelData* LevelX) {
-	LevelX->grid[LevelX->spawn_row][LevelX->spawn_col].cost = 0;
-	LevelX->grid[LevelX->spawn_row][LevelX->spawn_col].visited = 1;
-	LevelX->grid[LevelX->spawn_row][LevelX->spawn_col].type = kSpawn;
-	LevelX->grid[LevelX->exit_row][LevelX->exit_col].type = kExit;
+void pathfinding_init(void) {
+	Level.grid[Level.spawn_row][Level.spawn_col].cost = 0;
+	Level.grid[Level.spawn_row][Level.spawn_col].visited = 1;
+	Level.grid[Level.spawn_row][Level.spawn_col].type = kSpawn;
+	Level.grid[Level.exit_row][Level.exit_col].type = kExit;
 }
 
 //Collision Detection between circles and squares
