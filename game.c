@@ -14,7 +14,7 @@ void game_init(void)
 	CP_System_SetWindowTitle("Ghost Gone Wrong");
 	int gameWindowWidth = 1280;
 	int gameWindowHeight = (int)(gameWindowWidth * 1080.0f / 1920.0f);//To apply uniform scaling
-	scalingFactor = gameWindowWidth / 1280.0f;//Game is scaled according to 1280 width being 1;
+	scaling_factor = gameWindowWidth / 1280.0f;//Game is scaled according to 1280 width being 1;
 	CP_System_SetWindowSize(gameWindowWidth, gameWindowHeight);//Please change the variables ot change th escreen size
 
 	InitAllImages();
@@ -23,7 +23,7 @@ void game_init(void)
 	init_game_font();
 	init_splash_logos();
 	current_game_state = kLogoSplash;
-	buildingTime = BUILDING_PHASE_TIME;
+	building_time = kFullBuildingPhaseTime;
 	dpLogoTime = teamLogoTime = LOGO_DISPLAY_TIME;
 	fadeOutTime = FADE_OUT_TIME;
 
@@ -50,8 +50,8 @@ void game_update(void)
 	//Input
 	if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT))
 	{
-		MouseInput.x_origin = CP_Input_GetMouseX();
-		MouseInput.y_origin = CP_Input_GetMouseY();
+		mouse_input.x_origin = CP_Input_GetMouseX();
+		mouse_input.y_origin = CP_Input_GetMouseY();
 	}
 
 
@@ -66,9 +66,9 @@ void game_update(void)
 		update_particle();
 
 		//render all the stuff
-		RenderLevelEnvironment(currentGameLevel);
+		RenderLevelEnvironment(current_game_level);
 		RenderGameGrid();
-		RenderEnemyPath(&Level[currentGameLevel]);
+		RenderEnemyPath(&Level[current_game_level]);
 
 		UpdatePortalAnimation();
 
@@ -79,18 +79,18 @@ void game_update(void)
 		render_particle();
 		RenderAndUpdateBulletCircles();
 
-		if (!turret[turretSelectedToUpgrade].isActive) { // Close mine menu when it explodes
-			turretSelectedToUpgrade = NO_TURRET_SELECTED;
+		if (!turret[turretSelectedToUpgrade].is_active) { // Close mine menu when it explodes
+			turretSelectedToUpgrade = kNoTurretSelected;
 		}
 		ButtonPressedUpdate();
 
 		RenderEnvironment();
-		RenderBattlefieldEffectText(Level[currentGameLevel].currentEffect);
+		RenderBattlefieldEffectText(Level[current_game_level].current_effect);
 		CP_Settings_NoTint();
 		RenderTurretDetailsDisplay(); //render turret description when hovered
-		render_turret_menu_object(GameMenuObject[ButtonMax - 2], ButtonMax - 2);// Render Upgrade menu first
-		for (int i = 0; i < ButtonMax - 3; i++) {// Last object will double render game grid. Second and third last object is rendered seperately
-			render_turret_menu_object(GameMenuObject[i], i);
+		render_turret_menu_object(game_menu_object[kButtonMax - 2], kButtonMax - 2);// Render Upgrade menu first
+		for (int i = 0; i < kButtonMax - 3; i++) {// Last object will double render game grid. Second and third last object is rendered seperately
+			render_turret_menu_object(game_menu_object[i], i);
 		}
 		game_win_lose_check();
 
@@ -109,9 +109,9 @@ void game_update(void)
 		update_projectile();
 		update_particle();
 		//render all the stuff
-		RenderLevelEnvironment(currentGameLevel);
+		RenderLevelEnvironment(current_game_level);
 		RenderGameGrid();
-		RenderEnemyPath(&Level[currentGameLevel]);
+		RenderEnemyPath(&Level[current_game_level]);
 		UpdatePortalAnimation();
 		RenderEnvironment();
 		render_turret();
@@ -126,14 +126,14 @@ void game_update(void)
 		render_ui_button(SkipWaveButton);
 
 		RenderTurretDetailsDisplay(); //render turret description when hovered
-		render_turret_menu_object(GameMenuObject[ButtonMax - 2], ButtonMax - 2);// Render Upgrade menu first
-		for (int i = 0; i < ButtonMax - 3; i++) {// Last object will double render game grid. Second and third last object is rendered seperately
-			render_turret_menu_object(GameMenuObject[i], i);
+		render_turret_menu_object(game_menu_object[kButtonMax - 2], kButtonMax - 2);// Render Upgrade menu first
+		for (int i = 0; i < kButtonMax - 3; i++) {// Last object will double render game grid. Second and third last object is rendered seperately
+			render_turret_menu_object(game_menu_object[i], i);
 		}
 
 
 		//setting enemies
-		Reset_enemies(currentGameLevel);
+		Reset_enemies(current_game_level);
 
 
 	}
@@ -145,12 +145,12 @@ void game_update(void)
 		}
 		else if (BtnIsPressed(EndScreenButtons[1].buttonData))
 		{
-			init_next_level(currentGameLevel);
+			init_next_level(current_game_level);
 			current_game_state = kBuilding;
 		}
 		else if (BtnIsPressed(EndScreenButtons[2].buttonData))
 		{
-			init_next_level(currentGameLevel + 1);
+			init_next_level(current_game_level + 1);
 		}
 
 		render_end_screen(); // this should pause the game by way of gameLost.
@@ -287,11 +287,11 @@ void game_update(void)
 	}
 	else if (current_game_state == kPause)
 	{
-		if (CheckGameButtonPressed() == PauseButton)
+		if (CheckGameButtonPressed() == kPauseButton)
 		{
 			if (current_game_state == kPause)
 			{
-				current_game_state = (buildingTime) ? kBuilding : kWave;
+				current_game_state = (building_time) ? kBuilding : kWave;
 			}
 			else // if the game is not paused
 			{
@@ -301,15 +301,15 @@ void game_update(void)
 		}
 		else if (BtnIsPressed(PauseScreenButtons[0].buttonData)) // Resume
 		{
-			current_game_state = (buildingTime) ? kBuilding : kWave;
+			current_game_state = (building_time) ? kBuilding : kWave;
 		}
 		else if (BtnIsPressed(PauseScreenButtons[1].buttonData)) // Level Select
 		{
 			//free memory
 			for (int i = 0; i < level_grid_rows; i++) {
-				free(Level[currentGameLevel].grid[i]);
+				free(Level[current_game_level].grid[i]);
 			}
-			free(Level[currentGameLevel].grid);
+			free(Level[current_game_level].grid);
 			//Free memory for turret_on_grid
 			for (int i = 0; i < level_grid_cols; i++) {
 				free(turret_on_grid[i]);

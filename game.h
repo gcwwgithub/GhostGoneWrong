@@ -5,22 +5,10 @@
 #ifndef GOSTGONEWRONG_CURRENTHEADERFILES_GAME_H
 #define GOSTGONEWRONG_CURRENTHEADERFILES_GAME_H
 
-//Variables used to initialize others game.h variables.
-enum PathType {
-	kClear,
-	kBlocked,
-	kSpawn,
-	kExit,
-	kPath
-};
-//Used for pathfinding
-struct Grids {
-	int cost;
-	int parent_row;
-	int parent_col;
-	int visited;
-	enum PathType type;
-};
+typedef enum Boolean {
+	kFalse,
+	kTrue
+}Boolean;
 enum Environmentaleffects {
 	kNoEnvironmentalEffects,
 	kIncreasedPhantomQuartz,
@@ -41,12 +29,33 @@ struct PowerUps {
 	int reduce_enemy_health;
 	int increased_mine_damage;
 };
+//defining max enemies, turret and projectile
+enum {
+	kMaxEnemies = 60,
+	kMaxTurret = 100,
+	kMaxProjectile = 100
+};
 
 //Common Tools
 //Used for collision Detection
 enum {
 	kObjectCircle,
 	kObjectRectangle
+};
+//Used for pathfinding
+enum PathType {
+	kClear,
+	kBlocked,
+	kSpawn,
+	kExit,
+	kPath
+};
+struct Grids {
+	int cost;
+	int parent_row;
+	int parent_col;
+	Boolean visited;
+	enum PathType type;
 };
 typedef struct Coordinates {
 	float width; //Width and Height are the same for Circles
@@ -63,11 +72,6 @@ void MouseReset(void);//Set last click position to out of screen
 //Set the current building time of building phase
 void SetBuildingTime(float newBuildingTime);
 int CheckGameButtonPressed(void);//Check which button is pressed in menu
-//Boolean
-typedef enum Boolean {
-	kFalse,
-	kTrue
-}Boolean;
 
 //Common Variables
 //GameStates
@@ -95,16 +99,13 @@ struct {
 	float grid_height;
 }game;
 //Enemies
-enum {
-	kMaxEnemies = 60
-};
 typedef enum EnemyTypes {
 	kBasic,
 	kFastGhost,
 	kFatGhost,
 	kGrimReaper,
 	kMaxEnemyType
-} EnemyTypes;
+}EnemyTypes;
 typedef enum EnemyState {
 	kEnemyInactive,
 	kEnemyMoving,
@@ -123,8 +124,8 @@ typedef struct Enemy {
 	int current_way_point;
 	int alpha;
 	int points;
-	float x_origin; 
-	float y_origin; 
+	float x_origin;
+	float y_origin;
 	float enemy_width;
 	float enemy_height;
 	float health;
@@ -170,33 +171,34 @@ typedef enum TriangleAnimState
 	kTurretActive
 } TriangleAnimState;//Turret current action
 //For battlefield effects
-typedef enum Turret_Env_effects {
-	No_Effect,
-	Increased_damage,
-	Increased_attack_speed,
-	Decreased_damage,
-	Decreased_attack_speed
-}Turret_Env_effects;
+typedef enum TurretCurrentEnvironmentEffect {
+	kTEnvironmentNoEffect,
+	kTEnvironmentIncreasedDamage,
+	kTEnvironmentIncreasedAttackSpeed,
+	kTEnvironmentDecreasedDamage,
+	kTEnvironmnetDecreasedAttackSpeed
+}TurretCurrentEnvironmentEffect;
 //enum of turret types
 typedef enum TurretType
 {
-	T_BASIC,
-	T_SLOW,
-	T_HOMING,
-	T_MINE,
-	T_MAX
-} TurretType;
+	kTBasic,
+	kTSlow,
+	kTHoming,
+	kTMine,
+	kTMax
+}TurretType;
 typedef enum TurretPurchase
 {
-	TP_PRICE,
-	TP_UPGRADE_PRICE,
-	TP_UPGRADE_MAX_LEVEL,
-	TP_MAX
+	kTPPrice,
+	kTPUpgradePrice,
+	kTPUpgradeMaxLevel,
+	kTPMax
 }TurretPurchase;
 typedef struct Turret
 {
-	int isActive;
-	float size, angle;
+	int is_active;
+	float size;
+	float angle;
 	//flaot range, cooldown, damage;
 	//float t_slow_amt, t_slow_timer; //for slow turret
 	Modifiers mod;
@@ -204,40 +206,40 @@ typedef struct Turret
 	Coordinates data;
 	TurretType type;
 	TriangleAnimState current_aim_state;
-	float turretAnimTimer;
+	float turret_anim_timer;
 	CP_Image turret_img;
-	int animCounter;
+	int anim_counter;
 	// sell price, upgrade price , 
 	// total accumulated price (each upgrades + base price) 
-	int sell_price, upgrade_price, total_price;
+	int sell_price;
+	int upgrade_price;
+	int total_price;
 	int level;
-
 	//For Battlefield effects
-	Turret_Env_effects Env_effect;
+	TurretCurrentEnvironmentEffect env_effects;
 } Turret;
-#define MAX_TURRET 100
-Turret turret[MAX_TURRET];
-int turret_purchasing[TP_MAX][T_MAX];
+Turret turret[kMaxTurret];
+int turret_purchasing[kTPMax][kTMax];
 int** turret_on_grid;
-
-#define NO_TURRET_SELECTED -1
 int turretSelectedToUpgrade; //Use the turret index of the turret selected
-
+//Used when no turret is selected
+enum {
+	kNoTurretSelected = -1
+};
 //Projectiles
-#define MAX_PROJECTILE 100
 //enum of projectile types
 typedef enum ProjectileType
 {
-	P_BASIC,
-	P_SLOW,
-	P_HOMING,
-	P_MINE,
+	kPBasic,
+	kPSlow,
+	kPHoming,
+	kPMine,
 } ProjectileType;
-
 typedef struct Projectile
 {
-	int isActive;
-	float size, lifetime;
+	int is_active;
+	float size;
+	float lifetime;
 	//float damage, speed, ;
 	//float p_slow_amt, p_slow_timer; //for slow projectile
 	Modifiers mod;
@@ -245,62 +247,61 @@ typedef struct Projectile
 	Vector2 dir;
 	ProjectileType type;
 } Projectile;
-
-Projectile proj[MAX_PROJECTILE];
-
+Projectile proj[kMaxProjectile];
 //Level
-#define MAX_NUMBER_OF_LEVEL 5
-#define MAX_NUMBER_OF_WAVES 10
-#define BUILDING_PHASE_TIME 30.0f
+//defination for levels
+enum {
+	kMaxNumberOfLevel = 5,
+	kMaxNumberOfWave = 10,
+	kFullBuildingPhaseTime = 30
+};
 typedef struct LevelData {
-	int spawnRow;
-	int spawnCol;
-	int exitRow;
-	int exitCol;
+	int spawn_row;
+	int spawn_col;
+	int exit_row;
+	int exit_col;
 	struct Grids** grid;
-	int phantomQuartz;
-	int goldQuartz;
+	int phantom_quartz;
+	int gold_quartz;
 	int health;
-	int currentWave;
-	int waveEnemies[MAX_NUMBER_OF_WAVES][kMaxEnemyType];
-	enum EnvironmentalEffects currentEffect;
-	struct PowerUps currentPowerUpLevel;
+	int current_wave;
+	int wave_enemies[kMaxNumberOfWave][kMaxEnemyType];
+	enum EnvironmentalEffects current_effect;
+	struct PowerUps current_power_up_level;
 }LevelData;
-
-LevelData Level[MAX_NUMBER_OF_LEVEL];
-int currentGameLevel;
-struct PowerUps powerUpPrice;
-int enemiesLeft;
-float buildingTime;
-
+LevelData Level[kMaxNumberOfLevel];
+int current_game_level; //The current level selected by the player
+struct PowerUps power_up_price; //Price of power ups
+int enemies_left;// enemies remaining in the current round
+float building_time;//Remaining building time
 //Input
-Coordinates MouseInput;
+Coordinates mouse_input;
 
 //Graphics
-
 //Game Menus
 enum MenuObjectType {
-	PauseButton,
-	TurretButtonBasic,
-	TurretButtonSlow,
-	TurretButtonHoming,
-	TurretButtonMine,
-	SwapButton,
-	PhantomQuartzMenu,
-	GoldQuartzMenu,
-	HealthMenu,
-	WaveDisplay,
-	BattlefieldEffects,
-	MonsterRemainingDisplay,
-	UpgradeButton,
-	SellButton,
-	TurretDetailsDisplay, //Rendered when mouse is hovered on button
-	UpgradeMenu,// Rendered seperately from the render loop
-	GameGrid,//Not included in the render loop
-	ButtonMax
+	kPauseButton,
+	kTurretButtonBasic,
+	kTurretButtonSlow,
+	kTurretButtonHoming,
+	kTurretButtonMine,
+	kSwapButton,
+	kPhantomQuartzMenu,
+	kGoldQuartzMenu,
+	kHealthMenu,
+	kWaveDisplay,
+	kEnvironmentalEffects,
+	kMonsterRemainingDisplay,
+	kUpgradeButton,
+	kSellButton,
+	kTurretDetailsDisplay, //Rendered when mouse is hovered on button
+	kUpgradeMenu,// Rendered seperately from the render loop
+	kGameGrid,//Not included in the render loop
+	kButtonMax
 };
-Coordinates GameMenuObject[ButtonMax];
-float scalingFactor;
+//Array of all menu object used for rendering
+Coordinates game_menu_object[kButtonMax];
+float scaling_factor;//scaling to scale with different display size
 
 //Color
 #define COLOR_BLACK  CP_Color_Create(0, 0, 0, 255)

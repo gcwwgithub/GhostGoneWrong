@@ -29,9 +29,9 @@ void turret_init(void)
 	//Array turret_on_grid[gameGridCols][gameGridRows]
 
 
-	for (int i = 0; i < MAX_PROJECTILE; ++i)
+	for (int i = 0; i < kMaxProjectile; ++i)
 	{
-		proj[i].isActive = kFalse;
+		proj[i].is_active = kFalse;
 		proj[i].data.x_origin = 0;
 		proj[i].data.y_origin = 0;
 		proj[i].mod.damage = 1.f;
@@ -41,9 +41,9 @@ void turret_init(void)
 		proj[i].mod.slow_timer = 0.f;
 		proj[i].lifetime = 10.f;
 	}
-	for (int i = 0; i < MAX_TURRET; ++i)
+	for (int i = 0; i < kMaxTurret; ++i)
 	{
-		turret[i].isActive = kFalse;
+		turret[i].is_active = kFalse;
 		turret[i].size = game.grid_height;
 		turret[i].angle = 0.f;
 		//turret[i].mod.cooldown = 0.f;
@@ -54,10 +54,10 @@ void turret_init(void)
 		v.x = 0;
 		v.y = 1;
 		turret[i].dir = v;
-		turret[i].turretAnimTimer = 0;
+		turret[i].turret_anim_timer = 0;
 		turret[i].turret_img = slow_turret_image_array[0];
 		turret[i].current_aim_state = kTurretInactive;
-		turret[i].animCounter = 0;
+		turret[i].anim_counter = 0;
 		turret[i].sell_price = 25;
 		turret[i].level = 1;
 	}
@@ -73,19 +73,19 @@ void turret_init(void)
 	}
 
 	//set price of turrets and stuff
-	turret_purchasing[TP_PRICE][T_BASIC] = 100;
-	turret_purchasing[TP_PRICE][T_SLOW] = 200;
-	turret_purchasing[TP_PRICE][T_HOMING] = 200;
-	turret_purchasing[TP_PRICE][T_MINE] = 100;
+	turret_purchasing[kTPPrice][kTBasic] = 100;
+	turret_purchasing[kTPPrice][kTSlow] = 200;
+	turret_purchasing[kTPPrice][kTHoming] = 200;
+	turret_purchasing[kTPPrice][kTMine] = 100;
 
-	turret_purchasing[TP_UPGRADE_PRICE][T_BASIC] = 50;
-	turret_purchasing[TP_UPGRADE_PRICE][T_SLOW] = 50;
-	turret_purchasing[TP_UPGRADE_PRICE][T_HOMING] = 50;
-	turret_purchasing[TP_UPGRADE_PRICE][T_MINE] = 15;
+	turret_purchasing[kTPUpgradePrice][kTBasic] = 50;
+	turret_purchasing[kTPUpgradePrice][kTSlow] = 50;
+	turret_purchasing[kTPUpgradePrice][kTHoming] = 50;
+	turret_purchasing[kTPUpgradePrice][kTMine] = 15;
 
 	//set all to 5 level only first change later
-	for (int i = 0; i < T_MAX; ++i)
-		turret_purchasing[TP_UPGRADE_MAX_LEVEL][i] = 10;
+	for (int i = 0; i < kTMax; ++i)
+		turret_purchasing[kTPUpgradeMaxLevel][i] = 10;
 
 
 	for (int i = 0; i < sizeof(particles) / sizeof(particles[0]); ++i)
@@ -94,7 +94,7 @@ void turret_init(void)
 		v.y = 0.f;
 		particles[i].dir = v;
 		particles[i].pos = v;
-		particles[i].isActive = kFalse;
+		particles[i].is_active = kFalse;
 		particles[i].timer = 0.f;
 		particles[i].duration = 5.f;
 		particles[i].size = 10.f;
@@ -111,12 +111,12 @@ void turret_init(void)
 //call this function to place turret (pass in the grid index)
 void place_turret(TurretType type, int index_x, int index_y)
 {
-	for (int i = 0; i < MAX_TURRET; ++i)
+	for (int i = 0; i < kMaxTurret; ++i)
 	{
 		//break from loop if not enough money
 		//if (Level[currentGameLevel].phantomQuartz < turret[i].price)
 		//	break;
-		if (turret[i].isActive)
+		if (turret[i].is_active)
 			continue;
 
 		turret[i].type = type;
@@ -124,55 +124,55 @@ void place_turret(TurretType type, int index_x, int index_y)
 		//edit here for the type range and dmg
 		switch (turret[i].type)
 		{
-		case T_BASIC:
+		case kTBasic:
 			turret[i].mod.range = game.grid_width * 2;
 			turret[i].mod.damage = 1.0f;
-			turret[i].animCounter = 0;
-			turret[i].turretAnimTimer = 0;
+			turret[i].anim_counter = 0;
+			turret[i].turret_anim_timer = 0;
 			turret[i].mod.speed = 300.f;
 			break;
-		case T_SLOW: // FREEZE TURRET
+		case kTSlow: // FREEZE TURRET
 			turret[i].mod.range = game.grid_width * 2;
 			turret[i].mod.damage = 0.5f;
 			turret[i].mod.slow_amt = 0.9f; //leaving it at 1 means no slow if slow_amt < 1 then slow
 			turret[i].mod.slow_timer = 0.8f;
-			turret[i].animCounter = 0;
-			turret[i].turretAnimTimer = 0;
+			turret[i].anim_counter = 0;
+			turret[i].turret_anim_timer = 0;
 			turret[i].mod.speed = 200.f;
 			break;
-		case T_HOMING:
+		case kTHoming:
 			turret[i].mod.range = game.grid_width * 2;
 			turret[i].mod.damage = 1.0f;
 			turret[i].dir.x = -1;
 			turret[i].dir.y = -1;
-			turret[i].animCounter = 0;
-			turret[i].turretAnimTimer = 0;
+			turret[i].anim_counter = 0;
+			turret[i].turret_anim_timer = 0;
 			turret[i].mod.speed = 100.f;
 			break;
-		case T_MINE:
-			if (Level[currentGameLevel].grid[index_y][index_x].type != kPath)
+		case kTMine:
+			if (Level[current_game_level].grid[index_y][index_x].type != kPath)
 				return;
 			turret[i].mod.range = game.grid_width * 2;
-			turret[i].mod.damage = (float)(10 + Level[currentGameLevel].currentPowerUpLevel.increased_mine_damage * 20);
+			turret[i].mod.damage = (float)(10 + Level[current_game_level].current_power_up_level.increased_mine_damage * 20);
 			turret[i].data.width = game.grid_width * 0.7f;
 			turret[i].data.width = game.grid_height * 0.7f;
 			turret[i].data.object_type = kObjectCircle;
-			turret[i].animCounter = 0;
-			turret[i].turretAnimTimer = 0;
+			turret[i].anim_counter = 0;
+			turret[i].turret_anim_timer = 0;
 			break;
 		default:
 			break;
 		}
 		//sell price back to default
-		turret[i].sell_price = (int)(turret_purchasing[TP_PRICE][type] * 0.7f);
+		turret[i].sell_price = (int)(turret_purchasing[kTPPrice][type] * 0.7f);
 		//upgrade price back to default
-		turret[i].upgrade_price = turret_purchasing[TP_UPGRADE_PRICE][type];
+		turret[i].upgrade_price = turret_purchasing[kTPUpgradePrice][type];
 		//total price accumalated
-		turret[i].total_price = turret_purchasing[TP_PRICE][type];
+		turret[i].total_price = turret_purchasing[kTPPrice][type];
 		//shooting rate set
 		turret[i].mod.shoot_rate = 0.5f;
 		//set to active and the turret type
-		turret[i].isActive = kTrue;
+		turret[i].is_active = kTrue;
 		//origin + gridwidth * (index + 0.5); (to place the turret on the grid box)
 		turret[i].data.x_origin = game.x_origin + (game.grid_width * (index_x + 0.5f));
 		turret[i].data.y_origin = game.y_origin + (game.grid_height * (index_y + 0.5f));
@@ -197,7 +197,7 @@ void remove_turret(int index_x, int index_y)
 	//printf("I:%d\n", index);
 	//set that grid not in used
 	turret_on_grid[index_x][index_y] = -1;
-	turret[index].isActive = kFalse;
+	turret[index].is_active = kFalse;
 	//set to clear if is blocked
 	//if (Level[currentGameLevel].grid[index_y][index_x].type == Blocked)
 	//	Level[currentGameLevel].grid[index_y][index_x].type = Clear;
@@ -218,7 +218,7 @@ void sell_turret(int t_index)
 	//	sell_price = turret_purchasing[TP_PRICE][turret[t_index].type] * 0.7f;
 
 	//printf("sell price: %d", (int)sell_price);
-	Level[currentGameLevel].phantomQuartz += (int)sell_price;
+	Level[current_game_level].phantom_quartz += (int)sell_price;
 	remove_turret(x, y);
 }
 
@@ -229,7 +229,7 @@ void upgrade_turret(int t_index)
 	//int y = (int)((turret[t_index].data.yOrigin - Game.yOrigin) / Game.gridHeight);
 
 	//dont increase beyond lvl 10
-	if (turret[t_index].level >= turret_purchasing[TP_UPGRADE_MAX_LEVEL][turret[t_index].type])
+	if (turret[t_index].level >= turret_purchasing[kTPUpgradeMaxLevel][turret[t_index].type])
 		return;
 
 	turret[t_index].total_price += turret[t_index].upgrade_price;
@@ -238,14 +238,14 @@ void upgrade_turret(int t_index)
 	turret[t_index].level++;
 	switch (turret[t_index].type)
 	{
-	case T_BASIC:
+	case kTBasic:
 		turret[t_index].mod.damage += 0.011f * turret[t_index].upgrade_price;
 		//turret[t_index].mod.range += turret[t_index].mod.range * 0.05f;
 		//turret[t_index].mod.shoot_rate -= 0.02f;
 		//increase the price for another upgrade
 		turret[t_index].upgrade_price += 50;
 		break;
-	case T_SLOW:
+	case kTSlow:
 		turret[t_index].mod.damage += 0.15f;
 		turret[t_index].mod.range += turret[t_index].mod.range * 0.05f;
 		turret[t_index].mod.slow_amt -= 0.05f;
@@ -253,14 +253,14 @@ void upgrade_turret(int t_index)
 		//increase the price for another upgrade
 		turret[t_index].upgrade_price += 50;
 		break;
-	case T_HOMING:
+	case kTHoming:
 		turret[t_index].mod.damage += 0.005f * turret[t_index].upgrade_price;
 		//turret[t_index].mod.range += turret[t_index].mod.range * 0.05f;
 		//turret[t_index].mod.shoot_rate -= 0.01f;
 		//increase the price for another upgrade
 		turret[t_index].upgrade_price += 50;
 		break;
-	case T_MINE:
+	case kTMine:
 		turret[t_index].mod.damage += 1.f;
 		//increase the price for another upgrade
 		turret[t_index].upgrade_price += 25;
@@ -273,30 +273,30 @@ void upgrade_turret(int t_index)
 
 void render_turret(void)
 {
-	for (int i = 0; i < MAX_TURRET; ++i)
+	for (int i = 0; i < kMaxTurret; ++i)
 	{
-		if (!turret[i].isActive)
+		if (!turret[i].is_active)
 			continue;
 
 		//draw type of turrets
 		update_turretAnimation(&turret[i]);
-		turret[i].turretAnimTimer += CP_System_GetDt();
+		turret[i].turret_anim_timer += CP_System_GetDt();
 		switch (turret[i].type)
 		{
-		case T_BASIC:
-			RenderImageFromSpriteSheet(basic_turret_spritesheet, basic_turret_spritesheet_array[turret[i].animCounter],
+		case kTBasic:
+			RenderImageFromSpriteSheet(basic_turret_spritesheet, basic_turret_spritesheet_array[turret[i].anim_counter],
 				turret[i].data.x_origin, turret[i].data.y_origin, turret[i].size, turret[i].size);
 			break;
-		case T_SLOW:
+		case kTSlow:
 			CP_Image_DrawAdvanced(turret[i].turret_img, turret[i].data.x_origin, turret[i].data.y_origin,
 				turret[i].size, turret[i].size, 255, turret[i].angle + 90.f);//the +90 degree is to offset the atan2
 			break;
-		case T_HOMING:
-			RenderImageFromSpriteSheet(homing_missle_turret_spritesheet, homing_missle_turret_spritesheet_array[turret[i].animCounter],
+		case kTHoming:
+			RenderImageFromSpriteSheet(homing_missle_turret_spritesheet, homing_missle_turret_spritesheet_array[turret[i].anim_counter],
 				turret[i].data.x_origin, turret[i].data.y_origin, turret[i].size, turret[i].size);
 			break;
-		case T_MINE:
-			RenderImageFromSpriteSheet(mine_spritesheet, mine_spritesheet_array[turret[i].animCounter],
+		case kTMine:
+			RenderImageFromSpriteSheet(mine_spritesheet, mine_spritesheet_array[turret[i].anim_counter],
 				turret[i].data.x_origin, turret[i].data.y_origin, turret[i].size, turret[i].size);
 			break;
 		default:
@@ -304,7 +304,7 @@ void render_turret(void)
 		}
 	}
 
-	if (turretSelectedToUpgrade != NO_TURRET_SELECTED)
+	if (turretSelectedToUpgrade != kNoTurretSelected)
 	{
 		CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255 / 2));
 		CP_Graphics_DrawCircle(turret[turretSelectedToUpgrade].data.x_origin,
@@ -322,9 +322,9 @@ void update_turret(void)
 	v1.y = 0;
 	targeted_dir = v1;
 
-	for (int i = 0; i < MAX_TURRET; ++i)
+	for (int i = 0; i < kMaxTurret; ++i)
 	{
-		if (!turret[i].isActive)
+		if (!turret[i].is_active)
 			continue;
 
 		//reset variables
@@ -339,9 +339,9 @@ void update_turret(void)
 				continue;
 
 
-			if (turret[i].type == T_MINE)
+			if (turret[i].type == kTMine)
 			{
-				turret[i].mod.damage = (float)(10 + Level[currentGameLevel].currentPowerUpLevel.increased_mine_damage * 20);
+				turret[i].mod.damage = (float)(10 + Level[current_game_level].current_power_up_level.increased_mine_damage * 20);
 				if (CollisionDetection(turret[i].data, enemy[j].data))
 				{
 					//set the highest waypoint
@@ -380,27 +380,27 @@ void update_turret(void)
 		if (e_index >= 0)
 		{
 			turret[i].current_aim_state = kTurretShooting;
-			if (turret[i].animCounter <= 2)
+			if (turret[i].anim_counter <= 2)
 			{
-				turret[i].animCounter = 3;
+				turret[i].anim_counter = 3;
 			}
 
 			// update the dir of all turret except homing turret
-			if (turret[i].type != T_HOMING)
+			if (turret[i].type != kTHoming)
 			{
 				turret[i].dir = targeted_dir;
 				turret[i].dir = normalise(turret[i].dir);
 			}
 
 			//get angle to roate sprite for slow turret only
-			if (turret[i].type == T_SLOW)
+			if (turret[i].type == kTSlow)
 				turret[i].angle = atan2f(turret[i].dir.y, turret[i].dir.x) * 180.f / (float)PI;
 
 			//mine specific updates
-			if (turret[i].type == T_MINE)
+			if (turret[i].type == kTMine)
 			{
 				//set mine dmg to power temp
-				turret[i].mod.damage += Level[currentGameLevel].currentPowerUpLevel.increased_mine_damage;
+				turret[i].mod.damage += Level[current_game_level].current_power_up_level.increased_mine_damage;
 				turret[i].mod.tracked_index = e_index;
 				//fake shoot for mine, just spawn a proj on it
 				shoot(turret[i].data.x_origin, turret[i].data.y_origin, turret[i].mod, turret[i].type, turret[i].dir);
@@ -411,7 +411,7 @@ void update_turret(void)
 			}
 
 			//turret[i].mod.cooldown -= 1.f * CP_System_GetDt();
-			if (/*turret[i].mod.cooldown <= 0 &&*/ turret[i].turretAnimTimer >= turret[i].mod.shoot_rate && turret[i].animCounter >= 5)
+			if (/*turret[i].mod.cooldown <= 0 &&*/ turret[i].turret_anim_timer >= turret[i].mod.shoot_rate && turret[i].anim_counter >= 5)
 			{
 				turret[i].mod.tracked_index = e_index;
 				//printf("index: %d\n", e_index);
@@ -431,31 +431,31 @@ void shoot(float x, float y, Modifiers mod, ProjectileType type, Vector2 dir)
 {
 	//takes the pos of turret and dir turret facing
 	//loop to find unactive projectile
-	for (int i = 0; i < MAX_PROJECTILE; ++i)
+	for (int i = 0; i < kMaxProjectile; ++i)
 	{
-		if (proj[i].isActive)
+		if (proj[i].is_active)
 			continue;
 
 		//set the projectile as active and other stuff
-		proj[i].isActive = 1;
+		proj[i].is_active = 1;
 
 		switch (type)
 		{
-		case P_BASIC:
+		case kPBasic:
 			proj[i].data.x_origin = x;
 			proj[i].data.y_origin = y - 10.f;
 			break;
-		case P_SLOW:
+		case kPSlow:
 			proj[i].data.x_origin = x + (float)(PROJ_OFFSET * dir.x);
 			proj[i].data.y_origin = y + (float)(PROJ_OFFSET * dir.y);
 			break;
-		case P_MINE:
+		case kPMine:
 			proj[i].data.width = game.grid_width;
 			proj[i].data.height = game.grid_height;
 			proj[i].data.x_origin = x;
 			proj[i].data.y_origin = y;
 			break;
-		case P_HOMING:
+		case kPHoming:
 			proj[i].data.x_origin = x + (float)(PROJ_OFFSET * dir.x);
 			proj[i].data.y_origin = y + (float)(PROJ_OFFSET * dir.y);
 			break;
@@ -483,30 +483,30 @@ void shoot(float x, float y, Modifiers mod, ProjectileType type, Vector2 dir)
 void update_projectile(void)
 {
 	float dt = CP_System_GetDt();
-	for (int i = 0; i < MAX_PROJECTILE; ++i)
+	for (int i = 0; i < kMaxProjectile; ++i)
 	{
 		//bounds check
-		if (proj[i].isActive &&
+		if (proj[i].is_active &&
 			(proj[i].data.x_origin < 0 || proj[i].data.x_origin >(float)CP_System_GetDisplayWidth()
 				|| proj[i].data.y_origin < 0 || proj[i].data.y_origin >(float)CP_System_GetDisplayHeight()))
 		{
 			//set to inactive
-			proj[i].isActive = kFalse;
+			proj[i].is_active = kFalse;
 			continue;
 		}
-		if (!proj[i].isActive)
+		if (!proj[i].is_active)
 			continue;
 
 		proj[i].lifetime -= dt;
 		if (proj[i].lifetime <= 0.f)
 		{
-			proj[i].isActive = kFalse;
+			proj[i].is_active = kFalse;
 			continue;
 		}
 
 
 		// tracking proj, track if a valid id is provided and state is alive
-		if (proj[i].type == P_HOMING)
+		if (proj[i].type == kPHoming)
 		{
 			if (proj[i].mod.tracked_index >= 0 &&
 				enemy[proj[i].mod.tracked_index].state != kEnemyDeath &&
@@ -562,7 +562,7 @@ void update_projectile(void)
 
 
 		//projectile of mine dont move
-		if (proj[i].type != P_MINE)
+		if (proj[i].type != kPMine)
 		{
 			//proj movement dir * speed * deltatime
 			proj[i].data.x_origin += proj[i].dir.x * proj[i].mod.speed * dt;
@@ -574,9 +574,9 @@ void update_projectile(void)
 
 void render_projectile(void)
 {
-	for (int i = 0; i < MAX_PROJECTILE; ++i)
+	for (int i = 0; i < kMaxProjectile; ++i)
 	{
-		if (!proj[i].isActive)
+		if (!proj[i].is_active)
 			continue;
 
 		//render of the projectile here for now
@@ -584,16 +584,16 @@ void render_projectile(void)
 
 		switch (proj[i].type)
 		{
-		case P_BASIC:
+		case kPBasic:
 			RenderImageFromSpriteSheet(turret_bullet_spritesheet, turret_bullet_spritesheet_array[0], proj[i].data.x_origin, proj[i].data.y_origin, proj[i].size, proj[i].size);
 			break;
-		case P_SLOW:
+		case kPSlow:
 			RenderImageFromSpriteSheet(turret_bullet_spritesheet, turret_bullet_spritesheet_array[1], proj[i].data.x_origin, proj[i].data.y_origin, proj[i].size, proj[i].size);
 			break;
-		case P_HOMING:
+		case kPHoming:
 			RenderImageFromSpriteSheet(turret_bullet_spritesheet, turret_bullet_spritesheet_array[2], proj[i].data.x_origin, proj[i].data.y_origin, proj[i].size, proj[i].size);
 			break;
-		case P_MINE:
+		case kPMine:
 			CP_Settings_Fill(COLOR_RED);
 			CP_Graphics_DrawCircle(proj[i].data.x_origin, proj[i].data.y_origin, proj[i].size);
 			break;
@@ -607,7 +607,7 @@ void col_type_projectile(Projectile* p)
 	Vector2 dif;
 	switch (p->type) //will refactor
 	{
-	case P_SLOW:
+	case kPSlow:
 	{
 		for (int i = 0; i < kMaxEnemies; ++i)
 		{
@@ -629,9 +629,9 @@ void col_type_projectile(Projectile* p)
 		}
 		break;
 	}
-	case P_MINE: /* no break to go into p_homing*/
+	case kPMine: /* no break to go into p_homing*/
 		//printf("BOOM\n");
-	case P_HOMING:
+	case kPHoming:
 	{
 		for (int i = 0; i < kMaxEnemies; ++i)
 		{
@@ -676,12 +676,12 @@ void col_type_projectile(Projectile* p)
 
 void update_turretAnimation(Turret* t)
 {
-	if (t->type == T_MINE)
+	if (t->type == kTMine)
 	{
-		if (t->turretAnimTimer >= 2)
+		if (t->turret_anim_timer >= 2)
 		{
-			t->animCounter = !t->animCounter;
-			t->turretAnimTimer = 0;
+			t->anim_counter = !t->anim_counter;
+			t->turret_anim_timer = 0;
 		}
 	}
 
@@ -690,45 +690,45 @@ void update_turretAnimation(Turret* t)
 		switch (t->current_aim_state)
 		{
 		case kTurretInactive:
-			if (t->turretAnimTimer >= 0.35)
+			if (t->turret_anim_timer >= 0.35)
 			{
-				if (t->animCounter >= 2) //0 1 2
+				if (t->anim_counter >= 2) //0 1 2
 				{
-					t->animCounter = 0;
+					t->anim_counter = 0;
 				}
 
 				else
 				{
-					t->animCounter++;
+					t->anim_counter++;
 				}
 
-				if (turret->type == T_SLOW)
+				if (turret->type == kTSlow)
 				{
-					t->turret_img = slow_turret_image_array[t->animCounter];
+					t->turret_img = slow_turret_image_array[t->anim_counter];
 				}
-				t->turretAnimTimer = 0;
+				t->turret_anim_timer = 0;
 
 			}
 
 			break;
 		case kTurretShooting:
 			//if (t->turretAnimTimer >= 0.60)
-			if (t->turretAnimTimer >= t->mod.shoot_rate)
+			if (t->turret_anim_timer >= t->mod.shoot_rate)
 			{
-				if (t->animCounter >= 5)
+				if (t->anim_counter >= 5)
 				{
-					t->animCounter = 3;
+					t->anim_counter = 3;
 				}
 
 				else
 				{
-					t->animCounter++;
+					t->anim_counter++;
 				}
-				if (turret->type == T_SLOW)
+				if (turret->type == kTSlow)
 				{
-					t->turret_img = slow_turret_image_array[t->animCounter];
+					t->turret_img = slow_turret_image_array[t->anim_counter];
 				}
-				t->turretAnimTimer = 0;
+				t->turret_anim_timer = 0;
 			}
 
 			break;
@@ -742,10 +742,10 @@ void create_particle(Vector2 pos, Vector2 dir, float size, float duration, PARTI
 {
 	for (int i = 0; i < sizeof(particles) / sizeof(particles[0]); ++i)
 	{
-		if (particles[i].isActive)
+		if (particles[i].is_active)
 			continue;
 
-		particles[i].isActive = kTrue;
+		particles[i].is_active = kTrue;
 		particles[i].pos = pos;
 		particles[i].dir = dir;
 		particles[i].size = size;
@@ -762,7 +762,7 @@ void update_particle()
 	float dt = CP_System_GetDt();
 	for (int i = 0; i < sizeof(particles) / sizeof(particles[0]); ++i)
 	{
-		if (!particles[i].isActive)
+		if (!particles[i].is_active)
 			continue;
 
 		particles[i].timer += dt;
@@ -770,7 +770,7 @@ void update_particle()
 		if (particles[i].timer >= particles[i].duration)
 		{
 			particles[i].timer = 0.f;
-			particles[i].isActive = kFalse;
+			particles[i].is_active = kFalse;
 			continue;
 		}
 
@@ -788,7 +788,7 @@ void render_particle()
 {
 	for (int i = 0; i < sizeof(particles) / sizeof(particles[0]); ++i)
 	{
-		if (!particles[i].isActive)
+		if (!particles[i].is_active)
 			continue;
 
 		switch (particles[i].type)

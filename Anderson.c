@@ -67,7 +67,7 @@ void init_main_menu(void)
 void init_level_select_buttons(void)
 {
 	int c = 0; char levelNumberText[8];
-	for (int i = 0; i < MAX_NUMBER_OF_LEVEL; i++)
+	for (int i = 0; i < kMaxNumberOfLevel; i++)
 	{
 		c = snprintf(levelNumberText, 8, "Level %d", i);
 		strcpy_s(LevelButtons[i].textString, sizeof(LevelButtons[i].textString), levelNumberText);
@@ -192,7 +192,7 @@ int cursor_over_button(Coordinates buttonCoord)
 void render_title_screen(void)
 {
 	RenderImageFromSpriteSheetWithAlpha(background_spritesheet, background_spritesheet_array[0], CP_System_GetWindowWidth() * 0.5f, (float)CP_System_GetWindowHeight() * 0.5f, (float)CP_System_GetWindowWidth(), (float)CP_System_GetWindowHeight(), 150);
-	CP_Image_Draw(game_title_image, CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.2f, 256 * scalingFactor, 256 * scalingFactor, 255);
+	CP_Image_Draw(game_title_image, CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.2f, 256 * scaling_factor, 256 * scaling_factor, 255);
 }
 
 void render_ui_button(Button button)
@@ -348,40 +348,40 @@ void render_wave_timer_bar(float timeLeft, float maxTime, float barWidth, float 
 void render_wave_timer(void)
 {
 	CP_Settings_TextSize(FONT_SIZE);
-	render_wave_timer_bar(buildingTime, BUILDING_PHASE_TIME, CP_System_GetWindowWidth() * 0.3f, CP_System_GetWindowHeight() * 0.1f);
+	render_wave_timer_bar(building_time, kFullBuildingPhaseTime, CP_System_GetWindowWidth() * 0.3f, CP_System_GetWindowHeight() * 0.1f);
 	CP_Settings_Fill(COLOR_BLACK);
 	char buffer[16] = { 0 };
-	sprintf_s(buffer, sizeof(buffer), "Time Left: %.1f", buildingTime);
+	sprintf_s(buffer, sizeof(buffer), "Time Left: %.1f", building_time);
 	CP_Font_DrawText(buffer, CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.05f);
 }
 
 void reduce_building_phase_time()
 {
-	if (buildingTime < 0.05f)
+	if (building_time < 0.05f)
 	{
 		SetBuildingTime(0.0f);
 		current_game_state = kWave;
-		if (Level[currentGameLevel].currentWave == 0) {
-			Level[currentGameLevel].currentEffect = 0;
+		if (Level[current_game_level].current_wave == 0) {
+			Level[current_game_level].current_effect = 0;
 		}
-		else if (Level[currentGameLevel].currentWave < 5) {
-			Level[currentGameLevel].currentEffect = CP_Random_RangeInt(0, 10);
+		else if (Level[current_game_level].current_wave < 5) {
+			Level[current_game_level].current_effect = CP_Random_RangeInt(0, 10);
 		}
 		else {
-			Level[currentGameLevel].currentEffect = CP_Random_RangeInt(0, 11);
+			Level[current_game_level].current_effect = CP_Random_RangeInt(0, 11);
 		}
-		StartBattleFieldEffectTimer(Level[currentGameLevel].currentEffect);
+		StartBattleFieldEffectTimer(Level[current_game_level].current_effect);
 	}
 	else
 	{
-		SetBuildingTime(buildingTime - CP_System_GetDt());
+		SetBuildingTime(building_time - CP_System_GetDt());
 	}
 }
 
 void SetBuildingTime(float newBuildingTime)
 {
 	// set building phase time to 0.0f
-	buildingTime = newBuildingTime;
+	building_time = newBuildingTime;
 }
 
 #pragma endregion
@@ -410,7 +410,7 @@ void render_end_screen(void)
 	render_ui_button(EndScreenButtons[0]);
 	render_ui_button(EndScreenButtons[1]);
 
-	if (currentGameLevel < 4)
+	if (current_game_level < 4)
 	{
 		render_ui_button(EndScreenButtons[2]);
 	}
@@ -419,13 +419,13 @@ void render_end_screen(void)
 void game_win_lose_check(void)
 {
 	// checks portal health && number of enemies left.
-	if (Level[currentGameLevel].health <= 0)
+	if (Level[current_game_level].health <= 0)
 	{
 		// free memory
 		for (int i = 0; i < level_grid_rows; i++) {
-			free(Level[currentGameLevel].grid[i]);
+			free(Level[current_game_level].grid[i]);
 		}
-		free(Level[currentGameLevel].grid);
+		free(Level[current_game_level].grid);
 		//Free memory for turret_on_grid
 		for (int i = 0; i < level_grid_cols; i++) {
 			free(turret_on_grid[i]);
@@ -436,15 +436,15 @@ void game_win_lose_check(void)
 		current_game_state = kLose;
 
 	}
-	else if (enemiesLeft == 0)
+	else if (enemies_left == 0)
 	{
-		if (Level[currentGameLevel].currentWave == MAX_NUMBER_OF_WAVES - 1)
+		if (Level[current_game_level].current_wave == kMaxNumberOfWave - 1)
 		{
 			// free memory
 			for (int i = 0; i < level_grid_rows; i++) {
-				free(Level[currentGameLevel].grid[i]);
+				free(Level[current_game_level].grid[i]);
 			}
-			free(Level[currentGameLevel].grid);
+			free(Level[current_game_level].grid);
 			//Free memory for turret_on_grid
 			for (int i = 0; i < level_grid_cols; i++) {
 				free(turret_on_grid[i]);
@@ -454,9 +454,9 @@ void game_win_lose_check(void)
 		}
 		else // if still in the midst of the current level
 		{
-			SetBuildingTime(BUILDING_PHASE_TIME);
+			SetBuildingTime(kFullBuildingPhaseTime);
 			current_game_state = kBuilding;
-			Level[currentGameLevel].currentWave += 1;
+			Level[current_game_level].current_wave += 1;
 		}
 	}
 }
@@ -537,7 +537,7 @@ void move_credits_screen(void)
 
 void move_level_select(void)
 {
-	for (int i = 0; i < MAX_NUMBER_OF_LEVEL; i++)
+	for (int i = 0; i < kMaxNumberOfLevel; i++)
 	{
 		if (current_game_state == kLevelSelect) // going to main menu
 		{
@@ -568,7 +568,7 @@ int level_select_finished_moving(void)
 	{
 		if (button_has_finished_moving(*LevelButtons, LevelButtons->buttonData.x_origin, (float)CP_System_GetWindowHeight()))
 		{
-			for (Button* b = LevelButtons; b < LevelButtons + MAX_NUMBER_OF_LEVEL; b++)
+			for (Button* b = LevelButtons; b < LevelButtons + kMaxNumberOfLevel; b++)
 			{
 				b->movementTime = 0.0f;
 			}
@@ -580,7 +580,7 @@ int level_select_finished_moving(void)
 	{
 		if (button_has_finished_moving(*LevelButtons, LevelButtons->buttonData.x_origin, CP_System_GetWindowHeight() * 0.35f))
 		{
-			for (Button* b = LevelButtons; b < LevelButtons + MAX_NUMBER_OF_LEVEL; b++)
+			for (Button* b = LevelButtons; b < LevelButtons + kMaxNumberOfLevel; b++)
 			{
 				b->movementTime = 0.0f;
 			}
