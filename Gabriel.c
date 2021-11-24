@@ -2,127 +2,126 @@
 #include "Gabriel.h"
 #include "game.h"
 
-void init_all_images(void)
+void InitAllImages(void)
 {
-	slowTurretImageArray[0] = CP_Image_Load("./Assets/SlowTurret1.png");
-	slowTurretImageArray[1] = CP_Image_Load("./Assets/SlowTurret2.png");
-	slowTurretImageArray[2] = CP_Image_Load("./Assets/SlowTurret3.png");
-	slowTurretImageArray[3] = CP_Image_Load("./Assets/SlowTurret1.png");
-	slowTurretImageArray[4] = CP_Image_Load("./Assets/SlowTurret4.png");
-	slowTurretImageArray[5] = CP_Image_Load("./Assets/SlowTurret5.png");
+	slow_turret_image_array[0] = CP_Image_Load("./Assets/SlowTurret1.png");
+	slow_turret_image_array[1] = CP_Image_Load("./Assets/SlowTurret2.png");
+	slow_turret_image_array[2] = CP_Image_Load("./Assets/SlowTurret3.png");
+	slow_turret_image_array[3] = CP_Image_Load("./Assets/SlowTurret1.png");
+	slow_turret_image_array[4] = CP_Image_Load("./Assets/SlowTurret4.png");
+	slow_turret_image_array[5] = CP_Image_Load("./Assets/SlowTurret5.png");
 
 
-	pauseButtonImage = CP_Image_Load("./Assets/Pause.png");
-	titleWordImage = CP_Image_Load("./Assets/Title.png");
-	turretUIButton = CP_Image_Load("./Assets/TurretIcon.png");
-	backgroundUIThin = CP_Image_Load("./Assets/CurrencyIcon.png");
-	turretUpgradeBackground = CP_Image_Load("./Assets/UpgradeMenu.png");
+	pause_button_image = CP_Image_Load("./Assets/Pause.png");
+	game_title_image = CP_Image_Load("./Assets/Title.png");
+	turret_button_background = CP_Image_Load("./Assets/TurretIcon.png");
+	thin_UI_background = CP_Image_Load("./Assets/CurrencyIcon.png");
+	upgrade_menu_background = CP_Image_Load("./Assets/UpgradeMenu.png");
 
-	basicGhostSpriteSheet = CP_Image_Load("./Assets/BasicGhost.png");
-	fastGhostSpriteSheet = CP_Image_Load("./Assets/FastGhost.png");
-	fatGhostSpriteSheet = CP_Image_Load("./Assets/FatGhost.png");
-	grimReaperSpriteSheet = CP_Image_Load("./Assets/GrimReaper.png");
-	bluePortalSpriteSheet = CP_Image_Load("./Assets/FriendlyPortal.png");
-	redPortalSpriteSheet = CP_Image_Load("./Assets/GhostPortal.png");
-	basicTurretSpriteSheet = CP_Image_Load("./Assets/BasicTurret.png");
-	homingMissleTurretSpriteSheet = CP_Image_Load("./Assets/HomingMissleTurret.png");
-	mineSpriteSheet = CP_Image_Load("./Assets/Mine.png");
-	energyWallSpriteSheet = CP_Image_Load("./Assets/EnergyWall.png");
-	bulletSpriteSheet = CP_Image_Load("./Assets/TurretBullets.png");
-	bulletRadiusSpriteSheet = CP_Image_Load("./Assets/BulletsRadius.png");
-	currencySpriteSheet = CP_Image_Load("./Assets/Currency.png");
-	environmentObjectsSpriteSheet = CP_Image_Load("./Assets/GridEnvironmentObject.png");
-	backgroundSpriteSheet = CP_Image_Load("./Assets/Background.png");
-	portalEnterEffectSpriteSheet = CP_Image_Load("./Assets/PortalEnterEffect.png");
-	portalSpawnEffectSpriteSheet = CP_Image_Load("./Assets/EnemySpawnEffect.png");
-	powerUpIconSpriteSheet = CP_Image_Load("./Assets/Powerup.png");
-	battlefieldEffectIconSpriteSheet = CP_Image_Load("./Assets/BattlefieldEffects.png");
-	backgroundUIFatSpriteSheet = CP_Image_Load("./Assets/BigUIDisplay.png");
-	interactableButtonsImageSpriteSheet = CP_Image_Load("./Assets/InteractableButtons.png");
-	turretStatsIconSpriteSheet = CP_Image_Load("./Assets/TurretStatsIcons.png");
-	nonGridEnvironmentObjectsSpriteSheet = CP_Image_Load("./Assets/EnvBackgroundObject.png");
+	basic_ghost_spritesheet = CP_Image_Load("./Assets/BasicGhost.png");
+	fast_ghost_spritesheet = CP_Image_Load("./Assets/FastGhost.png");
+	fat_ghost_spritesheet = CP_Image_Load("./Assets/FatGhost.png");
+	grim_reaper_spritesheet = CP_Image_Load("./Assets/GrimReaper.png");
+	blue_portal_spritesheet = CP_Image_Load("./Assets/FriendlyPortal.png");
+	red_portal_spritesheet = CP_Image_Load("./Assets/GhostPortal.png");
+	basic_turret_spritesheet = CP_Image_Load("./Assets/BasicTurret.png");
+	homing_missle_turret_spritesheet = CP_Image_Load("./Assets/HomingMissleTurret.png");
+	mine_spritesheet = CP_Image_Load("./Assets/Mine.png");
+	turret_bullet_spritesheet = CP_Image_Load("./Assets/TurretBullets.png");
+	turret_bullet_radius_spritesheet = CP_Image_Load("./Assets/BulletsRadius.png");
+	currency_spritesheet = CP_Image_Load("./Assets/Currency.png");
+	grid_environment_objects_spritesheet = CP_Image_Load("./Assets/GridEnvironmentObject.png");
+	background_spritesheet = CP_Image_Load("./Assets/Background.png");
+	portal_enter_effect_spritesheet = CP_Image_Load("./Assets/PortalEnterEffect.png");
+	portal_spawn_effect_spritesheet = CP_Image_Load("./Assets/EnemySpawnEffect.png");
+	power_up_spritesheet = CP_Image_Load("./Assets/Powerup.png");
+	battlefield_effect_spritesheet = CP_Image_Load("./Assets/BattlefieldEffects.png");
+	fat_UI_background_spritesheet = CP_Image_Load("./Assets/BigUIDisplay.png");
+	interactable_UI_buttons_spritesheet = CP_Image_Load("./Assets/InteractableButtons.png");
+	turret_stats_spritesheet = CP_Image_Load("./Assets/TurretStatsIcons.png");
+	non_grid_environment_objects_spritesheet = CP_Image_Load("./Assets/EnvBackgroundObject.png");
 }
 
 
-void init_linkedlist_variables(void)
+void InitVariablesForSpriteFunctions(void)
 {
-	portalCounter = 0;
-	portalTimer = 0;
-	bulletRadiusNodeKeyNumber = 0;
-	bulletRadiusFirstNode = NULL;
-	portalEnterFirstNode = NULL;
-	portalEnterNodeKeyNumber = 0;
-	portalSpawnFirstNode = NULL;
-	portalSpawnNodeKeyNumber = 0;
-	isPortalEffectSpawn = 0;
-	battleFieldSizeTextMax = 45 * scalingFactor;
-	battleFieldSizeTextMin = 0;
-	battleFieldTimer = 0;
+	portal_current_sprite = 0;
+	portal_animation_timer = 0;
+	bullet_radius_node_key_number = 0;
+	bullet_radius_head_node = NULL;
+	portal_enter_head_node = NULL;
+	portal_enter_node_key_number = 0;
+	portal_spawn_head_node = NULL;
+	portal_spawn_node_key_number = 0;
+	is_portal_spawn_effect_sprite = 0;
+	battlefield_effect_text_max_word_size = 45 * scalingFactor;
+	battlefield_effect_text_min_word_size = 0;
+	battlefield_text_timer = 0;
 }
 
 #pragma region LinkedList
 
-void insert_new_node(struct node** list, float xPosInput, float yPosInput, int typeOfBullet)
+void InsertNewNodeBulletRadius(struct LinkedListNode** list, float xPosInput, float yPosInput, int typeOfBullet)
 {
 
-	struct node* newNode;
-	newNode = malloc(sizeof(struct node));
+	struct LinkedListNode* newNode;
+	newNode = malloc(sizeof(struct LinkedListNode));
 	if (newNode != NULL)
 	{
-		newNode->imageAlphaValue = 255;
-		newNode->key = bulletRadiusNodeKeyNumber;
-		newNode->next = bulletRadiusFirstNode;
-		newNode->xPos = xPosInput;
-		newNode->yPos = yPosInput;
+		newNode->node_image_alpha = 255;
+		newNode->key = bullet_radius_node_key_number;
+		newNode->next_node = bullet_radius_head_node;
+		newNode->node_x_coordinate = xPosInput;
+		newNode->node_y_coordinate = yPosInput;
 
 		switch (typeOfBullet)
 		{
 		case 3:
-			newNode->internalCounter = 3;
+			newNode->node_counter = 3;
 			break;
 		case 2:
-			newNode->internalCounter = 2;
+			newNode->node_counter = 2;
 			break;
 		case 1:
-			newNode->internalCounter = 1;
+			newNode->node_counter = 1;
 			break;
 		case 0:
-			newNode->internalCounter = 0;
+			newNode->node_counter = 0;
 			break;
 		}
 
-		newNode->next = *list;
-		bulletRadiusNodeKeyNumber++;
+		newNode->next_node = *list;
+		bullet_radius_node_key_number++;
 		*list = newNode;
 	}
 
 }
 
-void insert_new_node_portal(struct node** list, float xPosInput, float yPosInput,int portalEffect)
+void InsertNewNodePortalEffect(struct LinkedListNode** list, float xPosInput, float yPosInput,int portalEffect)
 {
 
-	struct node* newNode;
-	newNode = malloc(sizeof(struct node));
+	struct LinkedListNode* newNode;
+	newNode = malloc(sizeof(struct LinkedListNode));
 	if (newNode != NULL)
 	{
 		switch (portalEffect)
 		{
 		case 0:
-			newNode->key = portalSpawnNodeKeyNumber;
-			portalSpawnNodeKeyNumber++;
+			newNode->key = portal_spawn_node_key_number;
+			portal_spawn_node_key_number++;
 			break;
 		case 1:
-			newNode->key = portalEnterNodeKeyNumber;
-			portalEnterNodeKeyNumber++;
+			newNode->key = portal_enter_node_key_number;
+			portal_enter_node_key_number++;
 			break;
 		}
-		newNode->next = *list;
-		newNode->xPos = xPosInput;
-		newNode->yPos = yPosInput;
-		newNode->internalTimer = 0;
-		newNode->internalCounter = 0;
+		newNode->next_node = *list;
+		newNode->node_x_coordinate = xPosInput;
+		newNode->node_y_coordinate = yPosInput;
+		newNode->node_timer = 0;
+		newNode->node_counter = 0;
 		
-		newNode->next = *list;
+		newNode->next_node = *list;
 		*list = newNode;
 		
 	}
@@ -130,12 +129,12 @@ void insert_new_node_portal(struct node** list, float xPosInput, float yPosInput
 }
 
 //delete a link with given key
-struct node* delete_node(struct node* list, int key)
+struct LinkedListNode* DeleteNode(struct LinkedListNode* list, int key)
 {
-	struct node* currentNode;
-	struct node* previousNode;
+	struct LinkedListNode* currentNode;
+	struct LinkedListNode* previousNode;
 	for (currentNode = list, previousNode = NULL; currentNode != NULL && currentNode->key != key;
-		previousNode = currentNode, currentNode = currentNode->next);
+		previousNode = currentNode, currentNode = currentNode->next_node);
 	if (currentNode == NULL)
 	{
 		return list;
@@ -143,18 +142,18 @@ struct node* delete_node(struct node* list, int key)
 
 	if (previousNode == NULL)
 	{
-		list = list->next;
+		list = list->next_node;
 	}
 	else
 	{
-		previousNode->next = currentNode->next;
+		previousNode->next_node = currentNode->next_node;
 	}
 	free(currentNode);
 	return list;
 
 }
 
-int isEmpty(struct node* currentNode) {
+int IsLinkedListEmpty(struct LinkedListNode* currentNode) {
 	return currentNode == NULL;
 }
 #pragma endregion
@@ -162,34 +161,33 @@ int isEmpty(struct node* currentNode) {
 
 #pragma region SpriteSheetRelated
 
-void init_spritesheet_array(void)
+void InitSpritesheetArray(void)
 {
-	SpriteSheetCalculation(basicGhostSpriteArray, basicGhostSpriteSheet, 128, 128, 1);
-	SpriteSheetCalculation(fastGhostSpriteArray, fastGhostSpriteSheet, 128, 128, 1);
-	SpriteSheetCalculation(fatGhostSpriteArray, fatGhostSpriteSheet, 128, 128, 1);
-	SpriteSheetCalculation(grimReaperSpriteArray, grimReaperSpriteSheet, 128, 128, 1);
-	SpriteSheetCalculation(bluePortalArray, bluePortalSpriteSheet, 128, 128, 1);
-	SpriteSheetCalculation(redPortalArray, redPortalSpriteSheet, 128, 128, 1);
-	SpriteSheetCalculation(basicTurretArray, basicTurretSpriteSheet, 128, 128, 0);
-	SpriteSheetCalculation(mineArray, mineSpriteSheet, 128, 128, 0);
-	SpriteSheetCalculation(energyWallArray, energyWallSpriteSheet, 128, 128, 0);
-	SpriteSheetCalculation(homingMissleTurretArray, homingMissleTurretSpriteSheet, 128, 128, 0);
-	SpriteSheetCalculation(bulletArray, bulletSpriteSheet, 128, 128, 1);
-	SpriteSheetCalculation(bulletRadiusArray, bulletRadiusSpriteSheet, 128, 128, 0);
-	SpriteSheetCalculation(currencyArray, currencySpriteSheet, 128, 128, 1);
-	SpriteSheetCalculation(environmentObjectArray, environmentObjectsSpriteSheet, 128, 128, 2);
-	SpriteSheetCalculation(backgroundArray, backgroundSpriteSheet,1920,1080, 0);
-	SpriteSheetCalculation(portalEnterEffectArray, portalEnterEffectSpriteSheet, 128, 128, 0);
-	SpriteSheetCalculation(portalSpawnEffectArray, portalSpawnEffectSpriteSheet, 128, 128, 0);
-	SpriteSheetCalculation(powerUpIconArray, powerUpIconSpriteSheet, 128, 128, 0);
-	SpriteSheetCalculation(battlefieldEffectIconArray, battlefieldEffectIconSpriteSheet, 128, 128, 0);
-	SpriteSheetCalculation(backgroundUIFatArray, backgroundUIFatSpriteSheet, 128, 128, 0);
-	SpriteSheetCalculation(interactableButtonsImageArray, interactableButtonsImageSpriteSheet, 128, 72, 1);
-	SpriteSheetCalculation(turretStatsIconArray, turretStatsIconSpriteSheet, 128, 128, 1);
-	SpriteSheetCalculation(nonGridEnvironmentObjectsArray, nonGridEnvironmentObjectsSpriteSheet, 512, 512, 0);
+	SpritesheetCalculation(basic_ghost_spritesheet_array, basic_ghost_spritesheet, 128, 128, 1);
+	SpritesheetCalculation(fast_ghost_spritesheet_array, fast_ghost_spritesheet, 128, 128, 1);
+	SpritesheetCalculation(fat_ghost_spritesheet_array, fat_ghost_spritesheet, 128, 128, 1);
+	SpritesheetCalculation(grim_reaper_spritesheet_array, grim_reaper_spritesheet, 128, 128, 1);
+	SpritesheetCalculation(blue_portal_spritesheet_array, blue_portal_spritesheet, 128, 128, 1);
+	SpritesheetCalculation(red_portal_spritesheet_array, red_portal_spritesheet, 128, 128, 1);
+	SpritesheetCalculation(basic_turret_spritesheet_array, basic_turret_spritesheet, 128, 128, 0);
+	SpritesheetCalculation(mine_spritesheet_array, mine_spritesheet, 128, 128, 0);
+	SpritesheetCalculation(homing_missle_turret_spritesheet_array, homing_missle_turret_spritesheet, 128, 128, 0);
+	SpritesheetCalculation(turret_bullet_spritesheet_array, turret_bullet_spritesheet, 128, 128, 1);
+	SpritesheetCalculation(turret_bullet_radius_spritesheet_array, turret_bullet_radius_spritesheet, 128, 128, 0);
+	SpritesheetCalculation(currency_spritesheet_array, currency_spritesheet, 128, 128, 1);
+	SpritesheetCalculation(grid_environment_objects_spritesheet_array, grid_environment_objects_spritesheet, 128, 128, 2);
+	SpritesheetCalculation(background_spritesheet_array, background_spritesheet,1920,1080, 0);
+	SpritesheetCalculation(portal_enter_effect_spritesheet_array, portal_enter_effect_spritesheet, 128, 128, 0);
+	SpritesheetCalculation(portal_spawn_effect_spritesheet_array, portal_spawn_effect_spritesheet, 128, 128, 0);
+	SpritesheetCalculation(power_up_spritesheet_array, power_up_spritesheet, 128, 128, 0);
+	SpritesheetCalculation(battlefield_effect_spritesheet_array, battlefield_effect_spritesheet, 128, 128, 0);
+	SpritesheetCalculation(fat_UI_background_spritesheet_array, fat_UI_background_spritesheet, 128, 128, 0);
+	SpritesheetCalculation(interactable_UI_buttons_spritesheet_array, interactable_UI_buttons_spritesheet, 128, 72, 1);
+	SpritesheetCalculation(turret_stats_spritesheet_array, turret_stats_spritesheet, 128, 128, 1);
+	SpritesheetCalculation(non_grid_environment_objects_spritesheet_array, non_grid_environment_objects_spritesheet, 512, 512, 0);
 }
 
-void SpriteSheetCalculation(struct SpriteSheetImage* s, CP_Image image, int pixelWidth, int pixelHeight, int stopPoint)
+void SpritesheetCalculation(struct SpriteSheetImage* s, CP_Image image, int pixelWidth, int pixelHeight, int stopPoint)
 {
 
 	int width = CP_Image_GetWidth(image);
@@ -202,12 +200,12 @@ void SpriteSheetCalculation(struct SpriteSheetImage* s, CP_Image image, int pixe
 		{
 			if (!(j == height / pixelHeight- 1 && i > width / pixelWidth - stopPoint - 1))
 			{
-				s[counter].pixelSizeX= pixelWidth;
-				s[counter].pixelSizeY = pixelHeight;
-				s[counter].leftXPixel = (float)(i * s[counter].pixelSizeX);
-				s[counter].rightXPixel = (float)((i + 1) * s[counter].pixelSizeX);
-				s[counter].topYPixel = (float)(j * s[counter].pixelSizeY);
-				s[counter].bottomYPixel = (float)((j + 1) * s[counter].pixelSizeY);
+				s[counter].image_width= pixelWidth;
+				s[counter].image_height = pixelHeight;
+				s[counter].left_pixel_value = (float)(i * s[counter].image_width);
+				s[counter].right_pixel_value = (float)((i + 1) * s[counter].image_width);
+				s[counter].top_pixel_value = (float)(j * s[counter].image_height);
+				s[counter].bottom_pixel_value = (float)((j + 1) * s[counter].image_height);
 				counter++;
 			}
 		}
@@ -215,52 +213,52 @@ void SpriteSheetCalculation(struct SpriteSheetImage* s, CP_Image image, int pixe
 }
 
 
-void RenderPortal(struct SpriteSheetImage s, struct PortalVariables* pv, CP_Image image)
+void RenderPortalSprite(struct SpriteSheetImage s, struct PortalVariables* pv, CP_Image image)
 {
-	CP_Image_DrawSubImage(image, pv->portalXPos, pv->portalYPos, pv->sizeX, pv->sizeY,
-		s.leftXPixel, s.topYPixel, s.rightXPixel, s.bottomYPixel, 255);
+	CP_Image_DrawSubImage(image, pv->portal_x_coordinate, pv->portal_y_coordinate, pv->portal_image_width, pv->portal_image_height,
+		s.left_pixel_value, s.top_pixel_value, s.right_pixel_value, s.bottom_pixel_value, 255);
 }
 
-void RenderWithAlphaChanged(CP_Image image, struct SpriteSheetImage s, float xPos, float yPos, float sizeOfImageX, float sizeOfImageY, int alphaValue)
+void RenderImageFromSpriteSheetWithAlpha(CP_Image image, struct SpriteSheetImage s, float xPos, float yPos, float sizeOfImageX, float sizeOfImageY, int alphaValue)
 {
 	//put size of image as the turret size
 	CP_Image_DrawSubImage(image, xPos, yPos, sizeOfImageX, sizeOfImageY,
-		s.leftXPixel, s.topYPixel, s.rightXPixel, s.bottomYPixel, alphaValue);
+		s.left_pixel_value, s.top_pixel_value, s.right_pixel_value, s.bottom_pixel_value, alphaValue);
 }
 
-void RenderNormal(CP_Image image, struct SpriteSheetImage s, float xPos, float yPos, float sizeOfImageX, float sizeOfImageY)
+void RenderImageFromSpriteSheet(CP_Image image, struct SpriteSheetImage s, float xPos, float yPos, float sizeOfImageX, float sizeOfImageY)
 {
-	RenderWithAlphaChanged(image, s, xPos, yPos, sizeOfImageX, sizeOfImageY,255);
+	RenderImageFromSpriteSheetWithAlpha(image, s, xPos, yPos, sizeOfImageX, sizeOfImageY,255);
 }
 
 #pragma endregion
 
-void render_bullet_circles(void)
+void RenderAndUpdateBulletCircles(void)
 {
-	if (!isEmpty(bulletRadiusFirstNode))
+	if (!IsLinkedListEmpty(bullet_radius_head_node))
 	{
-		struct node* current = bulletRadiusFirstNode;
+		struct LinkedListNode* current = bullet_radius_head_node;
 		while (1)
 		{
 
 			if (current != NULL)
 			{
-				RenderWithAlphaChanged(bulletRadiusSpriteSheet, bulletRadiusArray[current->internalCounter], current->xPos, current->yPos,
-					100.0f, 100.0f,current->imageAlphaValue);
-				current->imageAlphaValue -= 50;
-				if (current->imageAlphaValue < 0)
+				RenderImageFromSpriteSheetWithAlpha(turret_bullet_radius_spritesheet, turret_bullet_radius_spritesheet_array[current->node_counter], current->node_x_coordinate, current->node_y_coordinate,
+					100.0f, 100.0f,current->node_image_alpha);
+				current->node_image_alpha -= 50;
+				if (current->node_image_alpha < 0)
 				{
-					bulletRadiusFirstNode = delete_node(current, current->key);
+					bullet_radius_head_node = DeleteNode(current, current->key);
 					break;
 				}
-				if (current->next == NULL)
+				if (current->next_node == NULL)
 				{
 					break;
 				}
 
 				else
 				{
-					current = current->next;
+					current = current->next_node;
 				}
 			}
 
@@ -274,11 +272,11 @@ void render_bullet_circles(void)
 
 }
 
-void render_portal_effect(struct node* nodeToChange, int portalEffect)
+void RenderAndUpdateSinglePortalEffect(struct LinkedListNode* nodeToChange, int portalEffect)
 {
-	if (!isEmpty(nodeToChange))
+	if (!IsLinkedListEmpty(nodeToChange))
 	{
-		struct node* current = nodeToChange;
+		struct LinkedListNode* current = nodeToChange;
 		while (1)
 		{
 
@@ -287,51 +285,51 @@ void render_portal_effect(struct node* nodeToChange, int portalEffect)
 				switch (portalEffect)
 				{
 				case 0:
-					RenderNormal(portalSpawnEffectSpriteSheet, 
-						portalSpawnEffectArray[current->internalCounter], 
-						current->xPos, current->yPos,50, 50);
+					RenderImageFromSpriteSheet(portal_spawn_effect_spritesheet, 
+						portal_spawn_effect_spritesheet_array[current->node_counter], 
+						current->node_x_coordinate, current->node_y_coordinate,50, 50);
 					break;
 				case 1:
-					RenderNormal(portalEnterEffectSpriteSheet,
-						portalEnterEffectArray[current->internalCounter],
-						current->xPos, current->yPos, 50, 50);
+					RenderImageFromSpriteSheet(portal_enter_effect_spritesheet,
+						portal_enter_effect_spritesheet_array[current->node_counter],
+						current->node_x_coordinate, current->node_y_coordinate, 50, 50);
 					break;
 				}
 
 				
-				current->internalTimer += CP_System_GetDt();
-				if (current->internalTimer > 0.25)
+				current->node_timer += CP_System_GetDt();
+				if (current->node_timer > 0.25)
 				{
-					current->internalTimer = 0;
-					if (current->internalCounter >= 3)
+					current->node_timer = 0;
+					if (current->node_counter >= 3)
 					{
 						
 						switch (portalEffect)
 						{
 						case 0:
-							portalSpawnFirstNode = delete_node(current, current->key);
+							portal_spawn_head_node = DeleteNode(current, current->key);
 							break;
 						case 1:
-							portalEnterFirstNode = delete_node(current, current->key);
+							portal_enter_head_node = DeleteNode(current, current->key);
 							break;
 						}
 						break;
 					}
 					else
 					{
-						current->internalCounter++;
+						current->node_counter++;
 					}
 					
 					
 				}
-				if (current->next == NULL)
+				if (current->next_node == NULL)
 				{
 					break;
 				}
 
 				else
 				{
-					current = current->next;
+					current = current->next_node;
 				}
 			}
 
@@ -345,104 +343,104 @@ void render_portal_effect(struct node* nodeToChange, int portalEffect)
 
 }
 
-void render_all_portal_effects(void)
+void RenderAllPortalEffects(void)
 {
-	render_portal_effect(portalEnterFirstNode,!isPortalEffectSpawn);
-	render_portal_effect(portalSpawnFirstNode, isPortalEffectSpawn);
+	RenderAndUpdateSinglePortalEffect(portal_enter_head_node,!is_portal_spawn_effect_sprite);
+	RenderAndUpdateSinglePortalEffect(portal_spawn_head_node, is_portal_spawn_effect_sprite);
 }
 
-void update_portal(void)
+void UpdatePortalAnimation(void)
 {
-	if (portalTimer >= 0.25)
+	if (portal_animation_timer >= 0.25)
 	{
-		if (portalCounter == 2)
+		if (portal_current_sprite == 2)
 		{
-			portalCounter = 0;
-			portalTimer = 0;
+			portal_current_sprite = 0;
+			portal_animation_timer = 0;
 		}
 
 		else
 		{
-			portalCounter++;
-			portalTimer = 0;
+			portal_current_sprite++;
+			portal_animation_timer = 0;
 		}
 	}
-	portalTimer += CP_System_GetDt();
-	RenderPortal(bluePortalArray[portalCounter], &portalVariablesArray[0], bluePortalSpriteSheet);
-	RenderPortal(redPortalArray[portalCounter], &portalVariablesArray[1], redPortalSpriteSheet);
+	portal_animation_timer += CP_System_GetDt();
+	RenderPortalSprite(blue_portal_spritesheet_array[portal_current_sprite], &portal_variables_array[0], blue_portal_spritesheet);
+	RenderPortalSprite(red_portal_spritesheet_array[portal_current_sprite], &portal_variables_array[1], red_portal_spritesheet);
 
 }
 
-void render_game_background(int currentLevel)
+void RenderLevelEnvironment(const int currentLevel)
 {
 	switch (currentLevel)
 	{
 	case 0:
 		# pragma region Level 1 Objects
 		CP_Settings_Tint(CP_Color_Create(0, 0, 0, 75));
-		RenderWithAlphaChanged(backgroundSpriteSheet, backgroundArray[1], CP_System_GetWindowWidth() * 0.5f,
+		RenderImageFromSpriteSheetWithAlpha(background_spritesheet, background_spritesheet_array[1], CP_System_GetWindowWidth() * 0.5f,
 			CP_System_GetWindowHeight() * 0.5f, (float)CP_System_GetWindowWidth(), (float)CP_System_GetWindowHeight(), 255);
-		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[1], 
+		RenderImageFromSpriteSheet(non_grid_environment_objects_spritesheet, non_grid_environment_objects_spritesheet_array[1], 
 			CP_System_GetWindowWidth() * 0.85f, CP_System_GetWindowHeight() * 0.85f, 
 			CP_System_GetWindowWidth() * 0.3f, CP_System_GetWindowWidth() * 0.3f);
 
-		RenderWithAlphaChanged(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[0],
+		RenderImageFromSpriteSheetWithAlpha(non_grid_environment_objects_spritesheet, non_grid_environment_objects_spritesheet_array[0],
 			CP_System_GetWindowWidth() * 0.15f, CP_System_GetWindowHeight() * 0.1f,
 			128 * scalingFactor, 128 * scalingFactor, 200);
-		RenderWithAlphaChanged(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[0],
+		RenderImageFromSpriteSheetWithAlpha(non_grid_environment_objects_spritesheet, non_grid_environment_objects_spritesheet_array[0],
 			CP_System_GetWindowWidth() * 0.25f, CP_System_GetWindowHeight() * 0.11f,
 			128 * scalingFactor, 128 * scalingFactor, 200);
-		RenderWithAlphaChanged(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[0],
+		RenderImageFromSpriteSheetWithAlpha(non_grid_environment_objects_spritesheet, non_grid_environment_objects_spritesheet_array[0],
 			CP_System_GetWindowWidth() * 0.35f, CP_System_GetWindowHeight() * 0.1f,
 			128 * scalingFactor, 128 * scalingFactor, 200);
-		RenderWithAlphaChanged(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[0],
+		RenderImageFromSpriteSheetWithAlpha(non_grid_environment_objects_spritesheet, non_grid_environment_objects_spritesheet_array[0],
 			CP_System_GetWindowWidth() * 0.65f, CP_System_GetWindowHeight() * 0.1f,
 			128 * scalingFactor, 128 * scalingFactor, 200);
-		RenderWithAlphaChanged(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[0],
+		RenderImageFromSpriteSheetWithAlpha(non_grid_environment_objects_spritesheet, non_grid_environment_objects_spritesheet_array[0],
 			CP_System_GetWindowWidth() * 0.75f, CP_System_GetWindowHeight() * 0.11f,
 			128 * scalingFactor, 128 * scalingFactor, 200);
 
-		RenderWithAlphaChanged(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[0],
+		RenderImageFromSpriteSheetWithAlpha(non_grid_environment_objects_spritesheet, non_grid_environment_objects_spritesheet_array[0],
 			CP_System_GetWindowWidth() * 0.15f, CP_System_GetWindowHeight() * 0.9f,
 			128 * scalingFactor, 128 * scalingFactor, 200);
-		RenderWithAlphaChanged(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[0],
+		RenderImageFromSpriteSheetWithAlpha(non_grid_environment_objects_spritesheet, non_grid_environment_objects_spritesheet_array[0],
 			CP_System_GetWindowWidth() * 0.25f, CP_System_GetWindowHeight() * 0.89f,
 			128 * scalingFactor, 128 * scalingFactor, 200);
-		RenderWithAlphaChanged(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[0],
+		RenderImageFromSpriteSheetWithAlpha(non_grid_environment_objects_spritesheet, non_grid_environment_objects_spritesheet_array[0],
 			CP_System_GetWindowWidth() * 0.35f, CP_System_GetWindowHeight() * 0.9f,
 			128 * scalingFactor, 128 * scalingFactor, 200);
-		RenderWithAlphaChanged(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[0],
+		RenderImageFromSpriteSheetWithAlpha(non_grid_environment_objects_spritesheet, non_grid_environment_objects_spritesheet_array[0],
 			CP_System_GetWindowWidth() * 0.45f, CP_System_GetWindowHeight() * 0.9f,
 			128 * scalingFactor, 128 * scalingFactor, 200);
-		RenderWithAlphaChanged(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[0],
+		RenderImageFromSpriteSheetWithAlpha(non_grid_environment_objects_spritesheet, non_grid_environment_objects_spritesheet_array[0],
 			CP_System_GetWindowWidth() * 0.55f, CP_System_GetWindowHeight() * 0.89f,
 			128 * scalingFactor, 128 * scalingFactor, 200);
 
-		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[2],
+		RenderImageFromSpriteSheet(non_grid_environment_objects_spritesheet, non_grid_environment_objects_spritesheet_array[2],
 			CP_System_GetWindowWidth() * 0.3f, CP_System_GetWindowHeight() * 0.3f,
 			64 * scalingFactor, 64 * scalingFactor);
 
-		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[2],
+		RenderImageFromSpriteSheet(non_grid_environment_objects_spritesheet, non_grid_environment_objects_spritesheet_array[2],
 			CP_System_GetWindowWidth() * 0.3f, CP_System_GetWindowHeight() * 0.5f,
 			64 * scalingFactor, 64 * scalingFactor);
 
-		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[2],
+		RenderImageFromSpriteSheet(non_grid_environment_objects_spritesheet, non_grid_environment_objects_spritesheet_array[2],
 			CP_System_GetWindowWidth() * 0.7f, CP_System_GetWindowHeight() * 0.6f,
 			64 * scalingFactor, 64 * scalingFactor);
 
-		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[2],
+		RenderImageFromSpriteSheet(non_grid_environment_objects_spritesheet, non_grid_environment_objects_spritesheet_array[2],
 			CP_System_GetWindowWidth() * 0.85f, CP_System_GetWindowHeight() * 0.5f,
 			64 * scalingFactor, 64 * scalingFactor);
 
-		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[8],
+		RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[8],
 			CP_System_GetWindowWidth() * 0.95f, CP_System_GetWindowHeight() * 0.55f,
 			64 * scalingFactor, 64 * scalingFactor);
 
-		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[8],
+		RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[8],
 			CP_System_GetWindowWidth() * 0.69f, CP_System_GetWindowHeight() * 0.9f,
 			64 * scalingFactor, 64 * scalingFactor);
 
-		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[8],
+		RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[8],
 			CP_System_GetWindowWidth() * 0.25f, CP_System_GetWindowHeight() * 0.75f,
 			64 * scalingFactor, 64 * scalingFactor);
 #pragma endregion
@@ -450,79 +448,79 @@ void render_game_background(int currentLevel)
 	case 1:
 		#pragma region Level 2 Objects
 		CP_Settings_Tint(CP_Color_Create(0, 0, 0, 75));
-		RenderWithAlphaChanged(backgroundSpriteSheet, backgroundArray[2], CP_System_GetWindowWidth() * 0.5f,
+		RenderImageFromSpriteSheetWithAlpha(background_spritesheet, background_spritesheet_array[2], CP_System_GetWindowWidth() * 0.5f,
 			CP_System_GetWindowHeight() * 0.5f, (float)CP_System_GetWindowWidth(), (float)CP_System_GetWindowHeight(), 255);
 
-		RenderWithAlphaChanged(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[0],
+		RenderImageFromSpriteSheetWithAlpha(non_grid_environment_objects_spritesheet, non_grid_environment_objects_spritesheet_array[0],
 			CP_System_GetWindowWidth() * 0.15f, CP_System_GetWindowHeight() * 0.1f,
 			128 * scalingFactor, 128 * scalingFactor, 200);
-		RenderWithAlphaChanged(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[0],
+		RenderImageFromSpriteSheetWithAlpha(non_grid_environment_objects_spritesheet, non_grid_environment_objects_spritesheet_array[0],
 			CP_System_GetWindowWidth() * 0.25f, CP_System_GetWindowHeight() * 0.1f,
 			128 * scalingFactor, 128 * scalingFactor, 200);
-		RenderWithAlphaChanged(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[0],
+		RenderImageFromSpriteSheetWithAlpha(non_grid_environment_objects_spritesheet, non_grid_environment_objects_spritesheet_array[0],
 			CP_System_GetWindowWidth() * 0.35f, CP_System_GetWindowHeight() * 0.1f,
 			128 * scalingFactor, 128 * scalingFactor, 200);
-		RenderWithAlphaChanged(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[0],
+		RenderImageFromSpriteSheetWithAlpha(non_grid_environment_objects_spritesheet, non_grid_environment_objects_spritesheet_array[0],
 			CP_System_GetWindowWidth() * 0.15f, CP_System_GetWindowHeight() * 0.9f,
 			128 * scalingFactor, 128 * scalingFactor, 200);
-		RenderWithAlphaChanged(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[0],
+		RenderImageFromSpriteSheetWithAlpha(non_grid_environment_objects_spritesheet, non_grid_environment_objects_spritesheet_array[0],
 			CP_System_GetWindowWidth() * 0.25f, CP_System_GetWindowHeight() * 0.9f,
 			128 * scalingFactor, 128 * scalingFactor, 200);
-		RenderWithAlphaChanged(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[0],
+		RenderImageFromSpriteSheetWithAlpha(non_grid_environment_objects_spritesheet, non_grid_environment_objects_spritesheet_array[0],
 			CP_System_GetWindowWidth() * 0.35f, CP_System_GetWindowHeight() * 0.9f,
 			128 * scalingFactor, 128 * scalingFactor, 200);
 
 
-		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[2],
+		RenderImageFromSpriteSheet(non_grid_environment_objects_spritesheet, non_grid_environment_objects_spritesheet_array[2],
 			CP_System_GetWindowWidth() * 0.3f, CP_System_GetWindowHeight() * 0.3f,
 			64 * scalingFactor, 64 * scalingFactor);
-		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[2],
+		RenderImageFromSpriteSheet(non_grid_environment_objects_spritesheet, non_grid_environment_objects_spritesheet_array[2],
 			CP_System_GetWindowWidth() * 0.25f, CP_System_GetWindowHeight() * 0.4f,
 			64 * scalingFactor, 64 * scalingFactor);
 
-		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[2],
+		RenderImageFromSpriteSheet(non_grid_environment_objects_spritesheet, non_grid_environment_objects_spritesheet_array[2],
 			CP_System_GetWindowWidth() * 0.22f, CP_System_GetWindowHeight() * 0.72f,
 			64 * scalingFactor, 64 * scalingFactor);
 
-		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[2],
+		RenderImageFromSpriteSheet(non_grid_environment_objects_spritesheet, non_grid_environment_objects_spritesheet_array[2],
 			CP_System_GetWindowWidth() * 0.65f, CP_System_GetWindowHeight() * 0.50f,
 			64 * scalingFactor, 64 * scalingFactor);
 
-		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[4],
+		RenderImageFromSpriteSheet(non_grid_environment_objects_spritesheet, non_grid_environment_objects_spritesheet_array[4],
 			CP_System_GetWindowWidth() * 0.85f, CP_System_GetWindowHeight() * 0.45f,
 			128 * scalingFactor, 128 * scalingFactor);
-		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[4],
+		RenderImageFromSpriteSheet(non_grid_environment_objects_spritesheet, non_grid_environment_objects_spritesheet_array[4],
 			CP_System_GetWindowWidth() * 0.7f, CP_System_GetWindowHeight() * 0.1f,
 			128 * scalingFactor, 128 * scalingFactor);
-		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[4],
+		RenderImageFromSpriteSheet(non_grid_environment_objects_spritesheet, non_grid_environment_objects_spritesheet_array[4],
 			CP_System_GetWindowWidth() * 0.9f, CP_System_GetWindowHeight() * 0.9f,
 			128 * scalingFactor, 128 * scalingFactor);
 
-		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[6],
+		RenderImageFromSpriteSheet(non_grid_environment_objects_spritesheet, non_grid_environment_objects_spritesheet_array[6],
 			CP_System_GetWindowWidth() * 0.45f, CP_System_GetWindowHeight() * 0.85f,
 			80 * scalingFactor, 64 * scalingFactor);
 
-		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[6],
+		RenderImageFromSpriteSheet(non_grid_environment_objects_spritesheet, non_grid_environment_objects_spritesheet_array[6],
 			CP_System_GetWindowWidth() * 0.3f, CP_System_GetWindowHeight() * 0.75f,
 			80 * scalingFactor, 64 * scalingFactor);
-		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[8],
+		RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[8],
 			CP_System_GetWindowWidth() * 0.25f, CP_System_GetWindowHeight() * 0.55f,
 			64 * scalingFactor, 64 * scalingFactor);
-		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[8],
+		RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[8],
 			CP_System_GetWindowWidth() * 0.15f, CP_System_GetWindowHeight() * 0.5f,
 			64 * scalingFactor, 64 * scalingFactor);
-		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[8],
+		RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[8],
 			CP_System_GetWindowWidth() * 0.75f, CP_System_GetWindowHeight() * 0.3f,
 			64 * scalingFactor, 64 * scalingFactor);
 
-		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[8],
+		RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[8],
 			CP_System_GetWindowWidth() * 0.85f, CP_System_GetWindowHeight() * 0.65f,
 			64 * scalingFactor, 64 * scalingFactor);
-		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[8],
+		RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[8],
 			CP_System_GetWindowWidth() * 0.6f, CP_System_GetWindowHeight() * 0.9f,
 			64 * scalingFactor, 64 * scalingFactor);
 
-		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[9],
+		RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[9],
 			CP_System_GetWindowWidth() * 0.8f, CP_System_GetWindowHeight() * 0.8f,
 			64 * scalingFactor, 64 * scalingFactor);
 #pragma endregion
@@ -530,63 +528,63 @@ void render_game_background(int currentLevel)
 	case 2:
 		#pragma region Level 3 Objects
 		CP_Settings_Tint(CP_Color_Create(0, 0, 0, 75));
-		RenderWithAlphaChanged(backgroundSpriteSheet, backgroundArray[3], CP_System_GetWindowWidth() * 0.5f,
+		RenderImageFromSpriteSheetWithAlpha(background_spritesheet, background_spritesheet_array[3], CP_System_GetWindowWidth() * 0.5f,
 			CP_System_GetWindowHeight() * 0.5f, (float)CP_System_GetWindowWidth(), (float)CP_System_GetWindowHeight(), 200);
-		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[3],
+		RenderImageFromSpriteSheet(non_grid_environment_objects_spritesheet, non_grid_environment_objects_spritesheet_array[3],
 			CP_System_GetWindowWidth() * 0.15f, CP_System_GetWindowHeight() * 0.19f,
 			300* scalingFactor, 300 * scalingFactor);
-		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[7],
+		RenderImageFromSpriteSheet(non_grid_environment_objects_spritesheet, non_grid_environment_objects_spritesheet_array[7],
 			CP_System_GetWindowWidth() * 0.9f, CP_System_GetWindowHeight() * 0.65f,
 			200 * scalingFactor, 200 * scalingFactor);
 
-		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[5],
+		RenderImageFromSpriteSheet(non_grid_environment_objects_spritesheet, non_grid_environment_objects_spritesheet_array[5],
 			CP_System_GetWindowWidth() * 0.15f, CP_System_GetWindowHeight() * 0.5f,
 			64 * scalingFactor, 64 * scalingFactor);
-		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[5],
+		RenderImageFromSpriteSheet(non_grid_environment_objects_spritesheet, non_grid_environment_objects_spritesheet_array[5],
 			CP_System_GetWindowWidth() * 0.25f, CP_System_GetWindowHeight() * 0.65f,
 			64 * scalingFactor, 64 * scalingFactor);
-		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[5],
+		RenderImageFromSpriteSheet(non_grid_environment_objects_spritesheet, non_grid_environment_objects_spritesheet_array[5],
 			CP_System_GetWindowWidth() * 0.2f, CP_System_GetWindowHeight() * 0.85f,
 			64 * scalingFactor, 64 * scalingFactor);
-		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[5],
+		RenderImageFromSpriteSheet(non_grid_environment_objects_spritesheet, non_grid_environment_objects_spritesheet_array[5],
 			CP_System_GetWindowWidth() * 0.7f, CP_System_GetWindowHeight() * 0.2f,
 			64 * scalingFactor, 64 * scalingFactor);
-		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[5],
+		RenderImageFromSpriteSheet(non_grid_environment_objects_spritesheet, non_grid_environment_objects_spritesheet_array[5],
 			CP_System_GetWindowWidth() * 0.75f, CP_System_GetWindowHeight() * 0.4f,
 			64 * scalingFactor, 64 * scalingFactor);
-		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[5],
+		RenderImageFromSpriteSheet(non_grid_environment_objects_spritesheet, non_grid_environment_objects_spritesheet_array[5],
 			CP_System_GetWindowWidth() * 0.8f, CP_System_GetWindowHeight() * 0.85f,
 			64 * scalingFactor, 64 * scalingFactor);
-		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[5],
+		RenderImageFromSpriteSheet(non_grid_environment_objects_spritesheet, non_grid_environment_objects_spritesheet_array[5],
 			CP_System_GetWindowWidth() * 0.7f, CP_System_GetWindowHeight() * 0.65f,
 			64 * scalingFactor, 64 * scalingFactor);
 
-		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[9],
+		RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[9],
 			CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.8f,
 			64 * scalingFactor, 64 * scalingFactor);
-		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[9],
+		RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[9],
 			CP_System_GetWindowWidth() * 0.65f, CP_System_GetWindowHeight() * 0.5f,
 			64 * scalingFactor, 64 * scalingFactor);
-		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[9],
+		RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[9],
 			CP_System_GetWindowWidth() * 0.35f, CP_System_GetWindowHeight() * 0.9f,
 			64 * scalingFactor, 64 * scalingFactor);
-		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[9],
+		RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[9],
 			CP_System_GetWindowWidth() * 0.4f, CP_System_GetWindowHeight() * 0.1f,
 			64 * scalingFactor, 64 * scalingFactor);
-		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[9],
+		RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[9],
 			CP_System_GetWindowWidth() * 0.9f, CP_System_GetWindowHeight() * 0.9f,
 			64 * scalingFactor, 64 * scalingFactor);
 
-		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[8],
+		RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[8],
 			CP_System_GetWindowWidth() * 0.6f, CP_System_GetWindowHeight() * 0.1f,
 			64 * scalingFactor, 64 * scalingFactor);
-		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[8],
+		RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[8],
 			CP_System_GetWindowWidth() * 0.25f, CP_System_GetWindowHeight() * 0.1f,
 			64 * scalingFactor, 64 * scalingFactor);
-		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[8],
+		RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[8],
 			CP_System_GetWindowWidth() * 0.2f, CP_System_GetWindowHeight() * 0.4f,
 			64 * scalingFactor, 64 * scalingFactor);
-		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[8],
+		RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[8],
 			CP_System_GetWindowWidth() * 0.15f, CP_System_GetWindowHeight() * 0.4f,
 			64 * scalingFactor, 64 * scalingFactor);
 #pragma endregion
@@ -594,78 +592,78 @@ void render_game_background(int currentLevel)
 	case 3:
 		#pragma region Level 4 Objects
 		CP_Settings_Tint(CP_Color_Create(0, 0, 0, 75));
-		RenderWithAlphaChanged(backgroundSpriteSheet, backgroundArray[4], CP_System_GetWindowWidth() * 0.5f,
+		RenderImageFromSpriteSheetWithAlpha(background_spritesheet, background_spritesheet_array[4], CP_System_GetWindowWidth() * 0.5f,
 			CP_System_GetWindowHeight() * 0.5f, (float)CP_System_GetWindowWidth(), (float)CP_System_GetWindowHeight(), 200);
 		
-		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[5],
+		RenderImageFromSpriteSheet(non_grid_environment_objects_spritesheet, non_grid_environment_objects_spritesheet_array[5],
 			CP_System_GetWindowWidth() * 0.15f, CP_System_GetWindowHeight() * 0.15f,
 			64 * scalingFactor, 64 * scalingFactor);
-		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[5],
+		RenderImageFromSpriteSheet(non_grid_environment_objects_spritesheet, non_grid_environment_objects_spritesheet_array[5],
 			CP_System_GetWindowWidth() * 0.25f, CP_System_GetWindowHeight() * 0.25f,
 			64 * scalingFactor, 64 * scalingFactor);
-		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[5],
+		RenderImageFromSpriteSheet(non_grid_environment_objects_spritesheet, non_grid_environment_objects_spritesheet_array[5],
 			CP_System_GetWindowWidth() * 0.2f, CP_System_GetWindowHeight() * 0.4f,
 			64 * scalingFactor, 64 * scalingFactor);
-		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[5],
+		RenderImageFromSpriteSheet(non_grid_environment_objects_spritesheet, non_grid_environment_objects_spritesheet_array[5],
 			CP_System_GetWindowWidth() * 0.14f, CP_System_GetWindowHeight() * 0.65f,
 			64 * scalingFactor, 64 * scalingFactor);
-		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[5],
+		RenderImageFromSpriteSheet(non_grid_environment_objects_spritesheet, non_grid_environment_objects_spritesheet_array[5],
 			CP_System_GetWindowWidth() * 0.23f, CP_System_GetWindowHeight() * 0.8f,
 			64 * scalingFactor, 64 * scalingFactor);
-		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[9],
+		RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[9],
 			CP_System_GetWindowWidth() * 0.25f, CP_System_GetWindowHeight() * 0.65f,
 			64 * scalingFactor, 64 * scalingFactor);
-		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[9],
+		RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[9],
 			CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.9f,
 			64 * scalingFactor, 64 * scalingFactor);
-		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[9],
+		RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[9],
 			CP_System_GetWindowWidth() * 0.4f, CP_System_GetWindowHeight() * 0.1f,
 			64 * scalingFactor, 64 * scalingFactor);
-		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[8],
+		RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[8],
 			CP_System_GetWindowWidth() * 0.3f, CP_System_GetWindowHeight() * 0.1f,
 			64 * scalingFactor, 64 * scalingFactor);
-		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[8],
+		RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[8],
 			CP_System_GetWindowWidth() * 0.4f, CP_System_GetWindowHeight() * 0.9f,
 			64 * scalingFactor, 64 * scalingFactor);
 
 		for (int i = 0; i < 8; i++)
 		{
-			RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[4],
+			RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[4],
 				CP_System_GetWindowWidth() * 0.7f, (CP_System_GetWindowHeight() * (0.05f + i*0.12f)),
 				48 * scalingFactor, 48 * scalingFactor);
-			RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[5],
+			RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[5],
 				CP_System_GetWindowWidth() * 0.7f, (CP_System_GetWindowHeight() * (0.1f + i * 0.12f)),
 				48 * scalingFactor, 48 * scalingFactor);
 		}
-		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[1],
+		RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[1],
 			CP_System_GetWindowWidth() * 0.85f, (CP_System_GetWindowHeight() * 0.85f),
 			48 * scalingFactor, 48 * scalingFactor);
 
-		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[1],
+		RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[1],
 			CP_System_GetWindowWidth() * 0.87f, (CP_System_GetWindowHeight() * 0.85f),
 			48 * scalingFactor, 48 * scalingFactor);
 
-		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[1],
+		RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[1],
 			CP_System_GetWindowWidth() * 0.89f, (CP_System_GetWindowHeight() * 0.85f),
 			48 * scalingFactor, 48 * scalingFactor);
 
-		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[3],
+		RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[3],
 			CP_System_GetWindowWidth() * 0.85f, (CP_System_GetWindowHeight() * 0.65f),
 			56 * scalingFactor, 56 * scalingFactor);
 
-		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[3],
+		RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[3],
 			CP_System_GetWindowWidth() * 0.75f, (CP_System_GetWindowHeight() * 0.45f),
 			56 * scalingFactor, 56 * scalingFactor);
 
-		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[0],
+		RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[0],
 			CP_System_GetWindowWidth() * 0.85f, (CP_System_GetWindowHeight() * 0.45f),
 			56 * scalingFactor, 56 * scalingFactor);
 
-		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[2],
+		RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[2],
 			CP_System_GetWindowWidth() * 0.3f, (CP_System_GetWindowHeight() * 0.5f),
 			56 * scalingFactor, 56 * scalingFactor);
 
-		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[6],
+		RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[6],
 			CP_System_GetWindowWidth() * 0.5f, (CP_System_GetWindowHeight() * 0.15f),
 			56 * scalingFactor, 56 * scalingFactor);
 
@@ -675,109 +673,109 @@ void render_game_background(int currentLevel)
 		#pragma region Level 5 Objects
 
 		CP_Settings_Tint(CP_Color_Create(0, 0, 0, 75));
-		RenderWithAlphaChanged(backgroundSpriteSheet, backgroundArray[5], CP_System_GetWindowWidth() * 0.5f,
+		RenderImageFromSpriteSheetWithAlpha(background_spritesheet, background_spritesheet_array[5], CP_System_GetWindowWidth() * 0.5f,
 			CP_System_GetWindowHeight() * 0.5f, (float)CP_System_GetWindowWidth(), (float)CP_System_GetWindowHeight(), 200);
 
-		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[8],
+		RenderImageFromSpriteSheet(non_grid_environment_objects_spritesheet, non_grid_environment_objects_spritesheet_array[8],
 			CP_System_GetWindowWidth() * 0.85f, CP_System_GetWindowHeight() * 0.85f,
 			75 * scalingFactor, 75 * scalingFactor);
 
-		RenderNormal(nonGridEnvironmentObjectsSpriteSheet, nonGridEnvironmentObjectsArray[8],
+		RenderImageFromSpriteSheet(non_grid_environment_objects_spritesheet, non_grid_environment_objects_spritesheet_array[8],
 			CP_System_GetWindowWidth() * 0.15f, CP_System_GetWindowHeight() * 0.35f,
 			75 * scalingFactor, 75 * scalingFactor);
 
-		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[3],
+		RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[3],
 			CP_System_GetWindowWidth() * 0.85f, (CP_System_GetWindowHeight() * 0.45f),
 			56 * scalingFactor, 56 * scalingFactor);
 
-		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[7],
+		RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[7],
 			CP_System_GetWindowWidth() * 0.85f, (CP_System_GetWindowHeight() * 0.55f),
 			64 * scalingFactor, 64 * scalingFactor);
-		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[6],
+		RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[6],
 			CP_System_GetWindowWidth() * 0.9f, (CP_System_GetWindowHeight() * 0.6f),
 			48 * scalingFactor, 48 * scalingFactor);
-		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[6],
+		RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[6],
 			CP_System_GetWindowWidth() * 0.85f, (CP_System_GetWindowHeight() * 0.65f),
 			48 * scalingFactor, 48 * scalingFactor);
 
 
 		for (int i = 0; i < 8; i++)
 		{
-			RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[4],
+			RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[4],
 				CP_System_GetWindowWidth() * 0.3f, (CP_System_GetWindowHeight() * (0.05f + i * 0.12f)),
 				48 * scalingFactor, 48 * scalingFactor);
-			RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[5],
+			RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[5],
 				CP_System_GetWindowWidth() * 0.3f, (CP_System_GetWindowHeight() * (0.1f + i * 0.12f)),
 				48 * scalingFactor, 48 * scalingFactor);
-			RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[4],
+			RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[4],
 				CP_System_GetWindowWidth() * 0.7f, (CP_System_GetWindowHeight() * (0.05f + i * 0.12f)),
 				48 * scalingFactor, 48 * scalingFactor);
-			RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[5],
+			RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[5],
 				CP_System_GetWindowWidth() * 0.7f, (CP_System_GetWindowHeight() * (0.1f + i * 0.12f)),
 				48 * scalingFactor, 48 * scalingFactor);
 
 		}
-		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[7],
+		RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[7],
 			CP_System_GetWindowWidth() * 0.15f, (CP_System_GetWindowHeight() * 0.1f),
 			64 * scalingFactor, 64 * scalingFactor);
-		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[6],
+		RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[6],
 			CP_System_GetWindowWidth() * 0.2f, (CP_System_GetWindowHeight() * 0.1f),
 			48 * scalingFactor, 48 * scalingFactor);
-		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[6],
+		RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[6],
 			CP_System_GetWindowWidth() * 0.15f, (CP_System_GetWindowHeight() * 0.15f),
 			48 * scalingFactor, 48 * scalingFactor);
 
-		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[7],
+		RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[7],
 			CP_System_GetWindowWidth() * 0.15f, (CP_System_GetWindowHeight() * 0.8f),
 			64 * scalingFactor, 64 * scalingFactor);
-		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[6],
+		RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[6],
 			CP_System_GetWindowWidth() * 0.2f, (CP_System_GetWindowHeight() * 0.8f),
 			48 * scalingFactor, 48 * scalingFactor);
-		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[6],
+		RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[6],
 			CP_System_GetWindowWidth() * 0.15f, (CP_System_GetWindowHeight() * 0.85f),
 			48 * scalingFactor, 48 * scalingFactor);
 
-		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[0],
+		RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[0],
 			CP_System_GetWindowWidth() * 0.4f, (CP_System_GetWindowHeight() * 0.15f),
 			56 * scalingFactor, 56 * scalingFactor);
-		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[1],
+		RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[1],
 			CP_System_GetWindowWidth() * 0.35f, (CP_System_GetWindowHeight() * 0.2f),
 			56 * scalingFactor, 56 * scalingFactor);
-		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[1],
+		RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[1],
 			CP_System_GetWindowWidth() * 0.45f, (CP_System_GetWindowHeight() * 0.15f),
 			56 * scalingFactor, 56 * scalingFactor);
-		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[0],
+		RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[0],
 			CP_System_GetWindowWidth() * 0.5f, (CP_System_GetWindowHeight() * 0.1f),
 			56 * scalingFactor, 56 * scalingFactor);
-		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[2],
+		RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[2],
 			CP_System_GetWindowWidth() * 0.6f, (CP_System_GetWindowHeight() * 0.15f),
 			56 * scalingFactor, 56 * scalingFactor);
-		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[3],
+		RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[3],
 			CP_System_GetWindowWidth() * 0.55f, (CP_System_GetWindowHeight() * 0.15f),
 			56 * scalingFactor, 56 * scalingFactor);
-		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[3],
+		RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[3],
 			CP_System_GetWindowWidth() * 0.65f, (CP_System_GetWindowHeight() * 0.12f),
 			56 * scalingFactor, 56 * scalingFactor);
 
-		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[1],
+		RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[1],
 			CP_System_GetWindowWidth() * 0.41f, (CP_System_GetWindowHeight() * 0.85f),
 			56 * scalingFactor, 56 * scalingFactor);
-		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[0],
+		RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[0],
 			CP_System_GetWindowWidth() * 0.35f, (CP_System_GetWindowHeight() * 0.9f),
 			56 * scalingFactor, 56 * scalingFactor);
-		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[1],
+		RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[1],
 			CP_System_GetWindowWidth() * 0.42f, (CP_System_GetWindowHeight() * 0.94f),
 			56 * scalingFactor, 56 * scalingFactor);
-		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[3],
+		RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[3],
 			CP_System_GetWindowWidth() * 0.52f, (CP_System_GetWindowHeight() * 0.8f),
 			56 * scalingFactor, 56 * scalingFactor);
-		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[2],
+		RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[2],
 			CP_System_GetWindowWidth() * 0.63f, (CP_System_GetWindowHeight() * 0.91f),
 			56 * scalingFactor, 56 * scalingFactor);
-		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[1],
+		RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[1],
 			CP_System_GetWindowWidth() * 0.51f, (CP_System_GetWindowHeight() * 0.83f),
 			56 * scalingFactor, 56 * scalingFactor);
-		RenderNormal(environmentObjectsSpriteSheet, environmentObjectArray[3],
+		RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[3],
 			CP_System_GetWindowWidth() * 0.65f, (CP_System_GetWindowHeight() * 0.82f),
 			56 * scalingFactor, 56 * scalingFactor);
 #pragma endregion
@@ -788,53 +786,53 @@ void render_game_background(int currentLevel)
 }
 
 
-float BattlefieldEffectLinear(float start, float end, float value)
+float BattlefieldEffectLinearLerp(float start, float end, float value)
 {
 	return (1.f - value) * start + value * end;
 }
 
 void StartBattleFieldEffectTimer(int effect)
 {
-	battleFieldTimer = 0;
-	battleFieldSizeTextMin = 0;
+	battlefield_text_timer = 0;
+	battlefield_effect_text_min_word_size = 0;
 	switch (effect)
 	{
 	case 1:
-		battleFieldSizeTextMax = 60 * scalingFactor;//
+		battlefield_effect_text_max_word_size = 60 * scalingFactor;
 		break;
 	case 2:
-		battleFieldSizeTextMax = 60 * scalingFactor;//
+		battlefield_effect_text_max_word_size = 60 * scalingFactor;
 		break;
 	case 3:
-		battleFieldSizeTextMax = 60 * scalingFactor;
+		battlefield_effect_text_max_word_size = 60 * scalingFactor;
 		break;
 	case 4:
-		battleFieldSizeTextMax = 60 * scalingFactor;
+		battlefield_effect_text_max_word_size = 60 * scalingFactor;
 		break;
 	case 5:
-		battleFieldSizeTextMax = 50 * scalingFactor;
+		battlefield_effect_text_max_word_size = 50 * scalingFactor;
 		break;
 	case 6:
-		battleFieldSizeTextMax = 50* scalingFactor;
+		battlefield_effect_text_max_word_size = 50* scalingFactor;
 		break;
 	case 7:
-		battleFieldSizeTextMax = 60 * scalingFactor;
+		battlefield_effect_text_max_word_size = 60 * scalingFactor;
 		break;
 	case 8:
-		battleFieldSizeTextMax = 60 * scalingFactor;
+		battlefield_effect_text_max_word_size = 60 * scalingFactor;
 		break;
 	case 9:
-		battleFieldSizeTextMax = 45 * scalingFactor;
+		battlefield_effect_text_max_word_size = 45 * scalingFactor;
 		break;
 	case 10:
-		battleFieldSizeTextMax = 45 * scalingFactor;
+		battlefield_effect_text_max_word_size = 45 * scalingFactor;
 		break;
 	case 11:
-		battleFieldSizeTextMax = 55 * scalingFactor;
+		battlefield_effect_text_max_word_size = 55 * scalingFactor;
 		break;
 	}
 }
-void RenderBattlefieldEffect(int effect)
+void RenderBattlefieldEffectText(const int effect)
 {
 	char temp[100];
 	static float timer = 0;
@@ -842,10 +840,10 @@ void RenderBattlefieldEffect(int effect)
 	float duration = 0.5;
 	float stayOnScreenDuration = 3;
 
-	if (battleFieldTimer <= (stayOnScreenDuration + 2 * duration))
+	if (battlefield_text_timer <= (stayOnScreenDuration + 2 * duration))
 	{
 		timer += CP_System_GetDt();
-		battleFieldTimer += CP_System_GetDt();
+		battlefield_text_timer += CP_System_GetDt();
 		sizeTimer = timer;
 		if (timer >= duration)
 		{
@@ -853,50 +851,50 @@ void RenderBattlefieldEffect(int effect)
 			if (timer >= duration + stayOnScreenDuration)
 			{
 				float temp = 0;
-				temp = battleFieldSizeTextMax;
-				battleFieldSizeTextMax = battleFieldSizeTextMin;
-				battleFieldSizeTextMin = temp;
+				temp = battlefield_effect_text_max_word_size;
+				battlefield_effect_text_max_word_size = battlefield_effect_text_min_word_size;
+				battlefield_effect_text_min_word_size = temp;
 				timer = 0;
 			}
 		}
 
-		float currentSize = BattlefieldEffectLinear(battleFieldSizeTextMin, battleFieldSizeTextMax, sizeTimer/ duration);
+		float currentSize = BattlefieldEffectLinearLerp(battlefield_effect_text_min_word_size, battlefield_effect_text_max_word_size, sizeTimer/ duration);
 
 		CP_Settings_Fill(COLOR_WHITE);
 		CP_Settings_TextSize(currentSize);
 		switch (effect)
 		{
-		case 1:
+		case IncreasedPhantomQuartz:
 			sprintf_s(temp, sizeof(temp), "MORE QUARTZ EARNED THIS WAVE");
 			break;
-		case 2:
+		case DecreasedPhantomQuartz:
 			sprintf_s(temp, sizeof(temp), "LESS QUARTZ EARNED THIS WAVE");
 			break;
-		case 3:
+		case FasterEnemies:
 			sprintf_s(temp, sizeof(temp), "FASTER ENEMIES THIS WAVE");
 			break;
-		case 4:
+		case SlowerEnemies:
 			sprintf_s(temp, sizeof(temp), "SLOWER ENEMIES THIS WAVE");
 			break;
-		case 5:
+		case IncreasedTurretDamage:
 			sprintf_s(temp, sizeof(temp), "TURRET DAMAGE INCREASED THIS WAVE");
 			break;
-		case 6:
+		case DecreasedTurretDamage:
 			sprintf_s(temp, sizeof(temp), "TURRET DAMAGE DECREASED THIS WAVE");
 			break;
-		case 7:
+		case MoreHP:
 			sprintf_s(temp, sizeof(temp), "GHOST HAS MORE HP THIS WAVE");
 			break;
-		case 8:
+		case LessHP:
 			sprintf_s(temp, sizeof(temp), "GHOST HAS LESS HP THIS WAVE");
 			break;
-		case 9:
+		case IncreasedTurretAttackSpeed:
 			sprintf_s(temp, sizeof(temp), "TURRET ATTACK SPEED INCREASED THIS WAVE");
 			break;
-		case 10:
+		case DecreasedTurretAttackSpeed:
 			sprintf_s(temp, sizeof(temp), "TURRET ATTACK SPEED DECREASED THIS WAVE");
 			break;
-		case 11:
+		case NoPhantomQuartz:
 			sprintf_s(temp, sizeof(temp), "NO QUARTZ WILL DROP THIS WAVE");
 			break;
 		}

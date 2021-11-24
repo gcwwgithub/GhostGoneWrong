@@ -16,9 +16,9 @@ void game_init(void)
 	scalingFactor = gameWindowWidth / 1280.0f;//Game is scaled according to 1280 width being 1;
 	CP_System_SetWindowSize(gameWindowWidth, gameWindowHeight);//Please change the variables ot change th escreen size
 
-	init_all_images();
-	init_spritesheet_array();
-	init_linkedlist_variables();
+	InitAllImages();
+	InitSpritesheetArray();
+	InitVariablesForSpriteFunctions();
 	init_game_font();
 	init_splash_logos();
 	currentGameState = LogoSplash;
@@ -67,18 +67,18 @@ void game_update(void)
 		update_particle();
 
 		//render all the stuff
-		render_game_background(currentGameLevel);
+		RenderLevelEnvironment(currentGameLevel);
 		render_game_grid();
 		render_path(&Level[currentGameLevel]);
 
-		update_portal();
+		UpdatePortalAnimation();
 
 		draw_multiple_enemies();
-		render_all_portal_effects();
+		RenderAllPortalEffects();
 		render_turret();
 		render_projectile();
 		render_particle();
-		render_bullet_circles();
+		RenderAndUpdateBulletCircles();
 
 		if (!turret[turretSelectedToUpgrade].isActive) { // Close mine menu when it explodes
 			turretSelectedToUpgrade = NO_TURRET_SELECTED;
@@ -86,7 +86,7 @@ void game_update(void)
 		render_button_pressed();
 
 		render_environment();
-		RenderBattlefieldEffect(Level[currentGameLevel].currentEffect);
+		RenderBattlefieldEffectText(Level[currentGameLevel].currentEffect);
 		CP_Settings_NoTint();
 		render_turret_details_display(); //render turret description when hovered
 		render_turret_menu_object(GameMenuObject[ButtonMax - 2], ButtonMax - 2);// Render Upgrade menu first
@@ -110,15 +110,15 @@ void game_update(void)
 		update_projectile();
 		update_particle();
 		//render all the stuff
-		render_game_background(currentGameLevel);
+		RenderLevelEnvironment(currentGameLevel);
 		render_game_grid();
 		render_path(&Level[currentGameLevel]);
-		update_portal();
+		UpdatePortalAnimation();
 		render_environment();
 		render_turret();
 		render_projectile();
 		render_particle();
-		render_bullet_circles();
+		RenderAndUpdateBulletCircles();
 
 		render_button_pressed();
 

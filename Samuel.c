@@ -55,7 +55,7 @@ void turret_init(void)
 		v.y = 1;
 		turret[i].dir = v;
 		turret[i].turretAnimTimer = 0;
-		turret[i].turret_img = slowTurretImageArray[0];
+		turret[i].turret_img = slow_turret_image_array[0];
 		turret[i].currentAnimState = INACTIVE;
 		turret[i].animCounter = 0;
 		turret[i].sell_price = 25;
@@ -77,13 +77,11 @@ void turret_init(void)
 	turret_purchasing[TP_PRICE][T_SLOW] = 200;
 	turret_purchasing[TP_PRICE][T_HOMING] = 200;
 	turret_purchasing[TP_PRICE][T_MINE] = 100;
-	turret_purchasing[TP_PRICE][T_WALL] = 10;
 
 	turret_purchasing[TP_UPGRADE_PRICE][T_BASIC] = 50;
 	turret_purchasing[TP_UPGRADE_PRICE][T_SLOW] = 50;
 	turret_purchasing[TP_UPGRADE_PRICE][T_HOMING] = 50;
 	turret_purchasing[TP_UPGRADE_PRICE][T_MINE] = 15;
-	turret_purchasing[TP_UPGRADE_PRICE][T_WALL] = 10;
 
 	//set all to 5 level only first change later
 	for (int i = 0; i < T_MAX; ++i)
@@ -161,9 +159,6 @@ void place_turret(TurretType type, int index_x, int index_y)
 			turret[i].data.objectType = objectCircle;
 			turret[i].animCounter = 0;
 			turret[i].turretAnimTimer = 0;
-			break;
-		case T_WALL:
-
 			break;
 		default:
 			break;
@@ -289,7 +284,7 @@ void render_turret(void)
 		switch (turret[i].type)
 		{
 		case T_BASIC:
-			RenderNormal(basicTurretSpriteSheet, basicTurretArray[turret[i].animCounter],
+			RenderImageFromSpriteSheet(basic_turret_spritesheet, basic_turret_spritesheet_array[turret[i].animCounter],
 				turret[i].data.xOrigin, turret[i].data.yOrigin, turret[i].size, turret[i].size);
 			break;
 		case T_SLOW:
@@ -297,15 +292,11 @@ void render_turret(void)
 				turret[i].size, turret[i].size, 255, turret[i].angle + 90.f);//the +90 degree is to offset the atan2
 			break;
 		case T_HOMING:
-			RenderNormal(homingMissleTurretSpriteSheet, homingMissleTurretArray[turret[i].animCounter],
+			RenderImageFromSpriteSheet(homing_missle_turret_spritesheet, homing_missle_turret_spritesheet_array[turret[i].animCounter],
 				turret[i].data.xOrigin, turret[i].data.yOrigin, turret[i].size, turret[i].size);
 			break;
 		case T_MINE:
-			RenderNormal(mineSpriteSheet, mineArray[turret[i].animCounter],
-				turret[i].data.xOrigin, turret[i].data.yOrigin, turret[i].size, turret[i].size);
-			break;
-		case T_WALL:
-			RenderNormal(energyWallSpriteSheet, energyWallArray[turret[i].animCounter],
+			RenderImageFromSpriteSheet(mine_spritesheet, mine_spritesheet_array[turret[i].animCounter],
 				turret[i].data.xOrigin, turret[i].data.yOrigin, turret[i].size, turret[i].size);
 			break;
 		default:
@@ -333,7 +324,7 @@ void update_turret(void)
 
 	for (int i = 0; i < MAX_TURRET; ++i)
 	{
-		if (!turret[i].isActive || turret[i].type == T_WALL)
+		if (!turret[i].isActive)
 			continue;
 
 		//reset variables
@@ -594,13 +585,13 @@ void render_projectile(void)
 		switch (proj[i].type)
 		{
 		case P_BASIC:
-			RenderNormal(bulletSpriteSheet, bulletArray[0], proj[i].data.xOrigin, proj[i].data.yOrigin, proj[i].size, proj[i].size);
+			RenderImageFromSpriteSheet(turret_bullet_spritesheet, turret_bullet_spritesheet_array[0], proj[i].data.xOrigin, proj[i].data.yOrigin, proj[i].size, proj[i].size);
 			break;
 		case P_SLOW:
-			RenderNormal(bulletSpriteSheet, bulletArray[1], proj[i].data.xOrigin, proj[i].data.yOrigin, proj[i].size, proj[i].size);
+			RenderImageFromSpriteSheet(turret_bullet_spritesheet, turret_bullet_spritesheet_array[1], proj[i].data.xOrigin, proj[i].data.yOrigin, proj[i].size, proj[i].size);
 			break;
 		case P_HOMING:
-			RenderNormal(bulletSpriteSheet, bulletArray[2], proj[i].data.xOrigin, proj[i].data.yOrigin, proj[i].size, proj[i].size);
+			RenderImageFromSpriteSheet(turret_bullet_spritesheet, turret_bullet_spritesheet_array[2], proj[i].data.xOrigin, proj[i].data.yOrigin, proj[i].size, proj[i].size);
 			break;
 		case P_MINE:
 			CP_Settings_Fill(COLOR_RED);
@@ -713,7 +704,7 @@ void update_turretAnimation(Turret* t)
 
 				if (turret->type == T_SLOW)
 				{
-					t->turret_img = slowTurretImageArray[t->animCounter];
+					t->turret_img = slow_turret_image_array[t->animCounter];
 				}
 				t->turretAnimTimer = 0;
 
@@ -735,7 +726,7 @@ void update_turretAnimation(Turret* t)
 				}
 				if (turret->type == T_SLOW)
 				{
-					t->turret_img = slowTurretImageArray[t->animCounter];
+					t->turret_img = slow_turret_image_array[t->animCounter];
 				}
 				t->turretAnimTimer = 0;
 			}
@@ -803,15 +794,15 @@ void render_particle()
 		switch (particles[i].type)
 		{
 		case PAR_BASIC:
-			RenderWithAlphaChanged(bulletSpriteSheet, bulletArray[0], particles[i].pos.x, particles[i].pos.y,
+			RenderImageFromSpriteSheetWithAlpha(turret_bullet_spritesheet, turret_bullet_spritesheet_array[0], particles[i].pos.x, particles[i].pos.y,
 				particles[i].size, particles[i].size, particles[i].alpha);
 			break;
 		case PAR_SLOW:
-			RenderWithAlphaChanged(bulletSpriteSheet, bulletArray[1], particles[i].pos.x, particles[i].pos.y,
+			RenderImageFromSpriteSheetWithAlpha(turret_bullet_spritesheet, turret_bullet_spritesheet_array[1], particles[i].pos.x, particles[i].pos.y,
 				particles[i].size, particles[i].size, particles[i].alpha);
 			break;
 		case PAR_HOMING:
-			RenderWithAlphaChanged(bulletSpriteSheet, bulletArray[2], particles[i].pos.x, particles[i].pos.y,
+			RenderImageFromSpriteSheetWithAlpha(turret_bullet_spritesheet, turret_bullet_spritesheet_array[2], particles[i].pos.x, particles[i].pos.y,
 				particles[i].size, particles[i].size, particles[i].alpha);
 			break;
 		}

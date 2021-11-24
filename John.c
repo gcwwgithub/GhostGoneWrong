@@ -188,7 +188,7 @@ void enemy_move(enemy* r, float Enemy_PathpointsX[], float Enemy_PathpointsY[], 
 	if (r->CurrentWaypoint + 1 == number_of_points && r->state != Adjusting) {
 		if (r->state != Death && r->state != Inactive && r->state != Reached) {
 			Level[CurrentGameLevel].health -= 10;
-			insert_new_node_portal(&portalEnterFirstNode, r->data.xOrigin,
+			InsertNewNodePortalEffect(&portal_enter_head_node, r->data.xOrigin,
 				r->data.yOrigin, 0);
 		}
 		r->state = Reached;
@@ -275,7 +275,7 @@ void EnemyDeath(enemy* r, int CurrentGameLevel) {  //function updates and checks
 						r->timer = 0;
 					}
 
-					insert_new_node(&bulletRadiusFirstNode, r->data.xOrigin, r->data.yOrigin, proj[i].type);
+					InsertNewNodeBulletRadius(&bullet_radius_head_node, r->data.xOrigin, r->data.yOrigin, proj[i].type);
 				}
 
 			}
@@ -354,7 +354,7 @@ void update_enemy(void) {
 			if (b - wave_timer >= spawn_timer) {
 				Enemy[i].state = Moving;
 				wave_timer = count;
-				insert_new_node_portal(&portalSpawnFirstNode, Enemy[i].data.xOrigin,
+				InsertNewNodePortalEffect(&portal_spawn_head_node, Enemy[i].data.xOrigin,
 					Enemy[i].data.yOrigin, 0);
 
 
@@ -388,23 +388,23 @@ void draw_multiple_enemies(void) {
 		EnemyAnimationState(&Enemy[i]);
 		switch (Enemy[i].type) {
 		case Basic:
-			RenderWithAlphaChanged(basicGhostSpriteSheet, basicGhostSpriteArray[Enemy[i].currentAnimState],
+			RenderImageFromSpriteSheetWithAlpha(basic_ghost_spritesheet, basic_ghost_spritesheet_array[Enemy[i].currentAnimState],
 				Enemy[i].data.xOrigin, Enemy[i].data.yOrigin, Enemy[i].enemy_width, Enemy[i].enemy_height, Enemy[i].alpha);
 
 			Enemy[i].timer += CP_System_GetDt();
 			break;
 		case Fast_Ghost:
-			RenderWithAlphaChanged(fastGhostSpriteSheet, fastGhostSpriteArray[Enemy[i].currentAnimState],
+			RenderImageFromSpriteSheetWithAlpha(fast_ghost_spritesheet, fast_ghost_spritesheet_array[Enemy[i].currentAnimState],
 				Enemy[i].data.xOrigin, Enemy[i].data.yOrigin, Enemy[i].enemy_width, Enemy[i].enemy_height, Enemy[i].alpha);
 			Enemy[i].timer += CP_System_GetDt();
 			break;
 		case Fat_Ghost:
-			RenderWithAlphaChanged(fatGhostSpriteSheet, fatGhostSpriteArray[Enemy[i].currentAnimState],
+			RenderImageFromSpriteSheetWithAlpha(fat_ghost_spritesheet, fat_ghost_spritesheet_array[Enemy[i].currentAnimState],
 				Enemy[i].data.xOrigin, Enemy[i].data.yOrigin, Enemy[i].enemy_width, Enemy[i].enemy_height, Enemy[i].alpha);
 			Enemy[i].timer += CP_System_GetDt();
 			break;
 		case grimReaper:
-			RenderWithAlphaChanged(grimReaperSpriteSheet, grimReaperSpriteArray[Enemy[i].currentAnimState],
+			RenderImageFromSpriteSheetWithAlpha(grim_reaper_spritesheet, grim_reaper_spritesheet_array[Enemy[i].currentAnimState],
 				Enemy[i].data.xOrigin, Enemy[i].data.yOrigin, Enemy[i].enemy_width, Enemy[i].enemy_height, Enemy[i].alpha);
 			Enemy[i].timer += CP_System_GetDt();
 			break;

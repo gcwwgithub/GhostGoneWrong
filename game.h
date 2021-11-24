@@ -180,7 +180,6 @@ typedef enum TurretType
 	T_SLOW,
 	T_HOMING,
 	T_MINE,
-	T_WALL,
 	T_MAX
 } TurretType;
 typedef enum TurretPurchase

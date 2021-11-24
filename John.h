@@ -46,7 +46,7 @@ void Check_pathAdjustment(enemy* r);
 void reset_enemy_path(enemy* r);
 
 enemy test;
-struct node* Enemy_node;
+struct LinkedListNode* Enemy_node;
 
 //test path
 float Xarray[50];
