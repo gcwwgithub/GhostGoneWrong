@@ -215,7 +215,7 @@ void render_game_grid_press(LevelData* LevelX) {
 	}
 	else {
 		for (int i = 0; i < kMaxTurret; i++) {
-			if (turret[i].data.x_origin == GridTemp.x_origin && turret[i].data.y_origin == GridTemp.y_origin && turretSelectedToUpgrade != kNoTurretSelected && CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
+			if (turret[i].data.x_origin == GridTemp.x_origin && turret[i].data.y_origin == GridTemp.y_origin && turretSelectedToUpgrade == i && turret[i].is_active == kTrue && CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
 				turretSelectedToUpgrade = kNoTurretSelected;
 				MouseReset();
 			}

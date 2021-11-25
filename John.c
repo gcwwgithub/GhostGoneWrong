@@ -270,7 +270,7 @@ void EnemyDeath(Enemy* r, int CurrentGameLevel) {  //function updates and checks
 				{
 					if (proj[i].type != kTSlow)
 					{
-						r->health -= turret[i].mod.damage;
+						r->health -= proj[i].mod.damage;
 						r->state = kEnemyHurt;
 						r->timer = 0;
 					}
