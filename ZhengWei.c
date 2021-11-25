@@ -49,51 +49,52 @@ Boolean isDestinationUpdated(void) {
 
 //Update cost of neighbor base on own cost
 void PathFindingUpdateNeighborCost(
-	int gridRow, int gridCol, int generation) {
+	int grid_row, int grid_col, int generation) {
 	//Update Row Neighbor
 	for (int i = -1; i <= 1; i++) {
-		if (gridRow + i >= 0 && gridRow + i < level_grid_rows) {
-			if (Level.grid[gridRow + i][gridCol].visited == 0) {
-				Level.grid[gridRow + i][gridCol].cost = generation + 1;
-				Level.grid[gridRow + i][gridCol].parent_row = gridRow;
-				Level.grid[gridRow + i][gridCol].parent_col = gridCol;
-				Level.grid[gridRow + i][gridCol].visited = 1;
+		if (grid_row + i >= 0 && grid_row + i < level_grid_rows) {
+			if (Level.grid[grid_row + i][grid_col].visited == 0) {
+				Level.grid[grid_row + i][grid_col].cost = generation + 1;
+				Level.grid[grid_row + i][grid_col].parent_row = grid_row;
+				Level.grid[grid_row + i][grid_col].parent_col = grid_col;
+				Level.grid[grid_row + i][grid_col].visited = 1;
 			}
 		}
 	}
 	//Update Col Neighbor
 	for (int i = -1; i <= 1; i++) {
-		if (gridCol + i >= 0 && gridCol + i < level_grid_cols) {
+		if (grid_col + i >= 0 && grid_col + i < level_grid_cols) {
 			if (Level.
-				grid[gridRow][gridCol + i].visited == 0) {
+				grid[grid_row][grid_col + i].visited == 0) {
 				Level.
-					grid[gridRow][gridCol + i].cost = generation + 1;
+					grid[grid_row][grid_col + i].cost = generation + 1;
 				Level.
-					grid[gridRow][gridCol + i].parent_row = gridRow;
+					grid[grid_row][grid_col + i].parent_row = grid_row;
 				Level.
-					grid[gridRow][gridCol + i].parent_col = gridCol;
+					grid[grid_row][grid_col + i].parent_col = grid_col;
 				Level.
-					grid[gridRow][gridCol + i].visited = 1;
+					grid[grid_row][grid_col + i].visited = 1;
 			}
 		}
 	}
 }
 
-//Calculate all grid cost. Find the squares in the same generation and call a function to update neighbors.
+//Calculate all grid cost. Find the squares in the same generation 
+//and call a function to update neighbors.
 void PathFindingCalculateCost(void) {
-	for (int currentCost = 0; !isDestinationUpdated() 
-		&& currentCost <= level_grid_rows * level_grid_cols; currentCost++) {
+	for (int current_cost = 0; !isDestinationUpdated()
+		&& current_cost <= level_grid_rows * level_grid_cols; current_cost++) {
 		for (int i = 0; i < level_grid_rows; i++) {
 			for (int j = 0; j < level_grid_cols; j++) {
-				if (Level.grid[i][j].cost == currentCost) {
-					PathFindingUpdateNeighborCost(i, j, currentCost);
+				if (Level.grid[i][j].cost == current_cost) {
+					PathFindingUpdateNeighborCost(i, j, current_cost);
 				}
 			}
 		}
 	}
 }
-
-void pathfinding_init(void) {
+//init the spawn and exit cols for pathfinding
+void PathFindingInit(void) {
 	Level.grid[Level.spawn_row][Level.spawn_col].cost = 0;
 	Level.grid[Level.spawn_row][Level.spawn_col].visited = 1;
 	Level.grid[Level.spawn_row][Level.spawn_col].type = kSpawn;
@@ -101,82 +102,105 @@ void pathfinding_init(void) {
 }
 
 //Collision Detection between circles and squares
-int CollisionDetection(Coordinates object1, Coordinates object2) {
-	if (object1.object_type == kObjectCircle && object2.object_type == kObjectCircle) {
-		float collisionDistanceSquared, distanceSquared, circle1Radius, circle2Radius;
-		circle1Radius = 0.5f * object1.width;
-		circle2Radius = 0.5f * object2.width;
-		collisionDistanceSquared = (circle1Radius + circle2Radius) * (circle1Radius + circle2Radius);
-		distanceSquared = ((object1.x_origin - object2.x_origin) * (object1.x_origin - object2.x_origin)) + ((object1.y_origin - object2.y_origin) * (object1.y_origin - object2.y_origin));
-		if (collisionDistanceSquared >= distanceSquared) {
-			return 1;
+Boolean CollisionDetection(Coordinates object1, Coordinates object2) {
+	//Collision for circle to circle
+	if (object1.object_type == kObjectCircle
+		&& object2.object_type == kObjectCircle)
+	{
+		float collision_distance_squared, distance_squared,
+			circle1_radius, circle2_radius;
+		circle1_radius = 0.5f * object1.width;
+		circle2_radius = 0.5f * object2.width;
+		collision_distance_squared = (circle1_radius + circle2_radius) *
+			(circle1_radius + circle2_radius);
+		distance_squared = ((object1.x_origin - object2.x_origin) *
+			(object1.x_origin - object2.x_origin)) +
+			((object1.y_origin - object2.y_origin) *
+				(object1.y_origin - object2.y_origin));
+		if (collision_distance_squared >= distance_squared) {
+			return kTrue;
 		}
 		else {
-			return 0;
+			return kFalse;
 		}
 	}
-	else if (object1.object_type == kObjectCircle || object2.object_type == kObjectCircle) {
-		float  distanceX, distanceY, circleRadius, rectWidthtoCheck, rectHeightToCheck, collisionDistanceX, collisionDistanceY, radiusSquared, distanceToCornerSquaredX, distanceToCornerSquaredY;
-		distanceX = object1.x_origin - object2.x_origin;
-		distanceX = FloatAbs(distanceX);
-		distanceY = object1.y_origin - object2.y_origin;
-		distanceY = FloatAbs(distanceY);
+	//Collision for circle and square
+	else if (object1.object_type == kObjectCircle 
+		|| object2.object_type == kObjectCircle) {
+		float  distance_x, distance_y, circle_radius, 
+			rect_width_to_check, rect_height_to_check, 
+			collision_distance_x, collision_distance_y, radius_squared, 
+			distance_to_corner_squared_x, distance_to_corner_squared_y;
+		distance_x = object1.x_origin - object2.x_origin;
+		distance_x = FloatAbs(distance_x);
+		distance_y = object1.y_origin - object2.y_origin;
+		distance_y = FloatAbs(distance_y);
 		if (object1.object_type == kObjectCircle) {
-			circleRadius = 0.5f * object1.width;
-			rectWidthtoCheck = 0.5f * object2.width;
-			rectHeightToCheck = 0.5f * object2.height;
+			circle_radius = 0.5f * object1.width;
+			rect_width_to_check = 0.5f * object2.width;
+			rect_height_to_check = 0.5f * object2.height;
 		}
 		else {
-			circleRadius = 0.5f * object2.width;
-			rectWidthtoCheck = 0.5f * object1.width;
-			rectHeightToCheck = 0.5f * object1.height;
+			circle_radius = 0.5f * object2.width;
+			rect_width_to_check = 0.5f * object1.width;
+			rect_height_to_check = 0.5f * object1.height;
 		}
-		collisionDistanceX = circleRadius + rectWidthtoCheck;
-		collisionDistanceY = circleRadius + rectHeightToCheck;
-		radiusSquared = circleRadius * circleRadius;
-		distanceToCornerSquaredX = (distanceX - rectWidthtoCheck) * (distanceX - rectWidthtoCheck);
-		distanceToCornerSquaredY = (distanceY - rectHeightToCheck) * (distanceX - rectHeightToCheck);
-		if (collisionDistanceX >= distanceX && collisionDistanceY >= distanceY) {
-			if (distanceX <= rectWidthtoCheck) {
-				return 1;
+		collision_distance_x = circle_radius + rect_width_to_check;
+		collision_distance_y = circle_radius + rect_height_to_check;
+		radius_squared = circle_radius * circle_radius;
+		distance_to_corner_squared_x = 
+			(distance_x - rect_width_to_check) * 
+			(distance_x - rect_width_to_check);
+		distance_to_corner_squared_y = 
+			(distance_y - rect_height_to_check) * 
+			(distance_x - rect_height_to_check);
+		//Checking for collision of Big square with circle
+		if (collision_distance_x >= distance_x 
+			&& collision_distance_y >= distance_y) {
+			if (distance_x <= rect_width_to_check) {
+				return kTrue;
 			}
-			else if (distanceY <= rectHeightToCheck) {
-				return 1;
+			else if (distance_y <= rect_height_to_check) {
+				return kTrue;
 			}
-			else if ((distanceToCornerSquaredX + distanceToCornerSquaredY) <= radiusSquared) {
-				return 1;
+			else if ((distance_to_corner_squared_x + distance_to_corner_squared_y) <= radius_squared) {
+				return kTrue;
 			}
 			else {
-				return 0;
+				return kFalse;
 			}
 		}
 		else {
-			return 0;
+			return kFalse;
 		}
 	}
+	//Collision for square to square
 	else {
-		float rect1WidthtoCheck, rect1HeighttoCheck, rect2WidthtoCheck, rect2HeighttoCheck, collisionDistanceX, collisionDistanceY, distanceX, distanceY;
-		rect1WidthtoCheck = 0.5f * object1.width;
-		rect1HeighttoCheck = 0.5f * object1.height;
-		rect2WidthtoCheck = 0.5f * object2.width;
-		rect2HeighttoCheck = 0.5f * object2.height;
-		collisionDistanceX = (rect1WidthtoCheck + rect2WidthtoCheck);
-		collisionDistanceY = (rect1HeighttoCheck + rect2HeighttoCheck);
-		distanceX = (object1.x_origin - object2.x_origin);
-		distanceX = FloatAbs(distanceX);
-		distanceY = (object1.y_origin - object2.y_origin);
-		distanceY = FloatAbs(distanceY);
-		if (collisionDistanceX >= distanceX && collisionDistanceY >= distanceY) {
-			return 1;
+		float rect1_width_to_check, rect1_height_to_check, 
+			rect2_width_to_check, rect2_height_to_check, 
+			collision_distance_x, collision_distance_y, distance_x, distance_y;
+		rect1_width_to_check = 0.5f * object1.width;
+		rect1_height_to_check = 0.5f * object1.height;
+		rect2_width_to_check = 0.5f * object2.width;
+		rect2_height_to_check = 0.5f * object2.height;
+		collision_distance_x = (rect1_width_to_check + rect2_width_to_check);
+		collision_distance_y = (rect1_height_to_check + rect2_height_to_check);
+		distance_x = (object1.x_origin - object2.x_origin);
+		distance_x = FloatAbs(distance_x);
+		distance_y = (object1.y_origin - object2.y_origin);
+		distance_y = FloatAbs(distance_y);
+		if (collision_distance_x >= distance_x 
+			&& collision_distance_y >= distance_y) {
+			return kTrue;
 		}
 		else {
-			return 0;
+			return kFalse;
 		}
 	}
 }
 
 //Function for doing all the stuff when clicking on game grid
-void render_game_grid_press(LevelData* LevelX) {
+void GameGridPressUpdate(LevelData* LevelX) {
 	int drawX, drawY;
 	drawX = (int)((mouse_input.x_origin - game.x_origin) / game.grid_width);
 	drawY = (int)((mouse_input.y_origin - game.y_origin) / game.grid_height);
@@ -614,7 +638,7 @@ void Level1Init(void) {
 	is_placing_turret = kTMax;
 	turretSelectedToUpgrade = kNoTurretSelected;
 	power_up_menu = kFalse;
-	pathfinding_init();
+	PathFindingInit();
 	EnvironmentInit(&Level);
 
 	//turret menu items
@@ -692,7 +716,7 @@ void Level2Init(void) {
 	is_placing_turret = kTMax;
 	turretSelectedToUpgrade = kNoTurretSelected;
 	power_up_menu = kFalse;
-	pathfinding_init();
+	PathFindingInit();
 	EnvironmentInit(&Level);
 
 	//turret menu items
@@ -769,7 +793,7 @@ void Level3Init(void) {
 	is_placing_turret = kTMax;
 	turretSelectedToUpgrade = kNoTurretSelected;
 	power_up_menu = kFalse;
-	pathfinding_init();
+	PathFindingInit();
 	EnvironmentInit(&Level);
 
 	//turret menu items
@@ -848,7 +872,7 @@ void Level4Init(void) {
 	is_placing_turret = kTMax;
 	turretSelectedToUpgrade = kNoTurretSelected;
 	power_up_menu = kFalse;
-	pathfinding_init();
+	PathFindingInit();
 	EnvironmentInit(&Level);
 
 	//turret menu items
@@ -944,7 +968,7 @@ void Level5Init(void) {
 	is_placing_turret = kTMax;
 	turretSelectedToUpgrade = kNoTurretSelected;
 	power_up_menu = kFalse;
-	pathfinding_init();
+	PathFindingInit();
 	EnvironmentInit(&Level);
 	turret_init();
 	Enemies_init();
@@ -961,7 +985,7 @@ void ButtonPressedUpdate(void) {
 	switch (CheckGameButtonPressed())
 	{
 	case kGameGrid:
-		render_game_grid_press(&Level);
+		GameGridPressUpdate(&Level);
 		break;
 	case kPauseButton:
 		current_game_state = current_game_state == kPause ? kWave : kPause;

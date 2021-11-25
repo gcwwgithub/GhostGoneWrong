@@ -66,7 +66,7 @@ typedef struct Coordinates {
 	CP_Image image;
 }Coordinates;
 //Common Functions
-int CollisionDetection(Coordinates object1, Coordinates object2);
+Boolean CollisionDetection(Coordinates object1, Coordinates object2);
 Boolean BtnIsPressed(Coordinates object1);
 void MouseReset(void);//Set last click position to out of screen
 //Set the current building time of building phase
