@@ -1,43 +1,49 @@
-#pragma once
-#include"game.h"
+#include "game.h"
 
-// Max Number of Turret Type
-void mouse_init(void);
-void environment_init(LevelData* LevelX);
-void powerup_price_init(void);
-void level1_init(void);
-void level2_init(void);
-void level3_init(void);
-void level4_init(void);
-void level5_init(void);
+#include "cprocessing.h"
 
-void pathfinding_reset(LevelData* LevelX);
-void pathfinding_calculate_cost(LevelData* LevelX);
-void render_environment(void);
-void render_game_grid(void);
-void render_path(LevelData* LevelX);
-void render_button_pressed(void);
-void pathfinding_update(LevelData* LevelX);
-
-int isPlacingTurret;
-int powerUpMenu;
+#ifndef GhostGoneWrong_CURRENTHEADERFILES_ZHENGWEI_H
+#define GhostGoneWrong_CURRENTHEADERFILES_ZHENGWEI_H
 
 #define COLOR_BLUE CP_Color_Create(0, 0, 255, 255)
-
-#define LEVEL1_COLS 6
-#define LEVEL1_ROWS 7
-#define LEVEL2_COLS 6
-#define LEVEL2_ROWS 7
-#define LEVEL3_COLS 6
-#define LEVEL3_ROWS 7
-#define LEVEL4_COLS 6
-#define LEVEL4_ROWS 7
-#define LEVEL5_COLS 8
-#define LEVEL5_ROWS 7
-
-#define LEFT_MENU_X_END 140.714294f
-#define RIGHT_MENU_X_START 998.571411f
-
+// The turret selected to place
+TurretType is_placing_turret;
+Boolean power_up_menu;
+enum {
+	kLevel1Cols = 6,
+	kLevel1Rows = 7,
+	kLevel2Cols = 6,
+	kLevel2Rows = 7,
+	kLevel3Cols = 6,
+	kLevel3Rows = 7,
+	kLevel4Cols = 6,
+	kLevel4Rows = 7,
+	kLevel5Cols = 8,
+	kLevel5Rows = 7,
+	kMaxEnvironmentObject = 10
+};//Using enum instead of define for const int
+extern const float kLeftGameMenuXWidth;
+extern const float kRightGameMenuXOrigin;
 //Environment
-#define MAX_ENVIRONMENT_OBJECT 10
-Coordinates Environment[MAX_ENVIRONMENT_OBJECT];
+Coordinates Environment[kMaxEnvironmentObject];
+
+void MouseInit(void);
+void EnvironmentInit(LevelData* LevelX);
+void PowerUpPriceInit(void);
+void Level1Init(void);
+void Level2Init(void);
+void Level3Init(void);
+void Level4Init(void);
+void Level5Init(void);
+void PathFindingReset(LevelData* LevelX);
+void PathFindingCalculateCost(LevelData* LevelX);
+void PathFindingUpdate(LevelData* LevelX);
+void ButtonPressedUpdate(void);
+void RenderGameGrid(void);
+void RenderEnemyPath(LevelData* LevelX);
+void RenderEnvironment(void);
+void RenderTurretDetailsDisplay(void);
+void render_turret_menu_object(
+	Coordinates menuObjectX, enum MenuObjectType type);
+
+#endif // !GhostGoneWrong_CURRENTHEADERFILES_ZHENGWEI_H

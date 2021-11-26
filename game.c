@@ -1,10 +1,11 @@
-#include "cprocessing.h"
 #include"game.h"
 #include "Samuel.h"
 #include "John.h"
 #include"Anderson.h"
 #include "Gabriel.h"
-#include"ZhengWei.h"
+#include "zhengwei.h"
+
+#include "cprocessing.h"
 
 void game_init(void)
 {
@@ -13,18 +14,18 @@ void game_init(void)
 	CP_System_SetWindowTitle("Ghost Gone Wrong");
 	int gameWindowWidth = 1280;
 	int gameWindowHeight = (int)(gameWindowWidth * 1080.0f / 1920.0f);//To apply uniform scaling
-	scalingFactor = gameWindowWidth / 1280.0f;//Game is scaled according to 1280 width being 1;
+	scaling_factor = gameWindowWidth / 1280.0f;//Game is scaled according to 1280 width being 1;
 	CP_System_SetWindowSize(gameWindowWidth, gameWindowHeight);//Please change the variables ot change th escreen size
 
-	init_all_images();
-	init_spritesheet_array();
-	init_linkedlist_variables();
+	InitAllImages();
+	InitSpritesheetArray();
+	InitVariablesForSpriteFunctions();
 	init_game_font();
-	init_digipen_logo();
-	currentGameState = LogoSplash;
-	buildingTime = BUILDING_PHASE_TIME;
-	dpLogoTime = DIGIPEN_LOGO_DISPLAY_TIME;
-	fadeOutTime = FADE_OUT_TIME;
+	init_splash_logos();
+	current_game_state = kLogoSplash;
+	building_time = kFullBuildingPhaseTime;
+	dpLogoTime = teamLogoTime = LOGO_DISPLAY_TIME;
+	dpLogoFadeTime = teamLogoFadeTime = FADE_OUT_TIME;
 
 	//Main menu, level select
 
@@ -36,26 +37,25 @@ void game_init(void)
 	init_skip_wave_button();
 
 	//Initialize Objects
-	mouse_init();
+	MouseInit();
 
 
 	// initialize price for powerups
-	powerup_price_init();
-
-
+	PowerUpPriceInit();
 }
 
 
 void game_update(void)
 {
 	//Input
-	if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
-		MouseInput.xOrigin = CP_Input_GetMouseX();
-		MouseInput.yOrigin = CP_Input_GetMouseY();
+	if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT))
+	{
+		mouse_input.x_origin = CP_Input_GetMouseX();
+		mouse_input.y_origin = CP_Input_GetMouseY();
 	}
 
 
-	if (currentGameState == Wave)
+	if (current_game_state == kWave)
 	{
 		//do enemy update first
 		update_enemy();
@@ -66,40 +66,42 @@ void game_update(void)
 		update_particle();
 
 		//render all the stuff
-		render_game_background(currentGameLevel);
-		render_game_grid();
-		render_path(&Level[currentGameLevel]);
+		RenderLevelEnvironment(current_game_level);
+		RenderGameGrid();
+		RenderEnemyPath(&Level[current_game_level]);
 
-		update_portal();
+		UpdatePortalAnimation();
 
 		draw_multiple_enemies();
-		render_all_portal_effects();
+		RenderAllPortalEffects();
 		render_turret();
 		render_projectile();
 		render_particle();
-		render_bullet_circles();
+		RenderAndUpdateBulletCircles();
 
-		if (!turret[turretSelectedToUpgrade].isActive) { // Close mine menu when it explodes
-			turretSelectedToUpgrade = NO_TURRET_SELECTED;
+		if (!turret[turretSelectedToUpgrade].is_active) { // Close mine menu when it explodes
+			turretSelectedToUpgrade = kNoTurretSelected;
 		}
-		render_button_pressed();
+		ButtonPressedUpdate();
 
-		render_environment();
-
+		RenderEnvironment();
+		RenderBattlefieldEffectText(Level[current_game_level].current_effect);
 		CP_Settings_NoTint();
-		render_turret_menu_object(GameMenuObject[ButtonMax - 2], ButtonMax - 2);// Render Upgrade menu first
-		for (int i = 0; i < ButtonMax - 2; i++) {// Last object will double render game grid. Second last object is rendered seperately
-			render_turret_menu_object(GameMenuObject[i], i);
+		RenderTurretDetailsDisplay(); //render turret description when hovered
+		render_turret_menu_object(game_menu_object[kButtonMax - 2], kButtonMax - 2);// Render Upgrade menu first
+		for (int i = 0; i < kButtonMax - 3; i++) {// Last object will double render game grid. Second and third last object is rendered seperately
+			render_turret_menu_object(game_menu_object[i], i);
 		}
 		game_win_lose_check();
+
 	}
-	else if (currentGameState == Building)
+	else if (current_game_state == kBuilding)
 	{
 		reduce_building_phase_time();
-		if (btn_is_pressed(SkipWaveButton.buttonData))
+		if (BtnIsPressed(SkipWaveButton.buttonData))
 		{
-			set_building_time(0.0f);
-			mouse_reset();
+			SetBuildingTime(0.0f);
+			MouseReset();
 		}
 
 		//do turret & projectile update next
@@ -107,138 +109,113 @@ void game_update(void)
 		update_projectile();
 		update_particle();
 		//render all the stuff
-		render_game_background(currentGameLevel);
-		render_game_grid();
-		render_path(&Level[currentGameLevel]);
-		update_portal();
-		render_environment();
+		RenderLevelEnvironment(current_game_level);
+		RenderGameGrid();
+		RenderEnemyPath(&Level[current_game_level]);
+		UpdatePortalAnimation();
+		RenderEnvironment();
 		render_turret();
 		render_projectile();
 		render_particle();
-		render_bullet_circles();
+		RenderAndUpdateBulletCircles();
 
-		render_button_pressed();
+		ButtonPressedUpdate();
 
 		CP_Settings_NoTint();
 		render_wave_timer();
 		render_ui_button(SkipWaveButton);
 
-		render_turret_menu_object(GameMenuObject[ButtonMax - 2], ButtonMax - 2);// Render Upgrade menu first
-		for (int i = 0; i < ButtonMax - 2; i++) {// Last object will double render game grid. Second last object is rendered seperately
-			render_turret_menu_object(GameMenuObject[i], i);
+		RenderTurretDetailsDisplay(); //render turret description when hovered
+		render_turret_menu_object(game_menu_object[kButtonMax - 2], kButtonMax - 2);// Render Upgrade menu first
+		for (int i = 0; i < kButtonMax - 3; i++) {// Last object will double render game grid. Second and third last object is rendered seperately
+			render_turret_menu_object(game_menu_object[i], i);
 		}
 
 
 		//setting enemies
-		Reset_enemies(currentGameLevel);
+		Reset_enemies(current_game_level);
 
 
 	}
-	else if (currentGameState == Win || currentGameState == Lose)
+	else if (current_game_state == kWin || current_game_state == kLose)
 	{
-		if (btn_is_pressed(EndScreenButtons[0].buttonData))
+		if (BtnIsPressed(EndScreenButtons[0].buttonData))
 		{
-			currentGameState = MainMenu;
+			current_game_state = kMainMenu;
 		}
-		else if (btn_is_pressed(EndScreenButtons[1].buttonData))
+		else if (BtnIsPressed(EndScreenButtons[1].buttonData))
 		{
-			init_next_level(currentGameLevel);
-			currentGameState = Building;
+			init_next_level(current_game_level);
+			current_game_state = kBuilding;
 		}
-		else if (btn_is_pressed(EndScreenButtons[2].buttonData))
+		else if (BtnIsPressed(EndScreenButtons[2].buttonData))
 		{
-			init_next_level(currentGameLevel + 1);
+			init_next_level(current_game_level + 1);
 		}
-		////do enemy update first
-		//update_enemy();
-
-		////do turret & projectile update next
-		//update_turret();
-		//update_projectile();
-
-
-		////render all the stuff
-		//render_game_background(currentGameLevel);
-		//render_game_grid();
-		//render_path(&Level[currentGameLevel]);
-
-		//render_turret_menu_object(GameMenuObject[NUMBER_OF_MENU_OBJECTS - 2], NUMBER_OF_MENU_OBJECTS - 2);// Render Upgrade menu first
-		//for (int i = 0; i < NUMBER_OF_MENU_OBJECTS - 2; i++) {// Last object will double render game grid. Second last object is rendered seperately
-		//	render_turret_menu_object(GameMenuObject[i], i);
-		//}
-		//update_portal();
-
-		//draw_multiple_enemies();
-		//render_all_portal_effects();
-		//render_turret();
-		//render_projectile();
-
-		//render_bullet_circles();
-
-		//render_button_pressed();
-
-
-		//render_environment();
 
 		render_end_screen(); // this should pause the game by way of gameLost.
 
 	}
-	else if (currentGameState == MainMenu)
+	else if (current_game_state == kMainMenu)
 	{
 		CP_Settings_NoTint();
-		if (btn_is_pressed(PlayButton.buttonData))
+
+		if (BtnIsPressed(PlayButton.buttonData))
 		{
-			PlayButton.isMoving = CreditsButton.isMoving = QuitButton.isMoving = LevelButtons->isMoving = 1;
+			if (!CreditsBackButton.isMoving)
+			{
+				PlayButton.isMoving = CreditsButton.isMoving = QuitButton.isMoving = LevelButtons->isMoving = 1;
+			}
 		}
-		else if (btn_is_pressed(QuitButton.buttonData))
+		else if (BtnIsPressed(QuitButton.buttonData))
 		{
-			currentGameState = MainMenu;
 			exit_to_desktop();
 		}
-		else if (btn_is_pressed(CreditsButton.buttonData))
+		else if (BtnIsPressed(CreditsButton.buttonData))
 		{
-			CreditsBackButton.isMoving = 1;
+			if (!PlayButton.isMoving)
+			{
+				CreditsBackButton.isMoving = 1;
+			}
 		}
 
 		if (PlayButton.isMoving) // clicked on play
 		{
-			PlayButton = ui_button_movement(PlayButton, -BUTTON_WIDTH, PlayButton.buttonData.yOrigin);
+			PlayButton = ui_button_movement(PlayButton, -BUTTON_WIDTH, PlayButton.buttonData.y_origin);
 		}
 		if (CreditsButton.isMoving)
 		{
-			CreditsButton = ui_button_movement(CreditsButton, CreditsButton.buttonData.xOrigin, (float)CP_System_GetWindowHeight());
+			CreditsButton = ui_button_movement(CreditsButton, CreditsButton.buttonData.x_origin, (float)CP_System_GetWindowHeight());
 		}
 		if (QuitButton.isMoving) // clicked on play
 		{
-			QuitButton = ui_button_movement(QuitButton, (float)CP_System_GetWindowWidth(), QuitButton.buttonData.yOrigin);
+			QuitButton = ui_button_movement(QuitButton, (float)CP_System_GetWindowWidth(), QuitButton.buttonData.y_origin);
 		}
-
 		if (CreditsBackButton.isMoving)
 		{
 			move_credits_screen();
 		}
-
 		if (LevelButtons->isMoving)
 		{
 			move_level_select();
 		}
 
 		// Clicked on Play, and checking if the Play,Quit buttons have left and Level Select buttons have come
-		if (button_has_finished_moving(PlayButton, -BUTTON_WIDTH, PlayButton.buttonData.yOrigin) &&
-			button_has_finished_moving(CreditsButton, CreditsButton.buttonData.xOrigin, (float)CP_System_GetWindowHeight()) &&
-			button_has_finished_moving(QuitButton, (float)CP_System_GetWindowWidth(), QuitButton.buttonData.yOrigin) &&
+		if (button_has_finished_moving(PlayButton, -BUTTON_WIDTH, PlayButton.buttonData.y_origin) &&
+			button_has_finished_moving(CreditsButton, CreditsButton.buttonData.x_origin, (float)CP_System_GetWindowHeight()) &&
+			button_has_finished_moving(QuitButton, (float)CP_System_GetWindowWidth(), QuitButton.buttonData.y_origin) &&
 			level_select_finished_moving())
 		{
 			PlayButton.isMoving = CreditsButton.isMoving = QuitButton.isMoving = LevelButtons->isMoving = 0;
 			PlayButton.movementTime = CreditsButton.movementTime = QuitButton.movementTime = 0.0f;
-			currentGameState = LevelSelect;
+			current_game_state = kLevelSelect;
 		}
 
-		if (button_has_finished_moving(CreditsBackButton, CreditsBackButton.buttonData.xOrigin, CP_System_GetWindowHeight() * 0.9f))
+		if (button_has_finished_moving(CreditsBackButton, CreditsBackButton.buttonData.x_origin, CP_System_GetWindowHeight() * 0.9f))
 		{
 			CreditsBackButton.isMoving = 0;
 			CreditsBackButton.movementTime = creditTextMoveTime = 0.0f;
-			currentGameState = Credits;
+			current_game_state = kCredits;
 		}
 
 
@@ -248,29 +225,29 @@ void game_update(void)
 		render_level_select_buttons();
 		render_credits_screen();
 	}
-	else if (currentGameState == LevelSelect)
+	else if (current_game_state == kLevelSelect)
 	{
 		CP_Settings_NoTint();
 		// Level 1
 		if (!LevelButtons->isMoving) // commenting this activates lvl 5 for some reason
 		{
-			if (btn_is_pressed(LevelButtons[0].buttonData))
+			if (BtnIsPressed(LevelButtons[0].buttonData))
 			{
-				level1_init();
+				Level1Init();
 			}
-			else if (btn_is_pressed(LevelButtons[1].buttonData)) {
-				level2_init();
+			else if (BtnIsPressed(LevelButtons[1].buttonData)) {
+				Level2Init();
 			}
-			else if (btn_is_pressed(LevelButtons[2].buttonData)) {
-				level3_init();
+			else if (BtnIsPressed(LevelButtons[2].buttonData)) {
+				Level3Init();
 			}
-			else if (btn_is_pressed(LevelButtons[3].buttonData)) {
-				level4_init();
+			else if (BtnIsPressed(LevelButtons[3].buttonData)) {
+				Level4Init();
 			}
-			else if (btn_is_pressed(LevelButtons[4].buttonData)) {
-				level5_init();
+			else if (BtnIsPressed(LevelButtons[4].buttonData)) {
+				Level5Init();
 			}
-			else if (btn_is_pressed(LevelSelectBackButton.buttonData))
+			else if (BtnIsPressed(LevelSelectBackButton.buttonData))
 			{
 				PlayButton.isMoving = CreditsButton.isMoving = QuitButton.isMoving = LevelButtons->isMoving = 1;
 			}
@@ -278,29 +255,29 @@ void game_update(void)
 
 		if (PlayButton.isMoving)
 		{
-			PlayButton = ui_button_movement(PlayButton, CP_System_GetWindowWidth() * 0.25f - BUTTON_WIDTH * 0.5f, PlayButton.buttonData.yOrigin);
+			PlayButton = ui_button_movement(PlayButton, CP_System_GetWindowWidth() * 0.25f - BUTTON_WIDTH * 0.5f, PlayButton.buttonData.y_origin);
 		}
 		if (CreditsButton.isMoving)
 		{
-			CreditsButton = ui_button_movement(CreditsButton, CreditsButton.buttonData.xOrigin, CP_System_GetWindowHeight() * 0.5f);
+			CreditsButton = ui_button_movement(CreditsButton, CreditsButton.buttonData.x_origin, CP_System_GetWindowHeight() * 0.5f);
 		}
 		if (QuitButton.isMoving)
 		{
-			QuitButton = ui_button_movement(QuitButton, CP_System_GetWindowWidth() * 0.75f - BUTTON_WIDTH * 0.5f, QuitButton.buttonData.yOrigin);
+			QuitButton = ui_button_movement(QuitButton, CP_System_GetWindowWidth() * 0.75f - BUTTON_WIDTH * 0.5f, QuitButton.buttonData.y_origin);
 		}
 		if (LevelButtons->isMoving)
 		{
 			move_level_select();
 		}
 
-		if (button_has_finished_moving(PlayButton, CP_System_GetWindowWidth() * 0.25f - BUTTON_WIDTH * 0.5f, PlayButton.buttonData.yOrigin) &&
-			button_has_finished_moving(CreditsButton, CreditsButton.buttonData.xOrigin, CP_System_GetWindowHeight() * 0.5f) &&
-			button_has_finished_moving(QuitButton, CP_System_GetWindowWidth() * 0.75f - BUTTON_WIDTH * 0.5f, QuitButton.buttonData.yOrigin) &&
+		if (button_has_finished_moving(PlayButton, CP_System_GetWindowWidth() * 0.25f - BUTTON_WIDTH * 0.5f, PlayButton.buttonData.y_origin) &&
+			button_has_finished_moving(CreditsButton, CreditsButton.buttonData.x_origin, CP_System_GetWindowHeight() * 0.5f) &&
+			button_has_finished_moving(QuitButton, CP_System_GetWindowWidth() * 0.75f - BUTTON_WIDTH * 0.5f, QuitButton.buttonData.y_origin) &&
 			level_select_finished_moving())
 		{
 			PlayButton.isMoving = CreditsButton.isMoving = QuitButton.isMoving = LevelButtons->isMoving = 0;
 			PlayButton.movementTime = CreditsButton.movementTime = QuitButton.movementTime = 0.0f;
-			currentGameState = MainMenu;
+			current_game_state = kMainMenu;
 		}
 
 		CP_Graphics_ClearBackground(COLOR_GREY);
@@ -308,55 +285,44 @@ void game_update(void)
 		render_start_menu();
 		render_level_select_buttons();
 	}
-	else if (currentGameState == Pause)
+	else if (current_game_state == kPause)
 	{
-		if (check_game_button_pressed() == PauseButton)
+		if (CheckGameButtonPressed() == kPauseButton)
 		{
-			if (currentGameState == Pause)
+			if (current_game_state == kPause)
 			{
-				currentGameState = (buildingTime) ? Building : Wave;
+				current_game_state = (building_time) ? kBuilding : kWave;
 			}
 			else // if the game is not paused
 			{
-				currentGameState = Pause;
+				current_game_state = kPause;
 			}
-			mouse_reset();
+			MouseReset();
 		}
-		else if (btn_is_pressed(PauseScreenButtons[0].buttonData))
+		else if (BtnIsPressed(PauseScreenButtons[0].buttonData)) // Resume
+		{
+			current_game_state = (building_time) ? kBuilding : kWave;
+		}
+		else if (BtnIsPressed(PauseScreenButtons[1].buttonData)) // Level Select
 		{
 			//free memory
-			for (int i = 0; i < gameGridRows; i++) {
-				free(Level[currentGameLevel].grid[i]);
+			for (int i = 0; i < level_grid_rows; i++) {
+				free(Level[current_game_level].grid[i]);
 			}
-			free(Level[currentGameLevel].grid);
+			free(Level[current_game_level].grid);
 			//Free memory for turret_on_grid
-			for (int i = 0; i < gameGridCols; i++) {
+			for (int i = 0; i < level_grid_cols; i++) {
 				free(turret_on_grid[i]);
 			}
 			free(turret_on_grid);
 
-			currentGameState = MainMenu;
-		}
-		else if (btn_is_pressed(PauseScreenButtons[1].buttonData))
-		{
-			//free memory
-			for (int i = 0; i < gameGridRows; i++) {
-				free(Level[currentGameLevel].grid[i]);
-			}
-			free(Level[currentGameLevel].grid);
-			//Free memory for turret_on_grid
-			for (int i = 0; i < gameGridCols; i++) {
-				free(turret_on_grid[i]);
-			}
-			free(turret_on_grid);
-
-			exit_to_desktop();
+			current_game_state = kLevelSelect;
 		}
 		render_pause_screen();
 	}
-	else if (currentGameState == Credits)
+	else if (current_game_state == kCredits)
 	{
-		if (btn_is_pressed(CreditsBackButton.buttonData))
+		if (BtnIsPressed(CreditsBackButton.buttonData))
 		{
 			CreditsBackButton.isMoving = 1;
 		}
@@ -364,11 +330,11 @@ void game_update(void)
 		{
 			move_credits_screen();
 		}
-		if (button_has_finished_moving(CreditsBackButton, CreditsBackButton.buttonData.xOrigin, CP_System_GetWindowHeight() * 2.0f))
+		if (button_has_finished_moving(CreditsBackButton, CreditsBackButton.buttonData.x_origin, CP_System_GetWindowHeight() * 2.0f))
 		{
 			CreditsBackButton.isMoving = 0;
 			CreditsBackButton.movementTime = creditTextMoveTime = 0.0f;
-			currentGameState = MainMenu;
+			current_game_state = kMainMenu;
 		}
 
 
@@ -377,15 +343,9 @@ void game_update(void)
 		render_start_menu();
 		render_credits_screen();
 	}
-	else if (currentGameState == LogoSplash)
+	else if (current_game_state == kLogoSplash)
 	{
-		// 
-		if (dpLogoTime > 0.0f)
-		{
-			CP_Graphics_ClearBackground(COLOR_GREY);
-		}
-		CP_Image_Draw(digipenLogo, (float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2, (float)CP_Image_GetWidth(digipenLogo) / 2, (float)CP_Image_GetHeight(digipenLogo) / 2, (int)(255 * (fadeOutTime / FADE_OUT_TIME)));
-		reduce_dp_logo_time();
+		show_logos();
 	}
 }
 

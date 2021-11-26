@@ -3,10 +3,10 @@
 #include "game.h"
 
 //change value as need
-#define PROJ_OFFSET Game.gridHeight * 0.4
-#define SLOW_RANGE Game.gridWidth * 2
-#define EXPLOSION_RANGE Game.gridWidth * 1.5
-#define HOMING_RANGE Game.gridWidth * 3
+#define PROJ_OFFSET game.grid_height * 0.4
+#define SLOW_RANGE game.grid_width * 2
+#define EXPLOSION_RANGE game.grid_width * 1.5
+#define HOMING_RANGE game.grid_width * 3
 
 //init turret and projectiles
 void turret_init(void);
@@ -63,7 +63,7 @@ typedef struct Particle
 	float timer;
 	float duration;
 	int alpha;
-	int isActive;
+	int is_active;
 	PARTICLE_TYPE type;
 } Particle;
 
