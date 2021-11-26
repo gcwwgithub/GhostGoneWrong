@@ -25,7 +25,7 @@ void game_init(void)
 	current_game_state = kLogoSplash;
 	building_time = kFullBuildingPhaseTime;
 	dpLogoTime = teamLogoTime = LOGO_DISPLAY_TIME;
-	fadeOutTime = FADE_OUT_TIME;
+	dpLogoFadeTime = teamLogoFadeTime = FADE_OUT_TIME;
 
 	//Main menu, level select
 
