@@ -66,14 +66,21 @@ typedef struct Coordinates {
 	CP_Image image;
 }Coordinates;
 //Common Functions
-int CollisionDetection(Coordinates object1, Coordinates object2);
+Boolean CollisionDetection(Coordinates object1, Coordinates object2);
 Boolean BtnIsPressed(Coordinates object1);
 void MouseReset(void);//Set last click position to out of screen
 //Set the current building time of building phase
 void SetBuildingTime(float newBuildingTime);
 int CheckGameButtonPressed(void);//Check which button is pressed in menu
 float FloatAbs(float x);
-
+void Enemies_init(void);
+void exit_to_desktop(void);
+//upgrade system (for now using index will change depending how to access this easier)
+void upgrade_turret(int t_index);
+//init turret and projectiles
+void turret_init(void);
+//sell them turrets
+void sell_turret(int t_index);
 //Common Variables
 //GameStates
 enum
@@ -227,6 +234,11 @@ int turretSelectedToUpgrade; //Use the turret index of the turret selected
 enum {
 	kNoTurretSelected = -1
 };
+/*
+	use this to place turret/spawn turret (pass in type and the grid index)
+	E.g to place on grid[0][1] pass in type, 0, 1
+*/
+void place_turret(TurretType type, int index_x, int index_y);
 //Projectiles
 //enum of projectile types
 typedef enum ProjectileType
@@ -249,6 +261,8 @@ typedef struct Projectile
 	ProjectileType type;
 } Projectile;
 Projectile proj[kMaxProjectile];
+//deteremine the collisoin effect base on type of proj
+void col_type_projectile(Projectile* p);
 //Level
 //defination for levels
 enum {
@@ -270,7 +284,7 @@ typedef struct LevelData {
 	enum EnvironmentalEffects current_effect;
 	struct PowerUps current_power_up_level;
 }LevelData;
-LevelData Level[kMaxNumberOfLevel];
+LevelData Level;
 int current_game_level; //The current level selected by the player
 struct PowerUps power_up_price; //Price of power ups
 int enemies_left;// enemies remaining in the current round
