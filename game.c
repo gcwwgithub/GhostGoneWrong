@@ -25,7 +25,7 @@ void game_init(void)
 	current_game_state = kLogoSplash;
 	building_time = kFullBuildingPhaseTime;
 	dpLogoTime = teamLogoTime = LOGO_DISPLAY_TIME;
-	fadeOutTime = FADE_OUT_TIME;
+	dpLogoFadeTime = teamLogoFadeTime = FADE_OUT_TIME;
 
 	//Main menu, level select
 
@@ -211,7 +211,7 @@ void game_update(void)
 			current_game_state = kLevelSelect;
 		}
 
-		if (button_has_finished_moving(CreditsBackButton, CreditsBackButton.buttonData.x_origin, CP_System_GetWindowHeight() * 0.9f))
+		if (button_has_finished_moving(CreditsBackButton, CreditsBackButton.buttonData.x_origin, CP_System_GetWindowHeight() * 0.93f))
 		{
 			CreditsBackButton.isMoving = 0;
 			CreditsBackButton.movementTime = creditTextMoveTime = 0.0f;

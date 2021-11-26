@@ -105,34 +105,46 @@ void init_pause_screen(void)
 void init_end_screen(void)
 {
 	// Back to Main Menu
-	EndScreenButtons[0].buttonData.x_origin = CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f;
-	EndScreenButtons[0].buttonData.y_origin = CP_System_GetWindowHeight() * 0.5f - BUTTON_HEIGHT * 0.5f;
-	EndScreenButtons[0].buttonData.width = BUTTON_WIDTH;
-	EndScreenButtons[0].buttonData.height = BUTTON_HEIGHT;
-	EndScreenButtons[0].buttonData.object_type = kObjectRectangle;
-	EndScreenButtons[0].textPositionX = EndScreenButtons[0].buttonData.x_origin + BUTTON_WIDTH * 0.5f;
-	EndScreenButtons[0].textPositionY = EndScreenButtons[0].buttonData.y_origin + BUTTON_HEIGHT * 0.5f;
-	strcpy_s(EndScreenButtons[0].textString, sizeof(EndScreenButtons[0].textString), "Back");
-
+	//EndScreenButtons[0].buttonData.x_origin = CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f;
+	//EndScreenButtons[0].buttonData.y_origin = CP_System_GetWindowHeight() * 0.5f - BUTTON_HEIGHT * 0.5f;
+	//EndScreenButtons[0].buttonData.width = BUTTON_WIDTH;
+	//EndScreenButtons[0].buttonData.height = BUTTON_HEIGHT;
+	//EndScreenButtons[0].buttonData.object_type = kObjectRectangle;
+	//EndScreenButtons[0].textPositionX = EndScreenButtons[0].buttonData.x_origin + BUTTON_WIDTH * 0.5f;
+	//EndScreenButtons[0].textPositionY = EndScreenButtons[0].buttonData.y_origin + BUTTON_HEIGHT * 0.5f;
+	//strcpy_s(EndScreenButtons[0].textString, sizeof(EndScreenButtons[0].textString), "Back");
+	//
 	// Restart
-	EndScreenButtons[1].buttonData.x_origin = CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f;
-	EndScreenButtons[1].buttonData.y_origin = CP_System_GetWindowHeight() * 0.6f - BUTTON_HEIGHT * 0.5f;
-	EndScreenButtons[1].buttonData.width = BUTTON_WIDTH;
-	EndScreenButtons[1].buttonData.height = BUTTON_HEIGHT;
-	EndScreenButtons[1].buttonData.object_type = kObjectRectangle;
-	EndScreenButtons[1].textPositionX = EndScreenButtons[1].buttonData.x_origin + BUTTON_WIDTH * 0.5f;
-	EndScreenButtons[1].textPositionY = EndScreenButtons[1].buttonData.y_origin + BUTTON_HEIGHT * 0.5f;
-	strcpy_s(EndScreenButtons[1].textString, sizeof(EndScreenButtons[1].textString), "Restart");
-
+	//EndScreenButtons[1].buttonData.x_origin = CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f;
+	//EndScreenButtons[1].buttonData.y_origin = CP_System_GetWindowHeight() * 0.6f - BUTTON_HEIGHT * 0.5f;
+	//EndScreenButtons[1].buttonData.width = BUTTON_WIDTH;
+	//EndScreenButtons[1].buttonData.height = BUTTON_HEIGHT;
+	//EndScreenButtons[1].buttonData.object_type = kObjectRectangle;
+	//EndScreenButtons[1].textPositionX = EndScreenButtons[1].buttonData.x_origin + BUTTON_WIDTH * 0.5f;
+	//EndScreenButtons[1].textPositionY = EndScreenButtons[1].buttonData.y_origin + BUTTON_HEIGHT * 0.5f;
+	//strcpy_s(EndScreenButtons[1].textString, sizeof(EndScreenButtons[1].textString), "Restart");
+	//
 	// Next Level
-	EndScreenButtons[2].buttonData.x_origin = CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f;
-	EndScreenButtons[2].buttonData.y_origin = CP_System_GetWindowHeight() * 0.7f - BUTTON_HEIGHT * 0.5f;
-	EndScreenButtons[2].buttonData.width = BUTTON_WIDTH;
-	EndScreenButtons[2].buttonData.height = BUTTON_HEIGHT;
-	EndScreenButtons[2].buttonData.object_type = kObjectRectangle;
-	EndScreenButtons[2].textPositionX = EndScreenButtons[2].buttonData.x_origin + BUTTON_WIDTH * 0.5f;
-	EndScreenButtons[2].textPositionY = EndScreenButtons[2].buttonData.y_origin + BUTTON_HEIGHT * 0.5f;
-	strcpy_s(EndScreenButtons[2].textString, sizeof(EndScreenButtons[2].textString), "Next");
+	//EndScreenButtons[2].buttonData.x_origin = CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f;
+	//EndScreenButtons[2].buttonData.y_origin = CP_System_GetWindowHeight() * 0.7f - BUTTON_HEIGHT * 0.5f;
+	//EndScreenButtons[2].buttonData.width = BUTTON_WIDTH;
+	//EndScreenButtons[2].buttonData.height = BUTTON_HEIGHT;
+	//EndScreenButtons[2].buttonData.object_type = kObjectRectangle;
+	//EndScreenButtons[2].textPositionX = EndScreenButtons[2].buttonData.x_origin + BUTTON_WIDTH * 0.5f;
+	//EndScreenButtons[2].textPositionY = EndScreenButtons[2].buttonData.y_origin + BUTTON_HEIGHT * 0.5f;
+	//strcpy_s(EndScreenButtons[2].textString, sizeof(EndScreenButtons[2].textString), "Next");
+
+	EndScreenButtons[0] = init_text_button(EndScreenButtons[0],
+		CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 0.5f - BUTTON_HEIGHT * 0.5f,
+		BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Back");
+
+	EndScreenButtons[1] = init_text_button(EndScreenButtons[1],
+		CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 0.6f - BUTTON_HEIGHT * 0.5f,
+		BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Restart");
+
+	EndScreenButtons[2] = init_text_button(EndScreenButtons[2],
+		CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 0.7f - BUTTON_HEIGHT * 0.5f,
+		BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Next");
 }
 
 // Note: endPos is (initialPosX, initialPosY + CP_Window_Width());
@@ -151,14 +163,12 @@ void init_credit_line(int num, char* line, float x, float y)
 
 void init_credits_screen(void)
 {
-	creditRectCoords.x_origin = CP_System_GetWindowWidth() * 0.1f; creditRectCoords.y_origin = CP_System_GetWindowHeight() * 1.35f;
-	creditRectCoords.width = CP_System_GetWindowWidth() * 0.8f; creditRectCoords.height = CP_System_GetWindowHeight() * 0.5f;
+	creditRectCoords.x_origin = CP_System_GetWindowWidth() * 0.1f; creditRectCoords.y_origin = CP_System_GetWindowHeight() * 1.3f;
+	creditRectCoords.width = CP_System_GetWindowWidth() * 0.8f; creditRectCoords.height = CP_System_GetWindowHeight() * 0.6f;
 
-	// the © copyright symbol is printed as \xc2\xa9, as its UTF-8 (i.e Unicode) string literal counterpart.
-	init_credit_line(CopyrightLine, "All content \xc2\xa9 2021 DigiPen Institute of Technology Singapore, all rights reserved.",
-		CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.45f);
 
-	init_credit_line(CreditsTitle, "Credits", CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.4f);
+	init_credit_line(CreditsTitle, "Credits", CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.35f);
+	init_credit_line(TeamCredit, "A DownNOut X Digipen Production", CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.4f);
 
 	init_credit_line(DevelopedBy, "Developed by:", CP_System_GetWindowWidth() * 0.3f, CP_System_GetWindowHeight() * 0.5f);
 	init_credit_line(ZhengWei, "Ng Zheng Wei", CP_System_GetWindowWidth() * 0.3f, CP_System_GetWindowHeight() * 0.55f);
@@ -174,7 +184,14 @@ void init_credits_screen(void)
 	init_credit_line(DX, "Cheng Ding Xiang", CP_System_GetWindowWidth() * 0.7f, CP_System_GetWindowHeight() * 0.65f);
 	init_credit_line(Gerald, "Gerald Wong", CP_System_GetWindowWidth() * 0.7f, CP_System_GetWindowHeight() * 0.7f);
 
-	CreditsBackButton = init_text_button(CreditsBackButton, CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 1.85f - BUTTON_HEIGHT * 0.5f,
+
+	init_credit_line(CreatedAtDigipen, "Created at DigiPen Institute of Technology Singapore", CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.82f);
+	init_credit_line(DigipenURL, "www.digipen.edu", CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.85f);
+	// the © copyright symbol is printed as \xc2\xa9, as its UTF-8 (i.e Unicode) string literal counterpart.
+	init_credit_line(CopyrightLine, "All content \xc2\xa9 2021 DigiPen Institute of Technology Singapore, all rights reserved.",
+		CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.88f);
+
+	CreditsBackButton = init_text_button(CreditsBackButton, CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 2.0f - BUTTON_HEIGHT * 0.5f,
 		BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Back");
 }
 
@@ -249,12 +266,10 @@ void render_credits_screen(void)
 
 	CP_Settings_Fill(COLOR_WHITE);
 	render_credit_line(CreditTexts[CreditsTitle]);
-	CP_Settings_TextSize(FONT_SIZE * 0.5f);
-	render_credit_line(CreditTexts[CopyrightLine]);
 
-	CP_Settings_TextSize(FONT_SIZE);
 
 	render_credit_line(CreditTexts[DevelopedBy]);
+	render_credit_line(CreditTexts[TeamCredit]);
 	CP_Settings_Fill(COLOR_YELLOW);
 	render_credit_line(CreditTexts[ZhengWei]);
 	render_credit_line(CreditTexts[Samuel]);
@@ -265,10 +280,18 @@ void render_credits_screen(void)
 	CP_Settings_Fill(COLOR_WHITE);
 	render_credit_line(CreditTexts[Instructors]);
 	render_credit_line(CreditTexts[President]);
+
 	CP_Settings_Fill(COLOR_YELLOW);
 	render_credit_line(CreditTexts[DX]);
 	render_credit_line(CreditTexts[Gerald]);
 	render_credit_line(CreditTexts[ClaudeComair]);
+
+	CP_Settings_Fill(COLOR_WHITE);
+	CP_Settings_TextSize(FONT_SIZE * 0.5f);
+	render_credit_line(CreditTexts[CreatedAtDigipen]);
+	render_credit_line(CreditTexts[DigipenURL]);
+	render_credit_line(CreditTexts[CopyrightLine]);
+	CP_Settings_TextSize(FONT_SIZE);
 
 	render_ui_button(CreditsBackButton);
 }
@@ -285,31 +308,46 @@ void render_pause_screen(void)
 
 void show_logos(void)
 {
-	CP_Graphics_ClearBackground(COLOR_BLACK);
-	if (dpLogoTime < 0.0f)
+	CP_Graphics_ClearBackground(COLOR_BLACK);		
+	CP_Settings_TextSize(FONT_SIZE * 0.5f); // for copyright text to fit
+	if (dpLogoTime < 0.0f) // dp logo finish display
 	{
-		show_team_logo();
-		if (teamLogoTime < 0.0f)
+		if (dpLogoFadeTime > 0.0f) // fading
 		{
-			if ((fadeOutTime -= CP_System_GetDt()) < 0.0f)
+			dpLogoFadeTime -= CP_System_GetDt();
+			CP_Image_Draw(DigipenLogo, (float)CP_System_GetWindowWidth() * 0.5f, (float)CP_System_GetWindowHeight() * 0.5f, (float)CP_Image_GetWidth(DigipenLogo) * 0.5f, (float)CP_Image_GetHeight(DigipenLogo) * 0.5f, (int)(255 * (dpLogoFadeTime / FADE_OUT_TIME)));
+			CP_Font_DrawText(CreditTexts[CopyrightLine].text, (float)CP_System_GetWindowWidth() * 0.5f, (float)CP_System_GetWindowHeight() * 0.95f);
+		}
+		else // dp logo finished fading
+		{
+			if (teamLogoTime > 0.0f)
 			{
-				current_game_state = kMainMenu;
+				CP_Image_Draw(DownNOutLogo, (float)CP_System_GetWindowWidth() * 0.5f, (float)CP_System_GetWindowHeight() * 0.5f, (float)CP_Image_GetWidth(DownNOutLogo), (float)CP_Image_GetHeight(DownNOutLogo), 255);
+				teamLogoTime -= CP_System_GetDt();
+				CP_Font_DrawText(CreditTexts[CopyrightLine].text, (float)CP_System_GetWindowWidth() * 0.5f, (float)CP_System_GetWindowHeight() * 0.95f);
+			
+			}
+			else // team logo finished display
+			{
+				CP_Image_Draw(DownNOutLogo, (float)CP_System_GetWindowWidth() * 0.5f, (float)CP_System_GetWindowHeight() * 0.5f, (float)CP_Image_GetWidth(DownNOutLogo), (float)CP_Image_GetHeight(DownNOutLogo), (int)(255 * (teamLogoFadeTime / FADE_OUT_TIME)));
+				teamLogoFadeTime -= CP_System_GetDt();
+				CP_Font_DrawText(CreditTexts[CopyrightLine].text, (float)CP_System_GetWindowWidth() * 0.5f, (float)CP_System_GetWindowHeight() * 0.95f);
+				
+				
+				if (teamLogoFadeTime < 0.0f) // team logo finished fading
+				{
+					CP_Settings_TextSize(FONT_SIZE); // set font size back to normal.
+					current_game_state = kMainMenu;
+				}
 			}
 		}
-		else
-		{
-			teamLogoTime -= CP_System_GetDt();
-		}
 	}
-	else if ((dpLogoTime -= CP_System_GetDt()) > 0.0f)
+	else if (dpLogoTime >= 0.0f) // dp Logo still displaying
 	{
-		CP_Image_Draw(DigipenLogo, (float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2, (float)CP_Image_GetWidth(DigipenLogo) / 2, (float)CP_Image_GetHeight(DigipenLogo) / 2, (int)(255 * (fadeOutTime / FADE_OUT_TIME)));
+		dpLogoTime -= CP_System_GetDt();
+		CP_Image_Draw(DigipenLogo, (float)CP_System_GetWindowWidth() * 0.5f, (float)CP_System_GetWindowHeight() * 0.5f, (float)CP_Image_GetWidth(DigipenLogo) / 2, (float)CP_Image_GetHeight(DigipenLogo) / 2, 255);
+		CP_Font_DrawText(CreditTexts[CopyrightLine].text, (float)CP_System_GetWindowWidth() * 0.5f, (float)CP_System_GetWindowHeight() * 0.95f);
 	}
-}
-
-void show_team_logo(void)
-{
-	CP_Image_Draw(DownNOutLogo, (float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2, (float)CP_Image_GetWidth(DownNOutLogo), (float)CP_Image_GetHeight(DownNOutLogo), (int)(255 * (fadeOutTime / FADE_OUT_TIME)));
 }
 
 // Terminates game.
@@ -320,7 +358,7 @@ void exit_to_desktop(void)
 
 #pragma endregion
 
-#pragma region kBuilding / kWave Phase System
+#pragma region Building / Wave Phase System
 
 void init_skip_wave_button(void)
 {
@@ -386,7 +424,7 @@ void SetBuildingTime(float newBuildingTime)
 
 #pragma endregion
 
-#pragma region kWin / kLose Conditions
+#pragma region Win / Lose Conditions
 
 void render_end_screen(void)
 {
@@ -506,7 +544,7 @@ Coordinates coord_movement(Coordinates coord, float destPosX, float destPosY)
 	return coord;
 }
 
-// A note: moving stops when the credit screen's back button has finished moving.
+// Moving stops when the credit screen's back button has finished moving.
 void move_credits_screen(void)
 {
 	for (int i = 0; i < sizeof(CreditTexts) / sizeof(CreditLine); i++)
@@ -523,14 +561,15 @@ void move_credits_screen(void)
 		}
 	}
 
+	// positional data must match with its values in button_has_finished_moving in game.c
 	if (current_game_state == kMainMenu)
 	{
-		creditRectCoords = coord_movement(creditRectCoords, creditRectCoords.x_origin, CP_System_GetWindowHeight() * 0.35f);
-		CreditsBackButton = ui_button_movement(CreditsBackButton, CreditsBackButton.buttonData.x_origin, CP_System_GetWindowHeight() * 0.9f);
+		creditRectCoords = coord_movement(creditRectCoords, creditRectCoords.x_origin, CP_System_GetWindowHeight() * 0.3f);
+		CreditsBackButton = ui_button_movement(CreditsBackButton, CreditsBackButton.buttonData.x_origin, CP_System_GetWindowHeight() * 0.93f);
 	}
 	else if (current_game_state == kCredits)
 	{
-		creditRectCoords = coord_movement(creditRectCoords, creditRectCoords.x_origin, CP_System_GetWindowHeight() * 1.35f);
+		creditRectCoords = coord_movement(creditRectCoords, creditRectCoords.x_origin, CP_System_GetWindowHeight() * 1.3f);
 		CreditsBackButton = ui_button_movement(CreditsBackButton, CreditsBackButton.buttonData.x_origin, CP_System_GetWindowHeight() * 2.0f);
 	}
 }
