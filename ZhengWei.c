@@ -125,11 +125,11 @@ Boolean CollisionDetection(Coordinates object1, Coordinates object2) {
 		}
 	}
 	//Collision for circle and square
-	else if (object1.object_type == kObjectCircle 
+	else if (object1.object_type == kObjectCircle
 		|| object2.object_type == kObjectCircle) {
-		float  distance_x, distance_y, circle_radius, 
-			rect_width_to_check, rect_height_to_check, 
-			collision_distance_x, collision_distance_y, radius_squared, 
+		float  distance_x, distance_y, circle_radius,
+			rect_width_to_check, rect_height_to_check,
+			collision_distance_x, collision_distance_y, radius_squared,
 			distance_to_corner_squared_x, distance_to_corner_squared_y;
 		distance_x = object1.x_origin - object2.x_origin;
 		distance_x = FloatAbs(distance_x);
@@ -148,14 +148,14 @@ Boolean CollisionDetection(Coordinates object1, Coordinates object2) {
 		collision_distance_x = circle_radius + rect_width_to_check;
 		collision_distance_y = circle_radius + rect_height_to_check;
 		radius_squared = circle_radius * circle_radius;
-		distance_to_corner_squared_x = 
-			(distance_x - rect_width_to_check) * 
+		distance_to_corner_squared_x =
+			(distance_x - rect_width_to_check) *
 			(distance_x - rect_width_to_check);
-		distance_to_corner_squared_y = 
-			(distance_y - rect_height_to_check) * 
+		distance_to_corner_squared_y =
+			(distance_y - rect_height_to_check) *
 			(distance_x - rect_height_to_check);
 		//Checking for collision of Big square with circle
-		if (collision_distance_x >= distance_x 
+		if (collision_distance_x >= distance_x
 			&& collision_distance_y >= distance_y) {
 			if (distance_x <= rect_width_to_check) {
 				return kTrue;
@@ -176,8 +176,8 @@ Boolean CollisionDetection(Coordinates object1, Coordinates object2) {
 	}
 	//Collision for square to square
 	else {
-		float rect1_width_to_check, rect1_height_to_check, 
-			rect2_width_to_check, rect2_height_to_check, 
+		float rect1_width_to_check, rect1_height_to_check,
+			rect2_width_to_check, rect2_height_to_check,
 			collision_distance_x, collision_distance_y, distance_x, distance_y;
 		rect1_width_to_check = 0.5f * object1.width;
 		rect1_height_to_check = 0.5f * object1.height;
@@ -189,7 +189,7 @@ Boolean CollisionDetection(Coordinates object1, Coordinates object2) {
 		distance_x = FloatAbs(distance_x);
 		distance_y = (object1.y_origin - object2.y_origin);
 		distance_y = FloatAbs(distance_y);
-		if (collision_distance_x >= distance_x 
+		if (collision_distance_x >= distance_x
 			&& collision_distance_y >= distance_y) {
 			return kTrue;
 		}
@@ -1564,4 +1564,69 @@ void RenderEnemyPath(LevelData* LevelX) {
 		}
 	}
 }
+void HowToPlayButtonsInit(void) {
+	TutorialButtons[kHowToPlayBack].x_origin = (float)CP_System_GetWindowWidth() * 4 / 10;
+	TutorialButtons[kHowToPlayBack].y_origin = (float)CP_System_GetWindowHeight() * 9 / 10;
+	TutorialButtons[kHowToPlayBack].width = (float)CP_System_GetWindowWidth() * 3 / 10;
+	TutorialButtons[kHowToPlayBack].height = (float)CP_System_GetWindowHeight() / 10;
 
+	TutorialButtons[kHowToPlayPrevious].x_origin = (float)CP_System_GetWindowWidth() * 3 / 10;
+	TutorialButtons[kHowToPlayPrevious].y_origin = (float)CP_System_GetWindowHeight() * 9 / 10;
+	TutorialButtons[kHowToPlayPrevious].width = (float)CP_System_GetWindowWidth() / 10;
+	TutorialButtons[kHowToPlayPrevious].height = (float)CP_System_GetWindowHeight() / 10;
+
+	TutorialButtons[kHowToPlayNext].x_origin = (float)CP_System_GetWindowWidth() * 7 / 10;
+	TutorialButtons[kHowToPlayNext].y_origin = (float)CP_System_GetWindowHeight() * 9 / 10;
+	TutorialButtons[kHowToPlayNext].width = (float)CP_System_GetWindowWidth() / 10;
+	TutorialButtons[kHowToPlayNext].height = (float)CP_System_GetWindowHeight() / 10;
+}
+void RenderHowToPlayPages(void) {
+	CP_Graphics_ClearBackground(COLOR_WHITE);
+	CP_Settings_RectMode(CP_POSITION_CORNER);
+	CP_Graphics_DrawRect(TutorialButtons[kHowToPlayBack].x_origin,
+		TutorialButtons[kHowToPlayBack].y_origin,
+		TutorialButtons[kHowToPlayBack].width,
+		TutorialButtons[kHowToPlayBack].height);
+	if (current_how_to_play_page != 0) {
+		CP_Graphics_DrawRect(TutorialButtons[kHowToPlayPrevious].x_origin,
+			TutorialButtons[kHowToPlayPrevious].y_origin,
+			TutorialButtons[kHowToPlayPrevious].width,
+			TutorialButtons[kHowToPlayPrevious].height);
+	}
+	if (current_how_to_play_page != kMaxHowToPlayPages - 1) {
+		CP_Graphics_DrawRect(TutorialButtons[kHowToPlayNext].x_origin,
+			TutorialButtons[kHowToPlayNext].y_origin,
+			TutorialButtons[kHowToPlayNext].width,
+			TutorialButtons[kHowToPlayNext].height);
+	}
+
+	switch (current_how_to_play_page) {
+	case 0:
+		CP_Graphics_DrawCircle(100, 100, 100);
+		break;
+	case 1:
+		CP_Graphics_DrawCircle(200, 200, 200);
+		break;
+	case 2:
+		CP_Graphics_DrawCircle(300, 300, 300);
+		break;
+	case 3:
+		CP_Graphics_DrawCircle(400, 400, 400);
+		break;
+	}
+
+	if (BtnIsPressed(TutorialButtons[kHowToPlayBack])) {
+		current_game_state = kMainMenu;
+	}
+	else if (BtnIsPressed(TutorialButtons[kHowToPlayPrevious])) {
+		if (current_how_to_play_page != 0) {
+			current_how_to_play_page -= 1;
+		}
+	}
+	else if (BtnIsPressed(TutorialButtons[kHowToPlayNext])) {
+		if (current_how_to_play_page != kMaxHowToPlayPages - 1) {
+			current_how_to_play_page += 1;
+		}
+	}
+	MouseReset();
+}

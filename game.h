@@ -93,11 +93,13 @@ enum
 	kWin,
 	kLose,
 	kLevelSelect,
-	kCredits
+	kCredits,
+	kHowToPlay
 }current_game_state;
 //Game Grid
 int level_grid_cols;
 int level_grid_rows;
+int current_how_to_play_page;
 struct {
 	float width;
 	float height;

@@ -26,6 +26,8 @@ void game_init(void)
 	building_time = kFullBuildingPhaseTime;
 	dpLogoTime = teamLogoTime = LOGO_DISPLAY_TIME;
 	dpLogoFadeTime = teamLogoFadeTime = FADE_OUT_TIME;
+	current_how_to_play_page = 0;
+	HowToPlayButtonsInit();
 
 	//Main menu, level select
 
@@ -178,7 +180,9 @@ void game_update(void)
 				CreditsBackButton.isMoving = 1;
 			}
 		}
-
+		else if (BtnIsPressed(HowToPlayButton.buttonData)) {
+			current_game_state = kHowToPlay;
+		}
 		if (PlayButton.isMoving) // clicked on play
 		{
 			PlayButton = ui_button_movement(PlayButton, -BUTTON_WIDTH, PlayButton.buttonData.y_origin);
@@ -224,6 +228,9 @@ void game_update(void)
 		render_start_menu();
 		render_level_select_buttons();
 		render_credits_screen();
+	}
+	else if (current_game_state == kHowToPlay) {
+		RenderHowToPlayPages();
 	}
 	else if (current_game_state == kLevelSelect)
 	{

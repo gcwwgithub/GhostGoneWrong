@@ -62,6 +62,8 @@ void init_main_menu(void)
 		BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Credits");
 	QuitButton = init_text_button(QuitButton, CP_System_GetWindowWidth() * 0.75f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 0.5f,
 		BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Quit Game");
+	HowToPlayButton = init_text_button(HowToPlayButton, CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 0.75f,
+		BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "How To Play");
 }
 
 void init_level_select_buttons(void)
@@ -234,6 +236,7 @@ void render_start_menu(void)
 	render_ui_button(PlayButton);
 	render_ui_button(CreditsButton);
 	render_ui_button(QuitButton);
+	render_ui_button(HowToPlayButton);
 }
 
 void render_level_select_buttons(void)
