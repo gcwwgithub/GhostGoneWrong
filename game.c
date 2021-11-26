@@ -211,7 +211,7 @@ void game_update(void)
 			current_game_state = kLevelSelect;
 		}
 
-		if (button_has_finished_moving(CreditsBackButton, CreditsBackButton.buttonData.x_origin, CP_System_GetWindowHeight() * 0.93f))
+		if (button_has_finished_moving(CreditsBackButton, CreditsBackButton.buttonData.x_origin, CP_System_GetWindowHeight() * 0.9f))
 		{
 			CreditsBackButton.isMoving = 0;
 			CreditsBackButton.movementTime = creditTextMoveTime = 0.0f;

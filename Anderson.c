@@ -163,12 +163,14 @@ void init_credit_line(int num, char* line, float x, float y)
 
 void init_credits_screen(void)
 {
-	creditRectCoords.x_origin = CP_System_GetWindowWidth() * 0.1f; creditRectCoords.y_origin = CP_System_GetWindowHeight() * 1.3f;
-	creditRectCoords.width = CP_System_GetWindowWidth() * 0.8f; creditRectCoords.height = CP_System_GetWindowHeight() * 0.6f;
+	creditRectCoords.x_origin = CP_System_GetWindowWidth() * 0.1f; creditRectCoords.y_origin = CP_System_GetWindowHeight() * 1.35f;
+	creditRectCoords.width = CP_System_GetWindowWidth() * 0.8f; creditRectCoords.height = CP_System_GetWindowHeight() * 0.5f;
 
+	// the © copyright symbol is printed as \xc2\xa9, as its UTF-8 (i.e Unicode) string literal counterpart.
+	init_credit_line(CopyrightLine, "All content \xc2\xa9 2021 DigiPen Institute of Technology Singapore, all rights reserved.",
+		CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.45f);
 
-	init_credit_line(CreditsTitle, "Credits", CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.35f);
-	init_credit_line(TeamCredit, "A DownNOut X Digipen Production", CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.4f);
+	init_credit_line(CreditsTitle, "Credits", CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.4f);
 
 	init_credit_line(DevelopedBy, "Developed by:", CP_System_GetWindowWidth() * 0.3f, CP_System_GetWindowHeight() * 0.5f);
 	init_credit_line(ZhengWei, "Ng Zheng Wei", CP_System_GetWindowWidth() * 0.3f, CP_System_GetWindowHeight() * 0.55f);
@@ -184,14 +186,7 @@ void init_credits_screen(void)
 	init_credit_line(DX, "Cheng Ding Xiang", CP_System_GetWindowWidth() * 0.7f, CP_System_GetWindowHeight() * 0.65f);
 	init_credit_line(Gerald, "Gerald Wong", CP_System_GetWindowWidth() * 0.7f, CP_System_GetWindowHeight() * 0.7f);
 
-
-	init_credit_line(CreatedAtDigipen, "Created at DigiPen Institute of Technology Singapore", CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.82f);
-	init_credit_line(DigipenURL, "www.digipen.edu", CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.85f);
-	// the © copyright symbol is printed as \xc2\xa9, as its UTF-8 (i.e Unicode) string literal counterpart.
-	init_credit_line(CopyrightLine, "All content \xc2\xa9 2021 DigiPen Institute of Technology Singapore, all rights reserved.",
-		CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.88f);
-
-	CreditsBackButton = init_text_button(CreditsBackButton, CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 2.0f - BUTTON_HEIGHT * 0.5f,
+	CreditsBackButton = init_text_button(CreditsBackButton, CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 1.85f - BUTTON_HEIGHT * 0.5f,
 		BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Back");
 }
 
@@ -266,10 +261,12 @@ void render_credits_screen(void)
 
 	CP_Settings_Fill(COLOR_WHITE);
 	render_credit_line(CreditTexts[CreditsTitle]);
+	CP_Settings_TextSize(FONT_SIZE * 0.5f);
+	render_credit_line(CreditTexts[CopyrightLine]);
 
+	CP_Settings_TextSize(FONT_SIZE);
 
 	render_credit_line(CreditTexts[DevelopedBy]);
-	render_credit_line(CreditTexts[TeamCredit]);
 	CP_Settings_Fill(COLOR_YELLOW);
 	render_credit_line(CreditTexts[ZhengWei]);
 	render_credit_line(CreditTexts[Samuel]);
@@ -280,18 +277,10 @@ void render_credits_screen(void)
 	CP_Settings_Fill(COLOR_WHITE);
 	render_credit_line(CreditTexts[Instructors]);
 	render_credit_line(CreditTexts[President]);
-
 	CP_Settings_Fill(COLOR_YELLOW);
 	render_credit_line(CreditTexts[DX]);
 	render_credit_line(CreditTexts[Gerald]);
 	render_credit_line(CreditTexts[ClaudeComair]);
-
-	CP_Settings_Fill(COLOR_WHITE);
-	CP_Settings_TextSize(FONT_SIZE * 0.5f);
-	render_credit_line(CreditTexts[CreatedAtDigipen]);
-	render_credit_line(CreditTexts[DigipenURL]);
-	render_credit_line(CreditTexts[CopyrightLine]);
-	CP_Settings_TextSize(FONT_SIZE);
 
 	render_ui_button(CreditsBackButton);
 }
@@ -325,16 +314,13 @@ void show_logos(void)
 				CP_Image_Draw(DownNOutLogo, (float)CP_System_GetWindowWidth() * 0.5f, (float)CP_System_GetWindowHeight() * 0.5f, (float)CP_Image_GetWidth(DownNOutLogo), (float)CP_Image_GetHeight(DownNOutLogo), 255);
 				teamLogoTime -= CP_System_GetDt();
 				CP_Font_DrawText(CreditTexts[CopyrightLine].text, (float)CP_System_GetWindowWidth() * 0.5f, (float)CP_System_GetWindowHeight() * 0.95f);
-			
 			}
 			else // team logo finished display
 			{
 				CP_Image_Draw(DownNOutLogo, (float)CP_System_GetWindowWidth() * 0.5f, (float)CP_System_GetWindowHeight() * 0.5f, (float)CP_Image_GetWidth(DownNOutLogo), (float)CP_Image_GetHeight(DownNOutLogo), (int)(255 * (teamLogoFadeTime / FADE_OUT_TIME)));
 				teamLogoFadeTime -= CP_System_GetDt();
 				CP_Font_DrawText(CreditTexts[CopyrightLine].text, (float)CP_System_GetWindowWidth() * 0.5f, (float)CP_System_GetWindowHeight() * 0.95f);
-				
-				
-				if (teamLogoFadeTime < 0.0f) // team logo finished fading
+				if (teamLogoFadeTime < 0.0f)
 				{
 					CP_Settings_TextSize(FONT_SIZE); // set font size back to normal.
 					current_game_state = kMainMenu;
@@ -358,7 +344,7 @@ void exit_to_desktop(void)
 
 #pragma endregion
 
-#pragma region Building / Wave Phase System
+#pragma region kBuilding / kWave Phase System
 
 void init_skip_wave_button(void)
 {
@@ -424,7 +410,7 @@ void SetBuildingTime(float newBuildingTime)
 
 #pragma endregion
 
-#pragma region Win / Lose Conditions
+#pragma region kWin / kLose Conditions
 
 void render_end_screen(void)
 {
@@ -544,7 +530,7 @@ Coordinates coord_movement(Coordinates coord, float destPosX, float destPosY)
 	return coord;
 }
 
-// Moving stops when the credit screen's back button has finished moving.
+// A note: moving stops when the credit screen's back button has finished moving.
 void move_credits_screen(void)
 {
 	for (int i = 0; i < sizeof(CreditTexts) / sizeof(CreditLine); i++)
@@ -561,15 +547,14 @@ void move_credits_screen(void)
 		}
 	}
 
-	// positional data must match with its values in button_has_finished_moving in game.c
 	if (current_game_state == kMainMenu)
 	{
-		creditRectCoords = coord_movement(creditRectCoords, creditRectCoords.x_origin, CP_System_GetWindowHeight() * 0.3f);
-		CreditsBackButton = ui_button_movement(CreditsBackButton, CreditsBackButton.buttonData.x_origin, CP_System_GetWindowHeight() * 0.93f);
+		creditRectCoords = coord_movement(creditRectCoords, creditRectCoords.x_origin, CP_System_GetWindowHeight() * 0.35f);
+		CreditsBackButton = ui_button_movement(CreditsBackButton, CreditsBackButton.buttonData.x_origin, CP_System_GetWindowHeight() * 0.9f);
 	}
 	else if (current_game_state == kCredits)
 	{
-		creditRectCoords = coord_movement(creditRectCoords, creditRectCoords.x_origin, CP_System_GetWindowHeight() * 1.3f);
+		creditRectCoords = coord_movement(creditRectCoords, creditRectCoords.x_origin, CP_System_GetWindowHeight() * 1.35f);
 		CreditsBackButton = ui_button_movement(CreditsBackButton, CreditsBackButton.buttonData.x_origin, CP_System_GetWindowHeight() * 2.0f);
 	}
 }

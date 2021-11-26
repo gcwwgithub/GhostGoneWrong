@@ -24,8 +24,9 @@ typedef struct Button {
 
 enum CreditText {
 
+	CopyrightLine,
+
 	CreditsTitle,
-	TeamCredit,
 
 	DevelopedBy,
 	ZhengWei,
@@ -39,12 +40,7 @@ enum CreditText {
 	Gerald,
 
 	President,
-	ClaudeComair,
-
-	CreatedAtDigipen,
-	Executives,
-	DigipenURL,
-	CopyrightLine
+	ClaudeComair
 };
 
 typedef struct CreditLine
@@ -55,7 +51,7 @@ typedef struct CreditLine
 	Coordinates creditPos; // credit text will be at this position in Credits
 }CreditLine;
 
-CreditLine CreditTexts[17];
+CreditLine CreditTexts[13];
 
 // temp way to move rect, figuring smth if time permits
 // creditRectCoordsMenu keeps values for tweening
