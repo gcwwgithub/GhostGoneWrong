@@ -1608,8 +1608,8 @@ void RenderEnemyPath(LevelData* LevelX) {
 	}
 }
 void HowToPlayButtonsInit(void) {
-	TutorialButtons[kHowToPlayBack].x_origin = (float)CP_System_GetWindowWidth() * 4 / 10;
-	TutorialButtons[kHowToPlayBack].y_origin = (float)CP_System_GetWindowHeight() * 9 / 10;
+	TutorialButtons[kHowToPlayBack].x_origin = (float)CP_System_GetWindowWidth() / 50;
+	TutorialButtons[kHowToPlayBack].y_origin = (float)CP_System_GetWindowHeight() / 50;
 	TutorialButtons[kHowToPlayBack].width = (float)CP_System_GetWindowWidth() / 10;
 	TutorialButtons[kHowToPlayBack].height = (float)CP_System_GetWindowHeight() / 10;
 
@@ -1625,11 +1625,12 @@ void HowToPlayButtonsInit(void) {
 }
 void RenderHowToPlayPages(void) {
 	CP_Graphics_ClearBackground(COLOR_WHITE);
+	
+	CP_Settings_RectMode(CP_POSITION_CORNER);
 	CP_Image_Draw(tutorial_image_array[current_how_to_play_page], CP_System_GetWindowWidth() * 0.5f,
 		CP_System_GetWindowHeight() * 0.5f, 1280 * scaling_factor, 720 * scaling_factor, 255);
-	CP_Settings_RectMode(CP_POSITION_CORNER);
-	
 
+	
 	
 	if (current_how_to_play_page != 0) {
 		CP_Graphics_DrawRect(TutorialButtons[kHowToPlayPrevious].x_origin,
@@ -1641,7 +1642,7 @@ void RenderHowToPlayPages(void) {
 			TutorialButtons[kHowToPlayPrevious].y_origin + TutorialButtons[kHowToPlayPrevious].height / 2,
 			TutorialButtons[kHowToPlayPrevious].width,
 			TutorialButtons[kHowToPlayPrevious].height);
-		
+
 	}
 
 	else
@@ -1650,7 +1651,13 @@ void RenderHowToPlayPages(void) {
 			TutorialButtons[kHowToPlayBack].y_origin,
 			TutorialButtons[kHowToPlayBack].width,
 			TutorialButtons[kHowToPlayBack].height);
+		RenderImageFromSpriteSheet(interactable_UI_buttons_spritesheet, interactable_UI_buttons_spritesheet_array[5],
+			TutorialButtons[kHowToPlayBack].x_origin + TutorialButtons[kHowToPlayBack].width / 2,
+			TutorialButtons[kHowToPlayBack].y_origin + TutorialButtons[kHowToPlayBack].height / 2,
+			TutorialButtons[kHowToPlayBack].width,
+			TutorialButtons[kHowToPlayBack].height);
 	}
+
 	if (current_how_to_play_page != kMaxHowToPlayPages - 1) {
 		CP_Graphics_DrawRect(TutorialButtons[kHowToPlayNext].x_origin,
 			TutorialButtons[kHowToPlayNext].y_origin,
@@ -1679,7 +1686,8 @@ void RenderHowToPlayPages(void) {
 		break;
 	}*/
 
-	if (BtnIsPressed(TutorialButtons[kHowToPlayBack])) {
+	if (BtnIsPressed(TutorialButtons[kHowToPlayBack]) && current_how_to_play_page == 0) {
+		current_how_to_play_page = 0;
 		current_game_state = kMainMenu;
 	}
 	else if (BtnIsPressed(TutorialButtons[kHowToPlayPrevious])) {

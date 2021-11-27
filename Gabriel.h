@@ -81,7 +81,7 @@ struct SpriteSheetImage portal_spawn_effect_spritesheet_array[4];
 struct SpriteSheetImage power_up_spritesheet_array[4];
 struct SpriteSheetImage battlefield_effect_spritesheet_array[12];
 struct SpriteSheetImage fat_UI_background_spritesheet_array[2];
-struct SpriteSheetImage interactable_UI_buttons_spritesheet_array[5];
+struct SpriteSheetImage interactable_UI_buttons_spritesheet_array[6];
 struct SpriteSheetImage turret_stats_spritesheet_array[5];
 struct SpriteSheetImage non_grid_environment_objects_spritesheet_array[9];
 

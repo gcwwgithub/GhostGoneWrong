@@ -189,7 +189,7 @@ void InitSpritesheetArray(void)
 	SpritesheetCalculation(power_up_spritesheet_array, power_up_spritesheet, 128, 128, 0);
 	SpritesheetCalculation(battlefield_effect_spritesheet_array, battlefield_effect_spritesheet, 128, 128, 0);
 	SpritesheetCalculation(fat_UI_background_spritesheet_array, fat_UI_background_spritesheet, 128, 128, 0);
-	SpritesheetCalculation(interactable_UI_buttons_spritesheet_array, interactable_UI_buttons_spritesheet, 128, 72, 1);
+	SpritesheetCalculation(interactable_UI_buttons_spritesheet_array, interactable_UI_buttons_spritesheet, 128, 72, 0);
 	SpritesheetCalculation(turret_stats_spritesheet_array, turret_stats_spritesheet, 128, 128, 1);
 	SpritesheetCalculation(non_grid_environment_objects_spritesheet_array, non_grid_environment_objects_spritesheet, 512, 512, 0);
 }
