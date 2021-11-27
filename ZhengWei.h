@@ -21,7 +21,7 @@ enum {
 	kLevel5Cols = 8,
 	kLevel5Rows = 7,
 	kMaxEnvironmentObject = 10,
-	kMaxHowToPlayPages = 10
+	kMaxHowToPlayPages = 7
 };//Using enum instead of define for const int
 enum {
 	kHowToPlayBack,

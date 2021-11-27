@@ -11,6 +11,13 @@ void InitAllImages(void)
 	slow_turret_image_array[4] = CP_Image_Load("./Assets/SlowTurret4.png");
 	slow_turret_image_array[5] = CP_Image_Load("./Assets/SlowTurret5.png");
 
+	tutorial_image_array[0] = CP_Image_Load("./Assets/Slide1.png");
+	tutorial_image_array[1] = CP_Image_Load("./Assets/Slide2.png");
+	tutorial_image_array[2] = CP_Image_Load("./Assets/Slide3.png");
+	tutorial_image_array[3] = CP_Image_Load("./Assets/Slide4.png");
+	tutorial_image_array[4] = CP_Image_Load("./Assets/Slide5.png");
+	tutorial_image_array[5] = CP_Image_Load("./Assets/Slide6.png");
+	tutorial_image_array[6] = CP_Image_Load("./Assets/Slide7.png");
 
 	pause_button_image = CP_Image_Load("./Assets/Pause.png");
 	game_title_image = CP_Image_Load("./Assets/Title.png");

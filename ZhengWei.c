@@ -552,38 +552,81 @@ void RenderTurretDetailsDisplay(void) {
 	case kTurretButtonBasic:
 		CP_Settings_RectMode(CP_POSITION_CORNER);
 		CP_Settings_Fill(COLOR_WHITE);
-		CP_Graphics_DrawRect(game_menu_object[kTurretDetailsDisplay].x_origin, game_menu_object[kTurretDetailsDisplay].y_origin, game_menu_object[kTurretDetailsDisplay].width, game_menu_object[kTurretDetailsDisplay].height);
+		CP_Graphics_DrawRect(game_menu_object[kTurretDetailsDisplay].x_origin, game_menu_object[kTurretDetailsDisplay].y_origin, game_menu_object[kTurretDetailsDisplay].width * 1.25f, game_menu_object[kTurretDetailsDisplay].height);
 		CP_Settings_Fill(COLOR_BLACK);
 		CP_Settings_TextSize(20.0f * scaling_factor);
-		CP_Font_DrawText("Basic Turret", game_menu_object[kTurretDetailsDisplay].x_origin + game_menu_object[kTurretDetailsDisplay].width / 2, (game_menu_object[kTurretDetailsDisplay].y_origin + game_menu_object[kTurretDetailsDisplay].height / 3));
-		CP_Font_DrawText("Single Target Damage", game_menu_object[kTurretDetailsDisplay].x_origin + game_menu_object[kTurretDetailsDisplay].width / 2, (game_menu_object[kTurretDetailsDisplay].y_origin + game_menu_object[kTurretDetailsDisplay].height * 2 / 3));
+		if (power_up_menu == kFalse)
+		{
+			CP_Font_DrawText("Basic Turret", game_menu_object[kTurretDetailsDisplay].x_origin + game_menu_object[kTurretDetailsDisplay].width / 1.55f, (game_menu_object[kTurretDetailsDisplay].y_origin + game_menu_object[kTurretDetailsDisplay].height / 3));
+			CP_Font_DrawText("Single Target Damage", game_menu_object[kTurretDetailsDisplay].x_origin + game_menu_object[kTurretDetailsDisplay].width / 1.55f, (game_menu_object[kTurretDetailsDisplay].y_origin + game_menu_object[kTurretDetailsDisplay].height * 2 / 3));
+		}
+
+		else
+		{
+			CP_Font_DrawText("Gem Upgrade", game_menu_object[kTurretDetailsDisplay].x_origin + game_menu_object[kTurretDetailsDisplay].width / 1.57f, (game_menu_object[kTurretDetailsDisplay].y_origin + game_menu_object[kTurretDetailsDisplay].height / 3));
+			CP_Font_DrawText("More Phantom Quartz Earned", game_menu_object[kTurretDetailsDisplay].x_origin + game_menu_object[kTurretDetailsDisplay].width / 1.57f, (game_menu_object[kTurretDetailsDisplay].y_origin + game_menu_object[kTurretDetailsDisplay].height * 2 / 3));
+		}
+
 		break;
 	case kTurretButtonSlow:
 		CP_Settings_RectMode(CP_POSITION_CORNER);
 		CP_Settings_Fill(COLOR_WHITE);
-		CP_Graphics_DrawRect(game_menu_object[kTurretDetailsDisplay].x_origin, game_menu_object[kTurretDetailsDisplay].y_origin, game_menu_object[kTurretDetailsDisplay].width, game_menu_object[kTurretDetailsDisplay].height);
+		CP_Graphics_DrawRect(game_menu_object[kTurretDetailsDisplay].x_origin, game_menu_object[kTurretDetailsDisplay].y_origin, game_menu_object[kTurretDetailsDisplay].width * 1.15f, game_menu_object[kTurretDetailsDisplay].height);
 		CP_Settings_Fill(COLOR_BLACK);
 		CP_Settings_TextSize(20.0f * scaling_factor);
-		CP_Font_DrawText("Slow Turret", game_menu_object[kTurretDetailsDisplay].x_origin + game_menu_object[kTurretDetailsDisplay].width / 2, (game_menu_object[kTurretDetailsDisplay].y_origin + game_menu_object[kTurretDetailsDisplay].height / 3));
-		CP_Font_DrawText("Slow Enemies", game_menu_object[kTurretDetailsDisplay].x_origin + game_menu_object[kTurretDetailsDisplay].width / 2, (game_menu_object[kTurretDetailsDisplay].y_origin + game_menu_object[kTurretDetailsDisplay].height * 2 / 3));
+		if (power_up_menu == kFalse)
+		{
+			CP_Font_DrawText("Slow Turret", game_menu_object[kTurretDetailsDisplay].x_origin + game_menu_object[kTurretDetailsDisplay].width / 1.75f, (game_menu_object[kTurretDetailsDisplay].y_origin + game_menu_object[kTurretDetailsDisplay].height / 3));
+			CP_Font_DrawText("Slow Enemies", game_menu_object[kTurretDetailsDisplay].x_origin + game_menu_object[kTurretDetailsDisplay].width / 1.75f, (game_menu_object[kTurretDetailsDisplay].y_origin + game_menu_object[kTurretDetailsDisplay].height * 2 / 3));
+		}
+
+		else
+		{
+			CP_Font_DrawText("Speed Upgrade", game_menu_object[kTurretDetailsDisplay].x_origin + game_menu_object[kTurretDetailsDisplay].width / 1.75f, (game_menu_object[kTurretDetailsDisplay].y_origin + game_menu_object[kTurretDetailsDisplay].height / 3));
+			CP_Font_DrawText("All ghosts move slower", game_menu_object[kTurretDetailsDisplay].x_origin + game_menu_object[kTurretDetailsDisplay].width / 1.75f, (game_menu_object[kTurretDetailsDisplay].y_origin + game_menu_object[kTurretDetailsDisplay].height * 2 / 3));
+		}
+
+		
 		break;
 	case kTurretButtonHoming:
 		CP_Settings_RectMode(CP_POSITION_CORNER);
 		CP_Settings_Fill(COLOR_WHITE);
-		CP_Graphics_DrawRect(game_menu_object[kTurretDetailsDisplay].x_origin, game_menu_object[kTurretDetailsDisplay].y_origin, game_menu_object[kTurretDetailsDisplay].width, game_menu_object[kTurretDetailsDisplay].height);
+		CP_Graphics_DrawRect(game_menu_object[kTurretDetailsDisplay].x_origin, game_menu_object[kTurretDetailsDisplay].y_origin, game_menu_object[kTurretDetailsDisplay].width * 1.15f, game_menu_object[kTurretDetailsDisplay].height);
 		CP_Settings_Fill(COLOR_BLACK);
 		CP_Settings_TextSize(20.0f * scaling_factor);
-		CP_Font_DrawText("Homing Turret", game_menu_object[kTurretDetailsDisplay].x_origin + game_menu_object[kTurretDetailsDisplay].width / 2, (game_menu_object[kTurretDetailsDisplay].y_origin + game_menu_object[kTurretDetailsDisplay].height / 3));
-		CP_Font_DrawText("Splash Damage", game_menu_object[kTurretDetailsDisplay].x_origin + game_menu_object[kTurretDetailsDisplay].width / 2, (game_menu_object[kTurretDetailsDisplay].y_origin + game_menu_object[kTurretDetailsDisplay].height * 2 / 3));
+		if (power_up_menu == kFalse)
+		{
+			CP_Font_DrawText("Homing Turret", game_menu_object[kTurretDetailsDisplay].x_origin + game_menu_object[kTurretDetailsDisplay].width / 1.75f, (game_menu_object[kTurretDetailsDisplay].y_origin + game_menu_object[kTurretDetailsDisplay].height / 3));
+			CP_Font_DrawText("Splash Damage", game_menu_object[kTurretDetailsDisplay].x_origin + game_menu_object[kTurretDetailsDisplay].width / 1.75f, (game_menu_object[kTurretDetailsDisplay].y_origin + game_menu_object[kTurretDetailsDisplay].height * 2 / 3));
+		}
+
+		else
+		{
+			CP_Font_DrawText("Health Upgrade", game_menu_object[kTurretDetailsDisplay].x_origin + game_menu_object[kTurretDetailsDisplay].width / 1.75f, (game_menu_object[kTurretDetailsDisplay].y_origin + game_menu_object[kTurretDetailsDisplay].height / 3));
+			CP_Font_DrawText("All ghosts have less HP", game_menu_object[kTurretDetailsDisplay].x_origin + game_menu_object[kTurretDetailsDisplay].width / 1.75f, (game_menu_object[kTurretDetailsDisplay].y_origin + game_menu_object[kTurretDetailsDisplay].height * 2 / 3));
+		}
+
+		
 		break;
 	case kTurretButtonMine:
 		CP_Settings_RectMode(CP_POSITION_CORNER);
 		CP_Settings_Fill(COLOR_WHITE);
-		CP_Graphics_DrawRect(game_menu_object[kTurretDetailsDisplay].x_origin, game_menu_object[kTurretDetailsDisplay].y_origin, game_menu_object[kTurretDetailsDisplay].width, game_menu_object[kTurretDetailsDisplay].height);
+		CP_Graphics_DrawRect(game_menu_object[kTurretDetailsDisplay].x_origin, game_menu_object[kTurretDetailsDisplay].y_origin, game_menu_object[kTurretDetailsDisplay].width * 1.15f, game_menu_object[kTurretDetailsDisplay].height);
 		CP_Settings_Fill(COLOR_BLACK);
 		CP_Settings_TextSize(20.0f * scaling_factor);
-		CP_Font_DrawText("Mine", game_menu_object[kTurretDetailsDisplay].x_origin + game_menu_object[kTurretDetailsDisplay].width / 2, (game_menu_object[kTurretDetailsDisplay].y_origin + game_menu_object[kTurretDetailsDisplay].height / 3));
-		CP_Font_DrawText("Single Use", game_menu_object[kTurretDetailsDisplay].x_origin + game_menu_object[kTurretDetailsDisplay].width / 2, (game_menu_object[kTurretDetailsDisplay].y_origin + game_menu_object[kTurretDetailsDisplay].height * 2 / 3));
+		if (power_up_menu == kFalse)
+		{
+			CP_Font_DrawText("Mine", game_menu_object[kTurretDetailsDisplay].x_origin + game_menu_object[kTurretDetailsDisplay].width / 1.75f, (game_menu_object[kTurretDetailsDisplay].y_origin + game_menu_object[kTurretDetailsDisplay].height / 3));
+			CP_Font_DrawText("Single Use", game_menu_object[kTurretDetailsDisplay].x_origin + game_menu_object[kTurretDetailsDisplay].width / 1.75f, (game_menu_object[kTurretDetailsDisplay].y_origin + game_menu_object[kTurretDetailsDisplay].height * 2 / 3));
+		}
+
+		else
+		{
+			CP_Font_DrawText("Mine Upgrade", game_menu_object[kTurretDetailsDisplay].x_origin + game_menu_object[kTurretDetailsDisplay].width / 1.75f, (game_menu_object[kTurretDetailsDisplay].y_origin + game_menu_object[kTurretDetailsDisplay].height / 3));
+			CP_Font_DrawText("Mines deal more damage", game_menu_object[kTurretDetailsDisplay].x_origin + game_menu_object[kTurretDetailsDisplay].width / 1.75f, (game_menu_object[kTurretDetailsDisplay].y_origin + game_menu_object[kTurretDetailsDisplay].height * 2 / 3));
+		}
+
+		
 		break;
 	}
 	mouse_input.x_origin = tempMouseX;
@@ -1567,40 +1610,61 @@ void RenderEnemyPath(LevelData* LevelX) {
 void HowToPlayButtonsInit(void) {
 	TutorialButtons[kHowToPlayBack].x_origin = (float)CP_System_GetWindowWidth() * 4 / 10;
 	TutorialButtons[kHowToPlayBack].y_origin = (float)CP_System_GetWindowHeight() * 9 / 10;
-	TutorialButtons[kHowToPlayBack].width = (float)CP_System_GetWindowWidth() * 3 / 10;
+	TutorialButtons[kHowToPlayBack].width = (float)CP_System_GetWindowWidth() / 10;
 	TutorialButtons[kHowToPlayBack].height = (float)CP_System_GetWindowHeight() / 10;
 
-	TutorialButtons[kHowToPlayPrevious].x_origin = (float)CP_System_GetWindowWidth() * 3 / 10;
-	TutorialButtons[kHowToPlayPrevious].y_origin = (float)CP_System_GetWindowHeight() * 9 / 10;
+	TutorialButtons[kHowToPlayPrevious].x_origin = (float)CP_System_GetWindowWidth()/50;
+	TutorialButtons[kHowToPlayPrevious].y_origin = (float)CP_System_GetWindowHeight() / 50;
 	TutorialButtons[kHowToPlayPrevious].width = (float)CP_System_GetWindowWidth() / 10;
 	TutorialButtons[kHowToPlayPrevious].height = (float)CP_System_GetWindowHeight() / 10;
 
-	TutorialButtons[kHowToPlayNext].x_origin = (float)CP_System_GetWindowWidth() * 7 / 10;
-	TutorialButtons[kHowToPlayNext].y_origin = (float)CP_System_GetWindowHeight() * 9 / 10;
+	TutorialButtons[kHowToPlayNext].x_origin = (float)CP_System_GetWindowWidth()/1.12f;
+	TutorialButtons[kHowToPlayNext].y_origin = (float)CP_System_GetWindowHeight()/50;
 	TutorialButtons[kHowToPlayNext].width = (float)CP_System_GetWindowWidth() / 10;
 	TutorialButtons[kHowToPlayNext].height = (float)CP_System_GetWindowHeight() / 10;
 }
 void RenderHowToPlayPages(void) {
 	CP_Graphics_ClearBackground(COLOR_WHITE);
+	CP_Image_Draw(tutorial_image_array[current_how_to_play_page], CP_System_GetWindowWidth() * 0.5f,
+		CP_System_GetWindowHeight() * 0.5f, 1280 * scaling_factor, 720 * scaling_factor, 255);
 	CP_Settings_RectMode(CP_POSITION_CORNER);
-	CP_Graphics_DrawRect(TutorialButtons[kHowToPlayBack].x_origin,
-		TutorialButtons[kHowToPlayBack].y_origin,
-		TutorialButtons[kHowToPlayBack].width,
-		TutorialButtons[kHowToPlayBack].height);
+	
+
+	
 	if (current_how_to_play_page != 0) {
 		CP_Graphics_DrawRect(TutorialButtons[kHowToPlayPrevious].x_origin,
 			TutorialButtons[kHowToPlayPrevious].y_origin,
 			TutorialButtons[kHowToPlayPrevious].width,
 			TutorialButtons[kHowToPlayPrevious].height);
+		RenderImageFromSpriteSheet(interactable_UI_buttons_spritesheet, interactable_UI_buttons_spritesheet_array[4],
+			TutorialButtons[kHowToPlayPrevious].x_origin + TutorialButtons[kHowToPlayPrevious].width / 2,
+			TutorialButtons[kHowToPlayPrevious].y_origin + TutorialButtons[kHowToPlayPrevious].height / 2,
+			TutorialButtons[kHowToPlayPrevious].width,
+			TutorialButtons[kHowToPlayPrevious].height);
+		
+	}
+
+	else
+	{
+		CP_Graphics_DrawRect(TutorialButtons[kHowToPlayBack].x_origin,
+			TutorialButtons[kHowToPlayBack].y_origin,
+			TutorialButtons[kHowToPlayBack].width,
+			TutorialButtons[kHowToPlayBack].height);
 	}
 	if (current_how_to_play_page != kMaxHowToPlayPages - 1) {
 		CP_Graphics_DrawRect(TutorialButtons[kHowToPlayNext].x_origin,
 			TutorialButtons[kHowToPlayNext].y_origin,
 			TutorialButtons[kHowToPlayNext].width,
 			TutorialButtons[kHowToPlayNext].height);
+		RenderImageFromSpriteSheet(interactable_UI_buttons_spritesheet, interactable_UI_buttons_spritesheet_array[3],
+			TutorialButtons[kHowToPlayNext].x_origin + TutorialButtons[kHowToPlayNext].width/2,
+			TutorialButtons[kHowToPlayNext].y_origin + TutorialButtons[kHowToPlayNext].height/ 2,
+			TutorialButtons[kHowToPlayNext].width,
+			TutorialButtons[kHowToPlayNext].height);
+		
 	}
-
-	switch (current_how_to_play_page) {
+	
+	/*switch (current_how_to_play_page) {
 	case 0:
 		CP_Graphics_DrawCircle(100, 100, 100);
 		break;
@@ -1613,7 +1677,7 @@ void RenderHowToPlayPages(void) {
 	case 3:
 		CP_Graphics_DrawCircle(400, 400, 400);
 		break;
-	}
+	}*/
 
 	if (BtnIsPressed(TutorialButtons[kHowToPlayBack])) {
 		current_game_state = kMainMenu;
