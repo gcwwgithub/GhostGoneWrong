@@ -23,10 +23,8 @@ typedef struct Button {
 
 enum CreditText {
 
-	CopyrightLine,
-
 	CreditsTitle,
-
+	TeamCredit,
 	DevelopedBy,
 	ZhengWei,
 	Samuel,
@@ -39,18 +37,23 @@ enum CreditText {
 	Gerald,
 
 	President,
-	ClaudeComair
+	ClaudeComair,
+
+	CreatedAtDigipen,
+	Executives,
+	DigipenURL,
+	CopyrightLine
 };
 
 typedef struct CreditLine
 {
-	char* text;
+	char const * text;
 	Coordinates mainMenuPos;
 	Coordinates currentPos; // credit text will be at this position in MainMenu
 	Coordinates creditPos;
 }CreditLine;
 
-CreditLine CreditTexts[13];
+CreditLine CreditTexts[17];
 
 // temp way to move rect, figuring smth if time permits
 // creditRectCoordsMenu keeps values for tweening
@@ -78,9 +81,9 @@ Button SkipWaveButton;
 Button EndScreenButtons[3];
 
 int enemiesInLevel;
-float dpLogoTime;
+float dpLogoDisplayTime;
 float dpLogoFadeTime;
-float teamLogoTime;
+float teamLogoDisplayTime;
 float teamLogoFadeTime;
 
 // Main Menu Inits
