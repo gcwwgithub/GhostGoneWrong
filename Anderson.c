@@ -2,8 +2,6 @@
 #include "game.h"
 #include "Anderson.h"
 
-CP_Font pixelFont;
-
 #pragma region UI
 
 #pragma region Initialisations
@@ -44,23 +42,13 @@ void init_how_to_play_button(void)
 	//	BUTTON_WIDTH * 2, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "How To Play");
 }
 
-void init_how_to_play_screen(void)
-{
-	// display turret sprites, descriptions
-
-	// display ghost sprites, descriptions
-
-	// display win / lose conditions && rules
-
-}
-
 void init_main_menu(void)
 {
-	PlayButton = init_text_button(PlayButton, CP_System_GetWindowWidth() * 0.25f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 0.5f,
+	PlayButton = init_text_button(PlayButton, CP_System_GetWindowWidth() * 0.2f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 0.5f,
 		BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Start Game");
-	CreditsButton = init_text_button(CreditsButton, CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 0.5f,
+	CreditsButton = init_text_button(CreditsButton, CP_System_GetWindowWidth() * 0.4f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 0.5f,
 		BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Credits");
-	QuitButton = init_text_button(QuitButton, CP_System_GetWindowWidth() * 0.75f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 0.5f,
+	QuitButton = init_text_button(QuitButton, CP_System_GetWindowWidth() * 0.8f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 0.5f,
 		BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Quit Game");
 	HowToPlayButton = init_text_button(HowToPlayButton, CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 0.75f,
 		BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "How To Play");
@@ -192,6 +180,12 @@ void init_credits_screen(void)
 		BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Back");
 }
 
+void init_options_screen(void)
+{
+	// init options screen for main menu
+
+}
+
 #pragma endregion
 
 #pragma region Rendering
@@ -207,6 +201,50 @@ void render_title_screen(void)
 {
 	RenderImageFromSpriteSheetWithAlpha(background_spritesheet, background_spritesheet_array[0], CP_System_GetWindowWidth() * 0.5f, (float)CP_System_GetWindowHeight() * 0.5f, (float)CP_System_GetWindowWidth(), (float)CP_System_GetWindowHeight(), 150);
 	CP_Image_Draw(game_title_image, CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.2f, 256 * scaling_factor, 256 * scaling_factor, 255);
+}
+
+void render_logos(void)
+{
+	CP_Graphics_ClearBackground(COLOR_BLACK);
+	CP_Settings_TextSize(FONT_SIZE * 0.5f); // for copyright text to fit
+	if (dpLogoTime < 0.0f) // dp logo finish display
+	{
+		if (dpLogoFadeTime > 0.0f) // fading
+		{
+			dpLogoFadeTime -= CP_System_GetDt();
+			CP_Image_Draw(DigipenLogo, (float)CP_System_GetWindowWidth() * 0.5f, (float)CP_System_GetWindowHeight() * 0.5f, (float)CP_Image_GetWidth(DigipenLogo) * 0.5f, (float)CP_Image_GetHeight(DigipenLogo) * 0.5f, (int)(255 * (dpLogoFadeTime / FADE_OUT_TIME)));
+			CP_Font_DrawText(CreditTexts[CopyrightLine].text, (float)CP_System_GetWindowWidth() * 0.5f, (float)CP_System_GetWindowHeight() * 0.95f);
+		}
+		else // dp logo finished fading
+		{
+			if (teamLogoTime > 0.0f)
+			{
+				CP_Image_Draw(DownNOutLogo, (float)CP_System_GetWindowWidth() * 0.5f, (float)CP_System_GetWindowHeight() * 0.5f, (float)CP_Image_GetWidth(DownNOutLogo), (float)CP_Image_GetHeight(DownNOutLogo), 255);
+				teamLogoTime -= CP_System_GetDt();
+				CP_Font_DrawText(CreditTexts[CopyrightLine].text, (float)CP_System_GetWindowWidth() * 0.5f, (float)CP_System_GetWindowHeight() * 0.95f);
+
+			}
+			else // team logo finished display
+			{
+				CP_Image_Draw(DownNOutLogo, (float)CP_System_GetWindowWidth() * 0.5f, (float)CP_System_GetWindowHeight() * 0.5f, (float)CP_Image_GetWidth(DownNOutLogo), (float)CP_Image_GetHeight(DownNOutLogo), (int)(255 * (teamLogoFadeTime / FADE_OUT_TIME)));
+				teamLogoFadeTime -= CP_System_GetDt();
+				CP_Font_DrawText(CreditTexts[CopyrightLine].text, (float)CP_System_GetWindowWidth() * 0.5f, (float)CP_System_GetWindowHeight() * 0.95f);
+
+
+				if (teamLogoFadeTime < 0.0f) // team logo finished fading
+				{
+					CP_Settings_TextSize(FONT_SIZE); // set font size back to normal.
+					current_game_state = kMainMenu;
+				}
+			}
+		}
+	}
+	else if (dpLogoTime >= 0.0f) // dp Logo still displaying
+	{
+		dpLogoTime -= CP_System_GetDt();
+		CP_Image_Draw(DigipenLogo, (float)CP_System_GetWindowWidth() * 0.5f, (float)CP_System_GetWindowHeight() * 0.5f, (float)CP_Image_GetWidth(DigipenLogo) / 2, (float)CP_Image_GetHeight(DigipenLogo) / 2, 255);
+		CP_Font_DrawText(CreditTexts[CopyrightLine].text, (float)CP_System_GetWindowWidth() * 0.5f, (float)CP_System_GetWindowHeight() * 0.95f);
+	}
 }
 
 void render_ui_button(Button button)
@@ -250,6 +288,14 @@ void render_level_select_buttons(void)
 	render_ui_button(LevelSelectBackButton);
 }
 
+void render_pause_screen(void)
+{
+	CP_Settings_Fill(COLOR_GREY);
+	CP_Graphics_DrawRect(CP_System_GetWindowWidth() * 0.3f, CP_System_GetWindowHeight() * 0.15f, CP_System_GetWindowWidth() * 0.4f, CP_System_GetWindowHeight() * 0.2f);
+	render_ui_button(PauseScreenButtons[0]);
+	render_ui_button(PauseScreenButtons[1]);
+}
+
 void render_credit_line(CreditLine cLine)
 {
 	CP_Font_DrawText(cLine.text, cLine.currentPos.x_origin, cLine.currentPos.y_origin);
@@ -288,15 +334,12 @@ void render_credits_screen(void)
 	render_ui_button(CreditsBackButton);
 }
 
-void render_pause_screen(void)
+void render_options_screen(void)
 {
-	CP_Settings_Fill(COLOR_GREY);
-	CP_Graphics_DrawRect(CP_System_GetWindowWidth() * 0.3f, CP_System_GetWindowHeight() * 0.15f, CP_System_GetWindowWidth() * 0.4f, CP_System_GetWindowHeight() * 0.2f);
-	render_ui_button(PauseScreenButtons[0]);
-	render_ui_button(PauseScreenButtons[1]);
+	// render options
+	// render sound symbols
 }
 
-#pragma endregion
 
 void show_logos(void)
 {
@@ -335,6 +378,15 @@ void show_logos(void)
 	{
 		dpLogoTime -= CP_System_GetDt();
 		CP_Image_Draw(DigipenLogo, (float)CP_System_GetWindowWidth() * 0.5f, (float)CP_System_GetWindowHeight() * 0.5f, (float)CP_Image_GetWidth(DigipenLogo) / 2, (float)CP_Image_GetHeight(DigipenLogo) / 2, 255);
+		CP_Font_DrawText(CreditTexts[CopyrightLine].text, (float)CP_System_GetWindowWidth() * 0.5f, (float)CP_System_GetWindowHeight() * 0.95f);
+	}
+}
+		CP_Font_DrawText(CreditTexts[CopyrightLine].text, (float)CP_System_GetWindowWidth() * 0.5f, (float)CP_System_GetWindowHeight() * 0.95f);
+	}
+}
+		CP_Font_DrawText(CreditTexts[CopyrightLine].text, (float)CP_System_GetWindowWidth() * 0.5f, (float)CP_System_GetWindowHeight() * 0.95f);
+	}
+}
 		CP_Font_DrawText(CreditTexts[CopyrightLine].text, (float)CP_System_GetWindowWidth() * 0.5f, (float)CP_System_GetWindowHeight() * 0.95f);
 	}
 }
@@ -618,6 +670,50 @@ int level_select_finished_moving(void)
 	return 0;
 }
 
+void move_main_menu(void)
+{
+	if (current_game_state == kMainMenu)
+	{
+		PlayButton = ui_button_movement(PlayButton, -BUTTON_WIDTH, PlayButton.buttonData.y_origin);
+		CreditsButton = ui_button_movement(CreditsButton, CreditsButton.buttonData.x_origin, (float)CP_System_GetWindowHeight());
+		QuitButton = ui_button_movement(QuitButton, (float)CP_System_GetWindowWidth(), QuitButton.buttonData.y_origin);
+	}
+	else if (current_game_state == kLevelSelect)
+	{
+		PlayButton = ui_button_movement(PlayButton, CP_System_GetWindowWidth() * 0.2f - BUTTON_WIDTH * 0.5f, PlayButton.buttonData.y_origin);
+		CreditsButton = ui_button_movement(CreditsButton, CP_System_GetWindowWidth() * 0.4f - BUTTON_WIDTH * 0.5f, CreditsButton.buttonData.y_origin);
+		QuitButton = ui_button_movement(QuitButton, CP_System_GetWindowWidth() * 0.8f - BUTTON_WIDTH * 0.5f, QuitButton.buttonData.y_origin);
+	}
+}
+
+int main_menu_finished_moving(void)
+{
+	if (current_game_state == kMainMenu)
+	{
+		if (button_has_finished_moving(PlayButton, -BUTTON_WIDTH, PlayButton.buttonData.y_origin) &&
+			button_has_finished_moving(CreditsButton, -BUTTON_WIDTH, CreditsButton.buttonData.y_origin) &&
+			button_has_finished_moving(QuitButton, (float)CP_System_GetWindowWidth(), QuitButton.buttonData.y_origin))
+		{
+			PlayButton.isMoving = CreditsButton.isMoving = QuitButton.isMoving = LevelButtons->isMoving = 0;
+			PlayButton.movementTime = CreditsButton.movementTime = QuitButton.movementTime = 0.0f;
+			return 1;
+		}
+	}
+	else if (current_game_state == kLevelSelect)
+	{
+		if (button_has_finished_moving(PlayButton, CP_System_GetWindowWidth() * 0.2f - BUTTON_WIDTH * 0.5f, PlayButton.buttonData.y_origin) &&
+			button_has_finished_moving(CreditsButton, CP_System_GetWindowWidth() * 0.4f - BUTTON_WIDTH * 0.5f, CreditsButton.buttonData.y_origin) &&
+			button_has_finished_moving(QuitButton, CP_System_GetWindowWidth() * 0.8f - BUTTON_WIDTH * 0.5f, QuitButton.buttonData.y_origin))
+		{
+			PlayButton.isMoving = CreditsButton.isMoving = QuitButton.isMoving = LevelButtons->isMoving = 0;
+			PlayButton.movementTime = CreditsButton.movementTime = QuitButton.movementTime = 0.0f;
+			return 1;
+		}
+	}
+
+	return 0;
+}
+
 int button_has_finished_moving(Button button, float destPosX, float destPosY)
 {
 	return (button.buttonData.x_origin == destPosX && button.buttonData.y_origin == destPosY);
@@ -658,3 +754,44 @@ void init_next_level(int nextGameLevel)
 }
 
 #pragma endregion
+
+#pragma region Audio
+
+// Play a sound track
+void play_sound_track(CP_Sound sound)
+{
+	CP_Sound_Play(sound);
+}
+
+// Mute a sound track
+void mute_sound_track(void)
+{
+
+}
+
+// Mute or resume only the music sound(s)
+void toggle_background_sound(int muted)
+{
+	if (muted) CP_Sound_PauseGroup(CP_SOUND_GROUP_MUSIC); else CP_Sound_ResumeGroup(CP_SOUND_GROUP_MUSIC);
+}
+
+// Mute all audio tracks
+void mute_all_audio(void)
+{
+	CP_Sound_StopAll();
+}
+
+// Set the volume level of a sound track.
+void set_volume_level(float newVolumeLevel)
+{
+	// a Sound struct may be needed for better control of sound volumes.
+	CP_Sound mySound = NULL;
+	CP_Sound_PlayAdvanced(mySound, newVolumeLevel, 2.0f, TRUE, CP_SOUND_GROUP_1);
+}
+
+#pragma endregion
+
+void toggle_fullscreen_windowed(int isWindowed)
+{
+	isWindowed ? CP_System_SetWindowSize(1280.0f, 1280.0f * 1080.0f / 1920.0f) : CP_System_Fullscreen();
+}
