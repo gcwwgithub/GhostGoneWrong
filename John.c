@@ -273,6 +273,7 @@ void EnemyDeath(Enemy* r) {  //function updates and checks for collision or deat
 						r->health -= proj[i].mod.damage;
 						r->state = kEnemyHurt;
 						r->timer = 0;
+						CP_Sound_PlayAdvanced(HitSFX, SFX_Volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
 					}
 
 					InsertNewNodeBulletRadius(&bullet_radius_head_node, r->data.x_origin, r->data.y_origin, proj[i].type);
@@ -322,7 +323,7 @@ void Enemies_init(void) {
 	wave_timer = 0;
 	Array_count = 1;
 	Number_of_points = 0;
-
+	Music_init();
 
 	//test path
 	for (int i = 0; i < kMaxEnemies; i++) {
@@ -846,7 +847,17 @@ void Power_Up_check(Enemy* r) {
 	}
 }
 
-
+void Music_init(void) {
+	ButtonClickSFX = CP_Sound_Load("./Assets/sfx/btn.wav");
+	TurretPlaceSFX = CP_Sound_Load("./Assets/sfx/place_turret.wav");
+	MineExplosionSFX = CP_Sound_Load("./Assets/sfx/Explosion.wav");
+	WinSFX = CP_Sound_Load("./Assets/sfx/WinSFX.wav");
+	LoseSFX = CP_Sound_Load("./Assets/sfx/LoseSFX.wav");
+	SpawnxExitSFX = CP_Sound_Load("./Assets/sfx/Zap.wav");
+	ShootSFX = CP_Sound_Load("./Assets/sfx/shoot.mp3");
+	HitSFX = CP_Sound_Load("./Assets/sfx/HitSFX.wav");
+	SFX_Volume = 0.3f;
+}
 
 /*void movement_redone(enemy* r) {
 	r->movement_timer += CP_System_GetDt();

@@ -329,4 +329,15 @@ float scaling_factor;//scaling to scale with different display size
 //Font
 #define GAME_FONT CP_Font_Load("Assets/VT323-Regular.ttf")
 
+//Sound Effects
+CP_Sound ShootSFX;
+CP_Sound SpawnxExitSFX;
+CP_Sound ButtonClickSFX;
+CP_Sound TurretPlaceSFX;
+CP_Sound MineExplosionSFX;
+CP_Sound WinSFX;
+CP_Sound LoseSFX;
+CP_Sound HitSFX;
+float SFX_Volume;
+
 #endif // !GOSTGONEWRONG_CURRENTHEADERFILES_GAME_H

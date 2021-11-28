@@ -1033,6 +1033,8 @@ void ButtonPressedUpdate(void) {
 	case kPauseButton:
 		current_game_state = current_game_state == kPause ? kWave : kPause;
 		MouseReset();
+		//Button SFX test
+		CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
 		break;
 
 	case kTurretButtonBasic:

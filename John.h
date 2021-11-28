@@ -89,3 +89,7 @@ void Env_eff_IncreasedTurretDamage(void);
 void Env_eff_DecreasedTurretDamage(void);
 void Env_eff_DecreasedTurretAttackSpeed(void);
 void Env_eff_IncreasedTurretAttackSpeed(void);
+
+
+
+void Music_init(void);

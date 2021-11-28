@@ -348,6 +348,8 @@ void update_turret(void)
 					wp = enemy[j].current_way_point;
 					//set the index of enemy to target
 					e_index = j;
+					//Mine Explosion SFX
+					CP_Sound_PlayAdvanced(MineExplosionSFX, SFX_Volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
 					break;
 				}
 				else
@@ -417,6 +419,8 @@ void update_turret(void)
 				//printf("index: %d\n", e_index);
 				shoot(turret[i].data.x_origin, turret[i].data.y_origin, turret[i].mod, turret[i].type, turret[i].dir);
 				//turret[i].mod.cooldown = 2.f;
+				//Turret Shoot SFX
+				CP_Sound_PlayAdvanced(ShootSFX, SFX_Volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
 			}
 		}
 		else
