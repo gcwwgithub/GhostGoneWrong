@@ -2,8 +2,7 @@
 #include "game.h"
 #include "Gabriel.h"
 
-// scaled for increasing resolutions
-// hardcoded small resolution
+// Fixing resolution for easier scaling to bigger resolutions
 #define BUTTON_WIDTH CP_System_GetWindowWidth() / 400 * 65.0f
 #define BUTTON_HEIGHT CP_System_GetWindowHeight() / 400 * 40.0f
 #define FONT_SIZE CP_System_GetWindowWidth() / 400 * 14.0f
@@ -24,10 +23,8 @@ typedef struct Button {
 
 enum CreditText {
 
-	CopyrightLine,
-
 	CreditsTitle,
-
+	TeamCredit,
 	DevelopedBy,
 	ZhengWei,
 	Samuel,
@@ -40,18 +37,23 @@ enum CreditText {
 	Gerald,
 
 	President,
-	ClaudeComair
+	ClaudeComair,
+
+	CreatedAtDigipen,
+	Executives,
+	DigipenURL,
+	CopyrightLine
 };
 
 typedef struct CreditLine
 {
-	char* text;
-	Coordinates mainMenuPos; // credit text will be at this position in MainMenu
+	char const * text;
+	Coordinates mainMenuPos;
 	Coordinates currentPos; // credit text will be at this position in MainMenu
-	Coordinates creditPos; // credit text will be at this position in Credits
+	Coordinates creditPos;
 }CreditLine;
 
-CreditLine CreditTexts[13];
+CreditLine CreditTexts[17];
 
 // temp way to move rect, figuring smth if time permits
 // creditRectCoordsMenu keeps values for tweening
@@ -60,6 +62,7 @@ float creditTextMoveTime; // time for creditRect moving
 
 CP_Image DigipenLogo;
 CP_Image DownNOutLogo;
+CP_Font pixelFont;
 
 Button PlayButton;
 Button QuitButton;
@@ -78,9 +81,9 @@ Button SkipWaveButton;
 Button EndScreenButtons[3];
 
 int enemiesInLevel;
-float dpLogoTime;
+float dpLogoDisplayTime;
 float dpLogoFadeTime;
-float teamLogoTime;
+float teamLogoDisplayTime;
 float teamLogoFadeTime;
 
 // Main Menu Inits
@@ -89,7 +92,6 @@ void render_title_screen(void);
 void init_main_menu(void);
 
 void init_how_to_play_button(void);
-void init_how_to_play_screen(void);
 void init_level_select_buttons(void);
 void init_pause_screen(void);
 void init_credits_screen(void);
@@ -108,20 +110,21 @@ void init_skip_wave_button(void);
 
 void init_game_font(void);
 void init_splash_logos(void);
-void show_logos(void);
+void render_logos(void);
 
 void game_win_lose_check(void);
 void init_end_screen(void);
 void render_end_screen(void);
 
-
+// UI Movement
 float linear(float start, float end, float value);
-
 Button ui_button_movement(Button button, float destPosX, float destPosY);
-void move_level_select(void);
-int level_select_finished_moving(void);
 int button_has_finished_moving(Button button, float destPosX, float destPosY);
 
+void move_level_select(void);
+int level_select_finished_moving(void);
+void move_main_menu(void);
+int main_menu_finished_moving(void);
 void move_credits_screen(void);
 
 

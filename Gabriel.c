@@ -11,6 +11,13 @@ void InitAllImages(void)
 	slow_turret_image_array[4] = CP_Image_Load("./Assets/SlowTurret4.png");
 	slow_turret_image_array[5] = CP_Image_Load("./Assets/SlowTurret5.png");
 
+	tutorial_image_array[0] = CP_Image_Load("./Assets/Slide1.png");
+	tutorial_image_array[1] = CP_Image_Load("./Assets/Slide2.png");
+	tutorial_image_array[2] = CP_Image_Load("./Assets/Slide3.png");
+	tutorial_image_array[3] = CP_Image_Load("./Assets/Slide4.png");
+	tutorial_image_array[4] = CP_Image_Load("./Assets/Slide5.png");
+	tutorial_image_array[5] = CP_Image_Load("./Assets/Slide6.png");
+	tutorial_image_array[6] = CP_Image_Load("./Assets/Slide7.png");
 
 	pause_button_image = CP_Image_Load("./Assets/Pause.png");
 	game_title_image = CP_Image_Load("./Assets/Title.png");
@@ -182,7 +189,7 @@ void InitSpritesheetArray(void)
 	SpritesheetCalculation(power_up_spritesheet_array, power_up_spritesheet, 128, 128, 0);
 	SpritesheetCalculation(battlefield_effect_spritesheet_array, battlefield_effect_spritesheet, 128, 128, 0);
 	SpritesheetCalculation(fat_UI_background_spritesheet_array, fat_UI_background_spritesheet, 128, 128, 0);
-	SpritesheetCalculation(interactable_UI_buttons_spritesheet_array, interactable_UI_buttons_spritesheet, 128, 72, 1);
+	SpritesheetCalculation(interactable_UI_buttons_spritesheet_array, interactable_UI_buttons_spritesheet, 128, 72, 0);
 	SpritesheetCalculation(turret_stats_spritesheet_array, turret_stats_spritesheet, 128, 128, 1);
 	SpritesheetCalculation(non_grid_environment_objects_spritesheet_array, non_grid_environment_objects_spritesheet, 512, 512, 0);
 }

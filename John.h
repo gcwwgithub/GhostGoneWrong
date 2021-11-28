@@ -26,7 +26,6 @@ void Reaper_ability(Enemy* r);
 
 void EnemyDeath(Enemy* r, int CurrentGameLevel);
 void Basic_Ghost(Enemy* r);
-void Enemies_init(void);
 void update_enemy(void);
 void draw_multiple_enemies(void);
 void Fast_Ghost_init(Enemy* r);

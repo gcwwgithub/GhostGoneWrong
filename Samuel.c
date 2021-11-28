@@ -101,11 +101,11 @@ void turret_init(void)
 	}
 
 	//place_turret(T_WALL, 2, 1);
-	//Level[currentGameLevel].grid[1][2].type = Blocked;
+	//Level.grid[1][2].type = Blocked;
 	//place_turret(T_SLOW, 4, 1);
-	//Level[0].grid[4][1].type = Blocked;//Hard coded to set turret spot to blocked
+	//Level.grid[4][1].type = Blocked;//Hard coded to set turret spot to blocked
 	//place_turret(T_BASIC, 0, 4);
-	//Level[0].grid[4][0].type = Blocked;//Hard coded to set turret spot to blocked
+	//Level.grid[4][0].type = Blocked;//Hard coded to set turret spot to blocked
 }
 
 //call this function to place turret (pass in the grid index)
@@ -114,7 +114,7 @@ void place_turret(TurretType type, int index_x, int index_y)
 	for (int i = 0; i < kMaxTurret; ++i)
 	{
 		//break from loop if not enough money
-		//if (Level[currentGameLevel].phantomQuartz < turret[i].price)
+		//if (Level.phantomQuartz < turret[i].price)
 		//	break;
 		if (turret[i].is_active)
 			continue;
@@ -150,10 +150,10 @@ void place_turret(TurretType type, int index_x, int index_y)
 			turret[i].mod.speed = 100.f;
 			break;
 		case kTMine:
-			if (Level[current_game_level].grid[index_y][index_x].type != kPath)
+			if (Level.grid[index_y][index_x].type != kPath)
 				return;
 			turret[i].mod.range = game.grid_width * 2;
-			turret[i].mod.damage = (float)(10 + Level[current_game_level].current_power_up_level.increased_mine_damage * 20);
+			turret[i].mod.damage = (float)(10 + Level.current_power_up_level.increased_mine_damage * 20);
 			turret[i].data.width = game.grid_width * 0.7f;
 			turret[i].data.width = game.grid_height * 0.7f;
 			turret[i].data.object_type = kObjectCircle;
@@ -199,8 +199,8 @@ void remove_turret(int index_x, int index_y)
 	turret_on_grid[index_x][index_y] = -1;
 	turret[index].is_active = kFalse;
 	//set to clear if is blocked
-	//if (Level[currentGameLevel].grid[index_y][index_x].type == Blocked)
-	//	Level[currentGameLevel].grid[index_y][index_x].type = Clear;
+	//if (Level.grid[index_y][index_x].type == Blocked)
+	//	Level.grid[index_y][index_x].type = Clear;
 
 }
 
@@ -218,7 +218,7 @@ void sell_turret(int t_index)
 	//	sell_price = turret_purchasing[TP_PRICE][turret[t_index].type] * 0.7f;
 
 	//printf("sell price: %d", (int)sell_price);
-	Level[current_game_level].phantom_quartz += (int)sell_price;
+	Level.phantom_quartz += (int)sell_price;
 	remove_turret(x, y);
 }
 
@@ -341,7 +341,7 @@ void update_turret(void)
 
 			if (turret[i].type == kTMine)
 			{
-				turret[i].mod.damage = (float)(10 + Level[current_game_level].current_power_up_level.increased_mine_damage * 20);
+				turret[i].mod.damage = (float)(10 + Level.current_power_up_level.increased_mine_damage * 20);
 				if (CollisionDetection(turret[i].data, enemy[j].data))
 				{
 					//set the highest waypoint
@@ -400,7 +400,7 @@ void update_turret(void)
 			if (turret[i].type == kTMine)
 			{
 				//set mine dmg to power temp
-				turret[i].mod.damage += Level[current_game_level].current_power_up_level.increased_mine_damage;
+				turret[i].mod.damage += Level.current_power_up_level.increased_mine_damage;
 				turret[i].mod.tracked_index = e_index;
 				//fake shoot for mine, just spawn a proj on it
 				shoot(turret[i].data.x_origin, turret[i].data.y_origin, turret[i].mod, turret[i].type, turret[i].dir);

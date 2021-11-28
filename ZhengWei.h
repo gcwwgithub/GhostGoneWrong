@@ -20,8 +20,16 @@ enum {
 	kLevel4Rows = 7,
 	kLevel5Cols = 8,
 	kLevel5Rows = 7,
-	kMaxEnvironmentObject = 10
+	kMaxEnvironmentObject = 10,
+	kMaxHowToPlayPages = 7
 };//Using enum instead of define for const int
+enum {
+	kHowToPlayBack,
+	kHowToPlayPrevious,
+	kHowToPlayNext,
+	kHowToPlayButtonMax
+};
+Coordinates TutorialButtons[kHowToPlayButtonMax];
 extern const float kLeftGameMenuXWidth;
 extern const float kRightGameMenuXOrigin;
 //Environment
@@ -36,7 +44,7 @@ void Level3Init(void);
 void Level4Init(void);
 void Level5Init(void);
 void PathFindingReset(LevelData* LevelX);
-void PathFindingCalculateCost(LevelData* LevelX);
+void PathFindingCalculateCost(void);
 void PathFindingUpdate(LevelData* LevelX);
 void ButtonPressedUpdate(void);
 void RenderGameGrid(void);
@@ -45,5 +53,7 @@ void RenderEnvironment(void);
 void RenderTurretDetailsDisplay(void);
 void render_turret_menu_object(
 	Coordinates menuObjectX, enum MenuObjectType type);
+void RenderHowToPlayPages(void);
+void HowToPlayButtonsInit(void);
 
 #endif // !GhostGoneWrong_CURRENTHEADERFILES_ZHENGWEI_H
