@@ -356,6 +356,11 @@ void turret_mine_button_init(void) {
 }
 
 void EnvironmentInit(LevelData* LevelX) {
+	for (int i = 0; i < kMaxEnvironmentObject; i++) {
+		Environment[i].image = NULL;
+	}
+
+
 	switch (current_game_level)
 	{
 	case 0:

@@ -29,7 +29,7 @@ struct PortalVariables
 	float portal_image_width;
 	float portal_image_height;
 };
-
+#pragma region The Variables that Contain all the Image files
 CP_Image slow_turret_image_array[6];
 CP_Image tutorial_image_array[7];
 
@@ -61,6 +61,7 @@ CP_Image fat_UI_background_spritesheet;
 CP_Image interactable_UI_buttons_spritesheet;
 CP_Image turret_stats_spritesheet;
 CP_Image non_grid_environment_objects_spritesheet;
+#pragma endregion
 
 struct SpriteSheetImage basic_ghost_spritesheet_array[3];
 struct SpriteSheetImage fast_ghost_spritesheet_array[3];
