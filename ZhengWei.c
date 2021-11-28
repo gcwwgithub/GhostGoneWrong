@@ -1179,9 +1179,9 @@ void ButtonPressedUpdate(void) {
 		if (Level.phantom_quartz >= 1000) {
 			Level.phantom_quartz -= 1000;
 			Level.gold_quartz += 10;
+			//Button SFX 
+			CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
 		}
-		//Button SFX 
-		CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
 		MouseReset();
 		break;
 
