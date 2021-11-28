@@ -191,6 +191,9 @@ void enemy_move(Enemy* r, float Enemy_PathpointsX[], float Enemy_PathpointsY[], 
 			InsertNewNodePortalEffect(&portal_enter_head_node, r->data.x_origin,
 				r->data.y_origin, 0);
 		}
+		if (r->state != kEnemyReached) {
+			CP_Sound_PlayAdvanced(SpawnxExitSFX, SFX_Volume*0.2f, 1.0, FALSE, CP_SOUND_GROUP_0);
+		}
 		r->state = kEnemyReached;
 	}
 
@@ -351,6 +354,7 @@ void update_enemy(void) {
 				wave_timer = (int)Enemy_timer;
 				InsertNewNodePortalEffect(&portal_spawn_head_node, enemy[i].data.x_origin,
 					enemy[i].data.y_origin, 0);
+				CP_Sound_PlayAdvanced(SpawnxExitSFX, SFX_Volume*0.2f, 1.0, FALSE, CP_SOUND_GROUP_0);
 
 
 			}

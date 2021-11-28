@@ -339,5 +339,6 @@ CP_Sound WinSFX;
 CP_Sound LoseSFX;
 CP_Sound HitSFX;
 float SFX_Volume;
+float BGM_Volume;
 
 #endif // !GOSTGONEWRONG_CURRENTHEADERFILES_GAME_H

@@ -716,7 +716,7 @@ void game_win_lose_check(void)
 
 		// game lost
 		current_game_state = kLose;
-
+		CP_Sound_PlayAdvanced(LoseSFX, SFX_Volume, 1.0, FALSE, CP_SOUND_GROUP_0);
 	}
 	else if (enemies_left == 0)
 	{
@@ -733,6 +733,8 @@ void game_win_lose_check(void)
 			}
 			free(turret_on_grid);
 			current_game_state = kWin;
+			//Win SFX
+			CP_Sound_PlayAdvanced(WinSFX, SFX_Volume, 1.0, FALSE, CP_SOUND_GROUP_0);
 		}
 		else // if still in the midst of the current level
 		{
