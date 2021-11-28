@@ -190,7 +190,7 @@ void game_update(void)
 			}
 		}
 		else if (BtnIsPressed(OptionsButton.buttonData)) {
-			//current_game_state = kOptions;
+			current_game_state = kOptions;
 		}
 		else if (BtnIsPressed(HowToPlayButton.buttonData)) {
 			current_game_state = kHowToPlay;
@@ -228,7 +228,6 @@ void game_update(void)
 		render_title_screen();
 		render_main_menu();
 		render_level_select_buttons();
-		render_credits_screen();
 	}
 	else if (current_game_state == kHowToPlay) {
 		RenderHowToPlayPages();

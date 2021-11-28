@@ -105,7 +105,7 @@ void init_end_screen(void)
 		BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Next");
 }
 
-// Note: endPos is (initialPosX, initialPosY + CP_Window_Width());
+// Note: initialised position is (initialPosX, initialPosY + CP_Window_Width());
 void init_credit_line(int num, char* line, float x, float y)
 {
 	CreditTexts[num].text = line;
@@ -115,8 +115,8 @@ void init_credit_line(int num, char* line, float x, float y)
 	CreditTexts[num].endingPos.x_origin = x;
 	CreditTexts[num].endingPos.y_origin = y;
 
-	CreditTexts[num].currentPos.x_origin = CreditTexts[num].mainMenuPos.x_origin;
-	CreditTexts[num].currentPos.y_origin = CreditTexts[num].mainMenuPos.y_origin;
+	CreditTexts[num].currentPos.x_origin = x;
+	CreditTexts[num].currentPos.y_origin = y;
 }
 
 void init_option_line(int num, char* line, float x, float y)
@@ -178,7 +178,7 @@ void init_options_screen(void)
 	// init options screen for main menu
 	init_option_line(Options, "Options", CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.35f);
 	init_option_line(BackgroundSFX, "BG SFX", CP_System_GetWindowWidth() * 0.25f, CP_System_GetWindowHeight() * 0.5f);
-	init_option_line(MuteAll, "Mute All", CP_System_GetWindowWidth() * 0.25f, CP_System_GetWindowHeight() * 0.55f);
+	init_option_line(MuteAll, "Mute All", CP_System_GetWindowWidth() * 0.25f, CP_System_GetWindowHeight() * 0.65f);
 	OptionsBackButton = init_text_button(OptionsBackButton, CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 0.9f - BUTTON_HEIGHT * 0.5f,
 		BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Back");
 }
@@ -272,7 +272,7 @@ void render_main_menu(void)
 	render_ui_button(CreditsButton);
 	render_ui_button(QuitButton);
 	render_ui_button(HowToPlayButton);
-	//render_ui_button(OptionsButton);
+	render_ui_button(OptionsButton);
 }
 
 void render_level_select_buttons(void)
@@ -352,7 +352,6 @@ void render_credits_screen(void)
 void render_options_screen(void)
 {
 	// render options
-	// render sound symbols?
 	CP_Settings_Fill(COLOR_BLACK);
 	CP_Graphics_DrawRect(CP_System_GetWindowWidth() * 0.1f, CP_System_GetWindowHeight() * 0.3f, CP_System_GetWindowWidth() * 0.8f, CP_System_GetWindowHeight() * 0.55f);
 	CP_Settings_Fill(COLOR_WHITE);
