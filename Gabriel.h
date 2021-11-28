@@ -1,16 +1,26 @@
+/*!
+All content © 2021 DigiPen Institute of Technology Singapore, all rights reserved.
+@file       Gabriel.h
+@author     Chiok Wei Wen Gabriel (chiok.w@digipen.edu)
+@course     CSD 1400
+@section    C
+@date       28/11/2021
+@brief    	Contains functions that are related to rendering, animation and effects
+*//*__________________________________________________________________________*/
+
 #pragma once
 #include "cprocessing.h"
 #include <stdlib.h>
 #include <stdio.h>
 
 
-struct SpriteSheetImage
+struct SpriteSheetImage //this is a struct to contain pixel values for CP_Draw Subimage
 {
 	int image_width,image_height;
 	float left_pixel_value, right_pixel_value, top_pixel_value, bottom_pixel_value;
 };
 
-struct LinkedListNode
+struct LinkedListNode //For linked list
 {
 	struct LinkedListNode* next_node;
 	int key;
@@ -22,14 +32,15 @@ struct LinkedListNode
 };
 
 
-struct PortalVariables
+struct PortalVariables //Each portal has these 2 variables
 {
 	float portal_x_coordinate;
 	float portal_y_coordinate;
 	float portal_image_width;
 	float portal_image_height;
 };
-
+#pragma region The variables that contain all the image files
+//All the images
 CP_Image slow_turret_image_array[6];
 CP_Image tutorial_image_array[7];
 
@@ -61,7 +72,9 @@ CP_Image fat_UI_background_spritesheet;
 CP_Image interactable_UI_buttons_spritesheet;
 CP_Image turret_stats_spritesheet;
 CP_Image non_grid_environment_objects_spritesheet;
+#pragma endregion
 
+#pragma region The arrays of SpriteSheetImage structs
 struct SpriteSheetImage basic_ghost_spritesheet_array[3];
 struct SpriteSheetImage fast_ghost_spritesheet_array[3];
 struct SpriteSheetImage fat_ghost_spritesheet_array[3];
@@ -84,27 +97,28 @@ struct SpriteSheetImage fat_UI_background_spritesheet_array[2];
 struct SpriteSheetImage interactable_UI_buttons_spritesheet_array[6];
 struct SpriteSheetImage turret_stats_spritesheet_array[5];
 struct SpriteSheetImage non_grid_environment_objects_spritesheet_array[9];
+#pragma endregion
 
 struct PortalVariables portal_variables_array[2];
 
 struct LinkedListNode* bullet_radius_head_node;
-int bullet_radius_node_key_number;
+int bullet_radius_node_key_number; //a key number to access the key from nodes
 
 struct LinkedListNode* portal_enter_head_node;
 struct LinkedListNode* portal_spawn_head_node;
-int portal_enter_node_key_number;
-int portal_spawn_node_key_number;
+int portal_enter_node_key_number;//a key number to access the key from nodes
+int portal_spawn_node_key_number;//a key number to access the key from nodes
 
-int portal_current_sprite;
-float portal_animation_timer;
-int is_portal_spawn_effect_sprite;
+int portal_current_sprite;	//the current sprite for the portals
+float portal_animation_timer; //the timer to change animation for portal
+int is_portal_spawn_effect_sprite; //boolean to check which portal effect it is
 
 float battlefield_effect_text_min_word_size;
 float battlefield_effect_text_max_word_size;
 float battlefield_text_timer;
 
-void InitAllImages(void);
-void InitVariablesForSpriteFunctions(void);
+void InitAllImages(void); //Loads all images into the game
+void InitVariablesForSpriteFunctions(void); //Loads all images into the game
 
 void InitSpritesheetArray(void);
 void SpritesheetCalculation(struct SpriteSheetImage* s, CP_Image image, int pixelWidth, int pixelHeight, int stopPoint);
