@@ -1,3 +1,13 @@
+/*!
+All content © 2021 DigiPen Institute of Technology Singapore, all rights reserved.
+@file       Gabriel.c
+@author     Chiok Wei Wen Gabriel (chiok.w@digipen.edu)
+@course     CSD 1400
+@section    C
+@date       28/11/2021
+@brief    	Contains functions that are related to rendering, animation and effects
+*//*__________________________________________________________________________*/
+
 
 #include "Gabriel.h"
 #include "game.h"
