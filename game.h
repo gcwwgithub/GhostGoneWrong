@@ -94,7 +94,8 @@ enum
 	kLose,
 	kLevelSelect,
 	kCredits,
-	kHowToPlay
+	kHowToPlay,
+	kOptions
 }current_game_state;
 //Game Grid
 int level_grid_cols;
