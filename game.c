@@ -232,8 +232,8 @@ void game_update(void)
 	{
 		CP_Settings_NoTint();
 		// Levels
-		if (!LevelButtons->isMoving) // Stops accidental clicking of buttons when moving
-		{
+		
+
 			if (BtnIsPressed(LevelButtons[0].buttonData))
 			{
 				Level1Init();
@@ -254,8 +254,8 @@ void game_update(void)
 			{
 				PlayButton.isMoving = CreditsButton.isMoving = QuitButton.isMoving
 					= HowToPlayButton.isMoving = LevelButtons->isMoving = 1;
+				MouseReset();
 			}
-		}
 
 		if (PlayButton.isMoving || CreditsButton.isMoving || QuitButton.isMoving || HowToPlayButton.isMoving) // clicked on play
 		{
@@ -266,7 +266,7 @@ void game_update(void)
 			move_level_select();
 		}
 
-		if (main_menu_finished_moving() && level_select_finished_moving())
+		if (main_menu_finished_moving())
 		{
 			current_game_state = kMainMenu;
 		}
