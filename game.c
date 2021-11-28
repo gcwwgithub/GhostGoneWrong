@@ -44,6 +44,9 @@ void game_init(void)
 
 	// initialize price for powerups
 	PowerUpPriceInit();
+
+	//Initialise all sounds
+	Music_init();
 }
 
 
@@ -145,6 +148,8 @@ void game_update(void)
 		if (BtnIsPressed(EndScreenButtons[0].buttonData))
 		{
 			current_game_state = kMainMenu;
+			CP_Sound_StopGroup(CP_SOUND_GROUP_1);
+			CP_Sound_PlayAdvanced(MainMenuBGM, BGM_Volume, 1.0f, TRUE, CP_SOUND_GROUP_1);
 		}
 		else if (BtnIsPressed(EndScreenButtons[1].buttonData))
 		{
@@ -303,6 +308,8 @@ void game_update(void)
 			free(turret_on_grid);
 
 			current_game_state = kLevelSelect;
+			CP_Sound_StopGroup(CP_SOUND_GROUP_1);
+			CP_Sound_PlayAdvanced(MainMenuBGM, BGM_Volume, 1.0f, TRUE, CP_SOUND_GROUP_1);
 		}
 		render_pause_screen();
 	}

@@ -326,7 +326,6 @@ void Enemies_init(void) {
 	wave_timer = 0;
 	Array_count = 1;
 	Number_of_points = 0;
-	Music_init();
 
 	//test path
 	for (int i = 0; i < kMaxEnemies; i++) {
@@ -866,6 +865,7 @@ void Music_init(void) {
 	BuildingBGM = CP_Sound_Load("./Assets/sfx/INPUT - NewAge MSCNEW2_01.wav");
 	MainMenuBGM = CP_Sound_Load("./Assets/sfx/THE NINTH HOUR - Jazz MSCJAZ1_46.wav");
 	BGM_Volume = 0.5f;
+	MainMenuMusic = CP_Sound_LoadMusic("./Assets/sfx/THE NINTH HOUR - Jazz MSCJAZ1_46.wav");
 }
 
 /*void movement_redone(enemy* r) {

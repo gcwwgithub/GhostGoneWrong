@@ -711,6 +711,9 @@ void Level1Init(void) {
 
 	SetBuildingTime(kFullBuildingPhaseTime);
 	current_game_state = kBuilding;
+	//BGM Sound
+	CP_Sound_StopGroup(CP_SOUND_GROUP_1);
+	CP_Sound_PlayAdvanced(BuildingBGM, BGM_Volume, 1.0f, TRUE, CP_SOUND_GROUP_1);
 }
 
 void Level2Init(void) {
@@ -789,6 +792,9 @@ void Level2Init(void) {
 
 	SetBuildingTime(kFullBuildingPhaseTime);
 	current_game_state = kBuilding;
+	//BGM Sound
+	CP_Sound_StopGroup(CP_SOUND_GROUP_1);
+	CP_Sound_PlayAdvanced(BuildingBGM, BGM_Volume, 1.0f, TRUE, CP_SOUND_GROUP_1);
 }
 
 void Level3Init(void) {
@@ -867,6 +873,9 @@ void Level3Init(void) {
 	SetBuildingTime(kFullBuildingPhaseTime);
 	current_game_state = kBuilding;
 
+	//BGM Sound
+	CP_Sound_StopGroup(CP_SOUND_GROUP_1);
+	CP_Sound_PlayAdvanced(BuildingBGM, BGM_Volume, 1.0f, TRUE, CP_SOUND_GROUP_1);
 }
 
 void Level4Init(void) {
@@ -945,6 +954,9 @@ void Level4Init(void) {
 
 	SetBuildingTime(kFullBuildingPhaseTime);
 	current_game_state = kBuilding;
+	//BGM Sound
+	CP_Sound_StopGroup(CP_SOUND_GROUP_1);
+	CP_Sound_PlayAdvanced(BuildingBGM, BGM_Volume, 1.0f, TRUE, CP_SOUND_GROUP_1);
 }
 
 void Level5Init(void) {
@@ -1022,6 +1034,9 @@ void Level5Init(void) {
 
 	SetBuildingTime(kFullBuildingPhaseTime);
 	current_game_state = kBuilding;
+	//BGM Sound
+	CP_Sound_StopGroup(CP_SOUND_GROUP_1);
+	CP_Sound_PlayAdvanced(BuildingBGM, BGM_Volume, 1.0f, TRUE, CP_SOUND_GROUP_1);
 }
 
 void ButtonPressedUpdate(void) {
