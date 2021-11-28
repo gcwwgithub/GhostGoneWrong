@@ -116,7 +116,7 @@ void init_credit_line(int num, char* line, float x, float y)
 	CreditTexts[num].endingPos.y_origin = y;
 
 	CreditTexts[num].currentPos.x_origin = x;
-	CreditTexts[num].currentPos.y_origin = y;
+	CreditTexts[num].currentPos.y_origin = y + CP_System_GetWindowHeight();
 }
 
 void init_option_line(int num, char* line, float x, float y)
@@ -177,10 +177,24 @@ void init_options_screen(void)
 {
 	// init options screen for main menu
 	init_option_line(Options, "Options", CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.35f);
-	init_option_line(BackgroundSFX, "BG SFX", CP_System_GetWindowWidth() * 0.25f, CP_System_GetWindowHeight() * 0.5f);
+	init_option_line(BackgroundSFX, "Background SFX", CP_System_GetWindowWidth() * 0.25f, CP_System_GetWindowHeight() * 0.5f);
 	init_option_line(MuteAll, "Mute All", CP_System_GetWindowWidth() * 0.25f, CP_System_GetWindowHeight() * 0.65f);
 	OptionsBackButton = init_text_button(OptionsBackButton, CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 0.9f - BUTTON_HEIGHT * 0.5f,
 		BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Back");
+
+	OptionButtons[0].x_origin = CP_System_GetWindowWidth() * 0.5f;
+	OptionButtons[0].y_origin = CP_System_GetWindowHeight() * 0.475f;
+	OptionButtons[0].width = 37.5f;
+	OptionButtons[0].height = 37.5f;
+	OptionButtons[0].object_type = kObjectRectangle;
+	// Image left unspecified
+
+	OptionButtons[1].x_origin = CP_System_GetWindowWidth() * 0.5f;
+	OptionButtons[1].y_origin = CP_System_GetWindowHeight() * 0.625f;
+	OptionButtons[1].width = 37.5f;
+	OptionButtons[1].height = 37.5f;
+	OptionButtons[1].object_type = kObjectRectangle;
+	// Image left unspecified
 }
 
 #pragma endregion
@@ -361,6 +375,18 @@ void render_options_screen(void)
 	render_text_line(OptionTexts[BackgroundSFX]);
 	render_text_line(OptionTexts[MuteAll]);
 
+	CP_Graphics_DrawRect(OptionButtons[0].x_origin, OptionButtons[0].y_origin, OptionButtons[0].width, OptionButtons[0].height);
+	CP_Graphics_DrawRect(OptionButtons[1].x_origin, OptionButtons[1].y_origin, OptionButtons[1].width, OptionButtons[1].height);
+
+	CP_Settings_Fill(COLOR_BLACK);
+	if (!bgmAudioPaused)
+	{
+	CP_Graphics_DrawRect(OptionButtons[0].x_origin + 12.5f, OptionButtons[0].y_origin + 12.5f, 15.0f,15.0f);
+	}
+	if (allAudioPaused) 
+	{
+		CP_Graphics_DrawRect(OptionButtons[1].x_origin + 12.5f, OptionButtons[1].y_origin + 12.5f, 15.0f,15.0f);
+	}
 	render_ui_button(OptionsBackButton);
 }
 
@@ -579,7 +605,7 @@ int main_menu_finished_moving(void)
 			button_has_finished_moving(HowToPlayButton, HowToPlayButton.buttonData.x_origin, (float)CP_System_GetWindowHeight() * 1.25f) &&
 			button_has_finished_moving(OptionsButton, -BUTTON_WIDTH, OptionsButton.buttonData.y_origin))
 		{
-			PlayButton.isMoving = CreditsButton.isMoving = QuitButton.isMoving = HowToPlayButton.isMoving = LevelButtons->isMoving = 0;
+			PlayButton.isMoving = CreditsButton.isMoving = QuitButton.isMoving = HowToPlayButton.isMoving = 0;
 			OptionsButton.isMoving = 0; OptionsButton.movementTime = 0.0f;
 			PlayButton.movementTime = CreditsButton.movementTime = QuitButton.movementTime = HowToPlayButton.movementTime = 0.0f;
 			return 1;
@@ -593,7 +619,7 @@ int main_menu_finished_moving(void)
 			button_has_finished_moving(HowToPlayButton, HowToPlayButton.buttonData.x_origin, CP_System_GetWindowHeight() * 0.75f) &&
 			button_has_finished_moving(OptionsButton, CP_System_GetWindowWidth() * 0.25f - BUTTON_WIDTH * 0.5f, OptionsButton.buttonData.y_origin))
 		{
-			PlayButton.isMoving = CreditsButton.isMoving = QuitButton.isMoving = HowToPlayButton.isMoving = LevelButtons->isMoving = 0;
+			PlayButton.isMoving = CreditsButton.isMoving = QuitButton.isMoving = HowToPlayButton.isMoving = 0;
 			OptionsButton.isMoving = 0; OptionsButton.movementTime = 0.0f;
 			PlayButton.movementTime = CreditsButton.movementTime = QuitButton.movementTime = HowToPlayButton.movementTime = 0.0f;
 			return 1;
@@ -664,7 +690,7 @@ void reduce_building_phase_time()
 		}
 		StartBattleFieldEffectTimer(Level.current_effect);
 		CP_Sound_StopGroup(CP_SOUND_GROUP_1);
-		CP_Sound_PlayAdvanced(WaveBGM, BGM_Volume,1.0f, TRUE, CP_SOUND_GROUP_1);
+		CP_Sound_PlayAdvanced(WaveBGM, BGM_Volume, 1.0f, TRUE, CP_SOUND_GROUP_1);
 	}
 	else
 	{
@@ -797,18 +823,6 @@ void init_next_level(int nextGameLevel)
 #pragma endregion
 
 #pragma region Options Settings
-
-//// Mute or resume only the music sound group
-//void toggle_background_sound(int muted)
-//{
-//	(muted) ? CP_Sound_PauseGroup(CP_SOUND_GROUP_MUSIC) : CP_Sound_ResumeGroup(CP_SOUND_GROUP_MUSIC);
-//}
-//
-//// Mute all audio tracks
-//void mute_all_audio(void)
-//{
-//	CP_Sound_StopAll();
-//}
 
 //void toggle_fullscreen_windowed(int isWindowed)
 //{

@@ -89,9 +89,10 @@ Button PlayButton;
 Button QuitButton;
 Button CreditsButton;
 Button HowToPlayButton;
-
 Button OptionsButton;
+
 Button OptionsBackButton;
+Coordinates OptionButtons[2];
 
 Button LevelSelectBackButton;
 Button LevelButtons[5];
@@ -102,6 +103,8 @@ Button PauseScreenButtons[2];
 Button EndScreenButtons[3];
 int enemiesInLevel;
 
+int bgmAudioPaused;
+int allAudioPaused;
 
 // Main Menu Inits
 void render_title_screen(void);
@@ -149,6 +152,8 @@ void move_main_menu(void);
 int main_menu_finished_moving(void);
 
 void move_credits_screen(void);
+
+void toggle_all_audio(int audioPaused);
 
 void init_next_level(int nextGameLevel);
 void exit_to_desktop(void);

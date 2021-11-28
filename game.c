@@ -26,6 +26,7 @@ void game_init(void)
 	building_time = kFullBuildingPhaseTime;
 	dpLogoDisplayTime = teamLogoDisplayTime = LOGO_DISPLAY_TIME;
 	dpLogoFadeTime = teamLogoFadeTime = FADE_OUT_TIME;
+	bgmAudioPaused = allAudioPaused = 0;
 	current_how_to_play_page = 0;
 	HowToPlayButtonsInit();
 
@@ -228,6 +229,7 @@ void game_update(void)
 		render_title_screen();
 		render_main_menu();
 		render_level_select_buttons();
+		render_credits_screen();
 	}
 	else if (current_game_state == kHowToPlay) {
 		RenderHowToPlayPages();
@@ -270,7 +272,7 @@ void game_update(void)
 			move_level_select();
 		}
 
-		if (main_menu_finished_moving())
+		if (main_menu_finished_moving() && level_select_finished_moving())
 		{
 			current_game_state = kMainMenu;
 		}
@@ -346,6 +348,18 @@ void game_update(void)
 		{
 			current_game_state = kMainMenu;
 		}
+		else if (BtnIsPressed(OptionButtons[0]))
+		{
+			(bgmAudioPaused) ? CP_Sound_ResumeGroup(CP_SOUND_GROUP_1) : CP_Sound_PauseGroup(CP_SOUND_GROUP_1);
+			bgmAudioPaused = !bgmAudioPaused;
+			MouseReset();
+		}
+		else if (BtnIsPressed(OptionButtons[1]))
+		{
+			(allAudioPaused) ? CP_Sound_ResumeAll() : CP_Sound_PauseAll();
+			allAudioPaused = !allAudioPaused;
+			MouseReset();
+		}
 
 		CP_Graphics_ClearBackground(COLOR_GREY);
 		render_title_screen();
@@ -354,10 +368,6 @@ void game_update(void)
 	else if (current_game_state == kLogoSplash)
 	{
 		show_logos();
-		if (CP_Input_KeyDown(KEY_ESCAPE))
-		{
-			current_game_state = kMainMenu;
-		}
 	}
 }
 
