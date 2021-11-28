@@ -734,7 +734,7 @@ void Level2Init(void) {
 	Level.exit_row = level_grid_rows - 1;
 	Level.exit_col = (level_grid_cols - 1);
 	Level.health = 100;
-	Level.phantom_quartz = 200;
+	Level.phantom_quartz = 300;
 	Level.gold_quartz = 0;
 	Level.current_wave = 0;
 	Level.current_effect = kNoEnvironmentalEffects;
@@ -812,7 +812,7 @@ void Level3Init(void) {
 	Level.exit_row = 0;
 	Level.exit_col = 0;
 	Level.health = 100;
-	Level.phantom_quartz = 200;
+	Level.phantom_quartz = 300;
 	Level.gold_quartz = 0;
 	Level.current_wave = 0;
 	Level.current_effect = kNoEnvironmentalEffects;
@@ -890,7 +890,7 @@ void Level4Init(void) {
 	Level.exit_row = level_grid_rows - 1;
 	Level.exit_col = 0;
 	Level.health = 100;
-	Level.phantom_quartz = 200;
+	Level.phantom_quartz = 300;
 	Level.gold_quartz = 0;
 	Level.current_wave = 0;
 	Level.current_effect = kNoEnvironmentalEffects;
@@ -968,7 +968,7 @@ void Level5Init(void) {
 	Level.exit_row = level_grid_rows - 1;
 	Level.exit_col = (level_grid_cols - 1) / 2;
 	Level.health = 100;
-	Level.phantom_quartz = 200;
+	Level.phantom_quartz = 300;
 	Level.gold_quartz = 0;
 	Level.current_wave = 0;
 	Level.current_effect = kNoEnvironmentalEffects;
