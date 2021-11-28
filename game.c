@@ -104,6 +104,7 @@ void game_update(void)
 		{
 			SetBuildingTime(0.0f);
 			MouseReset();
+			CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
 		}
 
 		//do turret & projectile update next

@@ -191,6 +191,8 @@ void place_turret(TurretType type, int index_x, int index_y)
 		turret_on_grid[index_x][index_y] = i;
 		//where u place u block
 		turret[i].level = 1;
+		//Place turret sfx
+		CP_Sound_PlayAdvanced(TurretPlaceSFX, SFX_Volume*0.5f, 1.0f, FALSE, CP_SOUND_GROUP_0);
 		//escape from loop once done
 		break;
 	}
