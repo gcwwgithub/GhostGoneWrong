@@ -190,7 +190,7 @@ void game_update(void)
 			}
 		}
 		else if (BtnIsPressed(OptionsButton.buttonData)) {
-			current_game_state = kOptions;
+			//current_game_state = kOptions;
 		}
 		else if (BtnIsPressed(HowToPlayButton.buttonData)) {
 			current_game_state = kHowToPlay;
@@ -237,30 +237,28 @@ void game_update(void)
 	{
 		CP_Settings_NoTint();
 		// Levels
-		if (!LevelButtons->isMoving) // Stops accidental clicking of buttons when moving
+		if (BtnIsPressed(LevelButtons[0].buttonData))
 		{
-			if (BtnIsPressed(LevelButtons[0].buttonData))
-			{
-				Level1Init();
-			}
-			else if (BtnIsPressed(LevelButtons[1].buttonData)) {
-				Level2Init();
-			}
-			else if (BtnIsPressed(LevelButtons[2].buttonData)) {
-				Level3Init();
-			}
-			else if (BtnIsPressed(LevelButtons[3].buttonData)) {
-				Level4Init();
-			}
-			else if (BtnIsPressed(LevelButtons[4].buttonData)) {
-				Level5Init();
-			}
-			else if (BtnIsPressed(LevelSelectBackButton.buttonData))
-			{
-				PlayButton.isMoving = CreditsButton.isMoving = QuitButton.isMoving
-					= HowToPlayButton.isMoving = LevelButtons->isMoving = 1;
-				MouseReset();
-			}
+			Level1Init();
+		}
+		else if (BtnIsPressed(LevelButtons[1].buttonData)) {
+			Level2Init();
+		}
+		else if (BtnIsPressed(LevelButtons[2].buttonData)) {
+			Level3Init();
+		}
+		else if (BtnIsPressed(LevelButtons[3].buttonData)) {
+			Level4Init();
+		}
+		else if (BtnIsPressed(LevelButtons[4].buttonData)) {
+			Level5Init();
+		}
+		else if (BtnIsPressed(LevelSelectBackButton.buttonData))
+		{
+			PlayButton.isMoving = CreditsButton.isMoving = QuitButton.isMoving
+				= HowToPlayButton.isMoving = LevelButtons->isMoving = 1;
+			MouseReset();
+		}
 
 		// All these buttons move altogether.
 		if (PlayButton.isMoving || CreditsButton.isMoving || QuitButton.isMoving || HowToPlayButton.isMoving)
@@ -366,4 +364,5 @@ void game_update(void)
 
 void game_exit(void)
 {
+
 }

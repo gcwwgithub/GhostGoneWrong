@@ -35,19 +35,6 @@ Button init_text_button(Button button, float buttonPosX, float buttonPosY, float
 	return button;
 }
 
-void init_text_button2(Button* button, float buttonPosX, float buttonPosY, float buttonWidth, float buttonHeight, float textPosX, float textPosY, char string[])
-{
-	button->buttonData.x_origin = buttonPosX;
-	button->buttonData.y_origin = buttonPosY;
-	button->buttonData.width = buttonWidth;
-	button->buttonData.height = buttonHeight;
-	button->movementTime = 0.0f;
-	CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_CENTER, CP_TEXT_ALIGN_V_MIDDLE);
-	button->textPositionX = button->buttonData.x_origin + textPosX;
-	button->textPositionY = button->buttonData.y_origin + textPosY;
-	strcpy_s(button->textString, sizeof(button->textString), string);
-}
-
 void init_main_menu(void)
 {
 	PlayButton = init_text_button(PlayButton, CP_System_GetWindowWidth() * 0.25f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 0.5f,
@@ -285,7 +272,7 @@ void render_main_menu(void)
 	render_ui_button(CreditsButton);
 	render_ui_button(QuitButton);
 	render_ui_button(HowToPlayButton);
-	render_ui_button(OptionsButton);
+	//render_ui_button(OptionsButton);
 }
 
 void render_level_select_buttons(void)
