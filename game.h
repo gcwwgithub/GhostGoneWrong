@@ -340,4 +340,9 @@ CP_Sound LoseSFX;
 CP_Sound HitSFX;
 float SFX_Volume;
 
+CP_Sound MainMenuBGM;
+CP_Sound BuildingBGM;
+CP_Sound WaveBGM;
+float BGM_Volume;
+
 #endif // !GOSTGONEWRONG_CURRENTHEADERFILES_GAME_H
