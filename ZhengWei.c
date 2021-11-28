@@ -716,6 +716,9 @@ void Level1Init(void) {
 
 	SetBuildingTime(kFullBuildingPhaseTime);
 	current_game_state = kBuilding;
+	//BGM Sound
+	CP_Sound_StopGroup(CP_SOUND_GROUP_1);
+	CP_Sound_PlayAdvanced(BuildingBGM, BGM_Volume, 1.0f, TRUE, CP_SOUND_GROUP_1);
 }
 
 void Level2Init(void) {
@@ -794,6 +797,9 @@ void Level2Init(void) {
 
 	SetBuildingTime(kFullBuildingPhaseTime);
 	current_game_state = kBuilding;
+	//BGM Sound
+	CP_Sound_StopGroup(CP_SOUND_GROUP_1);
+	CP_Sound_PlayAdvanced(BuildingBGM, BGM_Volume, 1.0f, TRUE, CP_SOUND_GROUP_1);
 }
 
 void Level3Init(void) {
@@ -872,6 +878,9 @@ void Level3Init(void) {
 	SetBuildingTime(kFullBuildingPhaseTime);
 	current_game_state = kBuilding;
 
+	//BGM Sound
+	CP_Sound_StopGroup(CP_SOUND_GROUP_1);
+	CP_Sound_PlayAdvanced(BuildingBGM, BGM_Volume, 1.0f, TRUE, CP_SOUND_GROUP_1);
 }
 
 void Level4Init(void) {
@@ -950,6 +959,9 @@ void Level4Init(void) {
 
 	SetBuildingTime(kFullBuildingPhaseTime);
 	current_game_state = kBuilding;
+	//BGM Sound
+	CP_Sound_StopGroup(CP_SOUND_GROUP_1);
+	CP_Sound_PlayAdvanced(BuildingBGM, BGM_Volume, 1.0f, TRUE, CP_SOUND_GROUP_1);
 }
 
 void Level5Init(void) {
@@ -1027,6 +1039,9 @@ void Level5Init(void) {
 
 	SetBuildingTime(kFullBuildingPhaseTime);
 	current_game_state = kBuilding;
+	//BGM Sound
+	CP_Sound_StopGroup(CP_SOUND_GROUP_1);
+	CP_Sound_PlayAdvanced(BuildingBGM, BGM_Volume, 1.0f, TRUE, CP_SOUND_GROUP_1);
 }
 
 void ButtonPressedUpdate(void) {
@@ -1047,6 +1062,10 @@ void ButtonPressedUpdate(void) {
 			is_placing_turret = kTBasic;
 			turretSelectedToUpgrade = kNoTurretSelected;
 			RenderImageFromSpriteSheet(basic_turret_spritesheet, basic_turret_spritesheet_array[0], CP_Input_GetMouseX(), CP_Input_GetMouseY(), game.grid_width, game.grid_height);
+			//Button SFX
+			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
+				CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
+			}
 		}
 		else if (power_up_menu == kTrue && Level.gold_quartz >= power_up_price.more_phantom_quartz) {
 			Level.current_power_up_level.more_phantom_quartz += 1;
@@ -1054,6 +1073,10 @@ void ButtonPressedUpdate(void) {
 			MouseReset();
 			is_placing_turret = kTMax;
 			turretSelectedToUpgrade = kNoTurretSelected;
+			//Button SFX
+			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
+				CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
+			}
 		}
 		else {
 			is_placing_turret = kTMax;
@@ -1066,6 +1089,10 @@ void ButtonPressedUpdate(void) {
 			is_placing_turret = kTSlow;
 			turretSelectedToUpgrade = kNoTurretSelected;
 			CP_Image_DrawAdvanced(game_menu_object[CheckGameButtonPressed()].image, CP_Input_GetMouseX(), CP_Input_GetMouseY(), game.grid_width, game.grid_height, 255, 0);
+			//Button SFX
+			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
+				CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
+			}
 		}
 		else if (power_up_menu == kTrue && Level.gold_quartz >= power_up_price.reduce_enemy_speed) {
 			Level.current_power_up_level.reduce_enemy_speed += 1;
@@ -1073,6 +1100,10 @@ void ButtonPressedUpdate(void) {
 			MouseReset();
 			is_placing_turret = kTMax;
 			turretSelectedToUpgrade = kNoTurretSelected;
+			//Button SFX
+			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
+				CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
+			}
 		}
 		else {
 			is_placing_turret = kTMax;
@@ -1085,6 +1116,10 @@ void ButtonPressedUpdate(void) {
 			is_placing_turret = kTHoming;
 			turretSelectedToUpgrade = kNoTurretSelected;
 			RenderImageFromSpriteSheet(homing_missle_turret_spritesheet, homing_missle_turret_spritesheet_array[0], CP_Input_GetMouseX(), CP_Input_GetMouseY(), game.grid_width, game.grid_height);
+			//Button SFX
+			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
+				CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
+			}
 		}
 		else if (power_up_menu == kTrue && Level.gold_quartz >= power_up_price.reduce_enemy_health) {
 			Level.current_power_up_level.reduce_enemy_health += 1;
@@ -1092,6 +1127,10 @@ void ButtonPressedUpdate(void) {
 			MouseReset();
 			is_placing_turret = kTMax;
 			turretSelectedToUpgrade = kNoTurretSelected;
+			//Button SFX
+			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
+				CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
+			}
 		}
 		else {
 			is_placing_turret = kTMax;
@@ -1103,6 +1142,10 @@ void ButtonPressedUpdate(void) {
 			is_placing_turret = kTMine;
 			turretSelectedToUpgrade = kNoTurretSelected;
 			RenderImageFromSpriteSheet(mine_spritesheet, mine_spritesheet_array[0], CP_Input_GetMouseX(), CP_Input_GetMouseY(), game.grid_width, game.grid_height);
+			//Button SFX
+			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
+				CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
+			}
 		}
 		else if (power_up_menu == kTrue && Level.gold_quartz >= power_up_price.increased_mine_damage) {
 			Level.current_power_up_level.increased_mine_damage += 1;
@@ -1110,6 +1153,10 @@ void ButtonPressedUpdate(void) {
 			MouseReset();
 			is_placing_turret = kTMax;
 			turretSelectedToUpgrade = kNoTurretSelected;
+			//Button SFX
+			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
+				CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
+			}
 		}
 		else {
 			is_placing_turret = kTMax;
@@ -1132,9 +1179,9 @@ void ButtonPressedUpdate(void) {
 		if (Level.phantom_quartz >= 1000) {
 			Level.phantom_quartz -= 1000;
 			Level.gold_quartz += 10;
+			//Button SFX 
+			CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
 		}
-		//Button SFX 
-		CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
 		MouseReset();
 		break;
 
@@ -1150,6 +1197,10 @@ void ButtonPressedUpdate(void) {
 					{
 						Level.phantom_quartz -= turret[turretSelectedToUpgrade].upgrade_price;
 						upgrade_turret(turretSelectedToUpgrade);
+						//Button SFX
+						if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
+							CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
+						}
 					}
 
 					is_placing_turret = kTMax;
@@ -1178,6 +1229,10 @@ void ButtonPressedUpdate(void) {
 			PathFindingUpdate(&Level);
 			MouseReset();
 			is_placing_turret = kTMax;
+			//Button SFX
+			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
+				CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
+			}
 		}
 		else {
 			is_placing_turret = kTMax;

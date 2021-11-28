@@ -94,7 +94,8 @@ enum
 	kLose,
 	kLevelSelect,
 	kCredits,
-	kHowToPlay
+	kHowToPlay,
+	kOptions
 }current_game_state;
 //Game Grid
 int level_grid_cols;
@@ -344,5 +345,6 @@ CP_Sound MainMenuBGM;
 CP_Sound BuildingBGM;
 CP_Sound WaveBGM;
 float BGM_Volume;
+CP_Sound MainMenuMusic;
 
 #endif // !GOSTGONEWRONG_CURRENTHEADERFILES_GAME_H

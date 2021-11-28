@@ -9,7 +9,7 @@
 
 void game_init(void)
 {
-	CP_System_ShowConsole(); //pls dont delete this cause scrub me uses printf to debug -gabriel
+	//CP_System_ShowConsole(); //pls dont delete this cause scrub me uses printf to debug -gabriel
 	CP_System_Fullscreen();
 	CP_System_SetWindowTitle("Ghost Gone Wrong");
 	int gameWindowWidth = 1280;
@@ -33,6 +33,7 @@ void game_init(void)
 
 	init_main_menu();
 	init_level_select_buttons();
+	init_options_screen();
 	init_credits_screen();
 	init_pause_screen();
 	init_end_screen();
@@ -44,6 +45,9 @@ void game_init(void)
 
 	// initialize price for powerups
 	PowerUpPriceInit();
+
+	//Initialise all sounds
+	Music_init();
 }
 
 
@@ -104,6 +108,7 @@ void game_update(void)
 		{
 			SetBuildingTime(0.0f);
 			MouseReset();
+			CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
 		}
 
 		//do turret & projectile update next
@@ -144,6 +149,8 @@ void game_update(void)
 		if (BtnIsPressed(EndScreenButtons[0].buttonData))
 		{
 			current_game_state = kMainMenu;
+			CP_Sound_StopGroup(CP_SOUND_GROUP_1);
+			CP_Sound_PlayAdvanced(MainMenuBGM, BGM_Volume, 1.0f, TRUE, CP_SOUND_GROUP_1);
 		}
 		else if (BtnIsPressed(EndScreenButtons[1].buttonData))
 		{
@@ -155,20 +162,19 @@ void game_update(void)
 			init_next_level(current_game_level + 1);
 		}
 
-		render_end_screen(); // this should pause the game by way of gameLost.
+		render_end_screen(); // this should pause the game?
 
 	}
 	else if (current_game_state == kMainMenu)
 	{
 		CP_Settings_NoTint();
-
 		if (BtnIsPressed(PlayButton.buttonData))
 		{
 			// To prevent clicking buttons while transitioning to LevelSelect
 			if (!CreditsBackButton.isMoving)
 			{
-				PlayButton.isMoving = CreditsButton.isMoving = QuitButton.isMoving 
-				= HowToPlayButton.isMoving = LevelButtons->isMoving = 1;
+				PlayButton.isMoving = CreditsButton.isMoving = QuitButton.isMoving
+					= HowToPlayButton.isMoving = LevelButtons->isMoving = 1;
 			}
 		}
 		else if (BtnIsPressed(QuitButton.buttonData))
@@ -183,10 +189,14 @@ void game_update(void)
 				CreditsBackButton.isMoving = 1;
 			}
 		}
+		else if (BtnIsPressed(OptionsButton.buttonData)) {
+			current_game_state = kOptions;
+		}
 		else if (BtnIsPressed(HowToPlayButton.buttonData)) {
 			current_game_state = kHowToPlay;
 		}
-		if (PlayButton.isMoving || CreditsButton.isMoving || QuitButton.isMoving || HowToPlayButton.isMoving) // clicked on play
+		// All these buttons move altogether.
+		if (PlayButton.isMoving || CreditsButton.isMoving || QuitButton.isMoving || HowToPlayButton.isMoving)
 		{
 			move_main_menu();
 		}
@@ -205,6 +215,7 @@ void game_update(void)
 			current_game_state = kLevelSelect;
 		}
 
+		// Transition to Credits check
 		if (button_has_finished_moving(CreditsBackButton, CreditsBackButton.buttonData.x_origin, CP_System_GetWindowHeight() * 0.93f))
 		{
 			CreditsBackButton.isMoving = 0;
@@ -215,9 +226,8 @@ void game_update(void)
 
 		CP_Graphics_ClearBackground(COLOR_GREY);
 		render_title_screen();
-		render_start_menu();
+		render_main_menu();
 		render_level_select_buttons();
-		render_credits_screen();
 	}
 	else if (current_game_state == kHowToPlay) {
 		RenderHowToPlayPages();
@@ -226,48 +236,48 @@ void game_update(void)
 	{
 		CP_Settings_NoTint();
 		// Levels
-		if (!LevelButtons->isMoving) // Stops accidental clicking of buttons when moving
+		if (BtnIsPressed(LevelButtons[0].buttonData))
 		{
-			if (BtnIsPressed(LevelButtons[0].buttonData))
-			{
-				Level1Init();
-			}
-			else if (BtnIsPressed(LevelButtons[1].buttonData)) {
-				Level2Init();
-			}
-			else if (BtnIsPressed(LevelButtons[2].buttonData)) {
-				Level3Init();
-			}
-			else if (BtnIsPressed(LevelButtons[3].buttonData)) {
-				Level4Init();
-			}
-			else if (BtnIsPressed(LevelButtons[4].buttonData)) {
-				Level5Init();
-			}
-			else if (BtnIsPressed(LevelSelectBackButton.buttonData))
-			{
-				PlayButton.isMoving = CreditsButton.isMoving = QuitButton.isMoving
-					= HowToPlayButton.isMoving = LevelButtons->isMoving = 1;
-			}
+			Level1Init();
+		}
+		else if (BtnIsPressed(LevelButtons[1].buttonData)) {
+			Level2Init();
+		}
+		else if (BtnIsPressed(LevelButtons[2].buttonData)) {
+			Level3Init();
+		}
+		else if (BtnIsPressed(LevelButtons[3].buttonData)) {
+			Level4Init();
+		}
+		else if (BtnIsPressed(LevelButtons[4].buttonData)) {
+			Level5Init();
+		}
+		else if (BtnIsPressed(LevelSelectBackButton.buttonData))
+		{
+			PlayButton.isMoving = CreditsButton.isMoving = QuitButton.isMoving
+				= HowToPlayButton.isMoving = LevelButtons->isMoving = 1;
+			MouseReset();
 		}
 
-		if (PlayButton.isMoving || CreditsButton.isMoving || QuitButton.isMoving || HowToPlayButton.isMoving) // clicked on play
+		// All these buttons move altogether.
+		if (PlayButton.isMoving || CreditsButton.isMoving || QuitButton.isMoving || HowToPlayButton.isMoving)
 		{
 			move_main_menu();
 		}
+
 		if (LevelButtons->isMoving)
 		{
 			move_level_select();
 		}
 
-		if (main_menu_finished_moving() && level_select_finished_moving())
+		if (main_menu_finished_moving())
 		{
 			current_game_state = kMainMenu;
 		}
 
 		CP_Graphics_ClearBackground(COLOR_GREY);
 		render_title_screen();
-		render_start_menu();
+		render_main_menu();
 		render_level_select_buttons();
 	}
 	else if (current_game_state == kPause)
@@ -302,6 +312,8 @@ void game_update(void)
 			free(turret_on_grid);
 
 			current_game_state = kLevelSelect;
+			CP_Sound_StopGroup(CP_SOUND_GROUP_1);
+			CP_Sound_PlayAdvanced(MainMenuBGM, BGM_Volume, 1.0f, TRUE, CP_SOUND_GROUP_1);
 		}
 		render_pause_screen();
 	}
@@ -325,17 +337,31 @@ void game_update(void)
 
 		CP_Graphics_ClearBackground(COLOR_GREY);
 		render_title_screen();
-		render_start_menu();
+		render_main_menu();
 		render_credits_screen();
+	}
+	else if (current_game_state == kOptions)
+	{
+		if (BtnIsPressed(OptionsBackButton.buttonData))
+		{
+			current_game_state = kMainMenu;
+		}
+
+		CP_Graphics_ClearBackground(COLOR_GREY);
+		render_title_screen();
+		render_options_screen();
 	}
 	else if (current_game_state == kLogoSplash)
 	{
 		show_logos();
 		if (CP_Input_KeyDown(KEY_ESCAPE))
-		{current_game_state = kMainMenu;}
+		{
+			current_game_state = kMainMenu;
+		}
 	}
 }
 
 void game_exit(void)
 {
+
 }

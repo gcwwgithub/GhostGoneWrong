@@ -326,7 +326,6 @@ void Enemies_init(void) {
 	wave_timer = 0;
 	Array_count = 1;
 	Number_of_points = 0;
-	Music_init();
 
 	//test path
 	for (int i = 0; i < kMaxEnemies; i++) {
@@ -853,7 +852,7 @@ void Power_Up_check(Enemy* r) {
 
 void Music_init(void) {
 	ButtonClickSFX = CP_Sound_Load("./Assets/sfx/btn.wav");
-	TurretPlaceSFX = CP_Sound_Load("./Assets/sfx/place_turret.wav");
+	TurretPlaceSFX = CP_Sound_Load("./Assets/sfx/place-turret.mp3");
 	MineExplosionSFX = CP_Sound_Load("./Assets/sfx/Explosion.wav");
 	WinSFX = CP_Sound_Load("./Assets/sfx/WinSFX.wav");
 	LoseSFX = CP_Sound_Load("./Assets/sfx/LoseSFX.wav");
@@ -864,7 +863,9 @@ void Music_init(void) {
 
 	WaveBGM = CP_Sound_Load("./Assets/sfx/SPHERES & STARS - NewAge MSCNEW1_17.wav");
 	BuildingBGM = CP_Sound_Load("./Assets/sfx/INPUT - NewAge MSCNEW2_01.wav");
+	MainMenuBGM = CP_Sound_Load("./Assets/sfx/THE NINTH HOUR - Jazz MSCJAZ1_46.wav");
 	BGM_Volume = 0.5f;
+	MainMenuMusic = CP_Sound_LoadMusic("./Assets/sfx/THE NINTH HOUR - Jazz MSCJAZ1_46.wav");
 }
 
 /*void movement_redone(enemy* r) {
