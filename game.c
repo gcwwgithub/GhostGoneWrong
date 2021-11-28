@@ -176,9 +176,13 @@ void game_update(void)
 				PlayButton.isMoving = CreditsButton.isMoving = QuitButton.isMoving 
 				= HowToPlayButton.isMoving = LevelButtons->isMoving = 1;
 			}
+			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
+				CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
+			}
 		}
 		else if (BtnIsPressed(QuitButton.buttonData))
 		{
+			CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
 			exit_to_desktop();
 		}
 		else if (BtnIsPressed(CreditsButton.buttonData))
@@ -188,9 +192,15 @@ void game_update(void)
 			{
 				CreditsBackButton.isMoving = 1;
 			}
+			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
+				CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
+			}
 		}
 		else if (BtnIsPressed(HowToPlayButton.buttonData)) {
 			current_game_state = kHowToPlay;
+			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
+				CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
+			}
 		}
 		if (PlayButton.isMoving || CreditsButton.isMoving || QuitButton.isMoving || HowToPlayButton.isMoving) // clicked on play
 		{
@@ -237,23 +247,41 @@ void game_update(void)
 			if (BtnIsPressed(LevelButtons[0].buttonData))
 			{
 				Level1Init();
+				if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
+					CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
+				}
 			}
 			else if (BtnIsPressed(LevelButtons[1].buttonData)) {
 				Level2Init();
+				if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
+					CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
+				}
 			}
 			else if (BtnIsPressed(LevelButtons[2].buttonData)) {
 				Level3Init();
+				if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
+					CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
+				}
 			}
 			else if (BtnIsPressed(LevelButtons[3].buttonData)) {
 				Level4Init();
+				if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
+					CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
+				}
 			}
 			else if (BtnIsPressed(LevelButtons[4].buttonData)) {
 				Level5Init();
+				if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
+					CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
+				}
 			}
 			else if (BtnIsPressed(LevelSelectBackButton.buttonData))
 			{
 				PlayButton.isMoving = CreditsButton.isMoving = QuitButton.isMoving
 					= HowToPlayButton.isMoving = LevelButtons->isMoving = 1;
+				if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
+					CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
+				}
 			}
 		}
 
@@ -289,10 +317,16 @@ void game_update(void)
 				current_game_state = kPause;
 			}
 			MouseReset();
+			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
+				CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
+			}
 		}
 		else if (BtnIsPressed(PauseScreenButtons[0].buttonData)) // Resume
 		{
 			current_game_state = (building_time) ? kBuilding : kWave;
+			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
+				CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
+			}
 		}
 		else if (BtnIsPressed(PauseScreenButtons[1].buttonData)) // Level Select
 		{
@@ -310,6 +344,9 @@ void game_update(void)
 			current_game_state = kLevelSelect;
 			CP_Sound_StopGroup(CP_SOUND_GROUP_1);
 			CP_Sound_PlayAdvanced(MainMenuBGM, BGM_Volume, 1.0f, TRUE, CP_SOUND_GROUP_1);
+			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
+				CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
+			}
 		}
 		render_pause_screen();
 	}
@@ -318,6 +355,9 @@ void game_update(void)
 		if (BtnIsPressed(CreditsBackButton.buttonData))
 		{
 			CreditsBackButton.isMoving = 1;
+			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
+				CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
+			}
 		}
 		if (CreditsBackButton.isMoving)
 		{
