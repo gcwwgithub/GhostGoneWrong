@@ -1,12 +1,26 @@
+/*!
+@file       Samuel.c
+@author     Wong Zhi Hao Samuel (w.zhihaosamuel@digipen.edu)\
+@co-author
+@course     CSD 1400
+@section    C
+@date       28/11/2021
+@brief    	Contains function definition remove_turret, render_turret,
+			update_turret, shoot, update_projectile, render_projectile,
+			update_turretAnimation, create_particle, update_particle and
+			render_particle.
+*//*__________________________________________________________________________*/
+
+#if _DEBUG
+#include <stdio.h>
+#endif
 #include <math.h>
+
 #include "cprocessing.h"
 #include "game.h"
 #include "Samuel.h"
 #include "Gabriel.h"
 
-#if _DEBUG
-#include <stdio.h>
-#endif
 
 void turret_init(void)
 {
@@ -35,7 +49,7 @@ void turret_init(void)
 		proj[i].data.x_origin = 0;
 		proj[i].data.y_origin = 0;
 		proj[i].mod.damage = 1.f;
-		proj[i].mod.speed = 200.f;
+		proj[i].mod.speed = game.grid_width;
 		proj[i].size = 48;
 		proj[i].mod.slow_amt = 1.f;
 		proj[i].mod.slow_timer = 0.f;
@@ -99,13 +113,6 @@ void turret_init(void)
 		particles[i].duration = 5.f;
 		particles[i].size = 10.f;
 	}
-
-	//place_turret(T_WALL, 2, 1);
-	//Level.grid[1][2].type = Blocked;
-	//place_turret(T_SLOW, 4, 1);
-	//Level.grid[4][1].type = Blocked;//Hard coded to set turret spot to blocked
-	//place_turret(T_BASIC, 0, 4);
-	//Level.grid[4][0].type = Blocked;//Hard coded to set turret spot to blocked
 }
 
 //call this function to place turret (pass in the grid index)
@@ -129,7 +136,8 @@ void place_turret(TurretType type, int index_x, int index_y)
 			turret[i].mod.damage = 1.0f;
 			turret[i].anim_counter = 0;
 			turret[i].turret_anim_timer = 0;
-			turret[i].mod.speed = 300.f;
+			//turret[i].mod.speed = 300.f;
+			turret[i].mod.speed = game.grid_width * 5.5f;
 			break;
 		case kTSlow: // FREEZE TURRET
 			turret[i].mod.range = game.grid_width * 2;
@@ -138,7 +146,8 @@ void place_turret(TurretType type, int index_x, int index_y)
 			turret[i].mod.slow_timer = 0.8f;
 			turret[i].anim_counter = 0;
 			turret[i].turret_anim_timer = 0;
-			turret[i].mod.speed = 200.f;
+			//turret[i].mod.speed = 200.f;
+			turret[i].mod.speed = game.grid_width * 4.f;
 			break;
 		case kTHoming:
 			turret[i].mod.range = game.grid_width * 2;
@@ -147,22 +156,24 @@ void place_turret(TurretType type, int index_x, int index_y)
 			turret[i].dir.y = -1;
 			turret[i].anim_counter = 0;
 			turret[i].turret_anim_timer = 0;
-			turret[i].mod.speed = 100.f;
+			//turret[i].mod.speed = 100.f;
+			turret[i].mod.speed = game.grid_width * 2.f;
 			break;
 		case kTMine:
 			if (Level.grid[index_y][index_x].type != kPath)
 				return;
-			turret[i].mod.range = game.grid_width * 2;
+			turret[i].mod.range = game.grid_width * 0.7f;
 			turret[i].mod.damage = (float)(10 + Level.current_power_up_level.increased_mine_damage * 20);
-			turret[i].data.width = game.grid_width * 0.7f;
-			turret[i].data.width = game.grid_height * 0.7f;
-			turret[i].data.object_type = kObjectCircle;
 			turret[i].anim_counter = 0;
 			turret[i].turret_anim_timer = 0;
 			break;
 		default:
 			break;
 		}
+		//Set turret range collision
+		turret[i].data.width = turret[i].mod.range * 1.8f;
+		turret[i].data.height = turret[i].mod.range * 1.8f;
+		turret[i].data.object_type = kObjectCircle;
 		//sell price back to default
 		turret[i].sell_price = (int)(turret_purchasing[kTPPrice][type] * 0.7f);
 		//upgrade price back to default
@@ -194,14 +205,8 @@ void remove_turret(int index_x, int index_y)
 	if (index < 0)
 		return;
 
-	//printf("I:%d\n", index);
-	//set that grid not in used
 	turret_on_grid[index_x][index_y] = -1;
 	turret[index].is_active = kFalse;
-	//set to clear if is blocked
-	//if (Level.grid[index_y][index_x].type == Blocked)
-	//	Level.grid[index_y][index_x].type = Clear;
-
 }
 
 //sell them turrets
@@ -210,14 +215,7 @@ void sell_turret(int t_index)
 	int x = (int)((turret[t_index].data.x_origin - game.x_origin) / game.grid_width);
 	int y = (int)((turret[t_index].data.y_origin - game.y_origin) / game.grid_height);
 	float sell_price;
-
 	sell_price = (turret[t_index].total_price * 0.7f);
-	//if (turret[t_index].level != 1)
-	//	sell_price = (turret[t_index].upgrade_price + turret_purchasing[TP_PRICE][turret[t_index].type]) * 0.7f;
-	//else
-	//	sell_price = turret_purchasing[TP_PRICE][turret[t_index].type] * 0.7f;
-
-	//printf("sell price: %d", (int)sell_price);
 	Level.phantom_quartz += (int)sell_price;
 	remove_turret(x, y);
 }
@@ -240,8 +238,6 @@ void upgrade_turret(int t_index)
 	{
 	case kTBasic:
 		turret[t_index].mod.damage += 0.011f * turret[t_index].upgrade_price;
-		//turret[t_index].mod.range += turret[t_index].mod.range * 0.05f;
-		//turret[t_index].mod.shoot_rate -= 0.02f;
 		//increase the price for another upgrade
 		turret[t_index].upgrade_price += 50;
 		break;
@@ -249,15 +245,11 @@ void upgrade_turret(int t_index)
 		turret[t_index].mod.damage += 0.15f;
 		turret[t_index].mod.range += turret[t_index].mod.range * 0.05f;
 		turret[t_index].mod.slow_amt -= 0.05f;
-		//turret[t_index].mod.shoot_rate -= 0.02f;
 		//increase the price for another upgrade
 		turret[t_index].upgrade_price += 50;
 		break;
 	case kTHoming:
 		turret[t_index].mod.damage += 0.005f * turret[t_index].upgrade_price;
-		//turret[t_index].mod.range += turret[t_index].mod.range * 0.05f;
-		//turret[t_index].mod.shoot_rate -= 0.01f;
-		//increase the price for another upgrade
 		turret[t_index].upgrade_price += 50;
 		break;
 	case kTMine:
@@ -360,7 +352,8 @@ void update_turret(void)
 			v1.x = enemy[j].data.x_origin - turret[i].data.x_origin;
 			v1.y = enemy[j].data.y_origin - turret[i].data.y_origin;
 			//if in range of turret
-			if (magnitude_sq(v1) <= turret[i].mod.range * turret[i].mod.range)
+			//if (magnitude_sq(v1) <= turret[i].mod.range * turret[i].mod.range)
+			if (CollisionDetection(enemy[j].data, turret[i].data))
 			{
 				//target the enemy closest to end goal needs refinig
 				if (enemy[j].current_way_point > wp)
@@ -412,7 +405,6 @@ void update_turret(void)
 				continue; //go to next in iter since mine update is done
 			}
 
-			//turret[i].mod.cooldown -= 1.f * CP_System_GetDt();
 			if (/*turret[i].mod.cooldown <= 0 &&*/ turret[i].turret_anim_timer >= turret[i].mod.shoot_rate && turret[i].anim_counter >= 5)
 			{
 				turret[i].mod.tracked_index = e_index;
@@ -624,17 +616,14 @@ void col_type_projectile(Projectile* p)
 			dist = magnitude_sq(dif);
 			if (dist <= SLOW_RANGE * SLOW_RANGE) // will change range to be able to be upgarded ltr
 			{
-				//printf("Speed[%d]: %f\n", i, Enemy[i].speed);
 				enemy[i].slow_amt = p->mod.slow_amt;
 				enemy[i].slow_timer = p->mod.slow_timer;
-				//printf("A_Speed[%d]: %f\n", i, Enemy[i].speed);
 			}
 
 		}
 		break;
 	}
-	case kPMine: /* no break to go into p_homing*/
-		//printf("BOOM\n");
+	case kPMine: /* empty and no break is intended to flow to homing*/
 	case kPHoming:
 	{
 		for (int i = 0; i < kMaxEnemies; ++i)
@@ -663,7 +652,7 @@ void col_type_projectile(Projectile* p)
 	}
 
 	//test particles
-	int r_num = (CP_Random_GetInt() % (5 - 3 + 1)) + 3;
+	int r_num = (CP_Random_GetInt() % (3)) + 3; //3 to 5 particle
 	Vector2 pos = { .x = p->data.x_origin, .y = p->data.y_origin };
 	Vector2 dir = { .x = CP_Random_GetFloat(), .y = 0.f };
 	for (int i = 0; i < r_num; ++i)
@@ -739,10 +728,9 @@ void update_turretAnimation(Turret* t)
 		}
 	}
 
-
 }
 
-void create_particle(Vector2 pos, Vector2 dir, float size, float duration, PARTICLE_TYPE type)
+void create_particle(Vector2 pos, Vector2 dir, float size, float duration, ParticleType type)
 {
 	for (int i = 0; i < sizeof(particles) / sizeof(particles[0]); ++i)
 	{
@@ -797,20 +785,18 @@ void render_particle()
 
 		switch (particles[i].type)
 		{
-		case PAR_BASIC:
+		case kParBasic:
 			RenderImageFromSpriteSheetWithAlpha(turret_bullet_spritesheet, turret_bullet_spritesheet_array[0], particles[i].pos.x, particles[i].pos.y,
 				particles[i].size, particles[i].size, particles[i].alpha);
 			break;
-		case PAR_SLOW:
+		case kParSlow:
 			RenderImageFromSpriteSheetWithAlpha(turret_bullet_spritesheet, turret_bullet_spritesheet_array[1], particles[i].pos.x, particles[i].pos.y,
 				particles[i].size, particles[i].size, particles[i].alpha);
 			break;
-		case PAR_HOMING:
+		case kParHoming:
 			RenderImageFromSpriteSheetWithAlpha(turret_bullet_spritesheet, turret_bullet_spritesheet_array[2], particles[i].pos.x, particles[i].pos.y,
 				particles[i].size, particles[i].size, particles[i].alpha);
 			break;
 		}
-		//printf("PRINT");
-		//CP_Graphics_DrawCircle(particles[i].pos.x, particles[i].pos.y, 10.f);
 	}
 }

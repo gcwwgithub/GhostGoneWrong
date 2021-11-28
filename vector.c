@@ -1,3 +1,14 @@
+/*!
+@file       vector.c
+@author     Wong Zhi Hao Samuel (w.zhihaosamuel@digipen.edu)
+@co-author
+@course     CSD 1400
+@section    C
+@date       28/11/2021
+@brief    	Contains function definition addition, subtraction,
+			magnitude, magnitude_sq, normalise, dot, rotation
+			projection
+*//*__________________________________________________________________________*/
 #include "Vector.h"
 #include <Math.h>
 

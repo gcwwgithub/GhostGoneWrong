@@ -56,5 +56,8 @@
     <ClInclude Include="Samuel.h">
       <Filter>C Source Files\Current header files</Filter>
     </ClInclude>
+    <ClInclude Include="vector.h">
+      <Filter>Vector</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

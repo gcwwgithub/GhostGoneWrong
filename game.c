@@ -9,7 +9,7 @@
 
 void game_init(void)
 {
-	//CP_System_ShowConsole(); //pls dont delete this cause scrub me uses printf to debug -gabriel
+	CP_System_ShowConsole(); //pls dont delete this cause scrub me uses printf to debug -gabriel
 	CP_System_Fullscreen();
 	CP_System_SetWindowTitle("Ghost Gone Wrong");
 	int gameWindowWidth = 1280;
@@ -226,7 +226,7 @@ void game_update(void)
 	{
 		CP_Settings_NoTint();
 		// Levels
-		if (!LevelButtons->isMoving) // commenting this activates lvl 5 for some reason
+		if (!LevelButtons->isMoving) // Stops accidental clicking of buttons when moving
 		{
 			if (BtnIsPressed(LevelButtons[0].buttonData))
 			{

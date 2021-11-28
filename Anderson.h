@@ -2,6 +2,9 @@
 #include "game.h"
 #include "Gabriel.h"
 
+#define COLOR_GREY CP_Color_Create(128, 128, 128, 255)
+#define COLOR_YELLOW CP_Color_Create(255,255, 0, 255)
+
 // Fixing resolution for easier scaling to bigger resolutions
 #define BUTTON_WIDTH CP_System_GetWindowWidth() / 400 * 65.0f
 #define BUTTON_HEIGHT CP_System_GetWindowHeight() / 400 * 40.0f
@@ -39,30 +42,41 @@ enum CreditText {
 	President,
 	ClaudeComair,
 
-	CreatedAtDigipen,
 	Executives,
+	JasonChu,
+	SamirAbouSamra,
+	MicheleComair,
+	AngelaKugler,
+	ErikMohrmann,
+	BenjaminEllinger,
+	MelvinGonsalvez,
+
+	CreatedAtDigipen,
 	DigipenURL,
 	CopyrightLine
 };
 
 typedef struct CreditLine
 {
-	char const * text;
+	const char const * text;
 	Coordinates mainMenuPos;
 	Coordinates currentPos; // credit text will be at this position in MainMenu
 	Coordinates creditPos;
 }CreditLine;
 
-CreditLine CreditTexts[17];
+CreditLine CreditTexts[25];
 
-// temp way to move rect, figuring smth if time permits
-// creditRectCoordsMenu keeps values for tweening
+// creditRectCoords for moving bg
 Coordinates creditRectCoords;
 float creditTextMoveTime; // time for creditRect moving
 
 CP_Image DigipenLogo;
 CP_Image DownNOutLogo;
 CP_Font pixelFont;
+float dpLogoDisplayTime;
+float dpLogoFadeTime;
+float teamLogoDisplayTime;
+float teamLogoFadeTime;
 
 Button PlayButton;
 Button QuitButton;
@@ -71,27 +85,19 @@ Button HowToPlayButton;
 
 Button LevelSelectBackButton;
 Button LevelButtons[5];
-
 Button CreditsBackButton;
 
-Button PauseScreenButtons[2];
-
 Button SkipWaveButton;
-
+Button PauseScreenButtons[2];
 Button EndScreenButtons[3];
-
 int enemiesInLevel;
-float dpLogoDisplayTime;
-float dpLogoFadeTime;
-float teamLogoDisplayTime;
-float teamLogoFadeTime;
+
 
 // Main Menu Inits
 void render_title_screen(void);
 
 void init_main_menu(void);
 
-void init_how_to_play_button(void);
 void init_level_select_buttons(void);
 void init_pause_screen(void);
 void init_credits_screen(void);
@@ -104,10 +110,12 @@ void render_level_select_buttons(void);
 void render_pause_screen(void);
 void render_credits_screen(void);
 
+// Building / Wave Phase
 void render_wave_timer(void);
 void reduce_building_phase_time(void);
 void init_skip_wave_button(void);
 
+// Logo Splash
 void init_game_font(void);
 void init_splash_logos(void);
 void render_logos(void);
@@ -123,15 +131,13 @@ int button_has_finished_moving(Button button, float destPosX, float destPosY);
 
 void move_level_select(void);
 int level_select_finished_moving(void);
+
 void move_main_menu(void);
 int main_menu_finished_moving(void);
-void move_credits_screen(void);
 
+void move_credits_screen(void);
 
 void init_next_level(int nextGameLevel);
 void exit_to_desktop(void);
 
 Button init_text_button(Button button, float buttonPosX, float buttonPosY, float buttonWidth, float buttonHeight, float textPosX, float textPosY, char string[]);
-
-#define COLOR_GREY CP_Color_Create(128, 128, 128, 255)
-#define COLOR_YELLOW CP_Color_Create(255,255, 0, 255)
