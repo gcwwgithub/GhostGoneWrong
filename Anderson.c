@@ -521,6 +521,7 @@ int level_select_finished_moving(void)
 			for (Button* b = LevelButtons; b < LevelButtons + kMaxNumberOfLevel; b++)
 			{
 				b->movementTime = 0.0f;
+				b->isMoving = 0;
 			}
 			LevelSelectBackButton.movementTime = 0.0f;
 			return 1;
@@ -528,11 +529,13 @@ int level_select_finished_moving(void)
 	}
 	else if (current_game_state == kMainMenu)
 	{
+		// Checks the first level button if it has stopped moving, as a check if the entire level select UI has stopped.
 		if (button_has_finished_moving(*LevelButtons, LevelButtons->buttonData.x_origin, CP_System_GetWindowHeight() * 0.35f))
 		{
 			for (Button* b = LevelButtons; b < LevelButtons + kMaxNumberOfLevel; b++)
 			{
 				b->movementTime = 0.0f;
+				b->isMoving = 0;
 			}
 			LevelSelectBackButton.movementTime = 0.0f;
 			return 1;
@@ -543,19 +546,19 @@ int level_select_finished_moving(void)
 
 void move_main_menu(void)
 {
-	// The Play, Credits && Quit buttons should move to and from the left,right && bottom of the screen respectively. HowToPlay moves to the bottom too.
+	// The Play, Credits && Quit buttons should move to and from the left,bottom && right of the screen respectively. HowToPlay moves to the bottom too.
 	if (current_game_state == kMainMenu)
 	{
 		PlayButton = ui_button_movement(PlayButton, -BUTTON_WIDTH, PlayButton.buttonData.y_origin);
-		CreditsButton = ui_button_movement(CreditsButton, CreditsButton.buttonData.x_origin, (float)CP_System_GetWindowHeight());
 		QuitButton = ui_button_movement(QuitButton, (float)CP_System_GetWindowWidth(), QuitButton.buttonData.y_origin);
+		CreditsButton = ui_button_movement(CreditsButton, CreditsButton.buttonData.x_origin, (float)CP_System_GetWindowHeight());
 		HowToPlayButton = ui_button_movement(HowToPlayButton, HowToPlayButton.buttonData.x_origin, CP_System_GetWindowHeight() * 1.25f);
 	}
 	else if (current_game_state == kLevelSelect)
 	{
 		PlayButton = ui_button_movement(PlayButton, CP_System_GetWindowWidth() * 0.25f - BUTTON_WIDTH * 0.5f, PlayButton.buttonData.y_origin);
-		CreditsButton = ui_button_movement(CreditsButton, CreditsButton.buttonData.x_origin, CP_System_GetWindowHeight() * 0.5f);
 		QuitButton = ui_button_movement(QuitButton, CP_System_GetWindowWidth() * 0.75f - BUTTON_WIDTH * 0.5f, QuitButton.buttonData.y_origin);
+		CreditsButton = ui_button_movement(CreditsButton, CreditsButton.buttonData.x_origin, CP_System_GetWindowHeight() * 0.5f);
 		HowToPlayButton = ui_button_movement(HowToPlayButton, HowToPlayButton.buttonData.x_origin, CP_System_GetWindowHeight() * 0.75f);
 	}
 }
@@ -565,8 +568,8 @@ int main_menu_finished_moving(void)
 	if (current_game_state == kMainMenu)
 	{
 		if (button_has_finished_moving(PlayButton, -BUTTON_WIDTH, PlayButton.buttonData.y_origin) &&
-			button_has_finished_moving(CreditsButton, CreditsButton.buttonData.x_origin, (float)CP_System_GetWindowHeight()) &&
 			button_has_finished_moving(QuitButton, (float)CP_System_GetWindowWidth(), QuitButton.buttonData.y_origin) &&
+			button_has_finished_moving(CreditsButton, CreditsButton.buttonData.x_origin, (float)CP_System_GetWindowHeight()) &&
 			button_has_finished_moving(HowToPlayButton, HowToPlayButton.buttonData.x_origin, (float)CP_System_GetWindowHeight() * 1.25f))
 		{
 			PlayButton.isMoving = CreditsButton.isMoving = QuitButton.isMoving = HowToPlayButton.isMoving = LevelButtons->isMoving = 0;
@@ -577,8 +580,8 @@ int main_menu_finished_moving(void)
 	else if (current_game_state == kLevelSelect)
 	{
 		if (button_has_finished_moving(PlayButton, CP_System_GetWindowWidth() * 0.25f - BUTTON_WIDTH * 0.5f, PlayButton.buttonData.y_origin) &&
-			button_has_finished_moving(CreditsButton, CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 0.5f) &&
 			button_has_finished_moving(QuitButton, CP_System_GetWindowWidth() * 0.75f - BUTTON_WIDTH * 0.5f, QuitButton.buttonData.y_origin) &&
+			button_has_finished_moving(CreditsButton, CreditsButton.buttonData.x_origin, CP_System_GetWindowHeight() * 0.5f) &&
 			button_has_finished_moving(HowToPlayButton, HowToPlayButton.buttonData.x_origin, CP_System_GetWindowHeight() * 0.75f))
 		{
 			PlayButton.isMoving = CreditsButton.isMoving = QuitButton.isMoving = HowToPlayButton.isMoving = LevelButtons->isMoving = 0;
@@ -785,9 +788,9 @@ void play_sound_track(CP_Sound sound)
 }
 
 // Mute a sound track
-void mute_sound_track(void)
+void mute_sound_track_group(CP_SOUND_GROUP sound)
 {
-
+	CP_Sound_PauseGroup(sound);
 }
 
 // Mute or resume only the music sound group
