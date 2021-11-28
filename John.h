@@ -16,7 +16,7 @@ typedef enum EnvironmentEffectEnemy {
 }EnvironmentEffectEnemy;
 
 void Draw_enemy(Enemy* r);
-void enemy_move(Enemy* r, float Enemy_PathpointsX[], float Enemy_PathpointsY[], int number_of_points, int CurrentGameLevel);
+void enemy_move(Enemy* r, float Enemy_PathpointsX[], float Enemy_PathpointsY[], int number_of_points);
 int direction_to_next_point(float enemy_pathpointsX[], float enemy_pathpointsY[], Enemy* r);
 int update_point_num(float enemy_pathpointsX[], float enemy_pathpointsY[], Enemy* r);
 void EnemyAnimationState(Enemy* r);
@@ -24,7 +24,7 @@ int Check_state(Enemy* r);
 void Reaper_ability(Enemy* r);
 
 
-void EnemyDeath(Enemy* r, int CurrentGameLevel);
+void EnemyDeath(Enemy* r);
 void Basic_Ghost(Enemy* r);
 void update_enemy(void);
 void draw_multiple_enemies(void);
@@ -34,7 +34,7 @@ void grimReaper_init(Enemy* r);
 void Reaper_minion_init(Enemy* r);
 void empty_enemy_init(Enemy* r);
 //void Level0_waveEnemies_init(void);
-void Reset_enemies(int current_level);
+void Reset_enemies(void);
 void Current_wave_check(Enemy* r);
 void Power_Up_check(Enemy* r);
 
@@ -64,7 +64,7 @@ int fatEnemyNum;
 void update_enemy_health_bar(Enemy* r);
 
 //Environmental effects
-void Environment_check(int CurrentGameLevel);
+void Environment_check(void);
 void Env_eff_More_HP(void);
 void Env_eff_Less_HP(void);
 void Env_eff_Faster_Enemies(void);

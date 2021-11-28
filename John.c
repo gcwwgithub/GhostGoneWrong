@@ -177,7 +177,7 @@ int Check_state(Enemy* r) {
 	return 0;
 }
 
-void enemy_move(Enemy* r, float Enemy_PathpointsX[], float Enemy_PathpointsY[], int number_of_points, int CurrentGameLevel) { //Enemy movement
+void enemy_move(Enemy* r, float Enemy_PathpointsX[], float Enemy_PathpointsY[], int number_of_points) { //Enemy movement
 	float Speed = (r->speed) * r->slow_amt * CP_System_GetDt();
 	update_point_num(Enemy_PathpointsX, Enemy_PathpointsY, r);
 	if (r->current_way_point >= 2 && r->state == kEnemyAdjusting) {
@@ -257,7 +257,7 @@ int update_point_num(float Enemy_PathpointsX[], float Enemy_PathpointsY[], Enemy
 
 
 
-void EnemyDeath(Enemy* r, int CurrentGameLevel) {  //function updates and checks for collision or death also what happens upon death
+void EnemyDeath(Enemy* r) {  //function updates and checks for collision or death also what happens upon death
 	for (int i = 0; i < kMaxProjectile; ++i) {
 		if (proj[i].is_active) {
 			Coordinates a = r->data;
@@ -434,7 +434,7 @@ void update_enemy_health_bar(Enemy* r)
 
 }
 
-void Update_Path_Array(int CurrentGameLevel) {
+void Update_Path_Array(void) {
 	int nextPathRow = 1, nextPathCol = 1;
 	for (int currentCost = 1; currentCost <= Level.grid[Level.exit_row][Level.exit_col].cost; currentCost++) {
 		for (int currentRow = 0; currentRow < level_grid_rows; currentRow++) {
@@ -538,7 +538,7 @@ void wave_enemy_init(int Basic_Ghost_count, int Fast_Ghost_count, int Fat_Ghost_
 	}
 }
 
-void Reset_enemies(int current_level) {
+void Reset_enemies(void) {
 	if (current_game_state == kBuilding) {
 		Update_Path_Array(current_game_level);
 		if (building_time > 0.05f && Level.current_wave < kMaxNumberOfWave) {
@@ -795,7 +795,7 @@ void Env_eff_No_Phantom_quartz(void) {
 	}
 }
 
-void Environment_check(int CurrentGameLevel) {
+void Environment_check(void) {
 	Env_eff_IncreasedTurretAttackSpeed();
 	Env_eff_DecreasedTurretAttackSpeed();
 	Env_eff_IncreasedTurretDamage();
@@ -826,10 +826,6 @@ void Environment_check(int CurrentGameLevel) {
 		Env_eff_No_Phantom_quartz();
 		break;
 	}
-}
-
-void Change_current_effect(int CurrentGameLevel) {
-	Level.current_effect = CP_Random_RangeInt(0, 11);
 }
 
 void Current_wave_check(Enemy* r) {
