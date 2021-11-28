@@ -6,7 +6,7 @@
 void Basic_Ghost(Enemy* r) { // setup variable for basic ghost enemy
 	r->health = 4;
 	r->max_health = 4;
-	r->speed = 30;
+	r->speed = 30*scaling_factor;
 	r->current_way_point = 0;
 	r->data.x_origin = Xarray[0];
 	r->data.y_origin = Yarray[0];
@@ -31,7 +31,7 @@ void Basic_Ghost(Enemy* r) { // setup variable for basic ghost enemy
 void Fast_Ghost_init(Enemy* r) { // setup variable for fast ghost enemy
 	r->health = 2;
 	r->max_health = 2;
-	r->speed = 60;
+	r->speed = 60 * scaling_factor;
 	r->current_way_point = 0;
 	r->data.x_origin = Xarray[0];
 	r->data.y_origin = Yarray[0];
@@ -56,7 +56,7 @@ void Fast_Ghost_init(Enemy* r) { // setup variable for fast ghost enemy
 void Fat_Ghost_init(Enemy* r) {
 	r->health = 30;
 	r->max_health = 30;
-	r->speed = 25;
+	r->speed = 25 * scaling_factor;
 	r->current_way_point = 0;
 	r->data.x_origin = Xarray[0];
 	r->data.y_origin = Yarray[0];
@@ -115,7 +115,7 @@ void Reaper_minion_init(Enemy* r) {
 void grimReaper_init(Enemy* r) {
 	r->health = 50;
 	r->max_health = 50;
-	r->speed = 40;
+	r->speed = 40 * scaling_factor;
 	r->current_way_point = 0;
 	r->data.x_origin = Xarray[0];
 	r->data.y_origin = Yarray[0];
@@ -318,7 +318,6 @@ void EnemyDeath(Enemy* r) {  //function updates and checks for collision or deat
 
 void Enemies_init(void) {
 	Enemy_timer = 0;
-	count = 0;
 	Enemy_node = NULL;
 	wave_timer = 0;
 	Array_count = 1;
@@ -505,7 +504,6 @@ void empty_enemy_init(Enemy* r) {
 
 void wave_enemy_init(int Basic_Ghost_count, int Fast_Ghost_count, int Fat_Ghost_count, int Grim_Reaper_count, LevelData E_Level) {
 	Enemy_timer = 0;
-	count = 0;
 	Enemy_node = NULL;
 	wave_timer = 0;
 	Xarray[0] = (float)(game.x_origin + game.grid_width * (0.5 + E_Level.spawn_col));
@@ -847,6 +845,8 @@ void Power_Up_check(Enemy* r) {
 		r->enemy_pow_up[2] = 1;
 	}
 }
+
+
 
 /*void movement_redone(enemy* r) {
 	r->movement_timer += CP_System_GetDt();
