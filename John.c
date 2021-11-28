@@ -192,7 +192,7 @@ void enemy_move(Enemy* r, float Enemy_PathpointsX[], float Enemy_PathpointsY[], 
 				r->data.y_origin, 0);
 		}
 		if (r->state != kEnemyReached) {
-			CP_Sound_PlayAdvanced(SpawnxExitSFX, SFX_Volume*0.2f, 1.0, FALSE, CP_SOUND_GROUP_0);
+			//CP_Sound_PlayAdvanced(SpawnxExitSFX, SFX_Volume*0.2f, 1.0, FALSE, CP_SOUND_GROUP_0);
 		}
 		r->state = kEnemyReached;
 	}
@@ -354,7 +354,7 @@ void update_enemy(void) {
 				wave_timer = (int)Enemy_timer;
 				InsertNewNodePortalEffect(&portal_spawn_head_node, enemy[i].data.x_origin,
 					enemy[i].data.y_origin, 0);
-				CP_Sound_PlayAdvanced(SpawnxExitSFX, SFX_Volume*0.2f, 1.0, FALSE, CP_SOUND_GROUP_0);
+				//CP_Sound_PlayAdvanced(SpawnxExitSFX, SFX_Volume*0.2f, 1.0, FALSE, CP_SOUND_GROUP_0);
 
 
 			}
@@ -861,6 +861,10 @@ void Music_init(void) {
 	ShootSFX = CP_Sound_Load("./Assets/sfx/shoot.mp3");
 	HitSFX = CP_Sound_Load("./Assets/sfx/HitSFX.wav");
 	SFX_Volume = 0.3f;
+
+	WaveBGM = CP_Sound_Load("./Assets/sfx/SPHERES & STARS - NewAge MSCNEW1_17.wav");
+	BuildingBGM = CP_Sound_Load("./Assets/sfx/INPUT - NewAge MSCNEW2_01.wav");
+	BGM_Volume = 0.5f;
 }
 
 /*void movement_redone(enemy* r) {
