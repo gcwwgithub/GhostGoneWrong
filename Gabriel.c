@@ -5,7 +5,8 @@ All content © 2021 DigiPen Institute of Technology Singapore, all rights reserve
 @course     CSD 1400
 @section    C
 @date       28/11/2021
-@brief    	Contains functions that are related to rendering, animation and effects
+@brief    	Contains functions that are related to rendering, animation and effects. Comments for functions
+			are in the .h file
 *//*__________________________________________________________________________*/
 
 
@@ -93,16 +94,16 @@ void InsertNewNodeBulletRadius(struct LinkedListNode** list, float xPosInput, fl
 
 		switch (typeOfBullet)
 		{
-		case 3:
+		case kPMine:
 			newNode->node_counter = 3;
 			break;
-		case 2:
+		case kPHoming:
 			newNode->node_counter = 2;
 			break;
-		case 1:
+		case kPSlow:
 			newNode->node_counter = 1;
 			break;
-		case 0:
+		case kPBasic:
 			newNode->node_counter = 0;
 			break;
 		}

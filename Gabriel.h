@@ -14,6 +14,7 @@ All content © 2021 DigiPen Institute of Technology Singapore, all rights reserve
 #include <stdio.h>
 
 
+#pragma region Struct Declarations
 struct SpriteSheetImage //this is a struct to contain pixel values for CP_Draw Subimage
 {
 	int image_width,image_height;
@@ -39,6 +40,9 @@ struct PortalVariables //Each portal has these 2 variables
 	float portal_image_width;
 	float portal_image_height;
 };
+
+#pragma endregion
+
 #pragma region The variables that contain all the image files
 //All the images
 CP_Image slow_turret_image_array[6];
@@ -99,13 +103,14 @@ struct SpriteSheetImage turret_stats_spritesheet_array[5];
 struct SpriteSheetImage non_grid_environment_objects_spritesheet_array[9];
 #pragma endregion
 
+#pragma region Variables
 struct PortalVariables portal_variables_array[2];
 
-struct LinkedListNode* bullet_radius_head_node;
+struct LinkedListNode* bullet_radius_head_node; //the linked list for bullet radius
 int bullet_radius_node_key_number; //a key number to access the key from nodes
 
-struct LinkedListNode* portal_enter_head_node;
-struct LinkedListNode* portal_spawn_head_node;
+struct LinkedListNode* portal_enter_head_node; //the linked list for portal enter effects
+struct LinkedListNode* portal_spawn_head_node; //the linked list for portal spawn effects
 int portal_enter_node_key_number;//a key number to access the key from nodes
 int portal_spawn_node_key_number;//a key number to access the key from nodes
 
@@ -116,27 +121,61 @@ int is_portal_spawn_effect_sprite; //boolean to check which portal effect it is
 float battlefield_effect_text_min_word_size;
 float battlefield_effect_text_max_word_size;
 float battlefield_text_timer;
+#pragma endregion
 
+#pragma region Functions
 void InitAllImages(void); //Loads all images into the game
-void InitVariablesForSpriteFunctions(void); //Loads all images into the game
+void InitVariablesForSpriteFunctions(void); //initialises some variables for the functions
 
+//Creates the array of all the Spritesheet sructs
 void InitSpritesheetArray(void);
-void SpritesheetCalculation(struct SpriteSheetImage* s, CP_Image image, int pixelWidth, int pixelHeight, int stopPoint);
-void RenderImageFromSpriteSheet(CP_Image image, struct SpriteSheetImage s, float xPos, float yPos, float sizeOfImageX, float sizeOfImageY);
-void RenderImageFromSpriteSheetWithAlpha(CP_Image image, struct SpriteSheetImage s, float xPos, float yPos, float sizeOfImageX, float sizeOfImageY, int alphaValue);
 
+//Calcuates the pixel position of each image to Draw Sub Image from
+void SpritesheetCalculation(struct SpriteSheetImage* s, CP_Image image, int pixelWidth, 
+	int pixelHeight, int stopPoint);
+
+//Render the image based from Draw Sub Image
+void RenderImageFromSpriteSheet(CP_Image image, struct SpriteSheetImage s, 
+	float xPos, float yPos, float sizeOfImageX, float sizeOfImageY);
+
+//Render the image based from Draw Sub Image with alpha values
+void RenderImageFromSpriteSheetWithAlpha(CP_Image image, struct SpriteSheetImage s, 
+	float xPos, float yPos, float sizeOfImageX, float sizeOfImageY, int alphaValue);
+
+//Adds a bullet radius node to linkedlist
 void InsertNewNodeBulletRadius(struct LinkedListNode** list, float xPos, float yPos, int typeOfBullet);
+
+//Adds a portal node to linkedlist
 void InsertNewNodePortalEffect(struct LinkedListNode** list, float xPosInput, float yPosInput, int portalEffect);
+
+//Deletes a node from any linkedlist
 struct LinkedListNode* DeleteNode(struct LinkedListNode* list, int key);
+
+//checks if the specified linkedlist is empty
 int IsLinkedListEmpty(struct LinkedListNode* currentNode);
 
+//Renders the bullets circles and also updates to appear and disappear once the alpha reaches 0
 void RenderAndUpdateBulletCircles(void);
+
+//Renders a portal effect and also updates to appear and disappear once the alpha reaches 0
 void RenderAndUpdateSinglePortalEffect(struct LinkedListNode* nodeToChange, int portalEffect);
+
+//The function to call RenderAndUpdateSinglePortalEffect for all potals
 void RenderAllPortalEffects(void);
 
+//The function to render the portal
 void RenderPortalSprite(struct SpriteSheetImage s, struct PortalVariables* pv, CP_Image image);
+
+//This function updates the sprite for the portal for animation
 void UpdatePortalAnimation(void);
 
+//Renders the environments objects and background in the level
 void RenderLevelEnvironment(const int currentLevel);
+
+//used for UI tweening for battlefield effect 
 float BattlefieldEffectLinearLerp(float start, float end, float value);
+
+//Renders battlefield effecd text
 void RenderBattlefieldEffectText(const int effect);
+
+#pragma endregion
