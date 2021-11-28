@@ -317,7 +317,7 @@ void EnemyDeath(Enemy* r) {  //function updates and checks for collision or deat
 }
 
 void Enemies_init(void) {
-	timer = 0;
+	Enemy_timer = 0;
 	count = 0;
 	Enemy_node = NULL;
 	wave_timer = 0;
@@ -332,17 +332,12 @@ void Enemies_init(void) {
 }
 
 void update_enemy(void) {
-	timer += CP_System_GetDt();
-	if (timer >= 1) {
-		count++;
-		timer = 0;
-
-	}
+	Enemy_timer += CP_System_GetDt();
 	for (int i = 0; i < kMaxEnemies; i++) {
 		int spawn_timer = 2;
-		if ((enemy[i].state == kEnemyInactive) && (enemy[i].health > 0) && (count / spawn_timer <= kMaxEnemies)) {
+		if ((enemy[i].state == kEnemyInactive) && (enemy[i].health > 0) && ((int)Enemy_timer / spawn_timer <= kMaxEnemies)) {
 			int state_check = 0;
-			int b = count;
+			int b = (int)Enemy_timer;
 			for (int j = 0; j < kMaxEnemies; j++) {
 				if (enemy[j].state == kEnemyInactive) {
 					state_check++;
@@ -353,7 +348,7 @@ void update_enemy(void) {
 			}
 			if (b - wave_timer >= spawn_timer) {
 				enemy[i].state = kEnemyMoving;
-				wave_timer = count;
+				wave_timer = (int)Enemy_timer;
 				InsertNewNodePortalEffect(&portal_spawn_head_node, enemy[i].data.x_origin,
 					enemy[i].data.y_origin, 0);
 
@@ -509,7 +504,7 @@ void empty_enemy_init(Enemy* r) {
 
 
 void wave_enemy_init(int Basic_Ghost_count, int Fast_Ghost_count, int Fat_Ghost_count, int Grim_Reaper_count, LevelData E_Level) {
-	timer = 0;
+	Enemy_timer = 0;
 	count = 0;
 	Enemy_node = NULL;
 	wave_timer = 0;

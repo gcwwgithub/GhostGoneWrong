@@ -15,53 +15,66 @@ typedef enum EnvironmentEffectEnemy {
 	Applying
 }EnvironmentEffectEnemy;
 
-void Draw_enemy(Enemy* r);
-void enemy_move(Enemy* r, float Enemy_PathpointsX[], float Enemy_PathpointsY[], int number_of_points);
-int direction_to_next_point(float enemy_pathpointsX[], float enemy_pathpointsY[], Enemy* r);
-int update_point_num(float enemy_pathpointsX[], float enemy_pathpointsY[], Enemy* r);
+//Combined function for all enemy effects for game.c
+void update_enemy(void);
+
+
+//Enemy updates for animation and collision
 void EnemyAnimationState(Enemy* r);
 int Check_state(Enemy* r);
 void Reaper_ability(Enemy* r);
-
-
 void EnemyDeath(Enemy* r);
-void Basic_Ghost(Enemy* r);
-void update_enemy(void);
+
+
+
+//Enemy Render
+void Draw_enemy(Enemy* r);
 void draw_multiple_enemies(void);
-void Fast_Ghost_init(Enemy* r);
-void Fat_Ghost_init(Enemy* r);
-void grimReaper_init(Enemy* r);
-void Reaper_minion_init(Enemy* r);
-void empty_enemy_init(Enemy* r);
+void update_enemy_health_bar(Enemy* r);
+
 //void Level0_waveEnemies_init(void);
 void Reset_enemies(void);
 void Current_wave_check(Enemy* r);
 void Power_Up_check(Enemy* r);
 
+//Enemy variable setup and intialising
 void wave_enemy_init(int Basic_Ghost_count, int Fast_Ghost_count, int Fat_Ghost_count, int Grim_Reaper_count, LevelData Level);
+void Basic_Ghost(Enemy* r);
+void Fast_Ghost_init(Enemy* r);
+void Fat_Ghost_init(Enemy* r);
+void grimReaper_init(Enemy* r);
+void Reaper_minion_init(Enemy* r);
+void empty_enemy_init(Enemy* r);
 
-void Update_Path_Array(int CurrentGameLevel);
+//Enemy Movement functions
+void enemy_move(Enemy* r, float Enemy_PathpointsX[], float Enemy_PathpointsY[], int number_of_points);
+void Update_Path_Array(void);
 void Check_pathAdjustment(Enemy* r);
 void reset_enemy_path(Enemy* r);
+int direction_to_next_point(float enemy_pathpointsX[], float enemy_pathpointsY[], Enemy* r);
+int update_point_num(float enemy_pathpointsX[], float enemy_pathpointsY[], Enemy* r);
 
-Enemy test;
+
 struct LinkedListNode* Enemy_node;
 
-//test path
+//global path for enemy path setup
 float Xarray[50];
 float Yarray[50];
-int count;
-float timer;
-int wave_timer;
 int Array_count;
 int Number_of_points;
-Enemy Reaper_minions[10];
+
+//Enemy spawn timing
+float Enemy_timer;
+int wave_timer;
+
+
+//No of Enemies
 int basicEnemyNum;
 int fastEnemyNum;
 int fatEnemyNum;
 
 
-void update_enemy_health_bar(Enemy* r);
+
 
 //Environmental effects
 void Environment_check(void);
