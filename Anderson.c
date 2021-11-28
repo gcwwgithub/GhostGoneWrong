@@ -35,13 +35,6 @@ Button init_text_button(Button button, float buttonPosX, float buttonPosY, float
 	return button;
 }
 
-void init_how_to_play_button(void)
-{
-	// implemented later ?
-	//HowToPlayButton = init_text_button(HowToPlayButton,CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.5f,
-	//	BUTTON_WIDTH * 2, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "How To Play");
-}
-
 void init_main_menu(void)
 {
 	PlayButton = init_text_button(PlayButton, CP_System_GetWindowWidth() * 0.25f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 0.5f,
@@ -153,29 +146,38 @@ void init_credit_line(int num, char* line, float x, float y)
 
 void init_credits_screen(void)
 {
-	creditRectCoords.x_origin = CP_System_GetWindowWidth() * 0.1f; creditRectCoords.y_origin = CP_System_GetWindowHeight() * 1.3f;
-	creditRectCoords.width = CP_System_GetWindowWidth() * 0.8f; creditRectCoords.height = CP_System_GetWindowHeight() * 0.6f;
+	creditRectCoords.x_origin = CP_System_GetWindowWidth() * 0.05f; creditRectCoords.y_origin = CP_System_GetWindowHeight() * 1.3f;
+	creditRectCoords.width = CP_System_GetWindowWidth() * 0.9f; creditRectCoords.height = CP_System_GetWindowHeight() * 0.6f;
 
 	init_credit_line(CreditsTitle, "Credits", CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.35f);
 	init_credit_line(TeamCredit, "A DownNOut X Digipen Production", CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.4f);
 
-	init_credit_line(DevelopedBy, "Developed by:", CP_System_GetWindowWidth() * 0.3f, CP_System_GetWindowHeight() * 0.5f);
-	init_credit_line(ZhengWei, "Ng Zheng Wei", CP_System_GetWindowWidth() * 0.3f, CP_System_GetWindowHeight() * 0.55f);
-	init_credit_line(Samuel, "Wong Zhi Hao Samuel", CP_System_GetWindowWidth() * 0.3f, CP_System_GetWindowHeight() * 0.6f);
-	init_credit_line(John, "Lim Jing Rui John", CP_System_GetWindowWidth() * 0.3f, CP_System_GetWindowHeight() * 0.65f);
-	init_credit_line(Gabriel, "Chiok Wei Wen Gabriel", CP_System_GetWindowWidth() * 0.3f, CP_System_GetWindowHeight() * 0.7f);
-	init_credit_line(Anderson, "Phua Tai Dah Anderson", CP_System_GetWindowWidth() * 0.3f, CP_System_GetWindowHeight() * 0.75f);
+	init_credit_line(DevelopedBy, "Developed by:", CP_System_GetWindowWidth() * 0.25f, CP_System_GetWindowHeight() * 0.5f);
+	init_credit_line(ZhengWei, "Ng Zheng Wei", CP_System_GetWindowWidth() * 0.25f, CP_System_GetWindowHeight() * 0.55f);
+	init_credit_line(Samuel, "Samuel Wong Zhi Hao", CP_System_GetWindowWidth() * 0.25f, CP_System_GetWindowHeight() * 0.6f);
+	init_credit_line(John, "John Lim Jing Rui", CP_System_GetWindowWidth() * 0.25f, CP_System_GetWindowHeight() * 0.65f);
+	init_credit_line(Gabriel, "Gabriel Chiok Wei Wen", CP_System_GetWindowWidth() * 0.25f, CP_System_GetWindowHeight() * 0.7f);
+	init_credit_line(Anderson, "Anderson Phua Tai Dah", CP_System_GetWindowWidth() * 0.25f, CP_System_GetWindowHeight() * 0.75f);
 
-	init_credit_line(President, "President: ", CP_System_GetWindowWidth() * 0.7f, CP_System_GetWindowHeight() * 0.5f);
-	init_credit_line(ClaudeComair, "Claude Comair", CP_System_GetWindowWidth() * 0.7f, CP_System_GetWindowHeight() * 0.55f);
+	init_credit_line(President, "President:", CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.5f);
+	init_credit_line(ClaudeComair, "Claude Comair", CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.55f);
 
-	init_credit_line(Instructors, "Instructors: ", CP_System_GetWindowWidth() * 0.7f, CP_System_GetWindowHeight() * 0.6f);
-	init_credit_line(DX, "Cheng Ding Xiang", CP_System_GetWindowWidth() * 0.7f, CP_System_GetWindowHeight() * 0.65f);
-	init_credit_line(Gerald, "Gerald Wong", CP_System_GetWindowWidth() * 0.7f, CP_System_GetWindowHeight() * 0.7f);
+	init_credit_line(Instructors, "Instructors:", CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.6f);
+	init_credit_line(DX, "Cheng Ding Xiang", CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.65f);
+	init_credit_line(Gerald, "Gerald Wong", CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.7f);
+
+	init_credit_line(Executives, "Executives:", CP_System_GetWindowWidth() * 0.78f, CP_System_GetWindowHeight() * 0.5f);
+	init_credit_line(JasonChu, "Jason Chu", CP_System_GetWindowWidth() * 0.7f, CP_System_GetWindowHeight() * 0.55f);
+	init_credit_line(SamirAbouSamra, "Samir Abou Samra", CP_System_GetWindowWidth() * 0.85f, CP_System_GetWindowHeight() * 0.55f);
+	init_credit_line(MicheleComair, "Michele Comair", CP_System_GetWindowWidth() * 0.7f, CP_System_GetWindowHeight() * 0.6f);
+	init_credit_line(AngelaKugler, "Angela Kugler", CP_System_GetWindowWidth() * 0.85f, CP_System_GetWindowHeight() * 0.6f);
+	init_credit_line(ErikMohrmann, "Erik Mohrmann", CP_System_GetWindowWidth() * 0.7f, CP_System_GetWindowHeight() * 0.65f);
+	init_credit_line(BenjaminEllinger, "Benjamin Ellinger", CP_System_GetWindowWidth() * 0.85f, CP_System_GetWindowHeight() * 0.65f);
+	init_credit_line(MelvinGonsalvez, "Melvin Gonsalvez", CP_System_GetWindowWidth() * 0.78f, CP_System_GetWindowHeight() * 0.7f);
 
 	init_credit_line(CreatedAtDigipen, "Created at DigiPen Institute of Technology Singapore", CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.82f);
 	init_credit_line(DigipenURL, "www.digipen.edu", CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.85f);
-	// the � copyright symbol is printed as \xc2\xa9, as its UTF-8 (i.e Unicode) string literal counterpart.
+	// the © copyright symbol is printed as \xc2\xa9, as its UTF-8 (i.e Unicode) string literal counterpart.
 	init_credit_line(CopyrightLine, "All content \xc2\xa9 2021 DigiPen Institute of Technology Singapore, all rights reserved.",
 		CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.88f);
 
@@ -306,6 +308,7 @@ void render_credit_line(CreditLine cLine)
 
 void render_credits_screen(void)
 {
+	// Rendered from top to bottom, left to right order.
 	CP_Settings_TextSize(FONT_SIZE);
 	CP_Settings_Fill(COLOR_BLACK);
 
@@ -313,9 +316,9 @@ void render_credits_screen(void)
 
 	CP_Settings_Fill(COLOR_WHITE);
 	render_credit_line(CreditTexts[CreditsTitle]);
-
-	render_credit_line(CreditTexts[DevelopedBy]);
 	render_credit_line(CreditTexts[TeamCredit]);
+	render_credit_line(CreditTexts[DevelopedBy]);
+
 	CP_Settings_Fill(COLOR_YELLOW);
 	render_credit_line(CreditTexts[ZhengWei]);
 	render_credit_line(CreditTexts[Samuel]);
@@ -326,11 +329,22 @@ void render_credits_screen(void)
 	CP_Settings_Fill(COLOR_WHITE);
 	render_credit_line(CreditTexts[Instructors]);
 	render_credit_line(CreditTexts[President]);
+	render_credit_line(CreditTexts[Executives]);
 
 	CP_Settings_Fill(COLOR_YELLOW);
 	render_credit_line(CreditTexts[DX]);
 	render_credit_line(CreditTexts[Gerald]);
+
 	render_credit_line(CreditTexts[ClaudeComair]);
+
+	CP_Settings_TextSize(FONT_SIZE * 0.67f);
+	render_credit_line(CreditTexts[JasonChu]);
+	render_credit_line(CreditTexts[SamirAbouSamra]);
+	render_credit_line(CreditTexts[MicheleComair]);
+	render_credit_line(CreditTexts[AngelaKugler]);
+	render_credit_line(CreditTexts[ErikMohrmann]);
+	render_credit_line(CreditTexts[BenjaminEllinger]);
+	render_credit_line(CreditTexts[MelvinGonsalvez]);
 
 	CP_Settings_Fill(COLOR_WHITE);
 	CP_Settings_TextSize(FONT_SIZE * 0.5f);
@@ -398,9 +412,194 @@ void exit_to_desktop(void)
 
 #pragma endregion
 
+#pragma region UI Movement
+
+float linear(float start, float end, float value)
+{
+	// taken from easing.h, credit goes to prof gerald
+	return (1.f - value) * start + value * end;
+}
+
+// Updates a moving button's coordinates with regards to time.
+Button ui_button_movement(Button button, float destPosX, float destPosY)
+{
+	if (button.movementTime <= MOVE_DURATION)
+	{
+		button.movementTime += CP_System_GetDt();
+		button.buttonData.x_origin = linear(button.buttonData.x_origin, destPosX, button.movementTime / MOVE_DURATION);
+		button.buttonData.y_origin = linear(button.buttonData.y_origin, destPosY, button.movementTime / MOVE_DURATION);
+		button.textPositionX = linear(button.textPositionX, destPosX + BUTTON_WIDTH * 0.5f, button.movementTime / MOVE_DURATION);
+		button.textPositionY = linear(button.textPositionY, destPosY + BUTTON_HEIGHT * 0.5f, button.movementTime / MOVE_DURATION);
+	}
+	else
+	{
+		// Most, if not all buttons take ~3-4s to finish moving.
+		button.movementTime = 0.0f;
+	}
+	return button;
+}
+
+// Similar to ui_btn_movement, but meant for grpahic rectangles (e.g. the credit screen background)
+Coordinates coord_movement(Coordinates coord, float destPosX, float destPosY)
+{
+	if (creditTextMoveTime <= MOVE_DURATION)
+	{
+		creditTextMoveTime += CP_System_GetDt();
+		coord.x_origin = linear(coord.x_origin, destPosX, creditTextMoveTime / MOVE_DURATION);
+		coord.y_origin = linear(coord.y_origin, destPosY, creditTextMoveTime / MOVE_DURATION);
+	}
+	else
+	{
+		// May be good to try basing this on something else instead like distance.
+		creditTextMoveTime = 0.0f;
+	}
+	return coord;
+}
+
+// Moving stops when the credit screen's back button has finished moving.
+void move_credits_screen(void)
+{
+	for (int i = 0; i < sizeof(CreditTexts) / sizeof(CreditLine); i++)
+	{
+		if (current_game_state == kMainMenu)
+		{
+			CreditTexts[i].currentPos = coord_movement(CreditTexts[i].currentPos, CreditTexts[i].creditPos.x_origin,
+				CreditTexts[i].creditPos.y_origin); // from main menu to credits
+		}
+		else if (current_game_state == kCredits) // going to main menu
+		{
+			CreditTexts[i].currentPos = coord_movement(CreditTexts[i].currentPos, CreditTexts[i].mainMenuPos.x_origin,
+				CreditTexts[i].mainMenuPos.y_origin); // from credits back to main menu
+		}
+	}
+
+	if (current_game_state == kMainMenu)
+	{
+		creditRectCoords = coord_movement(creditRectCoords, creditRectCoords.x_origin, CP_System_GetWindowHeight() * 0.3f);
+		CreditsBackButton = ui_button_movement(CreditsBackButton, CreditsBackButton.buttonData.x_origin, CP_System_GetWindowHeight() * 0.93f);
+	}
+	else if (current_game_state == kCredits)
+	{
+		creditRectCoords = coord_movement(creditRectCoords, creditRectCoords.x_origin, CP_System_GetWindowHeight() * 1.3f);
+		CreditsBackButton = ui_button_movement(CreditsBackButton, CreditsBackButton.buttonData.x_origin, CP_System_GetWindowHeight() * 2.0f);
+	}
+}
+
+void move_level_select(void)
+{
+	for (int i = 0; i < kMaxNumberOfLevel; i++)
+	{
+		if (current_game_state == kLevelSelect) // going to main menu
+		{
+			LevelButtons[i] = ui_button_movement(LevelButtons[i], CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f,
+				CP_System_GetWindowHeight() + i * (BUTTON_HEIGHT + 25.0f)); // from l_select back to main menu
+		}
+		else if (current_game_state == kMainMenu)
+		{
+			LevelButtons[i] = ui_button_movement(LevelButtons[i], CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f,
+				CP_System_GetWindowHeight() * 0.35f + i * (BUTTON_HEIGHT + 25.0f)); // from l_select back to main menu
+		}
+	}
+	if (current_game_state == kLevelSelect) // going to main menu
+	{
+		LevelSelectBackButton = ui_button_movement(LevelSelectBackButton, CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f,
+			CP_System_GetWindowHeight() * 1.50f); // from l_select back to main menu
+	}
+	else if (current_game_state == kMainMenu)
+	{
+		LevelSelectBackButton = ui_button_movement(LevelSelectBackButton, CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f,
+			CP_System_GetWindowHeight() * 0.8f); // from l_select back to main menu
+	}
+}
+
+int level_select_finished_moving(void)
+{
+	if (current_game_state == kLevelSelect)
+	{
+		if (button_has_finished_moving(*LevelButtons, LevelButtons->buttonData.x_origin, (float)CP_System_GetWindowHeight()))
+		{
+			for (Button* b = LevelButtons; b < LevelButtons + kMaxNumberOfLevel; b++)
+			{
+				b->movementTime = 0.0f;
+			}
+			LevelSelectBackButton.movementTime = 0.0f;
+			return 1;
+		}
+	}
+	else if (current_game_state == kMainMenu)
+	{
+		if (button_has_finished_moving(*LevelButtons, LevelButtons->buttonData.x_origin, CP_System_GetWindowHeight() * 0.35f))
+		{
+			for (Button* b = LevelButtons; b < LevelButtons + kMaxNumberOfLevel; b++)
+			{
+				b->movementTime = 0.0f;
+			}
+			LevelSelectBackButton.movementTime = 0.0f;
+			return 1;
+		}
+	}
+	return 0;
+}
+
+void move_main_menu(void)
+{
+	// The Play, Credits && Quit buttons should move to and from the left,right && bottom of the screen respectively. HowToPlay moves to the bottom too.
+	if (current_game_state == kMainMenu)
+	{
+		PlayButton = ui_button_movement(PlayButton, -BUTTON_WIDTH, PlayButton.buttonData.y_origin);
+		CreditsButton = ui_button_movement(CreditsButton, CreditsButton.buttonData.x_origin, (float)CP_System_GetWindowHeight());
+		QuitButton = ui_button_movement(QuitButton, (float)CP_System_GetWindowWidth(), QuitButton.buttonData.y_origin);
+		HowToPlayButton = ui_button_movement(HowToPlayButton, HowToPlayButton.buttonData.x_origin, CP_System_GetWindowHeight() * 1.25f);
+	}
+	else if (current_game_state == kLevelSelect)
+	{
+		PlayButton = ui_button_movement(PlayButton, CP_System_GetWindowWidth() * 0.25f - BUTTON_WIDTH * 0.5f, PlayButton.buttonData.y_origin);
+		CreditsButton = ui_button_movement(CreditsButton, CreditsButton.buttonData.x_origin, CP_System_GetWindowHeight() * 0.5f);
+		QuitButton = ui_button_movement(QuitButton, CP_System_GetWindowWidth() * 0.75f - BUTTON_WIDTH * 0.5f, QuitButton.buttonData.y_origin);
+		HowToPlayButton = ui_button_movement(HowToPlayButton, HowToPlayButton.buttonData.x_origin, CP_System_GetWindowHeight() * 0.75f);
+	}
+}
+
+int main_menu_finished_moving(void)
+{
+	if (current_game_state == kMainMenu)
+	{
+		if (button_has_finished_moving(PlayButton, -BUTTON_WIDTH, PlayButton.buttonData.y_origin) &&
+			button_has_finished_moving(CreditsButton, CreditsButton.buttonData.x_origin, (float)CP_System_GetWindowHeight()) &&
+			button_has_finished_moving(QuitButton, (float)CP_System_GetWindowWidth(), QuitButton.buttonData.y_origin) &&
+			button_has_finished_moving(HowToPlayButton, HowToPlayButton.buttonData.x_origin, (float)CP_System_GetWindowHeight() * 1.25f))
+		{
+			PlayButton.isMoving = CreditsButton.isMoving = QuitButton.isMoving = HowToPlayButton.isMoving = LevelButtons->isMoving = 0;
+			PlayButton.movementTime = CreditsButton.movementTime = QuitButton.movementTime = HowToPlayButton.movementTime = 0.0f;
+			return 1;
+		}
+	}
+	else if (current_game_state == kLevelSelect)
+	{
+		if (button_has_finished_moving(PlayButton, CP_System_GetWindowWidth() * 0.25f - BUTTON_WIDTH * 0.5f, PlayButton.buttonData.y_origin) &&
+			button_has_finished_moving(CreditsButton, CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 0.5f) &&
+			button_has_finished_moving(QuitButton, CP_System_GetWindowWidth() * 0.75f - BUTTON_WIDTH * 0.5f, QuitButton.buttonData.y_origin) &&
+			button_has_finished_moving(HowToPlayButton, HowToPlayButton.buttonData.x_origin, CP_System_GetWindowHeight() * 0.75f))
+		{
+			PlayButton.isMoving = CreditsButton.isMoving = QuitButton.isMoving = HowToPlayButton.isMoving = LevelButtons->isMoving = 0;
+			PlayButton.movementTime = CreditsButton.movementTime = QuitButton.movementTime = HowToPlayButton.movementTime = 0.0f;
+			return 1;
+		}
+	}
+
+	return 0;
+}
+
+int button_has_finished_moving(Button button, float destPosX, float destPosY)
+{
+	return (button.buttonData.x_origin == destPosX && button.buttonData.y_origin == destPosY);
+}
+
 #pragma endregion
 
-#pragma region Building / Wave Phase System
+#pragma endregion
+
+#pragma region Building / Wave Phase
 
 void init_skip_wave_button(void)
 {
@@ -577,192 +776,6 @@ void init_next_level(int nextGameLevel)
 
 #pragma endregion
 
-#pragma region UI Movement
-
-float linear(float start, float end, float value)
-{
-	// taken from easing.h, credit goes to prof gerald
-	return (1.f - value) * start + value * end;
-}
-
-// Updates a moving button's coordinates with regards to time.
-Button ui_button_movement(Button button, float destPosX, float destPosY)
-{
-	if (button.movementTime <= MOVE_DURATION)
-	{
-		button.movementTime += CP_System_GetDt();
-		button.buttonData.x_origin = linear(button.buttonData.x_origin, destPosX, button.movementTime / MOVE_DURATION);
-		button.buttonData.y_origin = linear(button.buttonData.y_origin, destPosY, button.movementTime / MOVE_DURATION);
-		button.textPositionX = linear(button.textPositionX, destPosX + BUTTON_WIDTH * 0.5f, button.movementTime / MOVE_DURATION);
-		button.textPositionY = linear(button.textPositionY, destPosY + BUTTON_HEIGHT * 0.5f, button.movementTime / MOVE_DURATION);
-	}
-	else
-	{
-		// Most, if not all buttons take ~3-4s to finish moving.
-		button.movementTime = 0.0f;
-	}
-	return button;
-}
-
-// Similar to ui_btn_movement, but meant for grpahic rectangles (e.g. the credit screen background)
-Coordinates coord_movement(Coordinates coord, float destPosX, float destPosY)
-{
-	if (creditTextMoveTime <= MOVE_DURATION)
-	{
-		creditTextMoveTime += CP_System_GetDt();
-		coord.x_origin = linear(coord.x_origin, destPosX, creditTextMoveTime / MOVE_DURATION);
-		coord.y_origin = linear(coord.y_origin, destPosY, creditTextMoveTime / MOVE_DURATION);
-	}
-	else
-	{
-		// May be good to try basing this on something else instead like distance.
-		creditTextMoveTime = 0.0f;
-	}
-	return coord;
-}
-
-// Moving stops when the credit screen's back button has finished moving.
-void move_credits_screen(void)
-{
-	for (int i = 0; i < sizeof(CreditTexts) / sizeof(CreditLine); i++)
-	{
-		if (current_game_state == kMainMenu)
-		{
-			CreditTexts[i].currentPos = coord_movement(CreditTexts[i].currentPos, CreditTexts[i].creditPos.x_origin,
-				CreditTexts[i].creditPos.y_origin); // from l_select back to main menu
-		}
-		else if (current_game_state == kCredits) // going to main menu
-		{
-			CreditTexts[i].currentPos = coord_movement(CreditTexts[i].currentPos, CreditTexts[i].mainMenuPos.x_origin,
-				CreditTexts[i].mainMenuPos.y_origin); // from l_select back to main menu
-		}
-	}
-
-	if (current_game_state == kMainMenu)
-	{
-		creditRectCoords = coord_movement(creditRectCoords, creditRectCoords.x_origin, CP_System_GetWindowHeight() * 0.3f);
-		CreditsBackButton = ui_button_movement(CreditsBackButton, CreditsBackButton.buttonData.x_origin, CP_System_GetWindowHeight() * 0.93f);
-	}
-	else if (current_game_state == kCredits)
-	{
-		creditRectCoords = coord_movement(creditRectCoords, creditRectCoords.x_origin, CP_System_GetWindowHeight() * 1.3f);
-		CreditsBackButton = ui_button_movement(CreditsBackButton, CreditsBackButton.buttonData.x_origin, CP_System_GetWindowHeight() * 2.0f);
-	}
-}
-
-void move_level_select(void)
-{
-	for (int i = 0; i < kMaxNumberOfLevel; i++)
-	{
-		if (current_game_state == kLevelSelect) // going to main menu
-		{
-			LevelButtons[i] = ui_button_movement(LevelButtons[i], CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f,
-				CP_System_GetWindowHeight() + i * (BUTTON_HEIGHT + 25.0f)); // from l_select back to main menu
-		}
-		else if (current_game_state == kMainMenu)
-		{
-			LevelButtons[i] = ui_button_movement(LevelButtons[i], CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f,
-				CP_System_GetWindowHeight() * 0.35f + i * (BUTTON_HEIGHT + 25.0f)); // from l_select back to main menu
-		}
-	}
-	if (current_game_state == kLevelSelect) // going to main menu
-	{
-		LevelSelectBackButton = ui_button_movement(LevelSelectBackButton, CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f,
-			CP_System_GetWindowHeight() * 1.50f); // from l_select back to main menu
-	}
-	else if (current_game_state == kMainMenu)
-	{
-		LevelSelectBackButton = ui_button_movement(LevelSelectBackButton, CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f,
-			CP_System_GetWindowHeight() * 0.8f); // from l_select back to main menu
-	}
-}
-
-int level_select_finished_moving(void)
-{
-	if (current_game_state == kLevelSelect)
-	{
-		if (button_has_finished_moving(*LevelButtons, LevelButtons->buttonData.x_origin, (float)CP_System_GetWindowHeight()))
-		{
-			for (Button* b = LevelButtons; b < LevelButtons + kMaxNumberOfLevel; b++)
-			{
-				b->movementTime = 0.0f;
-			}
-			LevelSelectBackButton.movementTime = 0.0f;
-			return 1;
-		}
-	}
-	else if (current_game_state == kMainMenu)
-	{
-		if (button_has_finished_moving(*LevelButtons, LevelButtons->buttonData.x_origin, CP_System_GetWindowHeight() * 0.35f))
-		{
-			for (Button* b = LevelButtons; b < LevelButtons + kMaxNumberOfLevel; b++)
-			{
-				b->movementTime = 0.0f;
-			}
-			LevelSelectBackButton.movementTime = 0.0f;
-			return 1;
-		}
-	}
-	return 0;
-}
-
-void move_main_menu(void)
-{
-	// The Play, Credits && Quit buttons should move to and from the left,right && bottom of the screen respectively. HowToPlay moves to the bottom too.
-	if (current_game_state == kMainMenu)
-	{
-		PlayButton = ui_button_movement(PlayButton, -BUTTON_WIDTH, PlayButton.buttonData.y_origin);
-		CreditsButton = ui_button_movement(CreditsButton, CreditsButton.buttonData.x_origin, (float)CP_System_GetWindowHeight());
-		QuitButton = ui_button_movement(QuitButton, (float)CP_System_GetWindowWidth(), QuitButton.buttonData.y_origin);
-		HowToPlayButton = ui_button_movement(HowToPlayButton, HowToPlayButton.buttonData.x_origin, CP_System_GetWindowHeight() * 1.25f);
-	}
-	else if (current_game_state == kLevelSelect)
-	{
-		PlayButton = ui_button_movement(PlayButton, CP_System_GetWindowWidth() * 0.25f - BUTTON_WIDTH * 0.5f, PlayButton.buttonData.y_origin);
-		CreditsButton = ui_button_movement(CreditsButton, CreditsButton.buttonData.x_origin, CP_System_GetWindowHeight() * 0.5f);
-		QuitButton = ui_button_movement(QuitButton, CP_System_GetWindowWidth() * 0.75f - BUTTON_WIDTH * 0.5f, QuitButton.buttonData.y_origin);
-		HowToPlayButton = ui_button_movement(HowToPlayButton, HowToPlayButton.buttonData.x_origin, CP_System_GetWindowHeight() * 0.75f);
-	}
-}
-
-int main_menu_finished_moving(void)
-{
-	if (current_game_state == kMainMenu)
-	{
-		if (button_has_finished_moving(PlayButton, -BUTTON_WIDTH, PlayButton.buttonData.y_origin) &&
-			button_has_finished_moving(CreditsButton, CreditsButton.buttonData.x_origin, (float)CP_System_GetWindowHeight()) &&
-			button_has_finished_moving(QuitButton, (float)CP_System_GetWindowWidth(), QuitButton.buttonData.y_origin) &&
-			button_has_finished_moving(HowToPlayButton, HowToPlayButton.buttonData.x_origin, (float)CP_System_GetWindowHeight() * 1.25f))
-		{
-			PlayButton.isMoving = CreditsButton.isMoving = QuitButton.isMoving = HowToPlayButton.isMoving = LevelButtons->isMoving = 0;
-			PlayButton.movementTime = CreditsButton.movementTime = QuitButton.movementTime = HowToPlayButton.movementTime = 0.0f;
-			return 1;
-		}
-	}
-	else if (current_game_state == kLevelSelect)
-	{
-		if (button_has_finished_moving(PlayButton, CP_System_GetWindowWidth() * 0.25f - BUTTON_WIDTH * 0.5f, PlayButton.buttonData.y_origin) &&
-			button_has_finished_moving(CreditsButton, CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 0.5f) &&
-			button_has_finished_moving(QuitButton, CP_System_GetWindowWidth() * 0.75f - BUTTON_WIDTH * 0.5f, QuitButton.buttonData.y_origin) &&
-			button_has_finished_moving(HowToPlayButton, HowToPlayButton.buttonData.x_origin, CP_System_GetWindowHeight() * 0.75f))
-		{
-			PlayButton.isMoving = CreditsButton.isMoving = QuitButton.isMoving = HowToPlayButton.isMoving = LevelButtons->isMoving = 0;
-			PlayButton.movementTime = CreditsButton.movementTime = QuitButton.movementTime = HowToPlayButton.movementTime = 0.0f;
-			return 1;
-		}
-	}
-
-	return 0;
-}
-
-int button_has_finished_moving(Button button, float destPosX, float destPosY)
-{
-	return (button.buttonData.x_origin == destPosX && button.buttonData.y_origin == destPosY);
-}
-
-
-#pragma endregion
-
 #pragma region Options Settings
 
 // Play a sound track
@@ -777,10 +790,10 @@ void mute_sound_track(void)
 
 }
 
-// Mute or resume only the music sound(s)
+// Mute or resume only the music sound group
 void toggle_background_sound(int muted)
 {
-	if (muted) CP_Sound_PauseGroup(CP_SOUND_GROUP_MUSIC); else CP_Sound_ResumeGroup(CP_SOUND_GROUP_MUSIC);
+	(muted) ? CP_Sound_PauseGroup(CP_SOUND_GROUP_MUSIC): CP_Sound_ResumeGroup(CP_SOUND_GROUP_MUSIC);
 }
 
 // Mute all audio tracks
