@@ -656,7 +656,7 @@ void reduce_building_phase_time()
 		}
 		StartBattleFieldEffectTimer(Level.current_effect);
 		CP_Sound_StopGroup(CP_SOUND_GROUP_1);
-		CP_Sound_PlayAdvanced(WaveBGM, BGM_Volume*0.6f,1.0f, TRUE, CP_SOUND_GROUP_1);
+		CP_Sound_PlayAdvanced(WaveBGM, BGM_Volume,1.0f, TRUE, CP_SOUND_GROUP_1);
 	}
 	else
 	{
