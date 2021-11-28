@@ -1033,7 +1033,7 @@ void ButtonPressedUpdate(void) {
 	case kPauseButton:
 		current_game_state = current_game_state == kPause ? kWave : kPause;
 		MouseReset();
-		//Button SFX test
+		//Button SFX
 		CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
 		break;
 
@@ -1117,7 +1117,7 @@ void ButtonPressedUpdate(void) {
 		turretSelectedToUpgrade = kNoTurretSelected;
 		power_up_menu = !power_up_menu;
 		MouseReset();
-		//Button SFX test
+		//Button SFX
 		CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
 		break;
 
@@ -1128,7 +1128,7 @@ void ButtonPressedUpdate(void) {
 			Level.phantom_quartz -= 1000;
 			Level.gold_quartz += 10;
 		}
-		//Button SFX test
+		//Button SFX 
 		CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
 		MouseReset();
 		break;
