@@ -145,7 +145,7 @@ void game_update(void)
 
 
 		//setting enemies
-		Reset_enemies(Level.current_game_level);
+		Reset_enemies();
 
 
 	}
@@ -414,6 +414,18 @@ void game_exit(void)
 	CP_Image_Free(&interactable_UI_buttons_spritesheet);
 	CP_Image_Free(&turret_stats_spritesheet);
 	CP_Image_Free(&non_grid_environment_objects_spritesheet);
+	CP_Sound_Free(&ShootSFX);
+	CP_Sound_Free(&SpawnxExitSFX);
+	CP_Sound_Free(&ButtonClickSFX);
+	CP_Sound_Free(&TurretPlaceSFX);
+	CP_Sound_Free(&MineExplosionSFX);
+	CP_Sound_Free(&WinSFX);
+	CP_Sound_Free(&LoseSFX);
+	CP_Sound_Free(&HitSFX);
+	CP_Sound_Free(&MainMenuBGM);
+	CP_Sound_Free(&BuildingBGM);
+	CP_Sound_Free(&WaveBGM);
+	CP_Sound_Free(&MainMenuMusic);
 
 #if _DEBUG
 	// MEM LEAK CHECK

@@ -352,7 +352,6 @@ float SFX_Volume;
 CP_Sound MainMenuBGM;
 CP_Sound BuildingBGM;
 CP_Sound WaveBGM;
-float BGM_Volume;
 CP_Sound MainMenuMusic;
-
+float BGM_Volume;
 #endif // !GOSTGONEWRONG_CURRENTHEADERFILES_GAME_H
