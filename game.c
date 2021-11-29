@@ -9,6 +9,10 @@
 
 void game_init(void)
 {
+#if _DEBUG
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+#endif
+
 	//CP_System_ShowConsole(); //pls dont delete this cause scrub me uses printf to debug -gabriel
 	CP_System_Fullscreen();
 	CP_System_SetWindowTitle("Ghost Gone Wrong");
@@ -373,5 +377,46 @@ void game_update(void)
 
 void game_exit(void)
 {
+	size_t i = 0;
+	for (i = 0; i < sizeof(slow_turret_image_array) / sizeof(CP_Image); ++i)
+	{
+		CP_Image_Free(&slow_turret_image_array[i]);
+	}
+	for (i = 0; i < sizeof(tutorial_image_array) / sizeof(CP_Image); ++i)
+	{
+		CP_Image_Free(&tutorial_image_array[i]);
+	}
+	CP_Image_Free(&pause_button_image);
+	CP_Image_Free(&game_title_image);
+	CP_Image_Free(&turret_button_background);
+	CP_Image_Free(&thin_UI_background);
+	CP_Image_Free(&upgrade_menu_background);
 
+	CP_Image_Free(&basic_ghost_spritesheet);
+	CP_Image_Free(&fast_ghost_spritesheet);
+	CP_Image_Free(&fat_ghost_spritesheet);
+	CP_Image_Free(&grim_reaper_spritesheet);
+	CP_Image_Free(&blue_portal_spritesheet);
+	CP_Image_Free(&red_portal_spritesheet);
+	CP_Image_Free(&basic_turret_spritesheet);
+	CP_Image_Free(&homing_missle_turret_spritesheet);
+	CP_Image_Free(&mine_spritesheet);
+	CP_Image_Free(&turret_bullet_spritesheet);
+	CP_Image_Free(&turret_bullet_radius_spritesheet);
+	CP_Image_Free(&currency_spritesheet);
+	CP_Image_Free(&grid_environment_objects_spritesheet);
+	CP_Image_Free(&background_spritesheet);
+	CP_Image_Free(&portal_enter_effect_spritesheet);
+	CP_Image_Free(&portal_spawn_effect_spritesheet);
+	CP_Image_Free(&power_up_spritesheet);
+	CP_Image_Free(&battlefield_effect_spritesheet);
+	CP_Image_Free(&fat_UI_background_spritesheet);
+	CP_Image_Free(&interactable_UI_buttons_spritesheet);
+	CP_Image_Free(&turret_stats_spritesheet);
+	CP_Image_Free(&non_grid_environment_objects_spritesheet);
+
+#if _DEBUG
+	// MEM LEAK CHECK
+	_CrtDumpMemoryLeaks();
+#endif
 }

@@ -2,6 +2,14 @@
 #include <stdio.h>
 #include "vector.h"
 
+// FOR MEM LEAK CHECK
+#if _DEBUG
+#define _CRTDBG_MAP_ALLOC
+#include <stdlib.h>
+#include <crtdbg.h>
+#endif
+// END OF MEM LEAK
+
 #ifndef GOSTGONEWRONG_CURRENTHEADERFILES_GAME_H
 #define GOSTGONEWRONG_CURRENTHEADERFILES_GAME_H
 
