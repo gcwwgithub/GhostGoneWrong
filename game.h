@@ -2,6 +2,14 @@
 #include <stdio.h>
 #include "vector.h"
 
+// FOR MEM LEAK CHECK
+#if _DEBUG
+#define _CRTDBG_MAP_ALLOC
+#include <stdlib.h>
+#include <crtdbg.h>
+#endif
+// END OF MEM LEAK
+
 #ifndef GOSTGONEWRONG_CURRENTHEADERFILES_GAME_H
 #define GOSTGONEWRONG_CURRENTHEADERFILES_GAME_H
 
@@ -94,7 +102,8 @@ enum
 	kLose,
 	kLevelSelect,
 	kCredits,
-	kHowToPlay
+	kHowToPlay,
+	kOptions
 }current_game_state;
 //Game Grid
 int level_grid_cols;
@@ -231,7 +240,7 @@ typedef struct Turret
 Turret turret[kMaxTurret];
 int turret_purchasing[kTPMax][kTMax];
 int** turret_on_grid;
-int turretSelectedToUpgrade; //Use the turret index of the turret selected
+int turret_selected_to_upgrade; //Use the turret index of the turret selected
 //Used when no turret is selected
 enum {
 	kNoTurretSelected = -1
@@ -281,13 +290,13 @@ typedef struct LevelData {
 	int phantom_quartz;
 	int gold_quartz;
 	int health;
+	int current_game_level;
 	int current_wave;
 	int wave_enemies[kMaxNumberOfWave][kMaxEnemyType];
 	enum EnvironmentalEffects current_effect;
 	struct PowerUps current_power_up_level;
 }LevelData;
 LevelData Level;
-int current_game_level; //The current level selected by the player
 struct PowerUps power_up_price; //Price of power ups
 int enemies_left;// enemies remaining in the current round
 float building_time;//Remaining building time

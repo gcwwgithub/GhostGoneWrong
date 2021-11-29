@@ -368,12 +368,12 @@ void update_enemy(void) {
 				enemy[i].slow_amt = 1.f;
 		}
 
-		Update_Path_Array(current_game_level);
+		Update_Path_Array(Level.current_game_level);
 		Check_pathAdjustment(&enemy[i]);
-		enemy_move(&enemy[i], enemy[i].enemy_path_x, enemy[i].enemy_path_y, Number_of_points, current_game_level);
-		EnemyDeath(&enemy[i], current_game_level);
+		enemy_move(&enemy[i], enemy[i].enemy_path_x, enemy[i].enemy_path_y, Number_of_points, Level.current_game_level);
+		EnemyDeath(&enemy[i], Level.current_game_level);
 		Reaper_ability(&enemy[i]);
-		Environment_check(current_game_level);
+		Environment_check(Level.current_game_level);
 		Current_wave_check(&enemy[i]);
 		Power_Up_check(&enemy[i]);
 	}
@@ -537,7 +537,7 @@ void wave_enemy_init(int Basic_Ghost_count, int Fast_Ghost_count, int Fat_Ghost_
 
 void Reset_enemies(void) {
 	if (current_game_state == kBuilding) {
-		Update_Path_Array(current_game_level);
+		Update_Path_Array(Level.current_game_level);
 		if (building_time > 0.05f && Level.current_wave < kMaxNumberOfWave) {
 			int BasicCount = Level.wave_enemies[Level.current_wave][kBasic];
 			int FastCount = Level.wave_enemies[Level.current_wave][kFastGhost];

@@ -9,7 +9,11 @@
 
 void game_init(void)
 {
-	CP_System_ShowConsole(); //pls dont delete this cause scrub me uses printf to debug -gabriel
+#if _DEBUG
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+#endif
+
+	//CP_System_ShowConsole(); //pls dont delete this cause scrub me uses printf to debug -gabriel
 	CP_System_Fullscreen();
 	CP_System_SetWindowTitle("Ghost Gone Wrong");
 	int gameWindowWidth = 1280;
@@ -26,6 +30,7 @@ void game_init(void)
 	building_time = kFullBuildingPhaseTime;
 	dpLogoDisplayTime = teamLogoDisplayTime = LOGO_DISPLAY_TIME;
 	dpLogoFadeTime = teamLogoFadeTime = FADE_OUT_TIME;
+	bgmAudioPaused = allAudioPaused = 0;
 	current_how_to_play_page = 0;
 	HowToPlayButtonsInit();
 
@@ -33,13 +38,14 @@ void game_init(void)
 
 	init_main_menu();
 	init_level_select_buttons();
+	init_options_screen();
 	init_credits_screen();
 	init_pause_screen();
 	init_end_screen();
 	init_skip_wave_button();
 
 	//Initialize Objects
-	MouseInit();
+	InitMouse();
 
 
 	// initialize price for powerups
@@ -71,7 +77,7 @@ void game_update(void)
 		update_particle();
 
 		//render all the stuff
-		RenderLevelEnvironment(current_game_level);
+		RenderLevelEnvironment(Level.current_game_level);
 		RenderGameGrid();
 		RenderEnemyPath(&Level);
 
@@ -84,8 +90,8 @@ void game_update(void)
 		render_particle();
 		RenderAndUpdateBulletCircles();
 
-		if (!turret[turretSelectedToUpgrade].is_active) { // Close mine menu when it explodes
-			turretSelectedToUpgrade = kNoTurretSelected;
+		if (!turret[turret_selected_to_upgrade].is_active) { // Close mine menu when it explodes
+			turret_selected_to_upgrade = kNoTurretSelected;
 		}
 		ButtonPressedUpdate();
 
@@ -115,7 +121,7 @@ void game_update(void)
 		update_projectile();
 		update_particle();
 		//render all the stuff
-		RenderLevelEnvironment(current_game_level);
+		RenderLevelEnvironment(Level.current_game_level);
 		RenderGameGrid();
 		RenderEnemyPath(&Level);
 		UpdatePortalAnimation();
@@ -139,7 +145,7 @@ void game_update(void)
 
 
 		//setting enemies
-		Reset_enemies(current_game_level);
+		Reset_enemies(Level.current_game_level);
 
 
 	}
@@ -153,36 +159,31 @@ void game_update(void)
 		}
 		else if (BtnIsPressed(EndScreenButtons[1].buttonData))
 		{
-			init_next_level(current_game_level);
+			init_next_level(Level.current_game_level);
 			current_game_state = kBuilding;
 		}
 		else if (BtnIsPressed(EndScreenButtons[2].buttonData))
 		{
-			init_next_level(current_game_level + 1);
+			init_next_level(Level.current_game_level + 1);
 		}
 
-		render_end_screen(); // this should pause the game by way of gameLost.
+		render_end_screen(); // this should pause the game?
 
 	}
 	else if (current_game_state == kMainMenu)
 	{
 		CP_Settings_NoTint();
-
 		if (BtnIsPressed(PlayButton.buttonData))
 		{
 			// To prevent clicking buttons while transitioning to LevelSelect
 			if (!CreditsBackButton.isMoving)
 			{
-				PlayButton.isMoving = CreditsButton.isMoving = QuitButton.isMoving 
-				= HowToPlayButton.isMoving = LevelButtons->isMoving = 1;
-			}
-			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
-				CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
+				PlayButton.isMoving = CreditsButton.isMoving = QuitButton.isMoving
+					= HowToPlayButton.isMoving = LevelButtons->isMoving = 1;
 			}
 		}
 		else if (BtnIsPressed(QuitButton.buttonData))
 		{
-			CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
 			exit_to_desktop();
 		}
 		else if (BtnIsPressed(CreditsButton.buttonData))
@@ -192,17 +193,15 @@ void game_update(void)
 			{
 				CreditsBackButton.isMoving = 1;
 			}
-			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
-				CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
-			}
+		}
+		else if (BtnIsPressed(OptionsButton.buttonData)) {
+			current_game_state = kOptions;
 		}
 		else if (BtnIsPressed(HowToPlayButton.buttonData)) {
 			current_game_state = kHowToPlay;
-			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
-				CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
-			}
 		}
-		if (PlayButton.isMoving || CreditsButton.isMoving || QuitButton.isMoving || HowToPlayButton.isMoving) // clicked on play
+		// All these buttons move altogether.
+		if (PlayButton.isMoving || CreditsButton.isMoving || QuitButton.isMoving || HowToPlayButton.isMoving)
 		{
 			move_main_menu();
 		}
@@ -221,6 +220,7 @@ void game_update(void)
 			current_game_state = kLevelSelect;
 		}
 
+		// Transition to Credits check
 		if (button_has_finished_moving(CreditsBackButton, CreditsBackButton.buttonData.x_origin, CP_System_GetWindowHeight() * 0.93f))
 		{
 			CreditsBackButton.isMoving = 0;
@@ -231,7 +231,7 @@ void game_update(void)
 
 		CP_Graphics_ClearBackground(COLOR_GREY);
 		render_title_screen();
-		render_start_menu();
+		render_main_menu();
 		render_level_select_buttons();
 		render_credits_screen();
 	}
@@ -242,53 +242,35 @@ void game_update(void)
 	{
 		CP_Settings_NoTint();
 		// Levels
-		if (!LevelButtons->isMoving) // Stops accidental clicking of buttons when moving
+		if (BtnIsPressed(LevelButtons[0].buttonData))
 		{
-			if (BtnIsPressed(LevelButtons[0].buttonData))
-			{
-				Level1Init();
-				if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
-					CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
-				}
-			}
-			else if (BtnIsPressed(LevelButtons[1].buttonData)) {
-				Level2Init();
-				if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
-					CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
-				}
-			}
-			else if (BtnIsPressed(LevelButtons[2].buttonData)) {
-				Level3Init();
-				if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
-					CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
-				}
-			}
-			else if (BtnIsPressed(LevelButtons[3].buttonData)) {
-				Level4Init();
-				if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
-					CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
-				}
-			}
-			else if (BtnIsPressed(LevelButtons[4].buttonData)) {
-				Level5Init();
-				if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
-					CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
-				}
-			}
-			else if (BtnIsPressed(LevelSelectBackButton.buttonData))
-			{
-				PlayButton.isMoving = CreditsButton.isMoving = QuitButton.isMoving
-					= HowToPlayButton.isMoving = LevelButtons->isMoving = 1;
-				if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
-					CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
-				}
-			}
+			Level1Init();
+		}
+		else if (BtnIsPressed(LevelButtons[1].buttonData)) {
+			Level2Init();
+		}
+		else if (BtnIsPressed(LevelButtons[2].buttonData)) {
+			Level3Init();
+		}
+		else if (BtnIsPressed(LevelButtons[3].buttonData)) {
+			Level4Init();
+		}
+		else if (BtnIsPressed(LevelButtons[4].buttonData)) {
+			Level5Init();
+		}
+		else if (BtnIsPressed(LevelSelectBackButton.buttonData))
+		{
+			PlayButton.isMoving = CreditsButton.isMoving = QuitButton.isMoving
+				= HowToPlayButton.isMoving = LevelButtons->isMoving = 1;
+			MouseReset();
 		}
 
-		if (PlayButton.isMoving || CreditsButton.isMoving || QuitButton.isMoving || HowToPlayButton.isMoving) // clicked on play
+		// All these buttons move altogether.
+		if (PlayButton.isMoving || CreditsButton.isMoving || QuitButton.isMoving || HowToPlayButton.isMoving)
 		{
 			move_main_menu();
 		}
+
 		if (LevelButtons->isMoving)
 		{
 			move_level_select();
@@ -301,7 +283,7 @@ void game_update(void)
 
 		CP_Graphics_ClearBackground(COLOR_GREY);
 		render_title_screen();
-		render_start_menu();
+		render_main_menu();
 		render_level_select_buttons();
 	}
 	else if (current_game_state == kPause)
@@ -317,16 +299,10 @@ void game_update(void)
 				current_game_state = kPause;
 			}
 			MouseReset();
-			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
-				CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
-			}
 		}
 		else if (BtnIsPressed(PauseScreenButtons[0].buttonData)) // Resume
 		{
 			current_game_state = (building_time) ? kBuilding : kWave;
-			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
-				CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
-			}
 		}
 		else if (BtnIsPressed(PauseScreenButtons[1].buttonData)) // Level Select
 		{
@@ -344,9 +320,6 @@ void game_update(void)
 			current_game_state = kLevelSelect;
 			CP_Sound_StopGroup(CP_SOUND_GROUP_1);
 			CP_Sound_PlayAdvanced(MainMenuBGM, BGM_Volume, 1.0f, TRUE, CP_SOUND_GROUP_1);
-			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
-				CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
-			}
 		}
 		render_pause_screen();
 	}
@@ -355,9 +328,6 @@ void game_update(void)
 		if (BtnIsPressed(CreditsBackButton.buttonData))
 		{
 			CreditsBackButton.isMoving = 1;
-			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
-				CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
-			}
 		}
 		if (CreditsBackButton.isMoving)
 		{
@@ -373,17 +343,80 @@ void game_update(void)
 
 		CP_Graphics_ClearBackground(COLOR_GREY);
 		render_title_screen();
-		render_start_menu();
+		render_main_menu();
 		render_credits_screen();
+	}
+	else if (current_game_state == kOptions)
+	{
+		if (BtnIsPressed(OptionsBackButton.buttonData))
+		{
+			current_game_state = kMainMenu;
+		}
+		else if (BtnIsPressed(OptionButtons[0]))
+		{
+			(bgmAudioPaused) ? CP_Sound_ResumeGroup(CP_SOUND_GROUP_1) : CP_Sound_PauseGroup(CP_SOUND_GROUP_1);
+			bgmAudioPaused = !bgmAudioPaused;
+			MouseReset();
+		}
+		else if (BtnIsPressed(OptionButtons[1]))
+		{
+			(allAudioPaused) ? CP_Sound_ResumeAll() : CP_Sound_PauseAll();
+			allAudioPaused = !allAudioPaused;
+			MouseReset();
+		}
+
+		CP_Graphics_ClearBackground(COLOR_GREY);
+		render_title_screen();
+		render_options_screen();
 	}
 	else if (current_game_state == kLogoSplash)
 	{
 		show_logos();
-		if (CP_Input_KeyDown(KEY_ESCAPE))
-		{current_game_state = kMainMenu;}
 	}
 }
 
 void game_exit(void)
 {
+	size_t i = 0;
+	for (i = 0; i < sizeof(slow_turret_image_array) / sizeof(CP_Image); ++i)
+	{
+		CP_Image_Free(&slow_turret_image_array[i]);
+	}
+	for (i = 0; i < sizeof(tutorial_image_array) / sizeof(CP_Image); ++i)
+	{
+		CP_Image_Free(&tutorial_image_array[i]);
+	}
+	CP_Image_Free(&pause_button_image);
+	CP_Image_Free(&game_title_image);
+	CP_Image_Free(&turret_button_background);
+	CP_Image_Free(&thin_UI_background);
+	CP_Image_Free(&upgrade_menu_background);
+
+	CP_Image_Free(&basic_ghost_spritesheet);
+	CP_Image_Free(&fast_ghost_spritesheet);
+	CP_Image_Free(&fat_ghost_spritesheet);
+	CP_Image_Free(&grim_reaper_spritesheet);
+	CP_Image_Free(&blue_portal_spritesheet);
+	CP_Image_Free(&red_portal_spritesheet);
+	CP_Image_Free(&basic_turret_spritesheet);
+	CP_Image_Free(&homing_missle_turret_spritesheet);
+	CP_Image_Free(&mine_spritesheet);
+	CP_Image_Free(&turret_bullet_spritesheet);
+	CP_Image_Free(&turret_bullet_radius_spritesheet);
+	CP_Image_Free(&currency_spritesheet);
+	CP_Image_Free(&grid_environment_objects_spritesheet);
+	CP_Image_Free(&background_spritesheet);
+	CP_Image_Free(&portal_enter_effect_spritesheet);
+	CP_Image_Free(&portal_spawn_effect_spritesheet);
+	CP_Image_Free(&power_up_spritesheet);
+	CP_Image_Free(&battlefield_effect_spritesheet);
+	CP_Image_Free(&fat_UI_background_spritesheet);
+	CP_Image_Free(&interactable_UI_buttons_spritesheet);
+	CP_Image_Free(&turret_stats_spritesheet);
+	CP_Image_Free(&non_grid_environment_objects_spritesheet);
+
+#if _DEBUG
+	// MEM LEAK CHECK
+	_CrtDumpMemoryLeaks();
+#endif
 }

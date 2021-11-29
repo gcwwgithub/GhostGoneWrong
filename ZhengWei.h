@@ -6,7 +6,7 @@
 #define GhostGoneWrong_CURRENTHEADERFILES_ZHENGWEI_H
 
 #define COLOR_BLUE CP_Color_Create(0, 0, 255, 255)
-// The turret selected to place
+// The turret type selected to place. kTMax would be used if no turret selected.
 TurretType is_placing_turret;
 Boolean power_up_menu;
 enum {
@@ -33,10 +33,9 @@ Coordinates TutorialButtons[kHowToPlayButtonMax];
 extern const float kLeftGameMenuXWidth;
 extern const float kRightGameMenuXOrigin;
 //Environment
-Coordinates Environment[kMaxEnvironmentObject];
+Coordinates environment[kMaxEnvironmentObject];
 
-void MouseInit(void);
-void EnvironmentInit(LevelData* LevelX);
+void InitMouse(void);
 void PowerUpPriceInit(void);
 void Level1Init(void);
 void Level2Init(void);

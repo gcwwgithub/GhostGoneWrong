@@ -56,15 +56,22 @@ enum CreditText {
 	CopyrightLine
 };
 
-typedef struct CreditLine
+enum OptionText {
+	Options,
+	BackgroundSFX,
+	MuteAll
+};
+
+typedef struct Line
 {
 	const char const * text;
 	Coordinates mainMenuPos;
-	Coordinates currentPos; // credit text will be at this position in MainMenu
-	Coordinates creditPos;
-}CreditLine;
+	Coordinates currentPos; // text will be at this position in MainMenu
+	Coordinates endingPos;
+}Line, CreditLine, OptionLine;
 
 CreditLine CreditTexts[25];
+OptionLine OptionTexts[3];
 
 // creditRectCoords for moving bg
 Coordinates creditRectCoords;
@@ -82,6 +89,10 @@ Button PlayButton;
 Button QuitButton;
 Button CreditsButton;
 Button HowToPlayButton;
+Button OptionsButton;
+
+Button OptionsBackButton;
+Coordinates OptionButtons[2];
 
 Button LevelSelectBackButton;
 Button LevelButtons[5];
@@ -92,6 +103,8 @@ Button PauseScreenButtons[2];
 Button EndScreenButtons[3];
 int enemiesInLevel;
 
+int bgmAudioPaused;
+int allAudioPaused;
 
 // Main Menu Inits
 void render_title_screen(void);
@@ -101,14 +114,16 @@ void init_main_menu(void);
 void init_level_select_buttons(void);
 void init_pause_screen(void);
 void init_credits_screen(void);
+void init_options_screen(void);
 
 // Main Menu Renders
 void render_ui_button(Button button);
 void render_how_to_play_screen(void);
-void render_start_menu(void);
+void render_main_menu(void);
 void render_level_select_buttons(void);
 void render_pause_screen(void);
 void render_credits_screen(void);
+void render_options_screen(void);
 
 // Building / Wave Phase
 void render_wave_timer(void);
@@ -120,6 +135,7 @@ void init_game_font(void);
 void init_splash_logos(void);
 void render_logos(void);
 
+// Win / Lose
 void game_win_lose_check(void);
 void init_end_screen(void);
 void render_end_screen(void);
@@ -136,6 +152,8 @@ void move_main_menu(void);
 int main_menu_finished_moving(void);
 
 void move_credits_screen(void);
+
+void toggle_all_audio(int audioPaused);
 
 void init_next_level(int nextGameLevel);
 void exit_to_desktop(void);
