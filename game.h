@@ -74,16 +74,20 @@ typedef struct Coordinates {
 	CP_Image image;
 }Coordinates;
 //Common Functions
+void InitLevel1(void);
+void InitLevel2(void);
+void InitLevel3(void);
+void InitLevel4(void);
+void InitLevel5(void);
 Boolean CollisionDetection(Coordinates object1, Coordinates object2);
 Boolean BtnIsPressed(Coordinates object1);
 void MouseReset(void);//Set last click position to out of screen
 //Set the current building time of building phase
 void SetBuildingTime(float newBuildingTime);
-int CheckGameButtonPressed(void);//Check which button is pressed in menu
 float FloatAbs(float x);
 void Enemies_init(void);
 void exit_to_desktop(void);
-//upgrade system (for now using index will change depending how to access this easier)
+//upgrade system
 void upgrade_turret(int t_index);
 //init turret and projectiles
 void turret_init(void);
@@ -296,7 +300,7 @@ typedef struct LevelData {
 	enum EnvironmentalEffects current_effect;
 	struct PowerUps current_power_up_level;
 }LevelData;
-LevelData Level;
+LevelData level;
 struct PowerUps power_up_price; //Price of power ups
 int enemies_left;// enemies remaining in the current round
 float building_time;//Remaining building time
@@ -305,7 +309,7 @@ Coordinates mouse_input;
 
 //Graphics
 //Game Menus
-enum MenuObjectType {
+typedef enum {
 	kPauseButton,
 	kTurretButtonBasic,
 	kTurretButtonSlow,
@@ -324,7 +328,9 @@ enum MenuObjectType {
 	kUpgradeMenu,// Rendered seperately from the render loop
 	kGameGrid,//Not included in the render loop
 	kButtonMax
-};
+}MenuObjectType;
+//Check which button is pressed in menu
+MenuObjectType CheckGameButtonPressed(void);
 //Array of all menu object used for rendering
 Coordinates game_menu_object[kButtonMax];
 float scaling_factor;//scaling to scale with different display size

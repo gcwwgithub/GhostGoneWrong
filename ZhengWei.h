@@ -36,23 +36,14 @@ extern const float kRightGameMenuXOrigin;
 Coordinates environment[kMaxEnvironmentObject];
 
 void InitMouse(void);
-void PowerUpPriceInit(void);
-void Level1Init(void);
-void Level2Init(void);
-void Level3Init(void);
-void Level4Init(void);
-void Level5Init(void);
-void PathFindingReset(LevelData* LevelX);
-void PathFindingCalculateCost(void);
-void PathFindingUpdate(LevelData* LevelX);
-void ButtonPressedUpdate(void);
+void InitPowerUpPrice(void);
+void InitHowToPlayButtons(void);
+void UpdateGameButtonPressed(void);
 void RenderGameGrid(void);
-void RenderEnemyPath(LevelData* LevelX);
+void RenderEnemyPath(void);
 void RenderEnvironment(void);
 void RenderTurretDetailsDisplay(void);
-void render_turret_menu_object(
-	Coordinates menuObjectX, enum MenuObjectType type);
+void RenderTurretMenuObjects(
+	Coordinates menu_object_to_print, MenuObjectType type);
 void RenderHowToPlayPages(void);
-void HowToPlayButtonsInit(void);
-
 #endif // !GhostGoneWrong_CURRENTHEADERFILES_ZHENGWEI_H

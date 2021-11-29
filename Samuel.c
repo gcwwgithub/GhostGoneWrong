@@ -160,10 +160,10 @@ void place_turret(TurretType type, int index_x, int index_y)
 			turret[i].mod.speed = game.grid_width * 2.f;
 			break;
 		case kTMine:
-			if (Level.grid[index_y][index_x].type != kPath)
+			if (level.grid[index_y][index_x].type != kPath)
 				return;
 			turret[i].mod.range = game.grid_width * 0.7f;
-			turret[i].mod.damage = (float)(10 + Level.current_power_up_level.increased_mine_damage * 20);
+			turret[i].mod.damage = (float)(10 + level.current_power_up_level.increased_mine_damage * 20);
 			turret[i].anim_counter = 0;
 			turret[i].turret_anim_timer = 0;
 			break;
@@ -218,7 +218,7 @@ void sell_turret(int t_index)
 	int y = (int)((turret[t_index].data.y_origin - game.y_origin) / game.grid_height);
 	float sell_price;
 	sell_price = (turret[t_index].total_price * 0.7f);
-	Level.phantom_quartz += (int)sell_price;
+	level.phantom_quartz += (int)sell_price;
 	remove_turret(x, y);
 }
 
@@ -335,7 +335,7 @@ void update_turret(void)
 
 			if (turret[i].type == kTMine)
 			{
-				turret[i].mod.damage = (float)(10 + Level.current_power_up_level.increased_mine_damage * 20);
+				turret[i].mod.damage = (float)(10 + level.current_power_up_level.increased_mine_damage * 20);
 				if (CollisionDetection(turret[i].data, enemy[j].data))
 				{
 					//set the highest waypoint
@@ -397,7 +397,7 @@ void update_turret(void)
 			if (turret[i].type == kTMine)
 			{
 				//set mine dmg to power temp
-				turret[i].mod.damage += Level.current_power_up_level.increased_mine_damage;
+				turret[i].mod.damage += level.current_power_up_level.increased_mine_damage;
 				turret[i].mod.tracked_index = e_index;
 				//fake shoot for mine, just spawn a proj on it
 				shoot(turret[i].data.x_origin, turret[i].data.y_origin, turret[i].mod, turret[i].type, turret[i].dir);

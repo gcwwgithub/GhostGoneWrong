@@ -679,16 +679,16 @@ void reduce_building_phase_time()
 	{
 		SetBuildingTime(0.0f);
 		current_game_state = kWave;
-		if (Level.current_wave == 0) {
-			Level.current_effect = 0;
+		if (level.current_wave == 0) {
+			level.current_effect = 0;
 		}
-		else if (Level.current_wave < 5) {
-			Level.current_effect = CP_Random_RangeInt(0, 10);
+		else if (level.current_wave < 5) {
+			level.current_effect = CP_Random_RangeInt(0, 10);
 		}
 		else {
-			Level.current_effect = CP_Random_RangeInt(0, 11);
+			level.current_effect = CP_Random_RangeInt(0, 11);
 		}
-		StartBattleFieldEffectTimer(Level.current_effect);
+		StartBattleFieldEffectTimer(level.current_effect);
 		CP_Sound_StopGroup(CP_SOUND_GROUP_1);
 		CP_Sound_PlayAdvanced(WaveBGM, BGM_Volume, 1.0f, TRUE, CP_SOUND_GROUP_1);
 	}
@@ -730,7 +730,7 @@ void render_end_screen(void)
 
 	if (current_game_state == kWin)
 	{
-		if (Level.current_game_level < 4)
+		if (level.current_game_level < 4)
 		{
 			render_ui_button(EndScreenButtons[2]); // Next
 		}
@@ -740,13 +740,13 @@ void render_end_screen(void)
 void game_win_lose_check(void)
 {
 	// checks portal health && number of enemies left.
-	if (Level.health <= 0)
+	if (level.health <= 0)
 	{
 		// free memory
 		for (int i = 0; i < level_grid_rows; i++) {
-			free(Level.grid[i]);
+			free(level.grid[i]);
 		}
-		free(Level.grid);
+		free(level.grid);
 		//Free memory for turret_on_grid
 		for (int i = 0; i < level_grid_cols; i++) {
 			free(turret_on_grid[i]);
@@ -759,13 +759,13 @@ void game_win_lose_check(void)
 	}
 	else if (enemies_left == 0)
 	{
-		if (Level.current_wave == kMaxNumberOfWave - 1)
+		if (level.current_wave == kMaxNumberOfWave - 1)
 		{
 			// free memory
 			for (int i = 0; i < level_grid_rows; i++) {
-				free(Level.grid[i]);
+				free(level.grid[i]);
 			}
-			free(Level.grid);
+			free(level.grid);
 			//Free memory for turret_on_grid
 			for (int i = 0; i < level_grid_cols; i++) {
 				free(turret_on_grid[i]);
@@ -781,7 +781,7 @@ void game_win_lose_check(void)
 			current_game_state = kBuilding;
 			CP_Sound_StopGroup(CP_SOUND_GROUP_1);
 			CP_Sound_PlayAdvanced(BuildingBGM, BGM_Volume, 1.0f, TRUE, CP_SOUND_GROUP_1);
-			Level.current_wave += 1;
+			level.current_wave += 1;
 		}
 	}
 }
@@ -792,27 +792,27 @@ void init_next_level(int nextGameLevel)
 	{
 	case 0:
 	{
-		Level1Init();
+		InitLevel1();
 		break;
 	}
 	case 1:
 	{
-		Level2Init();
+		InitLevel2();
 		break;
 	}
 	case 2:
 	{
-		Level3Init();
+		InitLevel3();
 		break;
 	}
 	case 3:
 	{
-		Level4Init();
+		InitLevel4();
 		break;
 	}
 	case 4:
 	{
-		Level5Init();
+		InitLevel5();
 		break;
 	}
 

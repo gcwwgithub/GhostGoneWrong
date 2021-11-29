@@ -32,7 +32,7 @@ void game_init(void)
 	dpLogoFadeTime = teamLogoFadeTime = FADE_OUT_TIME;
 	bgmAudioPaused = allAudioPaused = 0;
 	current_how_to_play_page = 0;
-	HowToPlayButtonsInit();
+	InitHowToPlayButtons();
 
 	//Main menu, level select
 
@@ -49,7 +49,7 @@ void game_init(void)
 
 
 	// initialize price for powerups
-	PowerUpPriceInit();
+	InitPowerUpPrice();
 
 	//Initialise all sounds
 	Music_init();
@@ -77,9 +77,9 @@ void game_update(void)
 		update_particle();
 
 		//render all the stuff
-		RenderLevelEnvironment(Level.current_game_level);
+		RenderLevelEnvironment(level.current_game_level);
 		RenderGameGrid();
-		RenderEnemyPath(&Level);
+		RenderEnemyPath();
 
 		UpdatePortalAnimation();
 
@@ -93,15 +93,15 @@ void game_update(void)
 		if (!turret[turret_selected_to_upgrade].is_active) { // Close mine menu when it explodes
 			turret_selected_to_upgrade = kNoTurretSelected;
 		}
-		ButtonPressedUpdate();
+		UpdateGameButtonPressed();
 
 		RenderEnvironment();
-		RenderBattlefieldEffectText(Level.current_effect);
+		RenderBattlefieldEffectText(level.current_effect);
 		CP_Settings_NoTint();
 		RenderTurretDetailsDisplay(); //render turret description when hovered
-		render_turret_menu_object(game_menu_object[kButtonMax - 2], kButtonMax - 2);// Render Upgrade menu first
+		RenderTurretMenuObjects(game_menu_object[kButtonMax - 2], kButtonMax - 2);// Render Upgrade menu first
 		for (int i = 0; i < kButtonMax - 3; i++) {// Last object will double render game grid. Second and third last object is rendered seperately
-			render_turret_menu_object(game_menu_object[i], i);
+			RenderTurretMenuObjects(game_menu_object[i], i);
 		}
 		game_win_lose_check();
 
@@ -121,9 +121,9 @@ void game_update(void)
 		update_projectile();
 		update_particle();
 		//render all the stuff
-		RenderLevelEnvironment(Level.current_game_level);
+		RenderLevelEnvironment(level.current_game_level);
 		RenderGameGrid();
-		RenderEnemyPath(&Level);
+		RenderEnemyPath();
 		UpdatePortalAnimation();
 		RenderEnvironment();
 		render_turret();
@@ -131,16 +131,16 @@ void game_update(void)
 		render_particle();
 		RenderAndUpdateBulletCircles();
 
-		ButtonPressedUpdate();
+		UpdateGameButtonPressed();
 
 		CP_Settings_NoTint();
 		render_wave_timer();
 		render_ui_button(SkipWaveButton);
 
 		RenderTurretDetailsDisplay(); //render turret description when hovered
-		render_turret_menu_object(game_menu_object[kButtonMax - 2], kButtonMax - 2);// Render Upgrade menu first
+		RenderTurretMenuObjects(game_menu_object[kButtonMax - 2], kButtonMax - 2);// Render Upgrade menu first
 		for (int i = 0; i < kButtonMax - 3; i++) {// Last object will double render game grid. Second and third last object is rendered seperately
-			render_turret_menu_object(game_menu_object[i], i);
+			RenderTurretMenuObjects(game_menu_object[i], i);
 		}
 
 
@@ -159,12 +159,12 @@ void game_update(void)
 		}
 		else if (BtnIsPressed(EndScreenButtons[1].buttonData))
 		{
-			init_next_level(Level.current_game_level);
+			init_next_level(level.current_game_level);
 			current_game_state = kBuilding;
 		}
 		else if (BtnIsPressed(EndScreenButtons[2].buttonData))
 		{
-			init_next_level(Level.current_game_level + 1);
+			init_next_level(level.current_game_level + 1);
 		}
 
 		render_end_screen(); // this should pause the game?
@@ -244,19 +244,19 @@ void game_update(void)
 		// Levels
 		if (BtnIsPressed(LevelButtons[0].buttonData))
 		{
-			Level1Init();
+			InitLevel1();
 		}
 		else if (BtnIsPressed(LevelButtons[1].buttonData)) {
-			Level2Init();
+			InitLevel2();
 		}
 		else if (BtnIsPressed(LevelButtons[2].buttonData)) {
-			Level3Init();
+			InitLevel3();
 		}
 		else if (BtnIsPressed(LevelButtons[3].buttonData)) {
-			Level4Init();
+			InitLevel4();
 		}
 		else if (BtnIsPressed(LevelButtons[4].buttonData)) {
-			Level5Init();
+			InitLevel5();
 		}
 		else if (BtnIsPressed(LevelSelectBackButton.buttonData))
 		{
@@ -308,9 +308,9 @@ void game_update(void)
 		{
 			//free memory
 			for (int i = 0; i < level_grid_rows; i++) {
-				free(Level.grid[i]);
+				free(level.grid[i]);
 			}
-			free(Level.grid);
+			free(level.grid);
 			//Free memory for turret_on_grid
 			for (int i = 0; i < level_grid_cols; i++) {
 				free(turret_on_grid[i]);
