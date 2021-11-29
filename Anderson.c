@@ -730,7 +730,7 @@ void render_end_screen(void)
 
 	if (current_game_state == kWin)
 	{
-		if (current_game_level < 4)
+		if (Level.current_game_level < 4)
 		{
 			render_ui_button(EndScreenButtons[2]); // Next
 		}

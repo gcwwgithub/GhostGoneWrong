@@ -8,7 +8,7 @@
 const float kLeftGameMenuXWidth = 140.714294f;
 const float kRightGameMenuXOrigin = 998.571411f;
 //Tools
-//Reset Mouse
+//Reset the current click position
 void MouseReset(void) {
 	mouse_input.x_origin = -1;
 	mouse_input.y_origin = -1;
@@ -17,7 +17,6 @@ void MouseReset(void) {
 float FloatAbs(float x) {
 	return x < 0 ? x * -1 : x;
 }
-
 //Check if button is pressed
 Boolean BtnIsPressed(Coordinates object) {
 	if (((object.x_origin <= mouse_input.x_origin)
@@ -30,77 +29,6 @@ Boolean BtnIsPressed(Coordinates object) {
 		return 0;
 	}
 }
-//Color game square to square_color
-static void ColorGameSquare(
-	int rect_row, int rect_col, CP_Color square_color)
-{
-	CP_Settings_RectMode(CP_POSITION_CORNER);
-	CP_Settings_Fill(square_color);
-	CP_Graphics_DrawRect((game.x_origin + game.grid_width * rect_col),
-		(game.y_origin + game.grid_height * rect_row),
-		(game.grid_width), (game.grid_height));
-}
-
-//Path Finding
-//Check if destination is reachable
-Boolean isDestinationUpdated(void) {
-	return Level.grid[Level.exit_row][Level.exit_col].visited;
-}
-
-//Update cost of neighbor base on own cost
-void PathFindingUpdateNeighborCost(
-	int grid_row, int grid_col, int generation) {
-	//Update Row Neighbor
-	for (int i = -1; i <= 1; i++) {
-		if (grid_row + i >= 0 && grid_row + i < level_grid_rows) {
-			if (Level.grid[grid_row + i][grid_col].visited == 0) {
-				Level.grid[grid_row + i][grid_col].cost = generation + 1;
-				Level.grid[grid_row + i][grid_col].parent_row = grid_row;
-				Level.grid[grid_row + i][grid_col].parent_col = grid_col;
-				Level.grid[grid_row + i][grid_col].visited = 1;
-			}
-		}
-	}
-	//Update Col Neighbor
-	for (int i = -1; i <= 1; i++) {
-		if (grid_col + i >= 0 && grid_col + i < level_grid_cols) {
-			if (Level.
-				grid[grid_row][grid_col + i].visited == 0) {
-				Level.
-					grid[grid_row][grid_col + i].cost = generation + 1;
-				Level.
-					grid[grid_row][grid_col + i].parent_row = grid_row;
-				Level.
-					grid[grid_row][grid_col + i].parent_col = grid_col;
-				Level.
-					grid[grid_row][grid_col + i].visited = 1;
-			}
-		}
-	}
-}
-
-//Calculate all grid cost. Find the squares in the same generation 
-//and call a function to update neighbors.
-void PathFindingCalculateCost(void) {
-	for (int current_cost = 0; !isDestinationUpdated()
-		&& current_cost <= level_grid_rows * level_grid_cols; current_cost++) {
-		for (int i = 0; i < level_grid_rows; i++) {
-			for (int j = 0; j < level_grid_cols; j++) {
-				if (Level.grid[i][j].cost == current_cost) {
-					PathFindingUpdateNeighborCost(i, j, current_cost);
-				}
-			}
-		}
-	}
-}
-//init the spawn and exit cols for pathfinding
-void PathFindingInit(void) {
-	Level.grid[Level.spawn_row][Level.spawn_col].cost = 0;
-	Level.grid[Level.spawn_row][Level.spawn_col].visited = 1;
-	Level.grid[Level.spawn_row][Level.spawn_col].type = kSpawn;
-	Level.grid[Level.exit_row][Level.exit_col].type = kExit;
-}
-
 //Collision Detection between circles and squares
 Boolean CollisionDetection(Coordinates object1, Coordinates object2) {
 	//Collision for circle to circle
@@ -198,60 +126,7 @@ Boolean CollisionDetection(Coordinates object1, Coordinates object2) {
 		}
 	}
 }
-
-//Function for doing all the stuff when clicking on game grid
-void GameGridPressUpdate(LevelData* LevelX) {
-	int drawX, drawY;
-	drawX = (int)((mouse_input.x_origin - game.x_origin) / game.grid_width);
-	drawY = (int)((mouse_input.y_origin - game.y_origin) / game.grid_height);
-	Coordinates GridTemp;
-	GridTemp.width = game.grid_width;
-	GridTemp.height = game.grid_height;
-	GridTemp.x_origin = game.x_origin + (drawX + 0.5f) * game.grid_width;
-	GridTemp.y_origin = game.y_origin + (drawY + 0.5f) * game.grid_height;
-
-	int isPositionEmpty = kTrue;
-	for (int i = 0; i < kMaxTurret; i++) {
-		if (turret[i].data.x_origin == GridTemp.x_origin && turret[i].data.y_origin == GridTemp.y_origin && turret[i].is_active == kTrue) {
-			isPositionEmpty = kFalse;
-		}
-	}
-	if (is_placing_turret != kTMax) {
-		if (isPositionEmpty == kTrue && LevelX->grid[drawY][drawX].type != kBlocked) {
-			if (is_placing_turret != kTMine) {
-				LevelX->grid[drawY][drawX].type = kBlocked;
-				PathFindingReset(LevelX);
-				PathFindingCalculateCost();
-			}
-			if (!isDestinationUpdated()) {
-				LevelX->grid[drawY][drawX].type = kClear;
-				PathFindingReset(LevelX);
-				PathFindingCalculateCost();
-			}
-			else {
-				place_turret(is_placing_turret, drawX, drawY);
-				Level.phantom_quartz -= turret_purchasing[kTPPrice][is_placing_turret];
-				is_placing_turret = kTMax;
-			}
-			PathFindingUpdate(LevelX);
-		}
-		MouseReset();
-	}
-	else {
-		for (int i = 0; i < kMaxTurret; i++) {
-			if (turret[i].data.x_origin == GridTemp.x_origin && turret[i].data.y_origin == GridTemp.y_origin && turretSelectedToUpgrade == i && turret[i].is_active == kTrue && CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
-				turretSelectedToUpgrade = kNoTurretSelected;
-				MouseReset();
-			}
-			else if (turret[i].data.x_origin == GridTemp.x_origin && turret[i].data.y_origin == GridTemp.y_origin && turret[i].is_active == kTrue) {
-				turretSelectedToUpgrade = i;
-			}
-		}
-	}
-
-}
-
-//Check which button is pressed
+//Check which button is pressed in the game
 int CheckGameButtonPressed(void) {
 	for (int i = 0; i < kButtonMax; i++) {
 		if (BtnIsPressed(game_menu_object[i])) {
@@ -260,30 +135,170 @@ int CheckGameButtonPressed(void) {
 	}
 	return kButtonMax;
 }
+//Color game square to square_color
+static void ColorGameSquare(
+	int rect_row, int rect_col, CP_Color square_color)
+{
+	CP_Settings_RectMode(CP_POSITION_CORNER);
+	CP_Settings_Fill(square_color);
+	CP_Graphics_DrawRect((game.x_origin + game.grid_width * rect_col),
+		(game.y_origin + game.grid_height * rect_row),
+		(game.grid_width), (game.grid_height));
+}
+//Path Finding
+//Check if destination is reachable
+static Boolean isDestinationUpdated(void) {
+	return Level.grid[Level.exit_row][Level.exit_col].visited;
+}
+//Update cost of neighbor base on own cost
+static void PathFindingUpdateNeighborCost(
+	int grid_row, int grid_col, int generation) {
+	//Update Row Neighbor
+	for (int i = -1; i <= 1; i++) {
+		if (grid_row + i >= 0 && grid_row + i < level_grid_rows) {
+			if (Level.grid[grid_row + i][grid_col].visited == 0) {
+				Level.grid[grid_row + i][grid_col].cost = generation + 1;
+				Level.grid[grid_row + i][grid_col].parent_row = grid_row;
+				Level.grid[grid_row + i][grid_col].parent_col = grid_col;
+				Level.grid[grid_row + i][grid_col].visited = 1;
+			}
+		}
+	}
+	//Update Col Neighbor
+	for (int i = -1; i <= 1; i++) {
+		if (grid_col + i >= 0 && grid_col + i < level_grid_cols) {
+			if (Level.
+				grid[grid_row][grid_col + i].visited == 0) {
+				Level.
+					grid[grid_row][grid_col + i].cost = generation + 1;
+				Level.
+					grid[grid_row][grid_col + i].parent_row = grid_row;
+				Level.
+					grid[grid_row][grid_col + i].parent_col = grid_col;
+				Level.
+					grid[grid_row][grid_col + i].visited = 1;
+			}
+		}
+	}
+}
+//Calculate all grid cost. Find the squares in the same generation 
+//and call a function to update neighbors.
+static void PathFindingCalculateCost(void) {
+	for (int current_cost = 0; !isDestinationUpdated()
+		&& current_cost <= level_grid_rows * level_grid_cols; current_cost++) {
+		for (int i = 0; i < level_grid_rows; i++) {
+			for (int j = 0; j < level_grid_cols; j++) {
+				if (Level.grid[i][j].cost == current_cost) {
+					PathFindingUpdateNeighborCost(i, j, current_cost);
+				}
+			}
+		}
+	}
+}
+//init the spawn and exit cols for pathfinding
+static void InitPathFinding(void) {
+	Level.grid[Level.spawn_row][Level.spawn_col].cost = 0;
+	Level.grid[Level.spawn_row][Level.spawn_col].visited = 1;
+	Level.grid[Level.spawn_row][Level.spawn_col].type = kSpawn;
+	Level.grid[Level.exit_row][Level.exit_col].type = kExit;
+}
+//Function for doing all the stuff when clicking on game grid
+static void UpdateGameGridPress(void) {
+	int draw_x, draw_y;//Grid rows and cols
+	draw_x = (int)((mouse_input.x_origin - game.x_origin) / game.grid_width);
+	draw_y = (int)((mouse_input.y_origin - game.y_origin) / game.grid_height);
+	Coordinates grid_temp;//temp game grid to test for collision detection
+	grid_temp.width = game.grid_width;
+	grid_temp.height = game.grid_height;
+	grid_temp.x_origin = game.x_origin + (draw_x + 0.5f) * game.grid_width;
+	grid_temp.y_origin = game.y_origin + (draw_y + 0.5f) * game.grid_height;
 
-//initialize enemies
-void general_level_enemies_init(int level, int wave, int basic, int fast, int fat, int grim)
+	int is_position_empty = kTrue;//To prevent building on turret
+	for (int i = 0; i < kMaxTurret; i++) {
+		if (turret[i].data.x_origin == grid_temp.x_origin
+			&& turret[i].data.y_origin == grid_temp.y_origin
+			&& turret[i].is_active == kTrue)
+		{
+			is_position_empty = kFalse;
+		}
+	}
+	if (is_placing_turret != kTMax) {//if a turret type is selected
+		if (is_position_empty == kTrue
+			&& Level.grid[draw_y][draw_x].type != kBlocked)
+			//Prevent building on environment
+		{
+			if (is_placing_turret != kTMine) {
+				Level.grid[draw_y][draw_x].type = kBlocked;
+				PathFindingReset(&Level);
+				PathFindingCalculateCost();
+				//Set grid to blocked and check if end is reachable
+			}
+			if (!isDestinationUpdated()) {//Check if end is reachable
+				//if Unreachable
+				Level.grid[draw_y][draw_x].type = kClear;
+				PathFindingReset(&Level);
+				PathFindingCalculateCost();
+				//Set the grid back to unblocked and do not place turret
+			}
+			else {
+				//Else place turret
+				place_turret(is_placing_turret, draw_x, draw_y);
+				Level.phantom_quartz -=
+					turret_purchasing[kTPPrice][is_placing_turret];
+				is_placing_turret = kTMax;
+			}
+			PathFindingUpdate(&Level);//Find the new shortest path
+		}
+		MouseReset();
+	}
+	else {//No turret type selected use to check for selecting existing turret
+		for (int i = 0; i < kMaxTurret; i++) {
+			if (turret[i].data.x_origin == grid_temp.x_origin
+				&& turret[i].data.y_origin == grid_temp.y_origin
+				&& turret[i].is_active == kTrue
+				&& turret_selected_to_upgrade == i
+				&& CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT))
+			{
+				//If the current turret is selected and is selected again,
+				//Deselect the turret and close the upgrade menu.
+				turret_selected_to_upgrade = kNoTurretSelected;
+				MouseReset();
+			}
+			else if (turret[i].data.x_origin == grid_temp.x_origin
+				&& turret[i].data.y_origin == grid_temp.y_origin
+				&& turret[i].is_active == kTrue)
+			{
+				//When a existing turret is selected open the upgrade menu
+				turret_selected_to_upgrade = i;
+			}
+		}
+	}
+}
+//initialize Number of each type of enemies in the level using given variable
+static void InitGeneralLevelEnemies(
+	int wave, int basic, int fast, int fat, int grim)
 {
 	Level.wave_enemies[wave][kBasic] = basic;
 	Level.wave_enemies[wave][kFastGhost] = fast;
 	Level.wave_enemies[wave][kFatGhost] = fat;
 	Level.wave_enemies[wave][kGrimReaper] = grim;
 }
-
-//function to assign environment object
-void init_environment_object(int arrayIndex, int row, int col, int object_type, LevelData* LevelX)
+//function to initialize environment object data base on given inputs
+static void EnvironmentObjectInit(
+	int array_index, int row, int col, int object_type)
 {
-	Environment[arrayIndex].image = grid_environment_objects_spritesheet;
-	Environment[arrayIndex].x_origin = game.x_origin + game.grid_width * (col + 0.5f);
-	Environment[arrayIndex].y_origin = game.y_origin + game.grid_height * (row + 0.5f);
-	Environment[arrayIndex].width = game.grid_width;
-	Environment[arrayIndex].height = game.grid_height;
-	Environment[arrayIndex].object_type = object_type;
+	environment[array_index].image = grid_environment_objects_spritesheet;
+	environment[array_index].x_origin =
+		game.x_origin + game.grid_width * (col + 0.5f);
+	environment[array_index].y_origin =
+		game.y_origin + game.grid_height * (row + 0.5f);
+	environment[array_index].width = game.grid_width;
+	environment[array_index].height = game.grid_height;
+	environment[array_index].object_type = object_type;
 
-	LevelX->grid[row][col].type = kBlocked;
-	LevelX->grid[row][col].type = kBlocked;
+	Level.grid[row][col].type = kBlocked;
+	Level.grid[row][col].type = kBlocked;
 }
-
 //Graphics
 void MouseInit(void) {
 	mouse_input.width = 0.0f;
@@ -357,51 +372,51 @@ void turret_mine_button_init(void) {
 
 void EnvironmentInit(LevelData* LevelX) {
 	for (int i = 0; i < kMaxEnvironmentObject; i++) {
-		Environment[i].image = NULL;
+		environment[i].image = NULL;
 	}
 
 
-	switch (current_game_level)
+	switch (Level.current_game_level)
 	{
 	case 0:
-		init_environment_object(0, 2, 2, 8, LevelX);
-		init_environment_object(1, 3, 4, 8, LevelX);
-		init_environment_object(2, 5, 1, 8, LevelX);
+		EnvironmentObjectInit(0, 2, 2, 8);
+		EnvironmentObjectInit(1, 3, 4, 8);
+		EnvironmentObjectInit(2, 5, 1, 8);
 		break;
 	case 1:
-		init_environment_object(0, 0, 1, 8, LevelX);
-		init_environment_object(1, 1, 4, 8, LevelX);
-		init_environment_object(2, 5, 1, 8, LevelX);
-		init_environment_object(3, 5, 5, 8, LevelX);
-		init_environment_object(4, 2, 2, 8, LevelX);
+		EnvironmentObjectInit(0, 0, 1, 8);
+		EnvironmentObjectInit(1, 1, 4, 8);
+		EnvironmentObjectInit(2, 5, 1, 8);
+		EnvironmentObjectInit(3, 5, 5, 8);
+		EnvironmentObjectInit(4, 2, 2, 8);
 		break;
 	case 2:
-		init_environment_object(0, 3, 3, 8, LevelX);
-		init_environment_object(1, 3, 4, 9, LevelX);
-		init_environment_object(2, 2, 1, 8, LevelX);
-		init_environment_object(3, 5, 5, 8, LevelX);
-		init_environment_object(4, 2, 2, 9, LevelX);
-		init_environment_object(5, 4, 0, 8, LevelX);
+		EnvironmentObjectInit(0, 3, 3, 8);
+		EnvironmentObjectInit(1, 3, 4, 9);
+		EnvironmentObjectInit(2, 2, 1, 8);
+		EnvironmentObjectInit(3, 5, 5, 8);
+		EnvironmentObjectInit(4, 2, 2, 9);
+		EnvironmentObjectInit(5, 4, 0, 8);
 		break;
 	case 3:
-		init_environment_object(0, 2, 2, 8, LevelX);
-		init_environment_object(1, 3, 3, 4, LevelX);
-		init_environment_object(2, 1, 0, 8, LevelX);
-		init_environment_object(3, 5, 2, 3, LevelX);
-		init_environment_object(4, 1, 1, 9, LevelX);
-		init_environment_object(5, 3, 1, 9, LevelX);
-		init_environment_object(6, 4, 4, 3, LevelX);
+		EnvironmentObjectInit(0, 2, 2, 8);
+		EnvironmentObjectInit(1, 3, 3, 4);
+		EnvironmentObjectInit(2, 1, 0, 8);
+		EnvironmentObjectInit(3, 5, 2, 3);
+		EnvironmentObjectInit(4, 1, 1, 9);
+		EnvironmentObjectInit(5, 3, 1, 9);
+		EnvironmentObjectInit(6, 4, 4, 3);
 		break;
 	case 4:
-		init_environment_object(0, 0, 2, 0, LevelX);
-		init_environment_object(1, 3, 4, 1, LevelX);
-		init_environment_object(2, 2, 1, 4, LevelX);
-		init_environment_object(3, 5, 5, 3, LevelX);
-		init_environment_object(4, 3, 2, 0, LevelX);
-		init_environment_object(5, 6, 2, 1, LevelX);
-		init_environment_object(6, 5, 1, 4, LevelX);
-		init_environment_object(7, 6, 4, 3, LevelX);
-		init_environment_object(8, 2, 6, 0, LevelX);
+		EnvironmentObjectInit(0, 0, 2, 0);
+		EnvironmentObjectInit(1, 3, 4, 1);
+		EnvironmentObjectInit(2, 2, 1, 4);
+		EnvironmentObjectInit(3, 5, 5, 3);
+		EnvironmentObjectInit(4, 3, 2, 0);
+		EnvironmentObjectInit(5, 6, 2, 1);
+		EnvironmentObjectInit(6, 5, 1, 4);
+		EnvironmentObjectInit(7, 6, 4, 3);
+		EnvironmentObjectInit(8, 2, 6, 0);
 		break;
 	}
 
@@ -409,9 +424,9 @@ void EnvironmentInit(LevelData* LevelX) {
 
 void RenderEnvironment(void) {
 	for (int i = 0; i < kMaxEnvironmentObject; i++) {
-		if (Environment[i].image == grid_environment_objects_spritesheet)
+		if (environment[i].image == grid_environment_objects_spritesheet)
 		{
-			RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[Environment[i].object_type], Environment[i].x_origin, Environment[i].y_origin, Environment[i].width, Environment[i].height);
+			RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[environment[i].object_type], environment[i].x_origin, environment[i].y_origin, environment[i].width, environment[i].height);
 		}
 
 	}
@@ -591,7 +606,7 @@ void RenderTurretDetailsDisplay(void) {
 			CP_Font_DrawText("All ghosts move slower", game_menu_object[kTurretDetailsDisplay].x_origin + game_menu_object[kTurretDetailsDisplay].width / 1.75f, (game_menu_object[kTurretDetailsDisplay].y_origin + game_menu_object[kTurretDetailsDisplay].height * 2 / 3));
 		}
 
-		
+
 		break;
 	case kTurretButtonHoming:
 		CP_Settings_RectMode(CP_POSITION_CORNER);
@@ -611,7 +626,7 @@ void RenderTurretDetailsDisplay(void) {
 			CP_Font_DrawText("All ghosts have less HP", game_menu_object[kTurretDetailsDisplay].x_origin + game_menu_object[kTurretDetailsDisplay].width / 1.75f, (game_menu_object[kTurretDetailsDisplay].y_origin + game_menu_object[kTurretDetailsDisplay].height * 2 / 3));
 		}
 
-		
+
 		break;
 	case kTurretButtonMine:
 		CP_Settings_RectMode(CP_POSITION_CORNER);
@@ -631,7 +646,7 @@ void RenderTurretDetailsDisplay(void) {
 			CP_Font_DrawText("Mines deal more damage", game_menu_object[kTurretDetailsDisplay].x_origin + game_menu_object[kTurretDetailsDisplay].width / 1.75f, (game_menu_object[kTurretDetailsDisplay].y_origin + game_menu_object[kTurretDetailsDisplay].height * 2 / 3));
 		}
 
-		
+
 		break;
 	}
 	mouse_input.x_origin = tempMouseX;
@@ -641,7 +656,7 @@ void RenderTurretDetailsDisplay(void) {
 void Level1Init(void) {
 	level_grid_cols = kLevel1Cols;
 	level_grid_rows = kLevel1Rows;
-	current_game_level = 0;
+	Level.current_game_level = 0;
 	Level.grid = (struct Grids**)calloc(level_grid_rows, sizeof(int*));// using size of pointers so that lower bits operating system do not require so much malloc
 	for (int i = 0; i < level_grid_rows; i++) {
 		if (Level.grid != NULL) {
@@ -671,22 +686,22 @@ void Level1Init(void) {
 	Level.current_power_up_level.reduce_enemy_health = 0;
 	Level.current_power_up_level.increased_mine_damage = 0;
 
-	general_level_enemies_init(0, 0, 10, 0, 0, 0);
-	general_level_enemies_init(0, 1, 10, 0, 0, 0);
-	general_level_enemies_init(0, 2, 15, 0, 0, 0);
-	general_level_enemies_init(0, 3, 15, 0, 0, 0);
-	general_level_enemies_init(0, 4, 15, 0, 0, 0);
-	general_level_enemies_init(0, 5, 20, 0, 0, 0);
-	general_level_enemies_init(0, 6, 20, 0, 0, 0);
-	general_level_enemies_init(0, 7, 25, 0, 0, 0);
-	general_level_enemies_init(0, 8, 30, 0, 0, 0);
-	general_level_enemies_init(0, 9, 30, 0, 0, 0);
+	InitGeneralLevelEnemies(0, 10, 0, 0, 0);
+	InitGeneralLevelEnemies(1, 10, 0, 0, 0);
+	InitGeneralLevelEnemies(2, 15, 0, 0, 0);
+	InitGeneralLevelEnemies(3, 15, 0, 0, 0);
+	InitGeneralLevelEnemies(4, 15, 0, 0, 0);
+	InitGeneralLevelEnemies(5, 20, 0, 0, 0);
+	InitGeneralLevelEnemies(6, 20, 0, 0, 0);
+	InitGeneralLevelEnemies(7, 25, 0, 0, 0);
+	InitGeneralLevelEnemies(8, 30, 0, 0, 0);
+	InitGeneralLevelEnemies(9, 30, 0, 0, 0);
 
 	game_grid_init();
 	is_placing_turret = kTMax;
-	turretSelectedToUpgrade = kNoTurretSelected;
+	turret_selected_to_upgrade = kNoTurretSelected;
 	power_up_menu = kFalse;
-	PathFindingInit();
+	InitPathFinding();
 	EnvironmentInit(&Level);
 
 	//turret menu items
@@ -724,7 +739,7 @@ void Level1Init(void) {
 void Level2Init(void) {
 	level_grid_cols = kLevel2Cols;
 	level_grid_rows = kLevel2Rows;
-	current_game_level = 1;
+	Level.current_game_level = 1;
 	Level.grid = (struct Grids**)calloc(level_grid_rows, sizeof(int*));// using size of pointers so that lower bits operating system do not require so much malloc
 	for (int i = 0; i < level_grid_rows; i++) {
 		if (Level.grid != NULL) {
@@ -752,22 +767,22 @@ void Level2Init(void) {
 	Level.current_power_up_level.increased_mine_damage = 0;
 
 
-	general_level_enemies_init(1, 0, 10, 0, 0, 0);
-	general_level_enemies_init(1, 1, 10, 0, 0, 0);
-	general_level_enemies_init(1, 2, 15, 1, 0, 0);
-	general_level_enemies_init(1, 3, 15, 5, 0, 0);
-	general_level_enemies_init(1, 4, 20, 5, 0, 0);
-	general_level_enemies_init(1, 5, 20, 10, 0, 0);
-	general_level_enemies_init(1, 6, 25, 10, 0, 0);
-	general_level_enemies_init(1, 7, 25, 10, 0, 0);
-	general_level_enemies_init(1, 8, 30, 10, 0, 0);
-	general_level_enemies_init(1, 9, 25, 15, 0, 0);
+	InitGeneralLevelEnemies(0, 10, 0, 0, 0);
+	InitGeneralLevelEnemies(1, 10, 0, 0, 0);
+	InitGeneralLevelEnemies(2, 15, 1, 0, 0);
+	InitGeneralLevelEnemies(3, 15, 5, 0, 0);
+	InitGeneralLevelEnemies(4, 20, 5, 0, 0);
+	InitGeneralLevelEnemies(5, 20, 10, 0, 0);
+	InitGeneralLevelEnemies(6, 25, 10, 0, 0);
+	InitGeneralLevelEnemies(7, 25, 10, 0, 0);
+	InitGeneralLevelEnemies(8, 30, 10, 0, 0);
+	InitGeneralLevelEnemies(9, 25, 15, 0, 0);
 
 	game_grid_init();
 	is_placing_turret = kTMax;
-	turretSelectedToUpgrade = kNoTurretSelected;
+	turret_selected_to_upgrade = kNoTurretSelected;
 	power_up_menu = kFalse;
-	PathFindingInit();
+	InitPathFinding();
 	EnvironmentInit(&Level);
 
 	//turret menu items
@@ -805,7 +820,7 @@ void Level2Init(void) {
 void Level3Init(void) {
 	level_grid_cols = kLevel3Cols;
 	level_grid_rows = kLevel3Rows;
-	current_game_level = 2;
+	Level.current_game_level = 2;
 	Level.grid = (struct Grids**)calloc(level_grid_rows, sizeof(int*));// using size of pointers so that lower bits operating system do not require so much malloc
 	for (int i = 0; i < level_grid_rows; i++) {
 		if (Level.grid != NULL) {
@@ -832,22 +847,22 @@ void Level3Init(void) {
 	Level.current_power_up_level.reduce_enemy_health = 0;
 	Level.current_power_up_level.increased_mine_damage = 0;
 
-	general_level_enemies_init(2, 0, 10, 0, 0, 0);
-	general_level_enemies_init(2, 1, 10, 5, 0, 0);
-	general_level_enemies_init(2, 2, 10, 5, 0, 0);
-	general_level_enemies_init(2, 3, 15, 5, 0, 0);
-	general_level_enemies_init(2, 4, 15, 10, 1, 0);
-	general_level_enemies_init(2, 5, 15, 10, 5, 0);
-	general_level_enemies_init(2, 6, 15, 10, 5, 0);
-	general_level_enemies_init(2, 7, 20, 10, 5, 0);
-	general_level_enemies_init(2, 8, 20, 10, 10, 0);
-	general_level_enemies_init(2, 9, 25, 10, 10, 0);
+	InitGeneralLevelEnemies(0, 10, 0, 0, 0);
+	InitGeneralLevelEnemies(1, 10, 5, 0, 0);
+	InitGeneralLevelEnemies(2, 10, 5, 0, 0);
+	InitGeneralLevelEnemies(3, 15, 5, 0, 0);
+	InitGeneralLevelEnemies(4, 15, 10, 1, 0);
+	InitGeneralLevelEnemies(5, 15, 10, 5, 0);
+	InitGeneralLevelEnemies(6, 15, 10, 5, 0);
+	InitGeneralLevelEnemies(7, 20, 10, 5, 0);
+	InitGeneralLevelEnemies(8, 20, 10, 10, 0);
+	InitGeneralLevelEnemies(9, 25, 10, 10, 0);
 
 	game_grid_init();
 	is_placing_turret = kTMax;
-	turretSelectedToUpgrade = kNoTurretSelected;
+	turret_selected_to_upgrade = kNoTurretSelected;
 	power_up_menu = kFalse;
-	PathFindingInit();
+	InitPathFinding();
 	EnvironmentInit(&Level);
 
 	//turret menu items
@@ -886,7 +901,7 @@ void Level3Init(void) {
 void Level4Init(void) {
 	level_grid_cols = kLevel4Cols;
 	level_grid_rows = kLevel4Rows;
-	current_game_level = 3;
+	Level.current_game_level = 3;
 	Level.grid = (struct Grids**)calloc(level_grid_rows, sizeof(int*));// using size of pointers so that lower bits operating system do not require so much malloc
 	for (int i = 0; i < level_grid_rows; i++) {
 		if (Level.grid != NULL) {
@@ -914,22 +929,22 @@ void Level4Init(void) {
 	Level.current_power_up_level.increased_mine_damage = 0;
 
 
-	general_level_enemies_init(3, 0, 10, 0, 0, 0);
-	general_level_enemies_init(3, 1, 10, 5, 0, 0);
-	general_level_enemies_init(3, 2, 10, 3, 2, 0);
-	general_level_enemies_init(3, 3, 10, 5, 5, 0);
-	general_level_enemies_init(3, 4, 15, 10, 5, 0);
-	general_level_enemies_init(3, 5, 15, 10, 5, 0);
-	general_level_enemies_init(3, 6, 15, 10, 10, 0);
-	general_level_enemies_init(3, 7, 10, 10, 10, 1);
-	general_level_enemies_init(3, 8, 15, 15, 10, 2);
-	general_level_enemies_init(3, 9, 20, 10, 15, 3);
+	InitGeneralLevelEnemies(0, 10, 0, 0, 0);
+	InitGeneralLevelEnemies(1, 10, 5, 0, 0);
+	InitGeneralLevelEnemies(2, 10, 3, 2, 0);
+	InitGeneralLevelEnemies(3, 10, 5, 5, 0);
+	InitGeneralLevelEnemies(4, 15, 10, 5, 0);
+	InitGeneralLevelEnemies(5, 15, 10, 5, 0);
+	InitGeneralLevelEnemies(6, 15, 10, 10, 0);
+	InitGeneralLevelEnemies(7, 10, 10, 10, 1);
+	InitGeneralLevelEnemies(8, 15, 15, 10, 2);
+	InitGeneralLevelEnemies(9, 20, 10, 15, 3);
 
 	game_grid_init();
 	is_placing_turret = kTMax;
-	turretSelectedToUpgrade = kNoTurretSelected;
+	turret_selected_to_upgrade = kNoTurretSelected;
 	power_up_menu = kFalse;
-	PathFindingInit();
+	InitPathFinding();
 	EnvironmentInit(&Level);
 
 	//turret menu items
@@ -967,7 +982,7 @@ void Level4Init(void) {
 void Level5Init(void) {
 	level_grid_cols = kLevel5Cols;
 	level_grid_rows = kLevel5Rows;
-	current_game_level = 4;
+	Level.current_game_level = 4;
 	Level.grid = (struct Grids**)calloc(level_grid_rows, sizeof(int*));// using size of pointers so that lower bits operating system do not require so much malloc
 	for (int i = 0; i < level_grid_rows; i++) {
 		if (Level.grid != NULL) {
@@ -994,16 +1009,16 @@ void Level5Init(void) {
 	Level.current_power_up_level.reduce_enemy_health = 0;
 	Level.current_power_up_level.increased_mine_damage = 0;
 
-	general_level_enemies_init(4, 0, 10, 0, 0, 0);
-	general_level_enemies_init(4, 1, 15, 0, 0, 0);
-	general_level_enemies_init(4, 2, 15, 5, 0, 0);
-	general_level_enemies_init(4, 3, 10, 5, 5, 0);
-	general_level_enemies_init(4, 4, 15, 5, 5, 0);
-	general_level_enemies_init(4, 5, 10, 10, 10, 0);
-	general_level_enemies_init(4, 6, 15, 10, 10, 0);
-	general_level_enemies_init(4, 7, 15, 10, 10, 1);
-	general_level_enemies_init(4, 8, 15, 15, 15, 2);
-	general_level_enemies_init(4, 9, 10, 10, 10, 5);
+	InitGeneralLevelEnemies(0, 10, 0, 0, 0);
+	InitGeneralLevelEnemies(1, 15, 0, 0, 0);
+	InitGeneralLevelEnemies(2, 15, 5, 0, 0);
+	InitGeneralLevelEnemies(3, 10, 5, 5, 0);
+	InitGeneralLevelEnemies(4, 15, 5, 5, 0);
+	InitGeneralLevelEnemies(5, 10, 10, 10, 0);
+	InitGeneralLevelEnemies(6, 15, 10, 10, 0);
+	InitGeneralLevelEnemies(7, 15, 10, 10, 1);
+	InitGeneralLevelEnemies(8, 15, 15, 15, 2);
+	InitGeneralLevelEnemies(9, 10, 10, 10, 5);
 
 	game_grid_init();
 
@@ -1026,9 +1041,9 @@ void Level5Init(void) {
 	sell_button_init();
 
 	is_placing_turret = kTMax;
-	turretSelectedToUpgrade = kNoTurretSelected;
+	turret_selected_to_upgrade = kNoTurretSelected;
 	power_up_menu = kFalse;
-	PathFindingInit();
+	InitPathFinding();
 	EnvironmentInit(&Level);
 	turret_init();
 	Enemies_init();
@@ -1048,7 +1063,7 @@ void ButtonPressedUpdate(void) {
 	switch (CheckGameButtonPressed())
 	{
 	case kGameGrid:
-		GameGridPressUpdate(&Level);
+		UpdateGameGridPress();
 		break;
 	case kPauseButton:
 		current_game_state = current_game_state == kPause ? kWave : kPause;
@@ -1060,7 +1075,7 @@ void ButtonPressedUpdate(void) {
 	case kTurretButtonBasic:
 		if (turret_purchasing[kTPPrice][kTBasic] <= Level.phantom_quartz && power_up_menu == kFalse) { // Currently hardcoded 
 			is_placing_turret = kTBasic;
-			turretSelectedToUpgrade = kNoTurretSelected;
+			turret_selected_to_upgrade = kNoTurretSelected;
 			RenderImageFromSpriteSheet(basic_turret_spritesheet, basic_turret_spritesheet_array[0], CP_Input_GetMouseX(), CP_Input_GetMouseY(), game.grid_width, game.grid_height);
 			//Button SFX
 			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
@@ -1072,7 +1087,7 @@ void ButtonPressedUpdate(void) {
 			Level.gold_quartz -= power_up_price.more_phantom_quartz;
 			MouseReset();
 			is_placing_turret = kTMax;
-			turretSelectedToUpgrade = kNoTurretSelected;
+			turret_selected_to_upgrade = kNoTurretSelected;
 			//Button SFX
 			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
 				CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
@@ -1080,14 +1095,14 @@ void ButtonPressedUpdate(void) {
 		}
 		else {
 			is_placing_turret = kTMax;
-			turretSelectedToUpgrade = kNoTurretSelected;
+			turret_selected_to_upgrade = kNoTurretSelected;
 		}
 		break;
 
 	case kTurretButtonSlow:
 		if (turret_purchasing[kTPPrice][kTSlow] <= Level.phantom_quartz && power_up_menu == kFalse) {
 			is_placing_turret = kTSlow;
-			turretSelectedToUpgrade = kNoTurretSelected;
+			turret_selected_to_upgrade = kNoTurretSelected;
 			CP_Image_DrawAdvanced(game_menu_object[CheckGameButtonPressed()].image, CP_Input_GetMouseX(), CP_Input_GetMouseY(), game.grid_width, game.grid_height, 255, 0);
 			//Button SFX
 			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
@@ -1099,7 +1114,7 @@ void ButtonPressedUpdate(void) {
 			Level.gold_quartz -= power_up_price.reduce_enemy_speed;
 			MouseReset();
 			is_placing_turret = kTMax;
-			turretSelectedToUpgrade = kNoTurretSelected;
+			turret_selected_to_upgrade = kNoTurretSelected;
 			//Button SFX
 			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
 				CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
@@ -1107,14 +1122,14 @@ void ButtonPressedUpdate(void) {
 		}
 		else {
 			is_placing_turret = kTMax;
-			turretSelectedToUpgrade = kNoTurretSelected;
+			turret_selected_to_upgrade = kNoTurretSelected;
 		}
 		break;
 
 	case kTurretButtonHoming:
 		if (turret_purchasing[kTPPrice][kTHoming] <= Level.phantom_quartz && power_up_menu == kFalse) {
 			is_placing_turret = kTHoming;
-			turretSelectedToUpgrade = kNoTurretSelected;
+			turret_selected_to_upgrade = kNoTurretSelected;
 			RenderImageFromSpriteSheet(homing_missle_turret_spritesheet, homing_missle_turret_spritesheet_array[0], CP_Input_GetMouseX(), CP_Input_GetMouseY(), game.grid_width, game.grid_height);
 			//Button SFX
 			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
@@ -1126,7 +1141,7 @@ void ButtonPressedUpdate(void) {
 			Level.gold_quartz -= power_up_price.reduce_enemy_health;
 			MouseReset();
 			is_placing_turret = kTMax;
-			turretSelectedToUpgrade = kNoTurretSelected;
+			turret_selected_to_upgrade = kNoTurretSelected;
 			//Button SFX
 			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
 				CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
@@ -1134,13 +1149,13 @@ void ButtonPressedUpdate(void) {
 		}
 		else {
 			is_placing_turret = kTMax;
-			turretSelectedToUpgrade = kNoTurretSelected;
+			turret_selected_to_upgrade = kNoTurretSelected;
 		}
 		break;
 	case kTurretButtonMine:
 		if (turret_purchasing[kTPPrice][kTMine] <= Level.phantom_quartz && power_up_menu == kFalse) {
 			is_placing_turret = kTMine;
-			turretSelectedToUpgrade = kNoTurretSelected;
+			turret_selected_to_upgrade = kNoTurretSelected;
 			RenderImageFromSpriteSheet(mine_spritesheet, mine_spritesheet_array[0], CP_Input_GetMouseX(), CP_Input_GetMouseY(), game.grid_width, game.grid_height);
 			//Button SFX
 			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
@@ -1152,7 +1167,7 @@ void ButtonPressedUpdate(void) {
 			Level.gold_quartz -= power_up_price.increased_mine_damage;
 			MouseReset();
 			is_placing_turret = kTMax;
-			turretSelectedToUpgrade = kNoTurretSelected;
+			turret_selected_to_upgrade = kNoTurretSelected;
 			//Button SFX
 			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
 				CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
@@ -1160,13 +1175,13 @@ void ButtonPressedUpdate(void) {
 		}
 		else {
 			is_placing_turret = kTMax;
-			turretSelectedToUpgrade = kNoTurretSelected;
+			turret_selected_to_upgrade = kNoTurretSelected;
 		}
 		break;
 
 	case kSwapButton:
 		is_placing_turret = kTMax;
-		turretSelectedToUpgrade = kNoTurretSelected;
+		turret_selected_to_upgrade = kNoTurretSelected;
 		power_up_menu = !power_up_menu;
 		MouseReset();
 		//Button SFX
@@ -1175,7 +1190,7 @@ void ButtonPressedUpdate(void) {
 
 	case kGoldQuartzMenu:
 		is_placing_turret = kTMax;
-		turretSelectedToUpgrade = kNoTurretSelected;
+		turret_selected_to_upgrade = kNoTurretSelected;
 		if (Level.phantom_quartz >= 1000) {
 			Level.phantom_quartz -= 1000;
 			Level.gold_quartz += 10;
@@ -1190,13 +1205,13 @@ void ButtonPressedUpdate(void) {
 		break;
 
 	case kUpgradeButton:
-		if (turretSelectedToUpgrade != kNoTurretSelected) {
-			if (turret[turretSelectedToUpgrade].type != kTMine) {
-				if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT) && Level.phantom_quartz >= turret[turretSelectedToUpgrade].upgrade_price) {
-					if (turret[turretSelectedToUpgrade].level < 10)
+		if (turret_selected_to_upgrade != kNoTurretSelected) {
+			if (turret[turret_selected_to_upgrade].type != kTMine) {
+				if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT) && Level.phantom_quartz >= turret[turret_selected_to_upgrade].upgrade_price) {
+					if (turret[turret_selected_to_upgrade].level < 10)
 					{
-						Level.phantom_quartz -= turret[turretSelectedToUpgrade].upgrade_price;
-						upgrade_turret(turretSelectedToUpgrade);
+						Level.phantom_quartz -= turret[turret_selected_to_upgrade].upgrade_price;
+						upgrade_turret(turret_selected_to_upgrade);
 						//Button SFX
 						if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
 							CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
@@ -1213,16 +1228,16 @@ void ButtonPressedUpdate(void) {
 		}
 		else {
 			is_placing_turret = kTMax;
-			turretSelectedToUpgrade = kNoTurretSelected;
+			turret_selected_to_upgrade = kNoTurretSelected;
 		}
 		break;
 
 	case kSellButton:
-		if (turretSelectedToUpgrade != kNoTurretSelected) {
+		if (turret_selected_to_upgrade != kNoTurretSelected) {
 			int drawX, drawY;
-			drawX = (int)((turret[turretSelectedToUpgrade].data.x_origin - game.x_origin) / game.grid_width);
-			drawY = (int)((turret[turretSelectedToUpgrade].data.y_origin - game.y_origin) / game.grid_height);
-			sell_turret(turretSelectedToUpgrade);
+			drawX = (int)((turret[turret_selected_to_upgrade].data.x_origin - game.x_origin) / game.grid_width);
+			drawY = (int)((turret[turret_selected_to_upgrade].data.y_origin - game.y_origin) / game.grid_height);
+			sell_turret(turret_selected_to_upgrade);
 			Level.grid[drawY][drawX].type = kClear;
 			PathFindingReset(&Level);
 			PathFindingCalculateCost();
@@ -1236,13 +1251,13 @@ void ButtonPressedUpdate(void) {
 		}
 		else {
 			is_placing_turret = kTMax;
-			turretSelectedToUpgrade = kNoTurretSelected;
+			turret_selected_to_upgrade = kNoTurretSelected;
 		}
 		break;
 
 	default:
 		is_placing_turret = kTMax;
-		turretSelectedToUpgrade = kNoTurretSelected;
+		turret_selected_to_upgrade = kNoTurretSelected;
 		break;
 	}
 }
@@ -1264,10 +1279,10 @@ void RenderGameGrid(void)
 
 void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type) {
 	char temp[100];
-	if (turretSelectedToUpgrade == kNoTurretSelected && (type == kUpgradeButton || type == kSellButton || type == kUpgradeMenu)) {// only render upgrade and sell button when turret selected
+	if (turret_selected_to_upgrade == kNoTurretSelected && (type == kUpgradeButton || type == kSellButton || type == kUpgradeMenu)) {// only render upgrade and sell button when turret selected
 	//empty by design
 	}
-	else if (turret[turretSelectedToUpgrade].type == kTMine && type == kUpgradeButton) { //Hide the upgrade menu for mine
+	else if (turret[turret_selected_to_upgrade].type == kTMine && type == kUpgradeButton) { //Hide the upgrade menu for mine
 		//empty by design
 	}
 	else {
@@ -1460,18 +1475,13 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 		CP_Font_DrawText(temp, menuObjectX.x_origin + menuObjectX.width / 2, menuObjectX.y_origin + menuObjectX.height / 5);
 		int totalEnemies = 0;
 		for (int i = 0; i < kMaxEnemyType; i++) {
-			if (current_game_state == kWave) {
-				totalEnemies += Level.wave_enemies[Level.current_wave][i];
-			}
-			else if (current_game_state == kBuilding) { // Forecast for next wave instead of current empty wave
-				totalEnemies += Level.wave_enemies[Level.current_wave][i];
-			}
+			totalEnemies += Level.wave_enemies[Level.current_wave][i];
 		}
 		sprintf_s(temp, sizeof(temp), "%d/%d", enemies_left, totalEnemies);
 		CP_Font_DrawText(temp, menuObjectX.x_origin + menuObjectX.width / 2, menuObjectX.y_origin + menuObjectX.height / 2);
 		break;
 	case kUpgradeMenu:
-		if (turretSelectedToUpgrade != kNoTurretSelected) { //Only render when upgrading
+		if (turret_selected_to_upgrade != kNoTurretSelected) { //Only render when upgrading
 
 			CP_Image_Draw(upgrade_menu_background, menuObjectX.x_origin + menuObjectX.width / 2,
 				menuObjectX.y_origin + menuObjectX.height / 2.6f, 275 * scaling_factor, 480 * scaling_factor, 255);
@@ -1483,20 +1493,20 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 			//Level Icon
 			RenderImageFromSpriteSheet(turret_stats_spritesheet, turret_stats_spritesheet_array[0], menuObjectX.x_origin + menuObjectX.width / 1.75f,
 				menuObjectX.y_origin + menuObjectX.height / 5.75f, 64 * scaling_factor, 64 * scaling_factor);
-			if (turret[turretSelectedToUpgrade].level == 10)
+			if (turret[turret_selected_to_upgrade].level == 10)
 			{
 				sprintf_s(temp, sizeof(temp), "MAX");
 			}
 
 			else
 			{
-				sprintf_s(temp, sizeof(temp), "%-3d", turret[turretSelectedToUpgrade].level);
+				sprintf_s(temp, sizeof(temp), "%-3d", turret[turret_selected_to_upgrade].level);
 			}
 
 			CP_Font_DrawText(temp, menuObjectX.x_origin + menuObjectX.width / 1.2f,
 				menuObjectX.y_origin + menuObjectX.height / 5.75f);
 
-			switch (turret[turretSelectedToUpgrade].type)
+			switch (turret[turret_selected_to_upgrade].type)
 			{
 			case kTBasic:
 				sprintf_s(temp, sizeof(temp), "Basic");
@@ -1506,7 +1516,7 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 					menuObjectX.y_origin + menuObjectX.height / 5.75f, 110 * scaling_factor, 110 * scaling_factor);
 				RenderImageFromSpriteSheet(turret_stats_spritesheet, turret_stats_spritesheet_array[1], menuObjectX.x_origin + menuObjectX.width / 5,
 					menuObjectX.y_origin + menuObjectX.height / 3.25f, 64 * scaling_factor, 64 * scaling_factor);
-				sprintf_s(temp, sizeof(temp), "%.2f", turret[turretSelectedToUpgrade].mod.damage);
+				sprintf_s(temp, sizeof(temp), "%.2f", turret[turret_selected_to_upgrade].mod.damage);
 				CP_Font_DrawText(temp, menuObjectX.x_origin + menuObjectX.width / 1.95f, menuObjectX.y_origin + menuObjectX.height / 3.25f);
 				break;
 
@@ -1517,7 +1527,7 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 					menuObjectX.y_origin + menuObjectX.height / 5.75f, 110 * scaling_factor, 110 * scaling_factor, 255, 90);
 				RenderImageFromSpriteSheet(turret_stats_spritesheet, turret_stats_spritesheet_array[2], menuObjectX.x_origin + menuObjectX.width / 5,
 					menuObjectX.y_origin + menuObjectX.height / 3.25f, 64 * scaling_factor, 64 * scaling_factor);
-				sprintf_s(temp, sizeof(temp), "%.2f", turret[turretSelectedToUpgrade].mod.slow_amt);
+				sprintf_s(temp, sizeof(temp), "%.2f", turret[turret_selected_to_upgrade].mod.slow_amt);
 				CP_Font_DrawText(temp, menuObjectX.x_origin + menuObjectX.width / 1.95f, menuObjectX.y_origin + menuObjectX.height / 3.25f);
 				break;
 
@@ -1529,7 +1539,7 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 					menuObjectX.y_origin + menuObjectX.height / 5.85f, 110 * scaling_factor, 110 * scaling_factor);
 				RenderImageFromSpriteSheet(turret_stats_spritesheet, turret_stats_spritesheet_array[1], menuObjectX.x_origin + menuObjectX.width / 5,
 					menuObjectX.y_origin + menuObjectX.height / 3.25f, 64 * scaling_factor, 64 * scaling_factor);
-				sprintf_s(temp, sizeof(temp), "%.2f", turret[turretSelectedToUpgrade].mod.damage);
+				sprintf_s(temp, sizeof(temp), "%.2f", turret[turret_selected_to_upgrade].mod.damage);
 				CP_Font_DrawText(temp, menuObjectX.x_origin + menuObjectX.width / 1.95f, menuObjectX.y_origin + menuObjectX.height / 3.25f);
 				break;
 
@@ -1541,7 +1551,7 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 					menuObjectX.y_origin + menuObjectX.height / 5.75f, 110 * scaling_factor, 110 * scaling_factor);
 				RenderImageFromSpriteSheet(turret_stats_spritesheet, turret_stats_spritesheet_array[1], menuObjectX.x_origin + menuObjectX.width / 5,
 					menuObjectX.y_origin + menuObjectX.height / 3.25f, 64 * scaling_factor, 64 * scaling_factor);
-				sprintf_s(temp, sizeof(temp), "%.2f", turret[turretSelectedToUpgrade].mod.damage);
+				sprintf_s(temp, sizeof(temp), "%.2f", turret[turret_selected_to_upgrade].mod.damage);
 				CP_Font_DrawText(temp, menuObjectX.x_origin + menuObjectX.width / 1.95f, menuObjectX.y_origin + menuObjectX.height / 3.25f);
 				break;
 
@@ -1549,19 +1559,19 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 			//Range Icon
 			RenderImageFromSpriteSheet(turret_stats_spritesheet, turret_stats_spritesheet_array[3], menuObjectX.x_origin + menuObjectX.width / 5,
 				menuObjectX.y_origin + menuObjectX.height / 2.44f, 64 * scaling_factor, 64 * scaling_factor);
-			sprintf_s(temp, sizeof(temp), "%-5.2f", turret[turretSelectedToUpgrade].mod.range);
+			sprintf_s(temp, sizeof(temp), "%-5.2f", turret[turret_selected_to_upgrade].mod.range);
 			CP_Font_DrawText(temp, menuObjectX.x_origin + menuObjectX.width / 1.7f, menuObjectX.y_origin + menuObjectX.height / 2.44f);
 
 			//Attack Speed Icon
 			RenderImageFromSpriteSheet(turret_stats_spritesheet, turret_stats_spritesheet_array[4], menuObjectX.x_origin + menuObjectX.width / 5,
 				menuObjectX.y_origin + menuObjectX.height / 1.95f, 64 * scaling_factor, 64 * scaling_factor);
-			sprintf_s(temp, sizeof(temp), "%.2f", turret[turretSelectedToUpgrade].mod.shoot_rate);
+			sprintf_s(temp, sizeof(temp), "%.2f", turret[turret_selected_to_upgrade].mod.shoot_rate);
 			CP_Font_DrawText(temp, menuObjectX.x_origin + menuObjectX.width / 1.95f, menuObjectX.y_origin + menuObjectX.height / 1.95f);
 
 			CP_Settings_TextSize(35.0f * scaling_factor);
 
 			//Upgrade Price
-			if (turret[turretSelectedToUpgrade].level == 10)
+			if (turret[turret_selected_to_upgrade].level == 10)
 			{
 				sprintf_s(temp, sizeof(temp), "MAX");
 				CP_Font_DrawText(temp, menuObjectX.x_origin + menuObjectX.width / 3.75f, menuObjectX.y_origin + menuObjectX.height / 1.65f);
@@ -1569,8 +1579,8 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 
 			else
 			{
-				if (turret[turretSelectedToUpgrade].type != kTMine) {
-					sprintf_s(temp, sizeof(temp), "%4d", turret[turretSelectedToUpgrade].upgrade_price);
+				if (turret[turret_selected_to_upgrade].type != kTMine) {
+					sprintf_s(temp, sizeof(temp), "%4d", turret[turret_selected_to_upgrade].upgrade_price);
 					CP_Font_DrawText(temp, menuObjectX.x_origin + menuObjectX.width / 5.5f, menuObjectX.y_origin + menuObjectX.height / 1.65f);
 					RenderImageFromSpriteSheet(currency_spritesheet, currency_spritesheet_array[1], menuObjectX.x_origin + menuObjectX.width / 2.95f,
 						menuObjectX.y_origin + menuObjectX.height / 1.65f, 40 * scaling_factor, 40 * scaling_factor);
@@ -1578,7 +1588,7 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 
 			}
 			//Sell Price
-			sprintf_s(temp, sizeof(temp), "%4d", turret[turretSelectedToUpgrade].sell_price);
+			sprintf_s(temp, sizeof(temp), "%4d", turret[turret_selected_to_upgrade].sell_price);
 			CP_Font_DrawText(temp, menuObjectX.x_origin + menuObjectX.width / 1.45f, menuObjectX.y_origin + menuObjectX.height / 1.65f);
 			RenderImageFromSpriteSheet(currency_spritesheet, currency_spritesheet_array[1], menuObjectX.x_origin + menuObjectX.width / 1.15f,
 				menuObjectX.y_origin + menuObjectX.height / 1.65f, 40 * scaling_factor, 40 * scaling_factor);
@@ -1588,7 +1598,7 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 		}
 		break;
 	case kUpgradeButton:
-		if (turretSelectedToUpgrade != kNoTurretSelected && turret[turretSelectedToUpgrade].type != kTMine) { //Only render when upgrading or when mine is not selected
+		if (turret_selected_to_upgrade != kNoTurretSelected && turret[turret_selected_to_upgrade].type != kTMine) { //Only render when upgrading or when mine is not selected
 
 			RenderImageFromSpriteSheet(interactable_UI_buttons_spritesheet, interactable_UI_buttons_spritesheet_array[1],
 				menuObjectX.x_origin + menuObjectX.width / 2,
@@ -1597,7 +1607,7 @@ void render_turret_menu_object(Coordinates menuObjectX, enum MenuObjectType type
 		}
 		break;
 	case kSellButton:
-		if (turretSelectedToUpgrade != kNoTurretSelected) {//Only render when upgrading
+		if (turret_selected_to_upgrade != kNoTurretSelected) {//Only render when upgrading
 
 			RenderImageFromSpriteSheet(interactable_UI_buttons_spritesheet, interactable_UI_buttons_spritesheet_array[0],
 				menuObjectX.x_origin + menuObjectX.width / 2,
@@ -1679,25 +1689,25 @@ void HowToPlayButtonsInit(void) {
 	TutorialButtons[kHowToPlayBack].width = (float)CP_System_GetWindowWidth() / 10;
 	TutorialButtons[kHowToPlayBack].height = (float)CP_System_GetWindowHeight() / 10;
 
-	TutorialButtons[kHowToPlayPrevious].x_origin = (float)CP_System_GetWindowWidth()/50;
+	TutorialButtons[kHowToPlayPrevious].x_origin = (float)CP_System_GetWindowWidth() / 50;
 	TutorialButtons[kHowToPlayPrevious].y_origin = (float)CP_System_GetWindowHeight() / 50;
 	TutorialButtons[kHowToPlayPrevious].width = (float)CP_System_GetWindowWidth() / 10;
 	TutorialButtons[kHowToPlayPrevious].height = (float)CP_System_GetWindowHeight() / 10;
 
-	TutorialButtons[kHowToPlayNext].x_origin = (float)CP_System_GetWindowWidth()/1.12f;
-	TutorialButtons[kHowToPlayNext].y_origin = (float)CP_System_GetWindowHeight()/50;
+	TutorialButtons[kHowToPlayNext].x_origin = (float)CP_System_GetWindowWidth() / 1.12f;
+	TutorialButtons[kHowToPlayNext].y_origin = (float)CP_System_GetWindowHeight() / 50;
 	TutorialButtons[kHowToPlayNext].width = (float)CP_System_GetWindowWidth() / 10;
 	TutorialButtons[kHowToPlayNext].height = (float)CP_System_GetWindowHeight() / 10;
 }
 void RenderHowToPlayPages(void) {
 	CP_Graphics_ClearBackground(COLOR_WHITE);
-	
+
 	CP_Settings_RectMode(CP_POSITION_CORNER);
 	CP_Image_Draw(tutorial_image_array[current_how_to_play_page], CP_System_GetWindowWidth() * 0.5f,
 		CP_System_GetWindowHeight() * 0.5f, 1280 * scaling_factor, 720 * scaling_factor, 255);
 
-	
-	
+
+
 	if (current_how_to_play_page != 0) {
 		CP_Graphics_DrawRect(TutorialButtons[kHowToPlayPrevious].x_origin,
 			TutorialButtons[kHowToPlayPrevious].y_origin,
@@ -1730,13 +1740,13 @@ void RenderHowToPlayPages(void) {
 			TutorialButtons[kHowToPlayNext].width,
 			TutorialButtons[kHowToPlayNext].height);
 		RenderImageFromSpriteSheet(interactable_UI_buttons_spritesheet, interactable_UI_buttons_spritesheet_array[3],
-			TutorialButtons[kHowToPlayNext].x_origin + TutorialButtons[kHowToPlayNext].width/2,
-			TutorialButtons[kHowToPlayNext].y_origin + TutorialButtons[kHowToPlayNext].height/ 2,
+			TutorialButtons[kHowToPlayNext].x_origin + TutorialButtons[kHowToPlayNext].width / 2,
+			TutorialButtons[kHowToPlayNext].y_origin + TutorialButtons[kHowToPlayNext].height / 2,
 			TutorialButtons[kHowToPlayNext].width,
 			TutorialButtons[kHowToPlayNext].height);
-		
+
 	}
-	
+
 	/*switch (current_how_to_play_page) {
 	case 0:
 		CP_Graphics_DrawCircle(100, 100, 100);

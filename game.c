@@ -73,7 +73,7 @@ void game_update(void)
 		update_particle();
 
 		//render all the stuff
-		RenderLevelEnvironment(current_game_level);
+		RenderLevelEnvironment(Level.current_game_level);
 		RenderGameGrid();
 		RenderEnemyPath(&Level);
 
@@ -86,8 +86,8 @@ void game_update(void)
 		render_particle();
 		RenderAndUpdateBulletCircles();
 
-		if (!turret[turretSelectedToUpgrade].is_active) { // Close mine menu when it explodes
-			turretSelectedToUpgrade = kNoTurretSelected;
+		if (!turret[turret_selected_to_upgrade].is_active) { // Close mine menu when it explodes
+			turret_selected_to_upgrade = kNoTurretSelected;
 		}
 		ButtonPressedUpdate();
 
@@ -117,7 +117,7 @@ void game_update(void)
 		update_projectile();
 		update_particle();
 		//render all the stuff
-		RenderLevelEnvironment(current_game_level);
+		RenderLevelEnvironment(Level.current_game_level);
 		RenderGameGrid();
 		RenderEnemyPath(&Level);
 		UpdatePortalAnimation();
@@ -141,7 +141,7 @@ void game_update(void)
 
 
 		//setting enemies
-		Reset_enemies(current_game_level);
+		Reset_enemies(Level.current_game_level);
 
 
 	}
@@ -155,12 +155,12 @@ void game_update(void)
 		}
 		else if (BtnIsPressed(EndScreenButtons[1].buttonData))
 		{
-			init_next_level(current_game_level);
+			init_next_level(Level.current_game_level);
 			current_game_state = kBuilding;
 		}
 		else if (BtnIsPressed(EndScreenButtons[2].buttonData))
 		{
-			init_next_level(current_game_level + 1);
+			init_next_level(Level.current_game_level + 1);
 		}
 
 		render_end_screen(); // this should pause the game?

@@ -298,11 +298,11 @@ void render_turret(void)
 		}
 	}
 
-	if (turretSelectedToUpgrade != kNoTurretSelected)
+	if (turret_selected_to_upgrade != kNoTurretSelected)
 	{
 		CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255 / 2));
-		CP_Graphics_DrawCircle(turret[turretSelectedToUpgrade].data.x_origin,
-			turret[turretSelectedToUpgrade].data.y_origin, turret[turretSelectedToUpgrade].mod.range * 2);
+		CP_Graphics_DrawCircle(turret[turret_selected_to_upgrade].data.x_origin,
+			turret[turret_selected_to_upgrade].data.y_origin, turret[turret_selected_to_upgrade].mod.range * 2);
 	}
 }
 
