@@ -45,7 +45,7 @@ void game_init(void)
 	init_skip_wave_button();
 
 	//Initialize Objects
-	MouseInit();
+	InitMouse();
 
 
 	// initialize price for powerups
