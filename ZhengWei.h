@@ -35,8 +35,7 @@ extern const float kRightGameMenuXOrigin;
 //Environment
 Coordinates environment[kMaxEnvironmentObject];
 
-void MouseInit(void);
-void EnvironmentInit(LevelData* LevelX);
+void InitMouse(void);
 void PowerUpPriceInit(void);
 void Level1Init(void);
 void Level2Init(void);

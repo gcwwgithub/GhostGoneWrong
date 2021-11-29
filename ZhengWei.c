@@ -284,7 +284,7 @@ static void InitGeneralLevelEnemies(
 	Level.wave_enemies[wave][kGrimReaper] = grim;
 }
 //function to initialize environment object data base on given inputs
-static void EnvironmentObjectInit(
+static void InitEnvironmentObject(
 	int array_index, int row, int col, int object_type)
 {
 	environment[array_index].image = grid_environment_objects_spritesheet;
@@ -299,255 +299,244 @@ static void EnvironmentObjectInit(
 	Level.grid[row][col].type = kBlocked;
 	Level.grid[row][col].type = kBlocked;
 }
-//Graphics
-void MouseInit(void) {
-	mouse_input.width = 0.0f;
-	mouse_input.height = 0.0f;
-	mouse_input.object_type = kObjectCircle;
-	MouseReset();
-}
-
-void game_grid_init(void) {
-	float unusableScreenHeight, unusableScreenWidth;/*Height and Width not used for game, example menu*/
-	unusableScreenHeight = (float)CP_System_GetWindowHeight() / 2; //Half the screeen is used for the game
-	game.height = (float)CP_System_GetWindowHeight() - unusableScreenHeight;
+//Initialize positions of Buttons and Display
+static void InitGameGrid(void) {
+	/*Height and Width not used for game, example menus*/
+	float unusable_screen_height;
+	//Half the screeen height is used for the gamegrid itself
+	unusable_screen_height = (float)CP_System_GetWindowHeight() / 2;
+	game.height = (float)CP_System_GetWindowHeight() - unusable_screen_height;
 	game.grid_height = game.height / level_grid_rows;
-	game.grid_width = game.height / level_grid_rows; //Grid is a Square
+	game.grid_width = game.grid_height; //Grid is a Square
 	game.width = game.grid_width * level_grid_cols;
-	unusableScreenWidth = (float)CP_System_GetWindowWidth() - game.width;
-	game.x_origin = unusableScreenWidth / 2; //To centralise the Grid
-	game.y_origin = unusableScreenHeight / 2; //Centre the game
+	//To centralise the Grid
+	game.x_origin = ((float)CP_System_GetWindowWidth() - game.width) / 2;
+	game.y_origin = unusable_screen_height / 2;
+	//Coordinates game grid used to check for pressing on game grid
 	game_menu_object[kGameGrid].x_origin = game.x_origin;
 	game_menu_object[kGameGrid].y_origin = game.y_origin;
 	game_menu_object[kGameGrid].width = game.width;
 	game_menu_object[kGameGrid].height = game.height;
 	game_menu_object[kGameGrid].object_type = kObjectRectangle;
 }
-
-void pause_button_init(void) {
+static void InitPauseButton(void) {
 	game_menu_object[kPauseButton].x_origin = 0.0f;
 	game_menu_object[kPauseButton].y_origin = 0.0f;
 	game_menu_object[kPauseButton].width = kLeftGameMenuXWidth;
-	game_menu_object[kPauseButton].height = (float)CP_System_GetWindowHeight() / 10;
-	game_menu_object[kPauseButton].object_type = kObjectRectangle;
+	game_menu_object[kPauseButton].height = 
+		(float)CP_System_GetWindowHeight() / 10;
 	game_menu_object[kPauseButton].image = pause_button_image;
 }
-
-void turret_basic_button_init(void) {
-
-	game_menu_object[kTurretButtonBasic].x_origin = game_menu_object[kPauseButton].x_origin;
-	game_menu_object[kTurretButtonBasic].y_origin = game_menu_object[kPauseButton].height;
-	game_menu_object[kTurretButtonBasic].width = game_menu_object[kPauseButton].width;
-	game_menu_object[kTurretButtonBasic].height = game_menu_object[kPauseButton].height * 2;
-	game_menu_object[kTurretButtonBasic].object_type = kObjectRectangle;
+static void InitBasicTurretButton(void) {
+	game_menu_object[kTurretButtonBasic].x_origin = 
+		game_menu_object[kPauseButton].x_origin;
+	game_menu_object[kTurretButtonBasic].y_origin = 
+		game_menu_object[kPauseButton].height;
+	game_menu_object[kTurretButtonBasic].width = 
+		game_menu_object[kPauseButton].width;
+	game_menu_object[kTurretButtonBasic].height = 
+		game_menu_object[kPauseButton].height * 2;
 	game_menu_object[kTurretButtonBasic].image = slow_turret_image_array[0];
 }
-
-void turret_slow_button_init(void) {
-	game_menu_object[kTurretButtonSlow].x_origin = game_menu_object[kTurretButtonBasic].x_origin;
-	game_menu_object[kTurretButtonSlow].y_origin = game_menu_object[kTurretButtonBasic].y_origin + game_menu_object[kTurretButtonBasic].height;
-	game_menu_object[kTurretButtonSlow].width = game_menu_object[kTurretButtonBasic].width;
-	game_menu_object[kTurretButtonSlow].height = game_menu_object[kTurretButtonBasic].height;
-	game_menu_object[kTurretButtonSlow].object_type = kObjectRectangle;
+static void InitSlowTurretButton(void) {
+	game_menu_object[kTurretButtonSlow].x_origin = 
+		game_menu_object[kTurretButtonBasic].x_origin;
+	game_menu_object[kTurretButtonSlow].y_origin = 
+		game_menu_object[kTurretButtonBasic].y_origin 
+		+ game_menu_object[kTurretButtonBasic].height;
+	game_menu_object[kTurretButtonSlow].width = 
+		game_menu_object[kTurretButtonBasic].width;
+	game_menu_object[kTurretButtonSlow].height = 
+		game_menu_object[kTurretButtonBasic].height;
 	game_menu_object[kTurretButtonSlow].image = slow_turret_image_array[0];
 }
-
-void turret_homing_button_init(void) {
-	game_menu_object[kTurretButtonHoming].x_origin = game_menu_object[kTurretButtonSlow].x_origin;
-	game_menu_object[kTurretButtonHoming].y_origin = game_menu_object[kTurretButtonSlow].y_origin + game_menu_object[kTurretButtonSlow].height;
-	game_menu_object[kTurretButtonHoming].width = game_menu_object[kTurretButtonSlow].width;
-	game_menu_object[kTurretButtonHoming].height = game_menu_object[kTurretButtonSlow].height;
-	game_menu_object[kTurretButtonHoming].object_type = kObjectRectangle;
+static void InitHomingTurretButton(void) {
+	game_menu_object[kTurretButtonHoming].x_origin = 
+		game_menu_object[kTurretButtonSlow].x_origin;
+	game_menu_object[kTurretButtonHoming].y_origin = 
+		game_menu_object[kTurretButtonSlow].y_origin 
+		+ game_menu_object[kTurretButtonSlow].height;
+	game_menu_object[kTurretButtonHoming].width = 
+		game_menu_object[kTurretButtonSlow].width;
+	game_menu_object[kTurretButtonHoming].height = 
+		game_menu_object[kTurretButtonSlow].height;
 	game_menu_object[kTurretButtonHoming].image = slow_turret_image_array[0];
 }
-
-void turret_mine_button_init(void) {
-	game_menu_object[kTurretButtonMine].x_origin = game_menu_object[kTurretButtonHoming].x_origin;
-	game_menu_object[kTurretButtonMine].y_origin = game_menu_object[kTurretButtonHoming].y_origin + game_menu_object[kTurretButtonHoming].height;
-	game_menu_object[kTurretButtonMine].width = game_menu_object[kTurretButtonHoming].width;
-	game_menu_object[kTurretButtonMine].height = game_menu_object[kTurretButtonBasic].height;
-	game_menu_object[kTurretButtonMine].object_type = kObjectRectangle;
+static void InitTurretMineButton(void) {
+	game_menu_object[kTurretButtonMine].x_origin = 
+		game_menu_object[kTurretButtonHoming].x_origin;
+	game_menu_object[kTurretButtonMine].y_origin = 
+		game_menu_object[kTurretButtonHoming].y_origin 
+		+ game_menu_object[kTurretButtonHoming].height;
+	game_menu_object[kTurretButtonMine].width = 
+		game_menu_object[kTurretButtonHoming].width;
+	game_menu_object[kTurretButtonMine].height = 
+		game_menu_object[kTurretButtonBasic].height;
 	game_menu_object[kTurretButtonMine].image = slow_turret_image_array[0];
 }
-
-void EnvironmentInit(LevelData* LevelX) {
-	for (int i = 0; i < kMaxEnvironmentObject; i++) {
-		environment[i].image = NULL;
-	}
-
-
-	switch (Level.current_game_level)
-	{
-	case 0:
-		EnvironmentObjectInit(0, 2, 2, 8);
-		EnvironmentObjectInit(1, 3, 4, 8);
-		EnvironmentObjectInit(2, 5, 1, 8);
-		break;
-	case 1:
-		EnvironmentObjectInit(0, 0, 1, 8);
-		EnvironmentObjectInit(1, 1, 4, 8);
-		EnvironmentObjectInit(2, 5, 1, 8);
-		EnvironmentObjectInit(3, 5, 5, 8);
-		EnvironmentObjectInit(4, 2, 2, 8);
-		break;
-	case 2:
-		EnvironmentObjectInit(0, 3, 3, 8);
-		EnvironmentObjectInit(1, 3, 4, 9);
-		EnvironmentObjectInit(2, 2, 1, 8);
-		EnvironmentObjectInit(3, 5, 5, 8);
-		EnvironmentObjectInit(4, 2, 2, 9);
-		EnvironmentObjectInit(5, 4, 0, 8);
-		break;
-	case 3:
-		EnvironmentObjectInit(0, 2, 2, 8);
-		EnvironmentObjectInit(1, 3, 3, 4);
-		EnvironmentObjectInit(2, 1, 0, 8);
-		EnvironmentObjectInit(3, 5, 2, 3);
-		EnvironmentObjectInit(4, 1, 1, 9);
-		EnvironmentObjectInit(5, 3, 1, 9);
-		EnvironmentObjectInit(6, 4, 4, 3);
-		break;
-	case 4:
-		EnvironmentObjectInit(0, 0, 2, 0);
-		EnvironmentObjectInit(1, 3, 4, 1);
-		EnvironmentObjectInit(2, 2, 1, 4);
-		EnvironmentObjectInit(3, 5, 5, 3);
-		EnvironmentObjectInit(4, 3, 2, 0);
-		EnvironmentObjectInit(5, 6, 2, 1);
-		EnvironmentObjectInit(6, 5, 1, 4);
-		EnvironmentObjectInit(7, 6, 4, 3);
-		EnvironmentObjectInit(8, 2, 6, 0);
-		break;
-	}
-
-}
-
-void RenderEnvironment(void) {
-	for (int i = 0; i < kMaxEnvironmentObject; i++) {
-		if (environment[i].image == grid_environment_objects_spritesheet)
-		{
-			RenderImageFromSpriteSheet(grid_environment_objects_spritesheet, grid_environment_objects_spritesheet_array[environment[i].object_type], environment[i].x_origin, environment[i].y_origin, environment[i].width, environment[i].height);
-		}
-
-	}
-}
-
-void phantomQuartz_init(void) {
+static void InitPhantomQuartzDisplay(void) {
 	game_menu_object[kPhantomQuartzMenu].y_origin = 0.0f;
 	game_menu_object[kPhantomQuartzMenu].x_origin = kRightGameMenuXOrigin;
-	game_menu_object[kPhantomQuartzMenu].height = (float)CP_System_GetWindowHeight() / 15;
-	game_menu_object[kPhantomQuartzMenu].width = ((float)CP_System_GetWindowWidth() - game_menu_object[kPhantomQuartzMenu].x_origin) / 2;
-	game_menu_object[kPhantomQuartzMenu].object_type = kObjectRectangle;
+	game_menu_object[kPhantomQuartzMenu].height = 
+		(float)CP_System_GetWindowHeight() / 15;
+	game_menu_object[kPhantomQuartzMenu].width = 
+		((float)CP_System_GetWindowWidth() 
+			- game_menu_object[kPhantomQuartzMenu].x_origin) / 2;
 }
-
-void goldQuartz_init(void) {
-	game_menu_object[kGoldQuartzMenu].width = game_menu_object[kPhantomQuartzMenu].width;
-	game_menu_object[kGoldQuartzMenu].height = game_menu_object[kPhantomQuartzMenu].height;
-	game_menu_object[kGoldQuartzMenu].x_origin = (float)CP_System_GetWindowWidth() - game_menu_object[kPhantomQuartzMenu].width;
-	game_menu_object[kGoldQuartzMenu].y_origin = game_menu_object[kPhantomQuartzMenu].y_origin;
-	game_menu_object[kGoldQuartzMenu].object_type = kObjectRectangle;
+static void InitGoldQuartzDisplay(void) {
+	game_menu_object[kGoldQuartzMenu].width = 
+		game_menu_object[kPhantomQuartzMenu].width;
+	game_menu_object[kGoldQuartzMenu].height = 
+		game_menu_object[kPhantomQuartzMenu].height;
+	game_menu_object[kGoldQuartzMenu].x_origin = 
+		(float)CP_System_GetWindowWidth() 
+		- game_menu_object[kPhantomQuartzMenu].width;
+	game_menu_object[kGoldQuartzMenu].y_origin = 
+		game_menu_object[kPhantomQuartzMenu].y_origin;
 }
-
-void health_init(void) {
-	game_menu_object[kHealthMenu].x_origin = game_menu_object[kPhantomQuartzMenu].x_origin;
-	game_menu_object[kHealthMenu].y_origin = game_menu_object[kPhantomQuartzMenu].y_origin + game_menu_object[kPhantomQuartzMenu].height;
-	game_menu_object[kHealthMenu].width = game_menu_object[kPhantomQuartzMenu].width;
-	game_menu_object[kHealthMenu].height = game_menu_object[kPhantomQuartzMenu].height;
-	game_menu_object[kHealthMenu].object_type = kObjectRectangle;
-
-
-	/*GameMenuObject[HealthMenu].xOrigin = GameMenuObject[GoldQuartzMenu].xOrigin;
-	GameMenuObject[HealthMenu].yOrigin = GameMenuObject[GoldQuartzMenu].yOrigin + GameMenuObject[GoldQuartzMenu].height;
-	GameMenuObject[HealthMenu].width = GameMenuObject[GoldQuartzMenu].width;
-	GameMenuObject[HealthMenu].height = GameMenuObject[GoldQuartzMenu].height;
-	GameMenuObject[HealthMenu].objectType = objectRectangle;*/
+static void InitHealthDisplay(void) {
+	game_menu_object[kHealthMenu].x_origin = 
+		game_menu_object[kPhantomQuartzMenu].x_origin;
+	game_menu_object[kHealthMenu].y_origin = 
+		game_menu_object[kPhantomQuartzMenu].y_origin 
+		+ game_menu_object[kPhantomQuartzMenu].height;
+	game_menu_object[kHealthMenu].width = 
+		game_menu_object[kPhantomQuartzMenu].width;
+	game_menu_object[kHealthMenu].height = 
+		game_menu_object[kPhantomQuartzMenu].height;
 }
-
-void menu_swap_init(void) {
+static void InitMenuSwapButton(void) {
 	game_menu_object[kSwapButton].x_origin = game_menu_object[kTurretButtonMine].x_origin;
 	game_menu_object[kSwapButton].y_origin = game_menu_object[kTurretButtonMine].y_origin + game_menu_object[kTurretButtonMine].height;
 	game_menu_object[kSwapButton].width = game_menu_object[kTurretButtonMine].width;
 	game_menu_object[kSwapButton].height = game_menu_object[kTurretButtonMine].height / 2;
-	game_menu_object[kSwapButton].object_type = kObjectRectangle;
-	game_menu_object[kSwapButton].image = CP_Image_Load("Assets/dummy");
 }
-
-void wave_number_display_init(void) {
+static void InitWaveNumberDisplay(void) {
 	game_menu_object[kWaveDisplay].x_origin = game_menu_object[kGoldQuartzMenu].x_origin;
 	game_menu_object[kWaveDisplay].y_origin = game_menu_object[kHealthMenu].y_origin;
 	game_menu_object[kWaveDisplay].width = game_menu_object[kGoldQuartzMenu].width;
 	game_menu_object[kWaveDisplay].height = game_menu_object[kGoldQuartzMenu].height;
-	game_menu_object[kWaveDisplay].object_type = kObjectRectangle;
 }
-
-void battlefield_effects_display_init(void) {
+static void InitEnvironmentEffectsDisplay(void) {
 	game_menu_object[kEnvironmentalEffects].x_origin = game_menu_object[kHealthMenu].x_origin;
-	game_menu_object[kEnvironmentalEffects].y_origin = game_menu_object[kHealthMenu].y_origin + game_menu_object[kHealthMenu].height;
-	game_menu_object[kEnvironmentalEffects].width = game_menu_object[kHealthMenu].width;
-	game_menu_object[kEnvironmentalEffects].height = game_menu_object[kHealthMenu].height * 3;
-	game_menu_object[kEnvironmentalEffects].object_type = kObjectRectangle;
-
-	/*GameMenuObject[BattlefieldEffects].yOrigin = GameMenuObject[WaveDisplay].yOrigin + GameMenuObject[WaveDisplay].height;
-	GameMenuObject[BattlefieldEffects].width = ((float)CP_System_GetWindowWidth() - Game.xOrigin - Game.width) / 2;
-	GameMenuObject[BattlefieldEffects].height = GameMenuObject[GoldQuartzMenu].height * 2;
-	GameMenuObject[BattlefieldEffects].xOrigin = (float)CP_System_GetWindowWidth() - GameMenuObject[BattlefieldEffects].width;
-	GameMenuObject[BattlefieldEffects].objectType = objectRectangle;*/
-
+	game_menu_object[kEnvironmentalEffects].y_origin = 
+		game_menu_object[kHealthMenu].y_origin 
+		+ game_menu_object[kHealthMenu].height;
+	game_menu_object[kEnvironmentalEffects].width = 
+		game_menu_object[kHealthMenu].width;
+	game_menu_object[kEnvironmentalEffects].height = 
+		game_menu_object[kHealthMenu].height * 3;
 }
-
-void monster_remaining_display_init(void) {
-	game_menu_object[kMonsterRemainingDisplay].x_origin = game_menu_object[kWaveDisplay].x_origin;
-	game_menu_object[kMonsterRemainingDisplay].y_origin = game_menu_object[kWaveDisplay].y_origin + game_menu_object[kWaveDisplay].height;
-	game_menu_object[kMonsterRemainingDisplay].width = game_menu_object[kWaveDisplay].width;
-	game_menu_object[kMonsterRemainingDisplay].height = game_menu_object[kWaveDisplay].height * 3;
-	game_menu_object[kMonsterRemainingDisplay].object_type = kObjectRectangle;
-
-
-	/*GameMenuObject[MonsterRemainingDisplay].xOrigin = GameMenuObject[BattlefieldEffects].xOrigin;
-	GameMenuObject[MonsterRemainingDisplay].yOrigin = GameMenuObject[BattlefieldEffects].yOrigin + GameMenuObject[BattlefieldEffects].height;
-	GameMenuObject[MonsterRemainingDisplay].width = GameMenuObject[BattlefieldEffects].width;
-	GameMenuObject[MonsterRemainingDisplay].height = GameMenuObject[BattlefieldEffects].height;
-	GameMenuObject[MonsterRemainingDisplay].objectType = objectRectangle;*/
+static void InitRemainingMonsterDisplay(void) {
+	game_menu_object[kMonsterRemainingDisplay].x_origin = 
+		game_menu_object[kWaveDisplay].x_origin;
+	game_menu_object[kMonsterRemainingDisplay].y_origin = 
+		game_menu_object[kWaveDisplay].y_origin 
+		+ game_menu_object[kWaveDisplay].height;
+	game_menu_object[kMonsterRemainingDisplay].width = 
+		game_menu_object[kWaveDisplay].width;
+	game_menu_object[kMonsterRemainingDisplay].height = 
+		game_menu_object[kWaveDisplay].height * 3;
 }
-
-void upgrade_menu_init(void) {
-	game_menu_object[kUpgradeMenu].x_origin = game_menu_object[kEnvironmentalEffects].x_origin;
-	game_menu_object[kUpgradeMenu].y_origin = game_menu_object[kEnvironmentalEffects].y_origin + game_menu_object[kEnvironmentalEffects].height;
-	game_menu_object[kUpgradeMenu].width = game_menu_object[kEnvironmentalEffects].width + game_menu_object[kMonsterRemainingDisplay].width;
-	game_menu_object[kUpgradeMenu].height = (CP_System_GetWindowHeight() - game_menu_object[kEnvironmentalEffects].y_origin);
-	game_menu_object[kUpgradeMenu].object_type = kObjectRectangle;
+static void InitUpgradeMenuDisplay(void) {
+	game_menu_object[kUpgradeMenu].x_origin = 
+		game_menu_object[kEnvironmentalEffects].x_origin;
+	game_menu_object[kUpgradeMenu].y_origin = 
+		game_menu_object[kEnvironmentalEffects].y_origin 
+		+ game_menu_object[kEnvironmentalEffects].height;
+	game_menu_object[kUpgradeMenu].width =
+		game_menu_object[kEnvironmentalEffects].width 
+		+ game_menu_object[kMonsterRemainingDisplay].width;
+	game_menu_object[kUpgradeMenu].height =
+		(CP_System_GetWindowHeight() 
+			- game_menu_object[kEnvironmentalEffects].y_origin);
 }
-
-void upgrade_button_init(void) {
-	game_menu_object[kUpgradeButton].x_origin = game_menu_object[kEnvironmentalEffects].x_origin + game_menu_object[kEnvironmentalEffects].width / 5;
-	game_menu_object[kUpgradeButton].y_origin = game_menu_object[kSwapButton].y_origin - game_menu_object[kSwapButton].height / 5;
-	game_menu_object[kUpgradeButton].width = game_menu_object[kUpgradeMenu].width / 3;
-	game_menu_object[kUpgradeButton].height = game_menu_object[kSwapButton].height;
-	game_menu_object[kUpgradeButton].object_type = kObjectRectangle;
-
-
-	/*GameMenuObject[UpgradeButton].xOrigin = GameMenuObject[BattlefieldEffects].xOrigin;
-	GameMenuObject[UpgradeButton].yOrigin = GameMenuObject[BattlefieldEffects].yOrigin + GameMenuObject[BattlefieldEffects].height;
-	GameMenuObject[UpgradeButton].width = GameMenuObject[BattlefieldEffects].width + GameMenuObject[MonsterRemainingDisplay].width;
-	GameMenuObject[UpgradeButton].height = (CP_System_GetWindowHeight() - GameMenuObject[UpgradeButton].yOrigin) / 2;
-	GameMenuObject[UpgradeButton].objectType = objectRectangle;*/
+static void InitUpgradeButton(void) {
+	game_menu_object[kUpgradeButton].x_origin = 
+		game_menu_object[kEnvironmentalEffects].x_origin 
+		+ game_menu_object[kEnvironmentalEffects].width / 5;
+	game_menu_object[kUpgradeButton].y_origin = 
+		game_menu_object[kSwapButton].y_origin 
+		- game_menu_object[kSwapButton].height / 5;
+	game_menu_object[kUpgradeButton].width = 
+		game_menu_object[kUpgradeMenu].width / 3;
+	game_menu_object[kUpgradeButton].height = 
+		game_menu_object[kSwapButton].height;
 }
-
-void sell_button_init(void) {
-	game_menu_object[kSellButton].x_origin = game_menu_object[kMonsterRemainingDisplay].x_origin + game_menu_object[kMonsterRemainingDisplay].width / 5;
-	game_menu_object[kSellButton].y_origin = game_menu_object[kSwapButton].y_origin - game_menu_object[kSwapButton].height / 5;
-	game_menu_object[kSellButton].width = game_menu_object[kUpgradeMenu].width / 3;
-	game_menu_object[kSellButton].height = game_menu_object[kSwapButton].height;
-	game_menu_object[kSellButton].object_type = kObjectRectangle;
-
-
-	/*GameMenuObject[SellButton].xOrigin = GameMenuObject[UpgradeButton].xOrigin;
-	GameMenuObject[SellButton].yOrigin = GameMenuObject[UpgradeButton].yOrigin + GameMenuObject[UpgradeButton].height;
-	GameMenuObject[SellButton].width = GameMenuObject[UpgradeButton].width;
-	GameMenuObject[SellButton].height = GameMenuObject[UpgradeButton].height;
-	GameMenuObject[SellButton].objectType = objectRectangle;*/
+static void InitSellButton(void) {
+	game_menu_object[kSellButton].x_origin = 
+		game_menu_object[kMonsterRemainingDisplay].x_origin 
+		+ game_menu_object[kMonsterRemainingDisplay].width / 5;
+	game_menu_object[kSellButton].y_origin = 
+		game_menu_object[kSwapButton].y_origin - 
+		game_menu_object[kSwapButton].height / 5;
+	game_menu_object[kSellButton].width = 
+		game_menu_object[kUpgradeMenu].width / 3;
+	game_menu_object[kSellButton].height = 
+		game_menu_object[kSwapButton].height;
 }
-
+static void InitEnvironment(void) {
+	//Removes all  previous environment when changing levels
+	for (int i = 0; i < kMaxEnvironmentObject; i++) {
+		environment[i].image = NULL;
+	}
+	switch (Level.current_game_level)
+	{
+	case 0:
+		InitEnvironmentObject(0, 2, 2, 8);
+		InitEnvironmentObject(1, 3, 4, 8);
+		InitEnvironmentObject(2, 5, 1, 8);
+		break;
+	case 1:
+		InitEnvironmentObject(0, 0, 1, 8);
+		InitEnvironmentObject(1, 1, 4, 8);
+		InitEnvironmentObject(2, 5, 1, 8);
+		InitEnvironmentObject(3, 5, 5, 8);
+		InitEnvironmentObject(4, 2, 2, 8);
+		break;
+	case 2:
+		InitEnvironmentObject(0, 3, 3, 8);
+		InitEnvironmentObject(1, 3, 4, 9);
+		InitEnvironmentObject(2, 2, 1, 8);
+		InitEnvironmentObject(3, 5, 5, 8);
+		InitEnvironmentObject(4, 2, 2, 9);
+		InitEnvironmentObject(5, 4, 0, 8);
+		break;
+	case 3:
+		InitEnvironmentObject(0, 2, 2, 8);
+		InitEnvironmentObject(1, 3, 3, 4);
+		InitEnvironmentObject(2, 1, 0, 8);
+		InitEnvironmentObject(3, 5, 2, 3);
+		InitEnvironmentObject(4, 1, 1, 9);
+		InitEnvironmentObject(5, 3, 1, 9);
+		InitEnvironmentObject(6, 4, 4, 3);
+		break;
+	case 4:
+		InitEnvironmentObject(0, 0, 2, 0);
+		InitEnvironmentObject(1, 3, 4, 1);
+		InitEnvironmentObject(2, 2, 1, 4);
+		InitEnvironmentObject(3, 5, 5, 3);
+		InitEnvironmentObject(4, 3, 2, 0);
+		InitEnvironmentObject(5, 6, 2, 1);
+		InitEnvironmentObject(6, 5, 1, 4);
+		InitEnvironmentObject(7, 6, 4, 3);
+		InitEnvironmentObject(8, 2, 6, 0);
+		break;
+	}
+}
+void RenderEnvironment(void) {
+	for (int i = 0; i < kMaxEnvironmentObject; i++) {
+		//Only attempt to render initialized environment
+		if (environment[i].image == grid_environment_objects_spritesheet)
+		{
+			RenderImageFromSpriteSheet(grid_environment_objects_spritesheet,
+				grid_environment_objects_spritesheet_array
+				[environment[i].object_type],
+				environment[i].x_origin, environment[i].y_origin,
+				environment[i].width, environment[i].height);
+		}
+	}
+}
 void PowerUpPriceInit(void) {
 	power_up_price.more_phantom_quartz = 10;
 	power_up_price.reduce_enemy_speed = 10;
@@ -697,30 +686,30 @@ void Level1Init(void) {
 	InitGeneralLevelEnemies(8, 30, 0, 0, 0);
 	InitGeneralLevelEnemies(9, 30, 0, 0, 0);
 
-	game_grid_init();
+	InitGameGrid();
 	is_placing_turret = kTMax;
 	turret_selected_to_upgrade = kNoTurretSelected;
 	power_up_menu = kFalse;
 	InitPathFinding();
-	EnvironmentInit(&Level);
+	InitEnvironment();
 
 	//turret menu items
-	pause_button_init();
-	turret_basic_button_init();
-	turret_slow_button_init();
-	turret_homing_button_init();
-	turret_mine_button_init();
+	InitPauseButton();
+	InitBasicTurretButton();
+	InitSlowTurretButton();
+	InitHomingTurretButton();
+	InitTurretMineButton();
 
-	phantomQuartz_init();
-	goldQuartz_init();
-	health_init();
-	menu_swap_init();
-	wave_number_display_init();
-	battlefield_effects_display_init();
-	monster_remaining_display_init();
-	upgrade_menu_init();
-	upgrade_button_init();
-	sell_button_init();
+	InitPhantomQuartzDisplay();
+	InitGoldQuartzDisplay();
+	InitHealthDisplay();
+	InitMenuSwapButton();
+	InitWaveNumberDisplay();
+	InitEnvironmentEffectsDisplay();
+	InitRemainingMonsterDisplay();
+	InitUpgradeMenuDisplay();
+	InitUpgradeButton();
+	InitSellButton();
 
 	turret_init();
 	Enemies_init();
@@ -778,30 +767,30 @@ void Level2Init(void) {
 	InitGeneralLevelEnemies(8, 30, 10, 0, 0);
 	InitGeneralLevelEnemies(9, 25, 15, 0, 0);
 
-	game_grid_init();
+	InitGameGrid();
 	is_placing_turret = kTMax;
 	turret_selected_to_upgrade = kNoTurretSelected;
 	power_up_menu = kFalse;
 	InitPathFinding();
-	EnvironmentInit(&Level);
+	InitEnvironment();
 
 	//turret menu items
-	pause_button_init();
-	turret_basic_button_init();
-	turret_slow_button_init();
-	turret_homing_button_init();
-	turret_mine_button_init();
+	InitPauseButton();
+	InitBasicTurretButton();
+	InitSlowTurretButton();
+	InitHomingTurretButton();
+	InitTurretMineButton();
 
-	phantomQuartz_init();
-	goldQuartz_init();
-	health_init();
-	menu_swap_init();
-	wave_number_display_init();
-	battlefield_effects_display_init();
-	monster_remaining_display_init();
-	upgrade_menu_init();
-	upgrade_button_init();
-	sell_button_init();
+	InitPhantomQuartzDisplay();
+	InitGoldQuartzDisplay();
+	InitHealthDisplay();
+	InitMenuSwapButton();
+	InitWaveNumberDisplay();
+	InitEnvironmentEffectsDisplay();
+	InitRemainingMonsterDisplay();
+	InitUpgradeMenuDisplay();
+	InitUpgradeButton();
+	InitSellButton();
 
 	turret_init();
 	Enemies_init();
@@ -858,30 +847,30 @@ void Level3Init(void) {
 	InitGeneralLevelEnemies(8, 20, 10, 10, 0);
 	InitGeneralLevelEnemies(9, 25, 10, 10, 0);
 
-	game_grid_init();
+	InitGameGrid();
 	is_placing_turret = kTMax;
 	turret_selected_to_upgrade = kNoTurretSelected;
 	power_up_menu = kFalse;
 	InitPathFinding();
-	EnvironmentInit(&Level);
+	InitEnvironment();
 
 	//turret menu items
-	pause_button_init();
-	turret_basic_button_init();
-	turret_slow_button_init();
-	turret_homing_button_init();
-	turret_mine_button_init();
+	InitPauseButton();
+	InitBasicTurretButton();
+	InitSlowTurretButton();
+	InitHomingTurretButton();
+	InitTurretMineButton();
 
-	phantomQuartz_init();
-	goldQuartz_init();
-	health_init();
-	menu_swap_init();
-	wave_number_display_init();
-	battlefield_effects_display_init();
-	monster_remaining_display_init();
-	upgrade_menu_init();
-	upgrade_button_init();
-	sell_button_init();
+	InitPhantomQuartzDisplay();
+	InitGoldQuartzDisplay();
+	InitHealthDisplay();
+	InitMenuSwapButton();
+	InitWaveNumberDisplay();
+	InitEnvironmentEffectsDisplay();
+	InitRemainingMonsterDisplay();
+	InitUpgradeMenuDisplay();
+	InitUpgradeButton();
+	InitSellButton();
 
 	turret_init();
 	Enemies_init();
@@ -940,30 +929,30 @@ void Level4Init(void) {
 	InitGeneralLevelEnemies(8, 15, 15, 10, 2);
 	InitGeneralLevelEnemies(9, 20, 10, 15, 3);
 
-	game_grid_init();
+	InitGameGrid();
 	is_placing_turret = kTMax;
 	turret_selected_to_upgrade = kNoTurretSelected;
 	power_up_menu = kFalse;
 	InitPathFinding();
-	EnvironmentInit(&Level);
+	InitEnvironment();
 
 	//turret menu items
-	pause_button_init();
-	turret_basic_button_init();
-	turret_slow_button_init();
-	turret_homing_button_init();
-	turret_mine_button_init();
+	InitPauseButton();
+	InitBasicTurretButton();
+	InitSlowTurretButton();
+	InitHomingTurretButton();
+	InitTurretMineButton();
 
-	phantomQuartz_init();
-	goldQuartz_init();
-	health_init();
-	menu_swap_init();
-	wave_number_display_init();
-	battlefield_effects_display_init();
-	monster_remaining_display_init();
-	upgrade_menu_init();
-	upgrade_button_init();
-	sell_button_init();
+	InitPhantomQuartzDisplay();
+	InitGoldQuartzDisplay();
+	InitHealthDisplay();
+	InitMenuSwapButton();
+	InitWaveNumberDisplay();
+	InitEnvironmentEffectsDisplay();
+	InitRemainingMonsterDisplay();
+	InitUpgradeMenuDisplay();
+	InitUpgradeButton();
+	InitSellButton();
 
 	turret_init();
 	Enemies_init();
@@ -1020,31 +1009,31 @@ void Level5Init(void) {
 	InitGeneralLevelEnemies(8, 15, 15, 15, 2);
 	InitGeneralLevelEnemies(9, 10, 10, 10, 5);
 
-	game_grid_init();
+	InitGameGrid();
 
 	//turret menu items
-	pause_button_init();
-	turret_basic_button_init();
-	turret_slow_button_init();
-	turret_homing_button_init();
-	turret_mine_button_init();
+	InitPauseButton();
+	InitBasicTurretButton();
+	InitSlowTurretButton();
+	InitHomingTurretButton();
+	InitTurretMineButton();
 
-	phantomQuartz_init();
-	goldQuartz_init();
-	health_init();
-	menu_swap_init();
-	wave_number_display_init();
-	battlefield_effects_display_init();
-	monster_remaining_display_init();
-	upgrade_menu_init();
-	upgrade_button_init();
-	sell_button_init();
+	InitPhantomQuartzDisplay();
+	InitGoldQuartzDisplay();
+	InitHealthDisplay();
+	InitMenuSwapButton();
+	InitWaveNumberDisplay();
+	InitEnvironmentEffectsDisplay();
+	InitRemainingMonsterDisplay();
+	InitUpgradeMenuDisplay();
+	InitUpgradeButton();
+	InitSellButton();
 
 	is_placing_turret = kTMax;
 	turret_selected_to_upgrade = kNoTurretSelected;
 	power_up_menu = kFalse;
 	InitPathFinding();
-	EnvironmentInit(&Level);
+	InitEnvironment();
 	turret_init();
 	Enemies_init();
 
@@ -1776,5 +1765,13 @@ void RenderHowToPlayPages(void) {
 			current_how_to_play_page += 1;
 		}
 	}
+	MouseReset();
+}
+//Initialize mouse object 
+void InitMouse(void) {
+	//out of the screen so it does not click anything at startup
+	mouse_input.width = -1;
+	mouse_input.height = -1;
+	mouse_input.object_type = kObjectCircle;
 	MouseReset();
 }
