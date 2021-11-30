@@ -307,6 +307,10 @@ static void UpdateGameGridPress(void) {
 			{
 				//When a existing turret is selected open the upgrade menu
 				turret_selected_to_upgrade = i;
+				if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
+					CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE,
+						CP_SOUND_GROUP_0);
+				}
 			}
 		}
 	}
@@ -2096,15 +2100,27 @@ void RenderHowToPlayPages(void) {
 		//Return to main menu when back button is clicked
 		current_how_to_play_page = 0;
 		current_game_state = kMainMenu;
+		if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
+			CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE,
+				CP_SOUND_GROUP_0);
+		}
 	}
 	else if (BtnIsPressed(TutorialButtons[kHowToPlayPrevious])) {
 		if (current_how_to_play_page != 0) {
 			current_how_to_play_page -= 1;
+			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
+				CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE,
+					CP_SOUND_GROUP_0);
+			}
 		}
 	}
 	else if (BtnIsPressed(TutorialButtons[kHowToPlayNext])) {
 		if (current_how_to_play_page != kMaxHowToPlayPages - 1) {
 			current_how_to_play_page += 1;
+			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
+				CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE,
+					CP_SOUND_GROUP_0);
+			}
 		}
 	}
 	MouseReset();
