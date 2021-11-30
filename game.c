@@ -459,6 +459,8 @@ void game_exit(void)
 		CP_Image_Free(&tutorial_image_array[i]);
 	}
 
+	CP_Image_Free(&digipen_logo);
+	CP_Image_Free(&down_n_out_logo);
 
 
 	CP_Image_Free(&pause_button_image);
@@ -466,8 +468,8 @@ void game_exit(void)
 	CP_Image_Free(&turret_button_background);
 	CP_Image_Free(&thin_UI_background);
 	CP_Image_Free(&upgrade_menu_background);
-	CP_Image_Free(&DigipenLogo);
-	CP_Image_Free(&DownNOutLogo);
+
+	//CP_Font_Free(pixelFont);
 
 	CP_Image_Free(&basic_ghost_spritesheet);
 	CP_Image_Free(&fast_ghost_spritesheet);
@@ -491,6 +493,8 @@ void game_exit(void)
 	CP_Image_Free(&interactable_UI_buttons_spritesheet);
 	CP_Image_Free(&turret_stats_spritesheet);
 	CP_Image_Free(&non_grid_environment_objects_spritesheet);
+
+
 	CP_Sound_Free(&ShootSFX);
 	CP_Sound_Free(&SpawnxExitSFX);
 	CP_Sound_Free(&ButtonClickSFX);

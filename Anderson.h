@@ -43,13 +43,13 @@ enum CreditText {
 	ClaudeComair,
 
 	Executives,
-	JasonChu,
-	SamirAbouSamra,
-	MicheleComair,
-	AngelaKugler,
-	ErikMohrmann,
-	BenjaminEllinger,
-	MelvinGonsalvez,
+	JasonChu_ChrisComair,
+	Raymond_Samir,
+	MichaelGats_MicheleComair,
+	Erik_Melvin,
+	BenEllinger_Johnny,
+	Prasanna_John,
+	Angela_Charles,
 
 	CreatedAtDigipen,
 	DigipenURL,
@@ -77,8 +77,8 @@ OptionLine OptionTexts[3];
 Coordinates creditRectCoords;
 float creditTextMoveTime; // time for creditRect moving
 
-CP_Image DigipenLogo;
-CP_Image DownNOutLogo;
+CP_Image digipen_logo;
+CP_Image down_n_out_logo;
 CP_Font pixelFont;
 float dpLogoDisplayTime;
 float dpLogoFadeTime;

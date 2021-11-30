@@ -15,8 +15,8 @@ void init_game_font(void)
 
 void init_splash_logos(void)
 {
-	DigipenLogo = CP_Image_Load("./Assets/DigipenLogo.png");
-	DownNOutLogo = CP_Image_Load("./Assets/DownNOut.png");
+	digipen_logo = CP_Image_Load("./Assets/DigipenLogo.png");
+	down_n_out_logo = CP_Image_Load("./Assets/DownNOut.png");
 }
 
 // Assuming all buttons are rectangles. Text position is anchored from the button graphic's position.
@@ -155,19 +155,19 @@ void init_credits_screen(void)
 	init_credit_line(Gerald, "Gerald Wong", CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.7f);
 
 	init_credit_line(Executives, "Executives:", CP_System_GetWindowWidth() * 0.78f, CP_System_GetWindowHeight() * 0.5f);
-	init_credit_line(JasonChu, "Jason Chu", CP_System_GetWindowWidth() * 0.7f, CP_System_GetWindowHeight() * 0.55f);
-	init_credit_line(SamirAbouSamra, "Samir Abou Samra", CP_System_GetWindowWidth() * 0.85f, CP_System_GetWindowHeight() * 0.55f);
-	init_credit_line(MicheleComair, "Michele Comair", CP_System_GetWindowWidth() * 0.7f, CP_System_GetWindowHeight() * 0.6f);
-	init_credit_line(AngelaKugler, "Angela Kugler", CP_System_GetWindowWidth() * 0.85f, CP_System_GetWindowHeight() * 0.6f);
-	init_credit_line(ErikMohrmann, "Erik Mohrmann", CP_System_GetWindowWidth() * 0.7f, CP_System_GetWindowHeight() * 0.65f);
-	init_credit_line(BenjaminEllinger, "Benjamin Ellinger", CP_System_GetWindowWidth() * 0.85f, CP_System_GetWindowHeight() * 0.65f);
-	init_credit_line(MelvinGonsalvez, "Melvin Gonsalvez", CP_System_GetWindowWidth() * 0.78f, CP_System_GetWindowHeight() * 0.7f);
+	init_credit_line(JasonChu_ChrisComair, "Jason Chu, Christopher Comair", CP_System_GetWindowWidth() * 0.78f, CP_System_GetWindowHeight() * 0.55f);
+	init_credit_line(MichaelGats_MicheleComair, "Michael Gats, Michele Comair", CP_System_GetWindowWidth() * 0.78f, CP_System_GetWindowHeight() * 0.6f);
+	init_credit_line(Raymond_Samir, "Raymond Yan, Samir Abou Samra", CP_System_GetWindowWidth() * 0.78f, CP_System_GetWindowHeight() * 0.65f);
+	init_credit_line(Prasanna_John, "Prasanna Ghali, John Bauer", CP_System_GetWindowWidth() * 0.78f, CP_System_GetWindowHeight() * 0.7f);
+	init_credit_line(Erik_Melvin, "Erik Mohrmann, Melvin Gonsalvez", CP_System_GetWindowWidth() * 0.78f, CP_System_GetWindowHeight() * 0.75f);
+	init_credit_line(Angela_Charles, "Angela Kugler, Charles Duba", CP_System_GetWindowWidth() * 0.78f, CP_System_GetWindowHeight() * 0.80f);
+	init_credit_line(BenEllinger_Johnny, "Benjamin Ellinger, Johnny Deek", CP_System_GetWindowWidth() * 0.78f, CP_System_GetWindowHeight() * 0.85f);
 
-	init_credit_line(CreatedAtDigipen, "Created at DigiPen Institute of Technology Singapore", CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.82f);
-	init_credit_line(DigipenURL, "www.digipen.edu", CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.85f);
+	init_credit_line(CreatedAtDigipen, "Created at DigiPen Institute of Technology Singapore", CP_System_GetWindowWidth() * 0.35f, CP_System_GetWindowHeight() * 0.82f);
+	init_credit_line(DigipenURL, "www.digipen.edu", CP_System_GetWindowWidth() * 0.35f, CP_System_GetWindowHeight() * 0.85f);
 	// the © copyright symbol is printed as \xc2\xa9, as its UTF-8 (i.e Unicode) string literal counterpart.
 	init_credit_line(CopyrightLine, "All content \xc2\xa9 2021 DigiPen Institute of Technology Singapore, all rights reserved.",
-		CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.88f);
+		CP_System_GetWindowWidth() * 0.35f, CP_System_GetWindowHeight() * 0.88f);
 
 	CreditsBackButton = init_text_button(CreditsBackButton, CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 2.0f - BUTTON_HEIGHT * 0.5f,
 		BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Back");
@@ -223,21 +223,21 @@ void render_logos(void)
 		if (dpLogoFadeTime > 0.0f) // fading
 		{
 			dpLogoFadeTime -= CP_System_GetDt();
-			CP_Image_Draw(DigipenLogo, (float)CP_System_GetWindowWidth() * 0.5f, (float)CP_System_GetWindowHeight() * 0.5f, (float)CP_Image_GetWidth(DigipenLogo) * 0.5f, (float)CP_Image_GetHeight(DigipenLogo) * 0.5f, (int)(255 * (dpLogoFadeTime / FADE_OUT_TIME)));
+			CP_Image_Draw(digipen_logo, (float)CP_System_GetWindowWidth() * 0.5f, (float)CP_System_GetWindowHeight() * 0.5f, (float)CP_Image_GetWidth(digipen_logo) * 0.5f, (float)CP_Image_GetHeight(digipen_logo) * 0.5f, (int)(255 * (dpLogoFadeTime / FADE_OUT_TIME)));
 			CP_Font_DrawText(CreditTexts[CopyrightLine].text, (float)CP_System_GetWindowWidth() * 0.5f, (float)CP_System_GetWindowHeight() * 0.95f);
 		}
 		else // dp logo finished fading
 		{
 			if (teamLogoDisplayTime > 0.0f)
 			{
-				CP_Image_Draw(DownNOutLogo, (float)CP_System_GetWindowWidth() * 0.5f, (float)CP_System_GetWindowHeight() * 0.5f, (float)CP_Image_GetWidth(DownNOutLogo), (float)CP_Image_GetHeight(DownNOutLogo), 255);
+				CP_Image_Draw(down_n_out_logo, (float)CP_System_GetWindowWidth() * 0.5f, (float)CP_System_GetWindowHeight() * 0.5f, (float)CP_Image_GetWidth(down_n_out_logo), (float)CP_Image_GetHeight(down_n_out_logo), 255);
 				teamLogoDisplayTime -= CP_System_GetDt();
 				CP_Font_DrawText(CreditTexts[CopyrightLine].text, (float)CP_System_GetWindowWidth() * 0.5f, (float)CP_System_GetWindowHeight() * 0.95f);
 
 			}
 			else // team logo finished display
 			{
-				CP_Image_Draw(DownNOutLogo, (float)CP_System_GetWindowWidth() * 0.5f, (float)CP_System_GetWindowHeight() * 0.5f, (float)CP_Image_GetWidth(DownNOutLogo), (float)CP_Image_GetHeight(DownNOutLogo), (int)(255 * (teamLogoFadeTime / FADE_OUT_TIME)));
+				CP_Image_Draw(down_n_out_logo, (float)CP_System_GetWindowWidth() * 0.5f, (float)CP_System_GetWindowHeight() * 0.5f, (float)CP_Image_GetWidth(down_n_out_logo), (float)CP_Image_GetHeight(down_n_out_logo), (int)(255 * (teamLogoFadeTime / FADE_OUT_TIME)));
 				teamLogoFadeTime -= CP_System_GetDt();
 				CP_Font_DrawText(CreditTexts[CopyrightLine].text, (float)CP_System_GetWindowWidth() * 0.5f, (float)CP_System_GetWindowHeight() * 0.95f);
 
@@ -253,7 +253,7 @@ void render_logos(void)
 	else if (dpLogoDisplayTime >= 0.0f) // dp Logo still displaying
 	{
 		dpLogoDisplayTime -= CP_System_GetDt();
-		CP_Image_Draw(DigipenLogo, (float)CP_System_GetWindowWidth() * 0.5f, (float)CP_System_GetWindowHeight() * 0.5f, (float)CP_Image_GetWidth(DigipenLogo) / 2, (float)CP_Image_GetHeight(DigipenLogo) / 2, 255);
+		CP_Image_Draw(digipen_logo, (float)CP_System_GetWindowWidth() * 0.5f, (float)CP_System_GetWindowHeight() * 0.5f, (float)CP_Image_GetWidth(digipen_logo) / 2, (float)CP_Image_GetHeight(digipen_logo) / 2, 255);
 		CP_Font_DrawText(CreditTexts[CopyrightLine].text, (float)CP_System_GetWindowWidth() * 0.5f, (float)CP_System_GetWindowHeight() * 0.95f);
 	}
 }
@@ -273,11 +273,6 @@ void render_ui_button(Button button)
 
 	CP_Settings_TextSize(cursor_over_button(button.buttonData) ? FONT_SIZE * mouseOverSizeModifier : FONT_SIZE);
 	CP_Font_DrawText(button.textString, button.textPositionX, button.textPositionY);
-}
-
-void render_how_to_play_screen(void)
-{
-
 }
 
 void render_main_menu(void)
@@ -345,13 +340,13 @@ void render_credits_screen(void)
 	render_text_line(CreditTexts[ClaudeComair]);
 
 	CP_Settings_TextSize(FONT_SIZE * 0.67f);
-	render_text_line(CreditTexts[JasonChu]);
-	render_text_line(CreditTexts[SamirAbouSamra]);
-	render_text_line(CreditTexts[MicheleComair]);
-	render_text_line(CreditTexts[AngelaKugler]);
-	render_text_line(CreditTexts[ErikMohrmann]);
-	render_text_line(CreditTexts[BenjaminEllinger]);
-	render_text_line(CreditTexts[MelvinGonsalvez]);
+	render_text_line(CreditTexts[JasonChu_ChrisComair]);
+	render_text_line(CreditTexts[MichaelGats_MicheleComair]);
+	render_text_line(CreditTexts[Raymond_Samir]);
+	render_text_line(CreditTexts[Prasanna_John]);
+	render_text_line(CreditTexts[Erik_Melvin]);
+	render_text_line(CreditTexts[Angela_Charles]);
+	render_text_line(CreditTexts[BenEllinger_Johnny]);
 
 	CP_Settings_Fill(COLOR_WHITE);
 	CP_Settings_TextSize(FONT_SIZE * 0.5f);
@@ -399,20 +394,20 @@ void show_logos(void)
 		if (dpLogoFadeTime > 0.0f) // fading
 		{
 			dpLogoFadeTime -= CP_System_GetDt();
-			CP_Image_Draw(DigipenLogo, (float)CP_System_GetWindowWidth() * 0.5f, (float)CP_System_GetWindowHeight() * 0.5f, (float)CP_Image_GetWidth(DigipenLogo) * 0.5f, (float)CP_Image_GetHeight(DigipenLogo) * 0.5f, (int)(255 * (dpLogoFadeTime / FADE_OUT_TIME)));
+			CP_Image_Draw(digipen_logo, (float)CP_System_GetWindowWidth() * 0.5f, (float)CP_System_GetWindowHeight() * 0.5f, (float)CP_Image_GetWidth(digipen_logo) * 0.5f, (float)CP_Image_GetHeight(digipen_logo) * 0.5f, (int)(255 * (dpLogoFadeTime / FADE_OUT_TIME)));
 			CP_Font_DrawText(CreditTexts[CopyrightLine].text, (float)CP_System_GetWindowWidth() * 0.5f, (float)CP_System_GetWindowHeight() * 0.95f);
 		}
 		else // dp logo finished fading
 		{
 			if (teamLogoDisplayTime > 0.0f)
 			{
-				CP_Image_Draw(DownNOutLogo, (float)CP_System_GetWindowWidth() * 0.5f, (float)CP_System_GetWindowHeight() * 0.5f, (float)CP_Image_GetWidth(DownNOutLogo), (float)CP_Image_GetHeight(DownNOutLogo), 255);
+				CP_Image_Draw(down_n_out_logo, (float)CP_System_GetWindowWidth() * 0.5f, (float)CP_System_GetWindowHeight() * 0.5f, (float)CP_Image_GetWidth(down_n_out_logo), (float)CP_Image_GetHeight(down_n_out_logo), 255);
 				teamLogoDisplayTime -= CP_System_GetDt();
 				CP_Font_DrawText(CreditTexts[CopyrightLine].text, (float)CP_System_GetWindowWidth() * 0.5f, (float)CP_System_GetWindowHeight() * 0.95f);
 			}
 			else // team logo finished display
 			{
-				CP_Image_Draw(DownNOutLogo, (float)CP_System_GetWindowWidth() * 0.5f, (float)CP_System_GetWindowHeight() * 0.5f, (float)CP_Image_GetWidth(DownNOutLogo), (float)CP_Image_GetHeight(DownNOutLogo), (int)(255 * (teamLogoFadeTime / FADE_OUT_TIME)));
+				CP_Image_Draw(down_n_out_logo, (float)CP_System_GetWindowWidth() * 0.5f, (float)CP_System_GetWindowHeight() * 0.5f, (float)CP_Image_GetWidth(down_n_out_logo), (float)CP_Image_GetHeight(down_n_out_logo), (int)(255 * (teamLogoFadeTime / FADE_OUT_TIME)));
 				teamLogoFadeTime -= CP_System_GetDt();
 				CP_Font_DrawText(CreditTexts[CopyrightLine].text, (float)CP_System_GetWindowWidth() * 0.5f, (float)CP_System_GetWindowHeight() * 0.95f);
 				if (teamLogoFadeTime < 0.0f)
@@ -428,7 +423,7 @@ void show_logos(void)
 	else if (dpLogoDisplayTime >= 0.0f) // dp Logo still displaying
 	{
 		dpLogoDisplayTime -= CP_System_GetDt();
-		CP_Image_Draw(DigipenLogo, (float)CP_System_GetWindowWidth() * 0.5f, (float)CP_System_GetWindowHeight() * 0.5f, (float)CP_Image_GetWidth(DigipenLogo) / 2, (float)CP_Image_GetHeight(DigipenLogo) / 2, 255);
+		CP_Image_Draw(digipen_logo, (float)CP_System_GetWindowWidth() * 0.5f, (float)CP_System_GetWindowHeight() * 0.5f, (float)CP_Image_GetWidth(digipen_logo) / 2, (float)CP_Image_GetHeight(digipen_logo) / 2, 255);
 		CP_Font_DrawText(CreditTexts[CopyrightLine].text, (float)CP_System_GetWindowWidth() * 0.5f, (float)CP_System_GetWindowHeight() * 0.95f);
 	}
 }
