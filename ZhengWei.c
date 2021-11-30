@@ -232,14 +232,27 @@ static void ColorGameSquare(
 		(game.grid_width), (game.grid_height));
 }
 //Path Finding
-//init the spawn and exit cols for pathfinding
+/*!
+@author     Ng Zheng Wei(zhengwei.ng@digipen.edu)
+@co-author
+@brief		Initialize the spawn and exit for pathfinding.
+@param		- void
+@return		- void
+*//*_____________________________________________________________*/
 static void InitPathFinding(void) {
 	level.grid[level.spawn_row][level.spawn_col].cost = 0;
 	level.grid[level.spawn_row][level.spawn_col].visited = 1;
 	level.grid[level.spawn_row][level.spawn_col].type = kSpawn;
 	level.grid[level.exit_row][level.exit_col].type = kExit;
 }
-//reset Data in Pathfinding to calculate new path
+/*!
+@author     Ng Zheng Wei(zhengwei.ng@digipen.edu)
+@co-author
+@brief		Clear the pathfinding cost and path to prepare for
+			recalculation of new path.
+@param		- void
+@return		- void
+*//*_____________________________________________________________*/
 static void ResetPathFinding(void) {
 	for (int i = 0; i < level_grid_rows; i++) {
 		for (int j = 0; j < level_grid_cols; j++) {
@@ -259,11 +272,27 @@ static void ResetPathFinding(void) {
 	level.grid[level.spawn_row][level.spawn_col].cost = 0;
 	level.grid[level.spawn_row][level.spawn_col].visited = 1;
 }
-//Check if destination is reachable
+/*!
+@author     Ng Zheng Wei(zhengwei.ng@digipen.edu)
+@co-author
+@brief		Check if the destination is reachable.
+@param		- void
+@return		Boolean - kTrue if reachable. False otherwise.
+*//*_____________________________________________________________*/
 static Boolean IsDestinationUpdated(void) {
 	return level.grid[level.exit_row][level.exit_col].visited;
 }
-//Update cost of neighbor base on own cost
+/*!
+@author     Ng Zheng Wei(zhengwei.ng@digipen.edu)
+@co-author
+@brief		Update the cost of all neighboring grid according to
+			the cost of the given grid.
+@param		- int grid_row - The given grid row.
+			- int grid_col - The given grid col.
+			- int generation - The cost or the current generation
+			of the given grid.
+@return		- void
+*//*_____________________________________________________________*/
 static void UpdatePathFindingNeighborCost(
 	int grid_row, int grid_col, int generation) {
 	//Update Row Neighbor
@@ -294,8 +323,15 @@ static void UpdatePathFindingNeighborCost(
 		}
 	}
 }
-//Calculate all grid cost. Find the squares in the same generation 
-//and call a function to update neighbors.
+/*!
+@author     Ng Zheng Wei(zhengwei.ng@digipen.edu)
+@co-author
+@brief		Calculate the cost by finding all grid with the 
+			same current cost every generation and calling
+			function UpdatePathFindingNeighborCost.
+@param		- void
+@return		- void
+*//*_____________________________________________________________*/
 static void CalculatePathFindingCost(void) {
 	for (int current_cost = 0; !IsDestinationUpdated()
 		&& current_cost <= level_grid_rows * level_grid_cols; current_cost++) {
@@ -308,7 +344,14 @@ static void CalculatePathFindingCost(void) {
 		}
 	}
 }
-//update path for pathfinding
+/*!
+@author     Ng Zheng Wei(zhengwei.ng@digipen.edu)
+@co-author
+@brief		Creates a path using the cost calculated by
+			pathfinding.
+@param		- void
+@return		- void
+*//*_____________________________________________________________*/
 static void UpdatePathFinding(void) {
 	int path_row, path_col;
 	path_row = level.grid[level.exit_row][level.exit_col].parent_row;
@@ -325,7 +368,14 @@ static void UpdatePathFinding(void) {
 		}
 	}
 }
-//Function for doing all the stuff when clicking on game grid
+/*!
+@author     Ng Zheng Wei(zhengwei.ng@digipen.edu)
+@co-author	Lim Jing Rui John (l.jingruijohn@digipen.edu)
+@brief		Update the data based off where the user clicked
+			on the game grid previously.
+@param		- void
+@return		- void
+*//*_____________________________________________________________*/
 static void UpdateGameGridPress(void) {
 	int draw_x, draw_y;//Grid rows and cols
 	draw_x = (int)((mouse_input.x_origin - game.x_origin) / game.grid_width);
@@ -401,7 +451,18 @@ static void UpdateGameGridPress(void) {
 		}
 	}
 }
-//initialize Number of each type of enemies in the level using given variable
+/*!
+@author     Chiok Wei Wen Gabriel (chiok.w@digipen.edu)
+@co-author	Ng Zheng Wei(zhengwei.ng@digipen.edu)
+@brief		Assign the total number of each enemy type in each
+			wave in the level base off the given variables.
+@param		- int wave - wave to assign the enemies.
+			- int basic - Number of basic ghost in the wave.
+			- int fast - Number of fast ghost in the wave.
+			- int fat - Number of fat ghost in the wave.
+			- int grim - Number of grim reaper in the wave.
+@return		- void
+*//*_____________________________________________________________*/
 static void InitGeneralLevelEnemies(
 	int wave, int basic, int fast, int fat, int grim)
 {
@@ -410,7 +471,17 @@ static void InitGeneralLevelEnemies(
 	level.wave_enemies[wave][kFatGhost] = fat;
 	level.wave_enemies[wave][kGrimReaper] = grim;
 }
-//function to initialize environment object data base on given inputs
+/*!
+@author     Chiok Wei Wen Gabriel (chiok.w@digipen.edu)
+@co-author	Ng Zheng Wei(zhengwei.ng@digipen.edu)
+@brief		Initialize the data of environment objects.
+@param		- int array_index - The index of the environment
+			object.
+			- int row - The grid row of the environment object.
+			- int col - The grid col of the environment object.
+			- int object_type - The environment image to use.
+@return		- void
+*//*_____________________________________________________________*/
 static void InitEnvironmentObject(
 	int array_index, int row, int col, int object_type)
 {
