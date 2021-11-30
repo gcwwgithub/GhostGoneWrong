@@ -6,6 +6,7 @@
 
 #pragma region Initialisations
 
+// Sets the game font to pixelFont (i.e. VT323-Regular) 
 void init_game_font(void)
 {
 	pixelFont = GAME_FONT;
@@ -19,7 +20,7 @@ void init_splash_logos(void)
 	down_n_out_logo = CP_Image_Load("./Assets/DownNOut.png");
 }
 
-// Assuming all buttons are rectangles. Text position is anchored from the button graphic's position.
+// Assuming all buttons are rectangles. Text position is center-aligned and anchored from the button graphic's position.
 Button init_text_button(Button button, float buttonPosX, float buttonPosY, float buttonWidth, float buttonHeight, float textPosX, float textPosY, char string[])
 {
 	button.buttonData.x_origin = buttonPosX;
@@ -49,6 +50,7 @@ void init_main_menu(void)
 		BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Options");
 }
 
+// Initialises the level buttons in a column.
 void init_level_select_buttons(void)
 {
 	int c = 0; char levelNumberText[8];
@@ -62,7 +64,7 @@ void init_level_select_buttons(void)
 				CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() + i * (BUTTON_HEIGHT + 25.0f),
 				BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, levelNumberText);
 		}
-		else
+		else // the first level was meant to be kind of a tutorial
 		{
 			LevelButtons[i] = init_text_button(LevelButtons[i],
 				CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() + i * (BUTTON_HEIGHT + 25.0f),
@@ -70,7 +72,7 @@ void init_level_select_buttons(void)
 		}
 	}
 
-
+	// Back button initialised seperately.
 	LevelSelectBackButton = init_text_button(LevelSelectBackButton, CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 1.5f,
 		BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Back");
 }
@@ -87,6 +89,7 @@ void init_pause_screen(void)
 		BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Exit Level");
 }
 
+// Initialises the end screen buttons in a column.
 void init_end_screen(void)
 {
 	// Back to Main Menu
@@ -105,7 +108,6 @@ void init_end_screen(void)
 		BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Next");
 }
 
-// Note: initialised position is (initialPosX, initialPosY + CP_Window_Width());
 void init_credit_line(int num, char* line, float x, float y)
 {
 	CreditTexts[num].text = line;
@@ -115,6 +117,7 @@ void init_credit_line(int num, char* line, float x, float y)
 	CreditTexts[num].endingPos.x_origin = x;
 	CreditTexts[num].endingPos.y_origin = y;
 
+	// Note: Starting position is (initialPosX, initialPosY + CP_Window_Width());
 	CreditTexts[num].currentPos.x_origin = x;
 	CreditTexts[num].currentPos.y_origin = y + CP_System_GetWindowHeight();
 }
@@ -132,6 +135,7 @@ void init_option_line(int num, char* line, float x, float y)
 	OptionTexts[num].currentPos.y_origin = y;
 }
 
+// Initialises the credit screen background, as well as all the individual credits, line-by-line.
 void init_credits_screen(void)
 {
 	creditRectCoords.x_origin = CP_System_GetWindowWidth() * 0.05f; creditRectCoords.y_origin = CP_System_GetWindowHeight() * 1.3f;
@@ -165,7 +169,7 @@ void init_credits_screen(void)
 
 	init_credit_line(CreatedAtDigipen, "Created at DigiPen Institute of Technology Singapore", CP_System_GetWindowWidth() * 0.35f, CP_System_GetWindowHeight() * 0.82f);
 	init_credit_line(DigipenURL, "www.digipen.edu", CP_System_GetWindowWidth() * 0.35f, CP_System_GetWindowHeight() * 0.85f);
-	// the © copyright symbol is printed as \xc2\xa9, as its UTF-8 (i.e Unicode) string literal counterpart.
+	// © copyright symbol is output as \xc2\xa9, its UTF-8 (i.e Unicode) string literal counterpart.
 	init_credit_line(CopyrightLine, "All content \xc2\xa9 2021 DigiPen Institute of Technology Singapore, all rights reserved.",
 		CP_System_GetWindowWidth() * 0.35f, CP_System_GetWindowHeight() * 0.88f);
 
@@ -175,7 +179,7 @@ void init_credits_screen(void)
 
 void init_options_screen(void)
 {
-	// init options screen for main menu
+	// init options screen for main menu - the lines and the two Coordinates-type 'buttons'.
 	init_option_line(Options, "Options", CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.35f);
 	init_option_line(BackgroundSFX, "Background SFX", CP_System_GetWindowWidth() * 0.25f, CP_System_GetWindowHeight() * 0.5f);
 	init_option_line(MuteAll, "Mute All", CP_System_GetWindowWidth() * 0.25f, CP_System_GetWindowHeight() * 0.65f);
@@ -376,11 +380,11 @@ void render_options_screen(void)
 	CP_Settings_Fill(COLOR_BLACK);
 	if (!bgmAudioPaused)
 	{
-	CP_Graphics_DrawRect(OptionButtons[0].x_origin + 12.5f, OptionButtons[0].y_origin + 12.5f, 15.0f,15.0f);
+		CP_Graphics_DrawRect(OptionButtons[0].x_origin + 12.5f, OptionButtons[0].y_origin + 12.5f, 15.0f, 15.0f);
 	}
-	if (allAudioPaused) 
+	if (allAudioPaused)
 	{
-		CP_Graphics_DrawRect(OptionButtons[1].x_origin + 12.5f, OptionButtons[1].y_origin + 12.5f, 15.0f,15.0f);
+		CP_Graphics_DrawRect(OptionButtons[1].x_origin + 12.5f, OptionButtons[1].y_origin + 12.5f, 15.0f, 15.0f);
 	}
 	render_ui_button(OptionsBackButton);
 }
@@ -416,6 +420,9 @@ void show_logos(void)
 					current_game_state = kMainMenu;
 					CP_Sound_StopGroup(CP_SOUND_GROUP_1);
 					CP_Sound_PlayAdvanced(MainMenuMusic, BGM_Volume, 1.0f, TRUE, CP_SOUND_GROUP_1);
+
+					// if there was clicking during the logo displays, this is meant to prevent accidental triggering of buttons.
+					MouseReset(); 
 				}
 			}
 		}
@@ -516,12 +523,12 @@ void move_level_select(void)
 		if (current_game_state == kLevelSelect) // going to main menu
 		{
 			LevelButtons[i] = ui_button_movement(LevelButtons[i], CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f,
-				CP_System_GetWindowHeight() + i * (BUTTON_HEIGHT + 25.0f)); // from l_select back to main menu
+				CP_System_GetWindowHeight() + i * (BUTTON_HEIGHT + 25.0f)); // from level select back to main menu
 		}
 		else if (current_game_state == kMainMenu)
 		{
 			LevelButtons[i] = ui_button_movement(LevelButtons[i], CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f,
-				CP_System_GetWindowHeight() * 0.35f + i * (BUTTON_HEIGHT + 25.0f)); // from l_select back to main menu
+				CP_System_GetWindowHeight() * 0.35f + i * (BUTTON_HEIGHT + 25.0f)); // from main menu to level select
 		}
 	}
 	if (current_game_state == kLevelSelect) // going to main menu
@@ -532,7 +539,7 @@ void move_level_select(void)
 	else if (current_game_state == kMainMenu)
 	{
 		LevelSelectBackButton = ui_button_movement(LevelSelectBackButton, CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f,
-			CP_System_GetWindowHeight() * 0.8f); // from l_select back to main menu
+			CP_System_GetWindowHeight() * 0.8f); // from main menu to level select
 	}
 }
 
@@ -635,19 +642,15 @@ int button_has_finished_moving(Button button, float destPosX, float destPosY)
 
 #pragma region Building / Wave Phase
 
+// Skip Wave button, located directly below the green-red bar.
 void init_skip_wave_button(void)
 {
 	// Init skip wave button's position.
-	SkipWaveButton.buttonData.x_origin = CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f;
-	SkipWaveButton.buttonData.y_origin = CP_System_GetWindowHeight() * 0.1f;
-	SkipWaveButton.buttonData.width = BUTTON_WIDTH;
-	SkipWaveButton.buttonData.height = BUTTON_HEIGHT;
-
-	SkipWaveButton.textPositionX = SkipWaveButton.buttonData.x_origin + BUTTON_WIDTH * 0.5f;
-	SkipWaveButton.textPositionY = SkipWaveButton.buttonData.y_origin + BUTTON_HEIGHT * 0.5f;
-	strcpy_s(SkipWaveButton.textString, sizeof(SkipWaveButton.textString), "Skip");
+	SkipWaveButton = init_text_button(SkipWaveButton, CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 0.1f,
+		BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Skip");
 }
 
+// Draws a green to red bar representing the amount of time left in buildingPhase.
 void render_wave_timer_bar(float timeLeft, float maxTime, float barWidth, float barHeight)
 {
 	float percentage = timeLeft / maxTime;
@@ -658,6 +661,7 @@ void render_wave_timer_bar(float timeLeft, float maxTime, float barWidth, float 
 	CP_Graphics_DrawRect(CP_System_GetWindowWidth() * 0.5f - barWidth * 0.5f, 0.0f, barWidth * percentage, barHeight);
 }
 
+// Display the bar and time text, but not the skip button.
 void render_wave_timer(void)
 {
 	CP_Settings_TextSize(FONT_SIZE);
@@ -668,6 +672,7 @@ void render_wave_timer(void)
 	CP_Font_DrawText(buffer, CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.05f);
 }
 
+// Controlling the building time left till next wave.
 void reduce_building_phase_time()
 {
 	if (building_time < 0.05f)
@@ -693,9 +698,9 @@ void reduce_building_phase_time()
 	}
 }
 
+// Set building time left.
 void SetBuildingTime(float newBuildingTime)
 {
-	// set building phase time to 0.0f
 	building_time = newBuildingTime;
 }
 
