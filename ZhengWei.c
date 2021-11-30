@@ -1,23 +1,81 @@
+/*!
+@file       Samuel.c
+@author     Ng Zheng Wei (zhengwei.ng@digipen.edu)
+@co-author	Chiok Wei Wen Gabriel (chiok.w@digipen.edu)
+			Lim Jing Rui John (l.jingruijohn@digipen.edu)
+			Phua Tai Dah Anderson (a.phua@digipen.edu)
+			Wong Zhi Hao Samuel (w.zhihaosamuel@digipen.edu)
+@course     CSD 1400
+@section    C
+@date       01/12/2021
+@brief    	Contains function definations MouseReset, FloatAbs, BtnIsPressed
+			CollisionDetection, CheckGameButtonPressed, ColorGameSquare,
+			InitPathFinding, ResetPathFinding, IsDestinationUpdated,
+			UpdatePathFindingNeighborCost, CalculatePathFindingCost,
+			UpdatePathFinding, UpdateGameGridPress, InitGeneralLevelEnemies,
+			InitEnvironmentObject, InitGameGrid, InitPauseButton,
+			InitBasicTurretButton, InitSlowTurretButton,
+			InitHomingTurretButton, InitTurretMineButton,
+			InitPhantomQuartzDisplay, InitGoldQuartzDisplay, 
+			InitHealthDisplay, InitMenuSwapButton, InitWaveNumberDisplay,
+			InitEnvironmentEffectsDisplay, InitRemainingMonsterDisplay,
+			InitUpgradeMenuDisplay, InitUpgradeButton, InitSellButton,
+			InitTurretDetailsDisplay, InitEnvironment, InitPowerUpPrice,
+			InitLevel1, InitLevel2, InitLevel3, InitLevel4, InitLevel5,
+			InitHowToPlayButtons, InitMouse, UpdateGameButtonPressed,
+			RenderEnvironment, RenderTurretDetailsDisplay, RenderGameGrid,
+			RenderTurretMenuObjects, RenderEnemyPath, RenderHowToPlayPages.
+*//*__________________________________________________________________________*/
 #include "game.h"
 #include "zhengwei.h"
 #include "Gabriel.h"
 
 #include "cprocessing.h"
 
-//Initialize global variables
+/*!
+@author     Ng Zheng Wei(zhengwei.ng@digipen.edu)
+@brief		Value Assignment for Global Variable
+			found in zhengwei.h file
+			
+			kLeftGameMenuXWidth - The width of the menu
+								  on the left of the game.
+			kRightGameMenuXOrigin - The Origin of the menu
+									on the right of the game.
+*//*_____________________________________________________________*/
 const float kLeftGameMenuXWidth = 140.714294f;
 const float kRightGameMenuXOrigin = 998.571411f;
 //Tools
-//Reset the current click position
+/*!
+@author     Ng Zheng Wei(zhengwei.ng@digipen.edu)
+@co-author
+@brief		This function sets the location of the previous click
+			to be outside of the screen so that it does not click
+			on any object in the game.
+@param		- void
+@return		- void
+*//*_____________________________________________________________*/
 void MouseReset(void) {
 	mouse_input.x_origin = -1;
 	mouse_input.y_origin = -1;
 }
-//Return positive value of float
+/*!
+@author     Ng Zheng Wei(zhengwei.ng@digipen.edu)
+@co-author
+@brief		This function returns the positive vale of a float.
+@param		float x- The float to obtain the positive value .
+@return		float - The positive value of the given float.
+*//*_____________________________________________________________*/
 float FloatAbs(float x) {
 	return x < 0 ? x * -1 : x;
 }
-//Check if button is pressed
+/*!
+@author     Ng Zheng Wei(zhengwei.ng@digipen.edu)
+@co-author
+@brief		This functions return kTrue if given button is the last
+			clicked object. Else return kFalse.
+@param		Coordinates object - The button to check.
+@return		Boolean - kTrue or kFalse.
+*//*_____________________________________________________________*/
 Boolean BtnIsPressed(Coordinates object) {
 	if (((object.x_origin <= mouse_input.x_origin)
 		&& (mouse_input.x_origin <= object.x_origin + object.width))
@@ -29,7 +87,17 @@ Boolean BtnIsPressed(Coordinates object) {
 		return 0;
 	}
 }
-//Collision Detection between circles and squares
+/*!
+@author     Ng Zheng Wei(zhengwei.ng@digipen.edu)
+@co-author
+@brief		This functions checks for collision between two square,
+			two circle, or a square and circle. It returns kTrue,
+			if the two given object is colliding, else it returns
+			kFalse.
+@param		Coordinates object1 - The first object to check.
+			Coordinates object2 - The second object to check.
+@return		Boolean - kTrue or kFalse.
+*//*_____________________________________________________________*/
 Boolean CollisionDetection(Coordinates object1, Coordinates object2) {
 	//Collision for circle to circle
 	if (object1.object_type == kObjectCircle
@@ -126,7 +194,16 @@ Boolean CollisionDetection(Coordinates object1, Coordinates object2) {
 		}
 	}
 }
-//Check which button is pressed in the game
+/*!
+@author     Ng Zheng Wei(zhengwei.ng@digipen.edu)
+@co-author
+@brief		This function checks which button is pressed
+			in the game and returns MenuObjectType which is
+			a enum to which menu object is clicked. It
+			returns kFalse if no object is clicked.
+@param		-void
+@return		MenuObjectType - enum of which menu object is clicked.
+*//*_____________________________________________________________*/
 MenuObjectType CheckGameButtonPressed(void) {
 	for (int i = 0; i < kButtonMax; i++) {
 		if (BtnIsPressed(game_menu_object[i])) {
@@ -135,7 +212,16 @@ MenuObjectType CheckGameButtonPressed(void) {
 	}
 	return kButtonMax;
 }
-//Color game square to square_color
+/*!
+@author     Ng Zheng Wei(zhengwei.ng@digipen.edu)
+@co-author
+@brief		This function colors the game square given the color
+			row and col.
+@param		- void
+@return		int rect_row - The row of the grid.
+			int rect_col - The col of the grid.
+			CP_Color square_color - Color to Use.
+*//*_____________________________________________________________*/
 static void ColorGameSquare(
 	int rect_row, int rect_col, CP_Color square_color)
 {
@@ -174,7 +260,7 @@ static void ResetPathFinding(void) {
 	level.grid[level.spawn_row][level.spawn_col].visited = 1;
 }
 //Check if destination is reachable
-static Boolean isDestinationUpdated(void) {
+static Boolean IsDestinationUpdated(void) {
 	return level.grid[level.exit_row][level.exit_col].visited;
 }
 //Update cost of neighbor base on own cost
@@ -211,7 +297,7 @@ static void UpdatePathFindingNeighborCost(
 //Calculate all grid cost. Find the squares in the same generation 
 //and call a function to update neighbors.
 static void CalculatePathFindingCost(void) {
-	for (int current_cost = 0; !isDestinationUpdated()
+	for (int current_cost = 0; !IsDestinationUpdated()
 		&& current_cost <= level_grid_rows * level_grid_cols; current_cost++) {
 		for (int i = 0; i < level_grid_rows; i++) {
 			for (int j = 0; j < level_grid_cols; j++) {
@@ -270,7 +356,7 @@ static void UpdateGameGridPress(void) {
 				CalculatePathFindingCost();
 				//Set grid to blocked and check if end is reachable
 			}
-			if (!isDestinationUpdated()) {//Check if end is reachable
+			if (!IsDestinationUpdated()) {//Check if end is reachable
 				//if Unreachable
 				level.grid[draw_y][draw_x].type = kClear;
 				ResetPathFinding();
@@ -403,7 +489,7 @@ static void InitHomingTurretButton(void) {
 		game_menu_object[kTurretButtonSlow].height;
 	game_menu_object[kTurretButtonHoming].image = slow_turret_image_array[0];
 }
-static void InitTurretMineButton(void) {
+static void InitMineTurretButton(void) {
 	game_menu_object[kTurretButtonMine].x_origin =
 		game_menu_object[kTurretButtonHoming].x_origin;
 	game_menu_object[kTurretButtonMine].y_origin =
@@ -638,7 +724,7 @@ void InitLevel1(void) {
 	InitBasicTurretButton();
 	InitSlowTurretButton();
 	InitHomingTurretButton();
-	InitTurretMineButton();
+	InitMineTurretButton();
 	InitPhantomQuartzDisplay();
 	InitGoldQuartzDisplay();
 	InitHealthDisplay();
@@ -715,7 +801,7 @@ void InitLevel2(void) {
 	InitBasicTurretButton();
 	InitSlowTurretButton();
 	InitHomingTurretButton();
-	InitTurretMineButton();
+	InitMineTurretButton();
 	InitPhantomQuartzDisplay();
 	InitGoldQuartzDisplay();
 	InitHealthDisplay();
@@ -791,7 +877,7 @@ void InitLevel3(void) {
 	InitBasicTurretButton();
 	InitSlowTurretButton();
 	InitHomingTurretButton();
-	InitTurretMineButton();
+	InitMineTurretButton();
 	InitPhantomQuartzDisplay();
 	InitGoldQuartzDisplay();
 	InitHealthDisplay();
@@ -867,7 +953,7 @@ void InitLevel4(void) {
 	InitBasicTurretButton();
 	InitSlowTurretButton();
 	InitHomingTurretButton();
-	InitTurretMineButton();
+	InitMineTurretButton();
 	InitPhantomQuartzDisplay();
 	InitGoldQuartzDisplay();
 	InitHealthDisplay();
@@ -938,7 +1024,7 @@ void InitLevel5(void) {
 	InitBasicTurretButton();
 	InitSlowTurretButton();
 	InitHomingTurretButton();
-	InitTurretMineButton();
+	InitMineTurretButton();
 	InitPhantomQuartzDisplay();
 	InitGoldQuartzDisplay();
 	InitHealthDisplay();
