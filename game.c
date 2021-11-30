@@ -156,6 +156,7 @@ void game_update(void)
 			current_game_state = kMainMenu;
 			CP_Sound_StopGroup(CP_SOUND_GROUP_1);
 			CP_Sound_PlayAdvanced(MainMenuBGM, BGM_Volume, 1.0f, TRUE, CP_SOUND_GROUP_1);
+			MouseReset();
 		}
 		else if (BtnIsPressed(EndScreenButtons[1].buttonData))
 		{
@@ -469,7 +470,8 @@ void game_exit(void)
 	CP_Image_Free(&thin_UI_background);
 	CP_Image_Free(&upgrade_menu_background);
 
-	//CP_Font_Free(pixelFont);
+	// CP_Font_Free(pixelFont); 
+	// ^ in documentation but for some reason not in API
 
 	CP_Image_Free(&basic_ghost_spritesheet);
 	CP_Image_Free(&fast_ghost_spritesheet);
