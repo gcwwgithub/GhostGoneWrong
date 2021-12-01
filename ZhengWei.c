@@ -497,7 +497,13 @@ static void InitEnvironmentObject(
 	level.grid[row][col].type = kBlocked;
 	level.grid[row][col].type = kBlocked;
 }
-//Initialize positions of Buttons and Display
+/*!
+@author     Ng Zheng Wei(zhengwei.ng@digipen.edu)
+@co-author	
+@brief		Initialize the position and size of the game grid.
+@param		- void
+@return		- void
+*//*_____________________________________________________________*/
 static void InitGameGrid(void) {
 	/*Height and Width not used for game, example menus*/
 	float unusable_screen_height;
@@ -517,6 +523,13 @@ static void InitGameGrid(void) {
 	game_menu_object[kGameGrid].height = game.height;
 	game_menu_object[kGameGrid].object_type = kObjectRectangle;
 }
+/*!
+@author     Ng Zheng Wei(zhengwei.ng@digipen.edu)
+@co-author	Chiok Wei Wen Gabriel (chiok.w@digipen.edu)
+@brief		Initialize the position and size of the pause button.
+@param		- void
+@return		- void
+*//*_____________________________________________________________*/
 static void InitPauseButton(void) {
 	game_menu_object[kPauseButton].x_origin = 0.0f;
 	game_menu_object[kPauseButton].y_origin = 0.0f;
@@ -525,6 +538,14 @@ static void InitPauseButton(void) {
 		(float)CP_System_GetWindowHeight() / 10;
 	game_menu_object[kPauseButton].image = pause_button_image;
 }
+/*!
+@author     Ng Zheng Wei(zhengwei.ng@digipen.edu)
+@co-author	Chiok Wei Wen Gabriel (chiok.w@digipen.edu)
+@brief		Initialize the position and size of the basic turret
+			button.
+@param		- void
+@return		- void
+*//*_____________________________________________________________*/
 static void InitBasicTurretButton(void) {
 	game_menu_object[kTurretButtonBasic].x_origin =
 		game_menu_object[kPauseButton].x_origin;
@@ -536,6 +557,14 @@ static void InitBasicTurretButton(void) {
 		game_menu_object[kPauseButton].height * 2;
 	game_menu_object[kTurretButtonBasic].image = slow_turret_image_array[0];
 }
+/*
+@author     Ng Zheng Wei(zhengwei.ng@digipen.edu)
+@co-author	Chiok Wei Wen Gabriel(chiok.w@digipen.edu)
+@brief		Initialize the position and size of the slow turret
+			button.
+@param		- void
+@return		- void
+*//*_____________________________________________________________*/
 static void InitSlowTurretButton(void) {
 	game_menu_object[kTurretButtonSlow].x_origin =
 		game_menu_object[kTurretButtonBasic].x_origin;
@@ -548,6 +577,14 @@ static void InitSlowTurretButton(void) {
 		game_menu_object[kTurretButtonBasic].height;
 	game_menu_object[kTurretButtonSlow].image = slow_turret_image_array[0];
 }
+/*
+@author     Ng Zheng Wei(zhengwei.ng@digipen.edu)
+@co-author	Chiok Wei Wen Gabriel(chiok.w@digipen.edu)
+@brief		Initialize the position and size of the homing turret
+			button.
+@param		- void
+@return		- void
+*//*_____________________________________________________________*/
 static void InitHomingTurretButton(void) {
 	game_menu_object[kTurretButtonHoming].x_origin =
 		game_menu_object[kTurretButtonSlow].x_origin;
@@ -560,6 +597,14 @@ static void InitHomingTurretButton(void) {
 		game_menu_object[kTurretButtonSlow].height;
 	game_menu_object[kTurretButtonHoming].image = slow_turret_image_array[0];
 }
+/*
+@author     Ng Zheng Wei(zhengwei.ng@digipen.edu)
+@co-author	Chiok Wei Wen Gabriel(chiok.w@digipen.edu)
+@brief		Initialize the position and size of the mine turret
+			button.
+@param		- void
+@return		- void
+*//*_____________________________________________________________*/
 static void InitMineTurretButton(void) {
 	game_menu_object[kTurretButtonMine].x_origin =
 		game_menu_object[kTurretButtonHoming].x_origin;
@@ -572,6 +617,14 @@ static void InitMineTurretButton(void) {
 		game_menu_object[kTurretButtonBasic].height;
 	game_menu_object[kTurretButtonMine].image = slow_turret_image_array[0];
 }
+/*
+@author     Ng Zheng Wei(zhengwei.ng@digipen.edu)
+@co-author	Chiok Wei Wen Gabriel(chiok.w@digipen.edu)
+@brief		Initialize the position and size of the phantom
+			quartz display.
+@param		- void
+@return		- void
+*//*_____________________________________________________________*/
 static void InitPhantomQuartzDisplay(void) {
 	game_menu_object[kPhantomQuartzMenu].y_origin = 0.0f;
 	game_menu_object[kPhantomQuartzMenu].x_origin = kRightGameMenuXOrigin;
@@ -581,6 +634,14 @@ static void InitPhantomQuartzDisplay(void) {
 		((float)CP_System_GetWindowWidth()
 			- game_menu_object[kPhantomQuartzMenu].x_origin) / 2;
 }
+/*
+@author     Ng Zheng Wei(zhengwei.ng@digipen.edu)
+@co-author	Chiok Wei Wen Gabriel(chiok.w@digipen.edu)
+@brief		Initialize the position and size of the gold
+			quartz display.
+@param		- void
+@return		- void
+*//*_____________________________________________________________*/
 static void InitGoldQuartzDisplay(void) {
 	game_menu_object[kGoldQuartzMenu].width =
 		game_menu_object[kPhantomQuartzMenu].width;
@@ -591,7 +652,14 @@ static void InitGoldQuartzDisplay(void) {
 		- game_menu_object[kPhantomQuartzMenu].width;
 	game_menu_object[kGoldQuartzMenu].y_origin =
 		game_menu_object[kPhantomQuartzMenu].y_origin;
-}
+}/*
+@author     Ng Zheng Wei(zhengwei.ng@digipen.edu)
+@co-author	Chiok Wei Wen Gabriel(chiok.w@digipen.edu)
+@brief		Initialize the position and size of the health
+			display.
+@param		- void
+@return		- void
+*//*_____________________________________________________________*/
 static void InitHealthDisplay(void) {
 	game_menu_object[kHealthMenu].x_origin =
 		game_menu_object[kPhantomQuartzMenu].x_origin;
@@ -603,6 +671,14 @@ static void InitHealthDisplay(void) {
 	game_menu_object[kHealthMenu].height =
 		game_menu_object[kPhantomQuartzMenu].height;
 }
+/*
+@author     Ng Zheng Wei(zhengwei.ng@digipen.edu)
+@co-author	Chiok Wei Wen Gabriel(chiok.w@digipen.edu)
+@brief		Initialize the position and size of the phantom
+			quartz display.
+@param		- void
+@return		- void
+*//*_____________________________________________________________*/
 static void InitMenuSwapButton(void) {
 	game_menu_object[kSwapButton].x_origin = game_menu_object[kTurretButtonMine].x_origin;
 	game_menu_object[kSwapButton].y_origin = game_menu_object[kTurretButtonMine].y_origin + game_menu_object[kTurretButtonMine].height;
