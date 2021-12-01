@@ -1,5 +1,5 @@
 /*!
-@file       Samuel.c
+@file       zhengwei.c
 @author     Ng Zheng Wei (zhengwei.ng@digipen.edu)
 @co-author	Chiok Wei Wen Gabriel (chiok.w@digipen.edu)
 			Lim Jing Rui John (l.jingruijohn@digipen.edu)
@@ -685,12 +685,28 @@ static void InitMenuSwapButton(void) {
 	game_menu_object[kSwapButton].width = game_menu_object[kTurretButtonMine].width;
 	game_menu_object[kSwapButton].height = game_menu_object[kTurretButtonMine].height / 2;
 }
+/*
+@author     Ng Zheng Wei(zhengwei.ng@digipen.edu)
+@co-author	Chiok Wei Wen Gabriel(chiok.w@digipen.edu)
+@brief		Initialize the position and size of the wave number
+			display.
+@param		- void
+@return		- void
+*//*_____________________________________________________________*/
 static void InitWaveNumberDisplay(void) {
 	game_menu_object[kWaveDisplay].x_origin = game_menu_object[kGoldQuartzMenu].x_origin;
 	game_menu_object[kWaveDisplay].y_origin = game_menu_object[kHealthMenu].y_origin;
 	game_menu_object[kWaveDisplay].width = game_menu_object[kGoldQuartzMenu].width;
 	game_menu_object[kWaveDisplay].height = game_menu_object[kGoldQuartzMenu].height;
 }
+/*
+@author     Ng Zheng Wei(zhengwei.ng@digipen.edu)
+@co-author	Chiok Wei Wen Gabriel(chiok.w@digipen.edu)
+@brief		Initialize the position and size of the environmental
+			effects display.
+@param		- void
+@return		- void
+*//*_____________________________________________________________*/
 static void InitEnvironmentEffectsDisplay(void) {
 	game_menu_object[kEnvironmentalEffects].x_origin = game_menu_object[kHealthMenu].x_origin;
 	game_menu_object[kEnvironmentalEffects].y_origin =
@@ -701,6 +717,14 @@ static void InitEnvironmentEffectsDisplay(void) {
 	game_menu_object[kEnvironmentalEffects].height =
 		game_menu_object[kHealthMenu].height * 3;
 }
+/*
+@author     Ng Zheng Wei(zhengwei.ng@digipen.edu)
+@co-author	Chiok Wei Wen Gabriel(chiok.w@digipen.edu)
+@brief		Initialize the position and size of the remaining
+			monster display.
+@param		- void
+@return		- void
+*//*_____________________________________________________________*/
 static void InitRemainingMonsterDisplay(void) {
 	game_menu_object[kMonsterRemainingDisplay].x_origin =
 		game_menu_object[kWaveDisplay].x_origin;
@@ -712,6 +736,14 @@ static void InitRemainingMonsterDisplay(void) {
 	game_menu_object[kMonsterRemainingDisplay].height =
 		game_menu_object[kWaveDisplay].height * 3;
 }
+/*
+@author     Ng Zheng Wei(zhengwei.ng@digipen.edu)
+@co-author	Chiok Wei Wen Gabriel(chiok.w@digipen.edu)
+@brief		Initialize the position and size of the upgrade
+			menu display.
+@param		- void
+@return		- void
+*//*_____________________________________________________________*/
 static void InitUpgradeMenuDisplay(void) {
 	game_menu_object[kUpgradeMenu].x_origin =
 		game_menu_object[kEnvironmentalEffects].x_origin;
@@ -725,6 +757,14 @@ static void InitUpgradeMenuDisplay(void) {
 		(CP_System_GetWindowHeight()
 			- game_menu_object[kEnvironmentalEffects].y_origin);
 }
+/*
+@author     Ng Zheng Wei(zhengwei.ng@digipen.edu)
+@co-author	Chiok Wei Wen Gabriel(chiok.w@digipen.edu)
+@brief		Initialize the position and size of the upgrade
+			button.
+@param		- void
+@return		- void
+*//*_____________________________________________________________*/
 static void InitUpgradeButton(void) {
 	game_menu_object[kUpgradeButton].x_origin =
 		game_menu_object[kEnvironmentalEffects].x_origin
@@ -737,6 +777,14 @@ static void InitUpgradeButton(void) {
 	game_menu_object[kUpgradeButton].height =
 		game_menu_object[kSwapButton].height;
 }
+/*
+@author     Ng Zheng Wei(zhengwei.ng@digipen.edu)
+@co-author	Chiok Wei Wen Gabriel(chiok.w@digipen.edu)
+@brief		Initialize the position and size of the sell
+			button.
+@param		- void
+@return		- void
+*//*_____________________________________________________________*/
 static void InitSellButton(void) {
 	game_menu_object[kSellButton].x_origin =
 		game_menu_object[kMonsterRemainingDisplay].x_origin
@@ -749,6 +797,14 @@ static void InitSellButton(void) {
 	game_menu_object[kSellButton].height =
 		game_menu_object[kSwapButton].height;
 }
+/*
+@author     Ng Zheng Wei(zhengwei.ng@digipen.edu)
+@co-author	Chiok Wei Wen Gabriel(chiok.w@digipen.edu)
+@brief		Initialize the position and size of the turret
+			details display.
+@param		- void
+@return		- void
+*//*_____________________________________________________________*/
 static void InitTurretDetailsDisplay
 (MenuObjectType turret_button_selected) {
 	game_menu_object[kTurretDetailsDisplay].x_origin =
@@ -762,6 +818,13 @@ static void InitTurretDetailsDisplay
 	game_menu_object[kTurretDetailsDisplay].height =
 		game_menu_object[turret_button_selected].height / 2;
 }
+/*
+@author     Chiok Wei Wen Gabriel(chiok.w@digipen.edu)
+@co-author	Ng Zheng Wei(zhengwei.ng@digipen.edu)
+@brief		Initialize the environment objects in the levels.
+@param		- void
+@return		- void
+*//*_____________________________________________________________*/
 static void InitEnvironment(void) {
 	//Removes all  previous environment when changing levels
 	for (int i = 0; i < kMaxEnvironmentObject; i++) {
@@ -811,12 +874,30 @@ static void InitEnvironment(void) {
 		break;
 	}
 }
+/*
+@author     Chiok Wei Wen Gabriel(chiok.w@digipen.edu)
+@co-author	Ng Zheng Wei(zhengwei.ng@digipen.edu)
+@brief		Initialize the price of power ups.
+@param		- void
+@return		- void
+*//*_____________________________________________________________*/
 void InitPowerUpPrice(void) {
 	power_up_price.more_phantom_quartz = 10;
 	power_up_price.reduce_enemy_speed = 10;
 	power_up_price.reduce_enemy_health = 10;
 	power_up_price.increased_mine_damage = 10;
 }
+/*
+@author     Ng Zheng Wei(zhengwei.ng@digipen.edu)
+@co-author	Lim Jing Rui John (l.jingruijohn@digipen.edu)
+			Wong Zhi Hao Samuel (w.zhihaosamuel@digipen.edu)
+			Phua Tai Dah Anderson (a.phua@digipen.edu)
+			Chiok Wei Wen Gabriel (chiok.w@digipen.edu)
+@brief		Initialize variables and call functions to
+			initialize level 1.
+@param		- void
+@return		- void
+*//*_____________________________________________________________*/
 void InitLevel1(void) {
 	level_grid_cols = kLevel1Cols;
 	level_grid_rows = kLevel1Rows;
@@ -894,6 +975,17 @@ void InitLevel1(void) {
 	CP_Sound_PlayAdvanced(BuildingBGM, BGM_Volume, 1.0f, TRUE,
 		CP_SOUND_GROUP_1);
 }
+/*
+@author     Ng Zheng Wei(zhengwei.ng@digipen.edu)
+@co-author	Lim Jing Rui John (l.jingruijohn@digipen.edu)
+			Wong Zhi Hao Samuel (w.zhihaosamuel@digipen.edu)
+			Phua Tai Dah Anderson (a.phua@digipen.edu)
+			Chiok Wei Wen Gabriel (chiok.w@digipen.edu)
+@brief		Initialize variables and call functions to
+			initialize level 2.
+@param		- void
+@return		- void
+*//*_____________________________________________________________*/
 void InitLevel2(void) {
 	level_grid_cols = kLevel2Cols;
 	level_grid_rows = kLevel2Rows;
@@ -970,6 +1062,17 @@ void InitLevel2(void) {
 	CP_Sound_StopGroup(CP_SOUND_GROUP_1);
 	CP_Sound_PlayAdvanced(BuildingBGM, BGM_Volume, 1.0f, TRUE, CP_SOUND_GROUP_1);
 }
+/*
+@author     Ng Zheng Wei(zhengwei.ng@digipen.edu)
+@co-author	Lim Jing Rui John (l.jingruijohn@digipen.edu)
+			Wong Zhi Hao Samuel (w.zhihaosamuel@digipen.edu)
+			Phua Tai Dah Anderson (a.phua@digipen.edu)
+			Chiok Wei Wen Gabriel (chiok.w@digipen.edu)
+@brief		Initialize variables and call functions to
+			initialize level 3.
+@param		- void
+@return		- void
+*//*_____________________________________________________________*/
 void InitLevel3(void) {
 	level_grid_cols = kLevel3Cols;
 	level_grid_rows = kLevel3Rows;
@@ -1046,6 +1149,17 @@ void InitLevel3(void) {
 	CP_Sound_StopGroup(CP_SOUND_GROUP_1);
 	CP_Sound_PlayAdvanced(BuildingBGM, BGM_Volume, 1.0f, TRUE, CP_SOUND_GROUP_1);
 }
+/*
+@author     Ng Zheng Wei(zhengwei.ng@digipen.edu)
+@co-author	Lim Jing Rui John (l.jingruijohn@digipen.edu)
+			Wong Zhi Hao Samuel (w.zhihaosamuel@digipen.edu)
+			Phua Tai Dah Anderson (a.phua@digipen.edu)
+			Chiok Wei Wen Gabriel (chiok.w@digipen.edu)
+@brief		Initialize variables and call functions to
+			initialize level 4.
+@param		- void
+@return		- void
+*//*_____________________________________________________________*/
 void InitLevel4(void) {
 	level_grid_cols = kLevel4Cols;
 	level_grid_rows = kLevel4Rows;
@@ -1122,6 +1236,17 @@ void InitLevel4(void) {
 	CP_Sound_StopGroup(CP_SOUND_GROUP_1);
 	CP_Sound_PlayAdvanced(BuildingBGM, BGM_Volume, 1.0f, TRUE, CP_SOUND_GROUP_1);
 }
+/*
+@author     Ng Zheng Wei(zhengwei.ng@digipen.edu)
+@co-author	Lim Jing Rui John (l.jingruijohn@digipen.edu)
+			Wong Zhi Hao Samuel (w.zhihaosamuel@digipen.edu)
+			Phua Tai Dah Anderson (a.phua@digipen.edu)
+			Chiok Wei Wen Gabriel (chiok.w@digipen.edu)
+@brief		Initialize variables and call functions to
+			initialize level 5.
+@param		- void
+@return		- void
+*//*_____________________________________________________________*/
 void InitLevel5(void) {
 	level_grid_cols = kLevel5Cols;
 	level_grid_rows = kLevel5Rows;
@@ -1198,33 +1323,46 @@ void InitLevel5(void) {
 	CP_Sound_StopGroup(CP_SOUND_GROUP_1);
 	CP_Sound_PlayAdvanced(BuildingBGM, BGM_Volume, 1.0f, TRUE, CP_SOUND_GROUP_1);
 }
+/*
+@author     Ng Zheng Wei(zhengwei.ng@digipen.edu)
+@co-author	Chiok Wei Wen Gabriel (chiok.w@digipen.edu)
+@brief		Initialize buttons on how to play screen.
+@param		- void
+@return		- void
+*//*_____________________________________________________________*/
 void InitHowToPlayButtons(void) {
-	TutorialButtons[kHowToPlayBack].x_origin =
+	how_to_play_buttons[kHowToPlayBack].x_origin =
 		(float)CP_System_GetWindowWidth() / 50;
-	TutorialButtons[kHowToPlayBack].y_origin =
+	how_to_play_buttons[kHowToPlayBack].y_origin =
 		(float)CP_System_GetWindowHeight() / 50;
-	TutorialButtons[kHowToPlayBack].width =
+	how_to_play_buttons[kHowToPlayBack].width =
 		(float)CP_System_GetWindowWidth() / 10;
-	TutorialButtons[kHowToPlayBack].height =
+	how_to_play_buttons[kHowToPlayBack].height =
 		(float)CP_System_GetWindowHeight() / 10;
-	TutorialButtons[kHowToPlayPrevious].x_origin =
+	how_to_play_buttons[kHowToPlayPrevious].x_origin =
 		(float)CP_System_GetWindowWidth() / 50;
-	TutorialButtons[kHowToPlayPrevious].y_origin =
+	how_to_play_buttons[kHowToPlayPrevious].y_origin =
 		(float)CP_System_GetWindowHeight() / 50;
-	TutorialButtons[kHowToPlayPrevious].width =
+	how_to_play_buttons[kHowToPlayPrevious].width =
 		(float)CP_System_GetWindowWidth() / 10;
-	TutorialButtons[kHowToPlayPrevious].height =
+	how_to_play_buttons[kHowToPlayPrevious].height =
 		(float)CP_System_GetWindowHeight() / 10;
-	TutorialButtons[kHowToPlayNext].x_origin =
+	how_to_play_buttons[kHowToPlayNext].x_origin =
 		(float)CP_System_GetWindowWidth() / 1.12f;
-	TutorialButtons[kHowToPlayNext].y_origin =
+	how_to_play_buttons[kHowToPlayNext].y_origin =
 		(float)CP_System_GetWindowHeight() / 50;
-	TutorialButtons[kHowToPlayNext].width =
+	how_to_play_buttons[kHowToPlayNext].width =
 		(float)CP_System_GetWindowWidth() / 10;
-	TutorialButtons[kHowToPlayNext].height =
+	how_to_play_buttons[kHowToPlayNext].height =
 		(float)CP_System_GetWindowHeight() / 10;
 }
-//Initialize mouse object 
+/*
+@author     Ng Zheng Wei(zhengwei.ng@digipen.edu)
+@co-author	
+@brief		Initialize Mouse for collision detection checks.
+@param		- void
+@return		- void
+*//*_____________________________________________________________*/
 void InitMouse(void) {
 	//out of the screen so it does not click anything at startup
 	mouse_input.width = -1;
@@ -1232,6 +1370,14 @@ void InitMouse(void) {
 	mouse_input.object_type = kObjectCircle;
 	MouseReset();
 }
+/*
+@author     Ng Zheng Wei(zhengwei.ng@digipen.edu)
+@co-author	Lim Jing Rui John (l.jingruijohn@digipen.edu)
+@brief		Update data when mouse clicks on a button or
+			when selecting turrets or upgrading turrets.
+@param		- void
+@return		- void
+*//*_____________________________________________________________*/
 void UpdateGameButtonPressed(void) {
 	switch (CheckGameButtonPressed())
 	{
@@ -1457,6 +1603,13 @@ void UpdateGameButtonPressed(void) {
 		break;
 	}
 }
+/*
+@author     Ng Zheng Wei(zhengwei.ng@digipen.edu)
+@co-author	Chiok Wei Wen Gabriel (chiok.w@digipen.edu)
+@brief		Render the environment object in the game.
+@param		- void
+@return		- void
+*//*_____________________________________________________________*/
 void RenderEnvironment(void) {
 	for (int i = 0; i < kMaxEnvironmentObject; i++) {
 		//Only attempt to render initialized environment
@@ -1470,6 +1623,14 @@ void RenderEnvironment(void) {
 		}
 	}
 }
+/*
+@author     Ng Zheng Wei(zhengwei.ng@digipen.edu)
+@co-author	Chiok Wei Wen Gabriel (chiok.w@digipen.edu)
+@brief		Render the turret details box when turret is hovered
+			over.
+@param		- void
+@return		- void
+*//*_____________________________________________________________*/
 void RenderTurretDetailsDisplay(void) {
 	//Check if a turretbutton or power up upgrade is hovered over
 	//and display the details
@@ -1629,6 +1790,13 @@ void RenderTurretDetailsDisplay(void) {
 	mouse_input.x_origin = temp_mouse_x;
 	mouse_input.y_origin = temp_mouse_y;
 }
+/*
+@author     Ng Zheng Wei(zhengwei.ng@digipen.edu)
+@co-author	
+@brief		Render the game grid.
+@param		- void
+@return		- void
+*//*_____________________________________________________________*/
 void RenderGameGrid(void)
 {
 	int current_grid_row = 0, current_grid_col = 0;
@@ -1650,6 +1818,13 @@ void RenderGameGrid(void)
 		current_grid_col++;
 	}
 }
+/*
+@author     Chiok Wei Wen Gabriel (chiok.w@digipen.edu)
+@co-author	Ng Zheng Wei(zhengwei.ng@digipen.edu)
+@brief		Render all the buttons and display on the game.
+@param		- void
+@return		- void
+*//*_____________________________________________________________*/
 void RenderTurretMenuObjects
 (Coordinates menu_object_to_print, MenuObjectType type) {
 	char temp[100];//temporary storage for string
@@ -2243,7 +2418,14 @@ void RenderTurretMenuObjects
 		break;
 	}
 }
-//Render the path with a specific color according to grid type
+/*
+@author     Ng Zheng Wei(zhengwei.ng@digipen.edu)
+@co-author	
+@brief		Render the grids according to their type path,
+			spawn or exit.
+@param		- void
+@return		- void
+*//*_____________________________________________________________*/
 void RenderEnemyPath(void) {
 	for (int i = 0; i < level_grid_rows; i++) {
 		for (int j = 0; j < level_grid_cols; j++) {
@@ -2279,6 +2461,14 @@ void RenderEnemyPath(void) {
 		}
 	}
 }
+/*
+@author     Chiok Wei Wen Gabriel (chiok.w@digipen.edu)
+@co-author	Ng Zheng Wei(zhengwei.ng@digipen.edu)
+			Lim Jing Rui John (l.jingruijohn@digipen.edu)
+@brief		Render the How to play screen.
+@param		- void
+@return		- void
+*//*_____________________________________________________________*/
 void RenderHowToPlayPages(void) {
 	CP_Graphics_ClearBackground(COLOR_WHITE);
 	CP_Settings_RectMode(CP_POSITION_CORNER);
@@ -2286,49 +2476,49 @@ void RenderHowToPlayPages(void) {
 		CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.5f,
 		1280 * scaling_factor, 720 * scaling_factor, 255);
 	if (current_how_to_play_page != 0) {
-		CP_Graphics_DrawRect(TutorialButtons[kHowToPlayPrevious].x_origin,
-			TutorialButtons[kHowToPlayPrevious].y_origin,
-			TutorialButtons[kHowToPlayPrevious].width,
-			TutorialButtons[kHowToPlayPrevious].height);
+		CP_Graphics_DrawRect(how_to_play_buttons[kHowToPlayPrevious].x_origin,
+			how_to_play_buttons[kHowToPlayPrevious].y_origin,
+			how_to_play_buttons[kHowToPlayPrevious].width,
+			how_to_play_buttons[kHowToPlayPrevious].height);
 		RenderImageFromSpriteSheet(interactable_UI_buttons_spritesheet,
 			interactable_UI_buttons_spritesheet_array[4],
-			TutorialButtons[kHowToPlayPrevious].x_origin 
-			+ TutorialButtons[kHowToPlayPrevious].width / 2,
-			TutorialButtons[kHowToPlayPrevious].y_origin 
-			+ TutorialButtons[kHowToPlayPrevious].height / 2,
-			TutorialButtons[kHowToPlayPrevious].width,
-			TutorialButtons[kHowToPlayPrevious].height);
+			how_to_play_buttons[kHowToPlayPrevious].x_origin 
+			+ how_to_play_buttons[kHowToPlayPrevious].width / 2,
+			how_to_play_buttons[kHowToPlayPrevious].y_origin 
+			+ how_to_play_buttons[kHowToPlayPrevious].height / 2,
+			how_to_play_buttons[kHowToPlayPrevious].width,
+			how_to_play_buttons[kHowToPlayPrevious].height);
 	}
 	else
 	{
-		CP_Graphics_DrawRect(TutorialButtons[kHowToPlayBack].x_origin,
-			TutorialButtons[kHowToPlayBack].y_origin,
-			TutorialButtons[kHowToPlayBack].width,
-			TutorialButtons[kHowToPlayBack].height);
+		CP_Graphics_DrawRect(how_to_play_buttons[kHowToPlayBack].x_origin,
+			how_to_play_buttons[kHowToPlayBack].y_origin,
+			how_to_play_buttons[kHowToPlayBack].width,
+			how_to_play_buttons[kHowToPlayBack].height);
 		RenderImageFromSpriteSheet(interactable_UI_buttons_spritesheet, 
 			interactable_UI_buttons_spritesheet_array[5],
-			TutorialButtons[kHowToPlayBack].x_origin 
-			+ TutorialButtons[kHowToPlayBack].width / 2,
-			TutorialButtons[kHowToPlayBack].y_origin 
-			+ TutorialButtons[kHowToPlayBack].height / 2,
-			TutorialButtons[kHowToPlayBack].width,
-			TutorialButtons[kHowToPlayBack].height);
+			how_to_play_buttons[kHowToPlayBack].x_origin 
+			+ how_to_play_buttons[kHowToPlayBack].width / 2,
+			how_to_play_buttons[kHowToPlayBack].y_origin 
+			+ how_to_play_buttons[kHowToPlayBack].height / 2,
+			how_to_play_buttons[kHowToPlayBack].width,
+			how_to_play_buttons[kHowToPlayBack].height);
 	}
 	if (current_how_to_play_page != kMaxHowToPlayPages - 1) {
-		CP_Graphics_DrawRect(TutorialButtons[kHowToPlayNext].x_origin,
-			TutorialButtons[kHowToPlayNext].y_origin,
-			TutorialButtons[kHowToPlayNext].width,
-			TutorialButtons[kHowToPlayNext].height);
+		CP_Graphics_DrawRect(how_to_play_buttons[kHowToPlayNext].x_origin,
+			how_to_play_buttons[kHowToPlayNext].y_origin,
+			how_to_play_buttons[kHowToPlayNext].width,
+			how_to_play_buttons[kHowToPlayNext].height);
 		RenderImageFromSpriteSheet(interactable_UI_buttons_spritesheet,
 			interactable_UI_buttons_spritesheet_array[3],
-			TutorialButtons[kHowToPlayNext].x_origin 
-			+ TutorialButtons[kHowToPlayNext].width / 2,
-			TutorialButtons[kHowToPlayNext].y_origin 
-			+ TutorialButtons[kHowToPlayNext].height / 2,
-			TutorialButtons[kHowToPlayNext].width,
-			TutorialButtons[kHowToPlayNext].height);
+			how_to_play_buttons[kHowToPlayNext].x_origin 
+			+ how_to_play_buttons[kHowToPlayNext].width / 2,
+			how_to_play_buttons[kHowToPlayNext].y_origin 
+			+ how_to_play_buttons[kHowToPlayNext].height / 2,
+			how_to_play_buttons[kHowToPlayNext].width,
+			how_to_play_buttons[kHowToPlayNext].height);
 	}
-	if (BtnIsPressed(TutorialButtons[kHowToPlayBack]) 
+	if (BtnIsPressed(how_to_play_buttons[kHowToPlayBack]) 
 		&& current_how_to_play_page == 0) {
 		//Return to main menu when back button is clicked
 		current_how_to_play_page = 0;
@@ -2338,7 +2528,7 @@ void RenderHowToPlayPages(void) {
 				CP_SOUND_GROUP_0);
 		}
 	}
-	else if (BtnIsPressed(TutorialButtons[kHowToPlayPrevious])) {
+	else if (BtnIsPressed(how_to_play_buttons[kHowToPlayPrevious])) {
 		if (current_how_to_play_page != 0) {
 			current_how_to_play_page -= 1;
 			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
@@ -2347,7 +2537,7 @@ void RenderHowToPlayPages(void) {
 			}
 		}
 	}
-	else if (BtnIsPressed(TutorialButtons[kHowToPlayNext])) {
+	else if (BtnIsPressed(how_to_play_buttons[kHowToPlayNext])) {
 		if (current_how_to_play_page != kMaxHowToPlayPages - 1) {
 			current_how_to_play_page += 1;
 			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
