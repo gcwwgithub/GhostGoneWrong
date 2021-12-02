@@ -14,7 +14,7 @@ void game_init(void)
 #endif
 
 	//CP_System_ShowConsole(); //pls dont delete this cause scrub me uses printf to debug -gabriel
-	CP_System_Fullscreen();
+	//CP_System_Fullscreen();
 	CP_System_SetWindowTitle("Ghost Gone Wrong");
 	int gameWindowWidth = 1280;
 	int gameWindowHeight = (int)(gameWindowWidth * 1080.0f / 1920.0f);//To apply uniform scaling
@@ -174,20 +174,21 @@ void game_update(void)
 	else if (current_game_state == kMainMenu)
 	{
 		CP_Settings_NoTint();
-		if (BtnIsPressed(PlayButton.buttonData))
+		if (BtnIsPressed(MainMenuButtons[StartButton].buttonData))
 		{
 			// To prevent clicking buttons while transitioning to LevelSelect
 			if (!CreditsBackButton.isMoving)
 			{
-				PlayButton.isMoving = CreditsButton.isMoving = QuitButton.isMoving
-					= HowToPlayButton.isMoving = LevelButtons->isMoving = 1;
+				MainMenuButtons[StartButton].isMoving = MainMenuButtons[CreditsButton].isMoving 
+				= MainMenuButtons[QuitButton].isMoving = MainMenuButtons[HowToPlayButton].isMoving 
+					= LevelButtons->isMoving = 1;
 			}
 			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
 				CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE,
 					CP_SOUND_GROUP_0);
 			}
 		}
-		else if (BtnIsPressed(QuitButton.buttonData))
+		else if (BtnIsPressed(MainMenuButtons[QuitButton].buttonData))
 		{
 			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
 				CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE,
@@ -195,10 +196,10 @@ void game_update(void)
 			}
 			exit_to_desktop();
 		}
-		else if (BtnIsPressed(CreditsButton.buttonData))
+		else if (BtnIsPressed(MainMenuButtons[CreditsButton].buttonData))
 		{
 			// To prevent clicking buttons while transitioning to Credits
-			if (!PlayButton.isMoving)
+			if (!MainMenuButtons[StartButton].isMoving)
 			{
 				CreditsBackButton.isMoving = 1;
 				if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
@@ -207,14 +208,14 @@ void game_update(void)
 				}
 			}
 		}
-		else if (BtnIsPressed(OptionsButton.buttonData)) {
+		else if (BtnIsPressed(MainMenuButtons[OptionsButton].buttonData)) {
 			current_game_state = kOptions;
 			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
 				CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE,
 					CP_SOUND_GROUP_0);
 			}
 		}
-		else if (BtnIsPressed(HowToPlayButton.buttonData)) {
+		else if (BtnIsPressed(MainMenuButtons[HowToPlayButton].buttonData)) {
 			current_game_state = kHowToPlay;
 			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
 				CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE,
@@ -222,7 +223,7 @@ void game_update(void)
 			}
 		}
 		// All these buttons move altogether.
-		if (PlayButton.isMoving || CreditsButton.isMoving || QuitButton.isMoving || HowToPlayButton.isMoving)
+		if (MainMenuButtons[StartButton].isMoving || MainMenuButtons[CreditsButton].isMoving || MainMenuButtons[QuitButton].isMoving || MainMenuButtons[HowToPlayButton].isMoving)
 		{
 			move_main_menu();
 		}
@@ -301,8 +302,10 @@ void game_update(void)
 		}
 		else if (BtnIsPressed(LevelSelectBackButton.buttonData))
 		{
-			PlayButton.isMoving = CreditsButton.isMoving = QuitButton.isMoving
-				= HowToPlayButton.isMoving = LevelButtons->isMoving = 1;
+			MainMenuButtons[StartButton].isMoving = MainMenuButtons[CreditsButton].isMoving
+				= MainMenuButtons[QuitButton].isMoving = MainMenuButtons[HowToPlayButton].isMoving
+				= LevelButtons->isMoving = 1;
+
 			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
 				CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE,
 					CP_SOUND_GROUP_0);
@@ -311,7 +314,7 @@ void game_update(void)
 		}
 
 		// All these buttons move altogether.
-		if (PlayButton.isMoving || CreditsButton.isMoving || QuitButton.isMoving || HowToPlayButton.isMoving)
+		if (MainMenuButtons[StartButton].isMoving || MainMenuButtons[CreditsButton].isMoving || MainMenuButtons[QuitButton].isMoving || MainMenuButtons[HowToPlayButton].isMoving)
 		{
 			move_main_menu();
 		}
@@ -469,10 +472,6 @@ void game_exit(void)
 	CP_Image_Free(&turret_button_background);
 	CP_Image_Free(&thin_UI_background);
 	CP_Image_Free(&upgrade_menu_background);
-
-	// CP_Font_Free(pixelFont); 
-	// ^ in documentation but for some reason not in API
-
 	CP_Image_Free(&basic_ghost_spritesheet);
 	CP_Image_Free(&fast_ghost_spritesheet);
 	CP_Image_Free(&fat_ghost_spritesheet);

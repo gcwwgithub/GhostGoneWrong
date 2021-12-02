@@ -1,3 +1,15 @@
+/*!
+All content © 2021 DigiPen Institute of Technology Singapore, all rights reserved.
+@file       Anderson.h
+@author     Anderson Phua (a.phua@digipen.edu)
+@course     CSD 1400
+@section    C
+@date       03/12/2021
+@brief    	This header file contains the declarations for the main menu UI,
+			the transitions between the building & wave phases, as well as the
+			checking for win or lose conditions. Further comments are found below.
+*//*__________________________________________________________________________*/
+
 #pragma once
 #include "game.h"
 #include "Gabriel.h"
@@ -5,7 +17,7 @@
 #define COLOR_GREY CP_Color_Create(128, 128, 128, 255)
 #define COLOR_YELLOW CP_Color_Create(255,255, 0, 255)
 
-// Fixing resolution for easier scaling to bigger resolutions
+// Fixed resolution for easier scaling to bigger resolutions
 #define BUTTON_WIDTH CP_System_GetWindowWidth() / 400 * 65.0f
 #define BUTTON_HEIGHT CP_System_GetWindowHeight() / 400 * 40.0f
 #define FONT_SIZE CP_System_GetWindowWidth() / 400 * 14.0f
@@ -62,6 +74,11 @@ enum OptionText {
 	MuteAll
 };
 
+enum MainMenuButtonNames {
+	StartButton,	CreditsButton,	QuitButton,
+	OptionsButton,	HowToPlayButton
+};
+
 typedef struct Line
 {
 	const char const * text;
@@ -85,11 +102,7 @@ float dpLogoFadeTime;
 float teamLogoDisplayTime;
 float teamLogoFadeTime;
 
-Button PlayButton;
-Button QuitButton;
-Button CreditsButton;
-Button HowToPlayButton;
-Button OptionsButton;
+Button MainMenuButtons[5];
 
 Button OptionsBackButton;
 Coordinates OptionButtons[2];
@@ -118,7 +131,6 @@ void init_options_screen(void);
 
 // Main Menu Renders
 void render_ui_button(Button button);
-void render_how_to_play_screen(void);
 void render_main_menu(void);
 void render_level_select_buttons(void);
 void render_pause_screen(void);
@@ -126,6 +138,7 @@ void render_credits_screen(void);
 void render_options_screen(void);
 
 // Building / Wave Phase
+
 void render_wave_timer(void);
 void reduce_building_phase_time(void);
 void init_skip_wave_button(void);
@@ -152,8 +165,6 @@ void move_main_menu(void);
 int main_menu_finished_moving(void);
 
 void move_credits_screen(void);
-
-void toggle_all_audio(int audioPaused);
 
 void init_next_level(int nextGameLevel);
 void exit_to_desktop(void);

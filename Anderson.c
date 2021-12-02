@@ -1,4 +1,15 @@
-﻿#include "cprocessing.h"
+﻿/*!
+All content © 2021 DigiPen Institute of Technology Singapore, all rights reserved.
+@file       Anderson.c
+@author     Anderson Phua (a.phua@digipen.edu)
+@course     CSD 1400
+@section    C
+@date       03/12/2021
+@brief    	This source file contains the definitions for the main menu UI,
+			the transitions between the building & wave phases, as well as the
+			checking for win or lose conditions.
+*//*__________________________________________________________________________*/
+#include "cprocessing.h"
 #include "game.h"
 #include "Anderson.h"
 
@@ -38,15 +49,15 @@ Button init_text_button(Button button, float buttonPosX, float buttonPosY, float
 
 void init_main_menu(void)
 {
-	PlayButton = init_text_button(PlayButton, CP_System_GetWindowWidth() * 0.25f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 0.5f,
+	MainMenuButtons[StartButton] = init_text_button(MainMenuButtons[StartButton], CP_System_GetWindowWidth() * 0.25f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 0.5f,
 		BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Start Game");
-	CreditsButton = init_text_button(CreditsButton, CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 0.5f,
+	MainMenuButtons[CreditsButton] = init_text_button(MainMenuButtons[CreditsButton], CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 0.5f,
 		BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Credits");
-	QuitButton = init_text_button(QuitButton, CP_System_GetWindowWidth() * 0.75f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 0.5f,
+	MainMenuButtons[QuitButton] = init_text_button(MainMenuButtons[QuitButton], CP_System_GetWindowWidth() * 0.75f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 0.5f,
 		BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Quit Game");
-	HowToPlayButton = init_text_button(HowToPlayButton, CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 0.75f,
+	MainMenuButtons[HowToPlayButton] = init_text_button(MainMenuButtons[HowToPlayButton], CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 0.75f,
 		BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "How To Play");
-	OptionsButton = init_text_button(OptionsButton, CP_System_GetWindowWidth() * 0.25f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 0.75f,
+	MainMenuButtons[OptionsButton] = init_text_button(MainMenuButtons[OptionsButton], CP_System_GetWindowWidth() * 0.25f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 0.75f,
 		BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Options");
 }
 
@@ -281,11 +292,10 @@ void render_ui_button(Button button)
 
 void render_main_menu(void)
 {
-	render_ui_button(PlayButton);
-	render_ui_button(CreditsButton);
-	render_ui_button(QuitButton);
-	render_ui_button(HowToPlayButton);
-	render_ui_button(OptionsButton);
+	for (int i = 0; i < 5; i++)
+	{
+		render_ui_button(MainMenuButtons[i]);
+	}
 }
 
 void render_level_select_buttons(void)
@@ -422,7 +432,7 @@ void show_logos(void)
 					CP_Sound_PlayAdvanced(MainMenuMusic, BGM_Volume, 1.0f, TRUE, CP_SOUND_GROUP_1);
 
 					// if there was clicking during the logo displays, this is meant to prevent accidental triggering of buttons.
-					MouseReset(); 
+					MouseReset();
 				}
 			}
 		}
@@ -581,19 +591,19 @@ void move_main_menu(void)
 	// HowToPlay moves to the bottom. Options moves to the left.
 	if (current_game_state == kMainMenu) // Going to Level Select
 	{
-		PlayButton = ui_button_movement(PlayButton, -BUTTON_WIDTH, PlayButton.buttonData.y_origin);
-		QuitButton = ui_button_movement(QuitButton, (float)CP_System_GetWindowWidth(), QuitButton.buttonData.y_origin);
-		CreditsButton = ui_button_movement(CreditsButton, CreditsButton.buttonData.x_origin, (float)CP_System_GetWindowHeight());
-		HowToPlayButton = ui_button_movement(HowToPlayButton, HowToPlayButton.buttonData.x_origin, CP_System_GetWindowHeight() * 1.25f);
-		OptionsButton = ui_button_movement(OptionsButton, -BUTTON_WIDTH, OptionsButton.buttonData.y_origin);
+		MainMenuButtons[StartButton] = ui_button_movement(MainMenuButtons[StartButton], -BUTTON_WIDTH, MainMenuButtons[StartButton].buttonData.y_origin);
+		MainMenuButtons[QuitButton] = ui_button_movement(MainMenuButtons[QuitButton], (float)CP_System_GetWindowWidth(), MainMenuButtons[QuitButton].buttonData.y_origin);
+		MainMenuButtons[CreditsButton] = ui_button_movement(MainMenuButtons[CreditsButton], MainMenuButtons[CreditsButton].buttonData.x_origin, (float)CP_System_GetWindowHeight());
+		MainMenuButtons[HowToPlayButton] = ui_button_movement(MainMenuButtons[HowToPlayButton], MainMenuButtons[HowToPlayButton].buttonData.x_origin, CP_System_GetWindowHeight() * 1.25f);
+		MainMenuButtons[OptionsButton] = ui_button_movement(MainMenuButtons[OptionsButton], -BUTTON_WIDTH, MainMenuButtons[OptionsButton].buttonData.y_origin);
 	}
 	else if (current_game_state == kLevelSelect) // Going to Main Menu
 	{
-		PlayButton = ui_button_movement(PlayButton, CP_System_GetWindowWidth() * 0.25f - BUTTON_WIDTH * 0.5f, PlayButton.buttonData.y_origin);
-		QuitButton = ui_button_movement(QuitButton, CP_System_GetWindowWidth() * 0.75f - BUTTON_WIDTH * 0.5f, QuitButton.buttonData.y_origin);
-		CreditsButton = ui_button_movement(CreditsButton, CreditsButton.buttonData.x_origin, CP_System_GetWindowHeight() * 0.5f);
-		HowToPlayButton = ui_button_movement(HowToPlayButton, HowToPlayButton.buttonData.x_origin, CP_System_GetWindowHeight() * 0.75f);
-		OptionsButton = ui_button_movement(OptionsButton, CP_System_GetWindowWidth() * 0.25f - BUTTON_WIDTH * 0.5f, OptionsButton.buttonData.y_origin);
+		MainMenuButtons[StartButton] = ui_button_movement(MainMenuButtons[StartButton], CP_System_GetWindowWidth() * 0.25f - BUTTON_WIDTH * 0.5f, MainMenuButtons[StartButton].buttonData.y_origin);
+		MainMenuButtons[QuitButton] = ui_button_movement(MainMenuButtons[QuitButton], CP_System_GetWindowWidth() * 0.75f - BUTTON_WIDTH * 0.5f, MainMenuButtons[QuitButton].buttonData.y_origin);
+		MainMenuButtons[CreditsButton] = ui_button_movement(MainMenuButtons[CreditsButton], MainMenuButtons[CreditsButton].buttonData.x_origin, CP_System_GetWindowHeight() * 0.5f);
+		MainMenuButtons[HowToPlayButton] = ui_button_movement(MainMenuButtons[HowToPlayButton], MainMenuButtons[HowToPlayButton].buttonData.x_origin, CP_System_GetWindowHeight() * 0.75f);
+		MainMenuButtons[OptionsButton] = ui_button_movement(MainMenuButtons[OptionsButton], CP_System_GetWindowWidth() * 0.25f - BUTTON_WIDTH * 0.5f, MainMenuButtons[OptionsButton].buttonData.y_origin);
 	}
 }
 
@@ -601,29 +611,33 @@ int main_menu_finished_moving(void)
 {
 	if (current_game_state == kMainMenu)
 	{
-		if (button_has_finished_moving(PlayButton, -BUTTON_WIDTH, PlayButton.buttonData.y_origin) &&
-			button_has_finished_moving(QuitButton, (float)CP_System_GetWindowWidth(), QuitButton.buttonData.y_origin) &&
-			button_has_finished_moving(CreditsButton, CreditsButton.buttonData.x_origin, (float)CP_System_GetWindowHeight()) &&
-			button_has_finished_moving(HowToPlayButton, HowToPlayButton.buttonData.x_origin, (float)CP_System_GetWindowHeight() * 1.25f) &&
-			button_has_finished_moving(OptionsButton, -BUTTON_WIDTH, OptionsButton.buttonData.y_origin))
+		if (button_has_finished_moving(MainMenuButtons[StartButton], -BUTTON_WIDTH, MainMenuButtons[StartButton].buttonData.y_origin) &&
+			button_has_finished_moving(MainMenuButtons[QuitButton], (float)CP_System_GetWindowWidth(), MainMenuButtons[QuitButton].buttonData.y_origin) &&
+			button_has_finished_moving(MainMenuButtons[CreditsButton], MainMenuButtons[CreditsButton].buttonData.x_origin, (float)CP_System_GetWindowHeight()) &&
+			button_has_finished_moving(MainMenuButtons[HowToPlayButton], MainMenuButtons[HowToPlayButton].buttonData.x_origin, (float)CP_System_GetWindowHeight() * 1.25f) &&
+			button_has_finished_moving(MainMenuButtons[OptionsButton], -BUTTON_WIDTH, MainMenuButtons[OptionsButton].buttonData.y_origin))
 		{
-			PlayButton.isMoving = CreditsButton.isMoving = QuitButton.isMoving = HowToPlayButton.isMoving = 0;
-			OptionsButton.isMoving = 0; OptionsButton.movementTime = 0.0f;
-			PlayButton.movementTime = CreditsButton.movementTime = QuitButton.movementTime = HowToPlayButton.movementTime = 0.0f;
+			for (int i = 0; i < 5; i++)
+			{
+				MainMenuButtons[i].isMoving = 0;
+				MainMenuButtons[i].movementTime = 0.0f;
+			}
 			return 1;
 		}
 	}
 	else if (current_game_state == kLevelSelect)
 	{
-		if (button_has_finished_moving(PlayButton, CP_System_GetWindowWidth() * 0.25f - BUTTON_WIDTH * 0.5f, PlayButton.buttonData.y_origin) &&
-			button_has_finished_moving(QuitButton, CP_System_GetWindowWidth() * 0.75f - BUTTON_WIDTH * 0.5f, QuitButton.buttonData.y_origin) &&
-			button_has_finished_moving(CreditsButton, CreditsButton.buttonData.x_origin, CP_System_GetWindowHeight() * 0.5f) &&
-			button_has_finished_moving(HowToPlayButton, HowToPlayButton.buttonData.x_origin, CP_System_GetWindowHeight() * 0.75f) &&
-			button_has_finished_moving(OptionsButton, CP_System_GetWindowWidth() * 0.25f - BUTTON_WIDTH * 0.5f, OptionsButton.buttonData.y_origin))
+		if (button_has_finished_moving(MainMenuButtons[StartButton], CP_System_GetWindowWidth() * 0.25f - BUTTON_WIDTH * 0.5f, MainMenuButtons[StartButton].buttonData.y_origin) &&
+			button_has_finished_moving(MainMenuButtons[QuitButton], CP_System_GetWindowWidth() * 0.75f - BUTTON_WIDTH * 0.5f, MainMenuButtons[QuitButton].buttonData.y_origin) &&
+			button_has_finished_moving(MainMenuButtons[CreditsButton], MainMenuButtons[CreditsButton].buttonData.x_origin, CP_System_GetWindowHeight() * 0.5f) &&
+			button_has_finished_moving(MainMenuButtons[HowToPlayButton], MainMenuButtons[HowToPlayButton].buttonData.x_origin, CP_System_GetWindowHeight() * 0.75f) &&
+			button_has_finished_moving(MainMenuButtons[OptionsButton], CP_System_GetWindowWidth() * 0.25f - BUTTON_WIDTH * 0.5f, MainMenuButtons[OptionsButton].buttonData.y_origin))
 		{
-			PlayButton.isMoving = CreditsButton.isMoving = QuitButton.isMoving = HowToPlayButton.isMoving = 0;
-			OptionsButton.isMoving = 0; OptionsButton.movementTime = 0.0f;
-			PlayButton.movementTime = CreditsButton.movementTime = QuitButton.movementTime = HowToPlayButton.movementTime = 0.0f;
+			for (int i = 0; i < 5; i++)
+			{
+				MainMenuButtons[i].isMoving = 0;
+				MainMenuButtons[i].movementTime = 0.0f;
+			}
 			return 1;
 		}
 	}
@@ -815,18 +829,7 @@ void init_next_level(int nextGameLevel)
 		InitLevel5();
 		break;
 	}
-
-
 	}
 }
-
-#pragma endregion
-
-#pragma region Options Settings
-
-//void toggle_fullscreen_windowed(int isWindowed)
-//{
-//	isWindowed ? CP_System_SetWindowSize(1280.0f, 1280.0f * 1080.0f / 1920.0f) : CP_System_Fullscreen();
-//}
 
 #pragma endregion
