@@ -1,7 +1,9 @@
 ﻿/*!
 All content © 2021 DigiPen Institute of Technology Singapore, all rights reserved.
 @file       Anderson.c
-@author     Anderson Phua (a.phua@digipen.edu)
+@author     Phua Tai Dah Anderson (a.phua@digipen.edu)
+@coauthor   Ng Zheng Wei (zhengwei.ng@digipen.edu)
+			Lim Jing Rui John (l.jingruijohn@digipen.edu)
 @course     CSD 1400
 @section    C
 @date       03/12/2021
@@ -25,6 +27,7 @@ void init_game_font(void)
 	CP_Settings_TextSize(FONT_SIZE);
 }
 
+// Loads in the DP logo and the team logo from the Assets folder.
 void init_splash_logos(void)
 {
 	digipen_logo = CP_Image_Load("./Assets/DigipenLogo.png");
@@ -47,6 +50,7 @@ Button init_text_button(Button button, float buttonPosX, float buttonPosY, float
 	return button;
 }
 
+// Initialises title screen buttons.
 void init_main_menu(void)
 {
 	MainMenuButtons[StartButton] = init_text_button(MainMenuButtons[StartButton], CP_System_GetWindowWidth() * 0.25f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 0.5f,
@@ -751,6 +755,17 @@ void render_end_screen(void)
 	}
 }
 
+
+/*!
+@author     Phua Tai Dah Anderson (a.phua@digipen.edu)
+@coauthor   Ng Zheng Wei (zhengwei.ng@digipen.edu)
+			Lim Jing Rui John (l.jingruijohn@digipen.edu)
+@brief		Checks if the game conditions for winning or losing are
+			met. If so, memory is freed, relevant sound is played,
+			and the gameState is changed accordingly to win/lose.
+@param		void
+@return		void
+*//*_____________________________________________________________*/
 void game_win_lose_check(void)
 {
 	// checks portal health && number of enemies left.
