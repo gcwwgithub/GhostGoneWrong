@@ -15,7 +15,6 @@
 #include <stdio.h>
 #endif
 #include <math.h>
-
 #include "cprocessing.h"
 #include "game.h"
 #include "Samuel.h"
@@ -189,7 +188,7 @@ void place_turret(TurretType type, int index_x, int index_y)
 		turret[i].data.y_origin = game.y_origin + (game.grid_height * (index_y + 0.5f));
 		// where on grid turret placed storing the index of placed turret
 		turret_on_grid[index_x][index_y] = i;
-		//where u place u block
+		//set level of turret upgrade
 		turret[i].level = 1;
 		//Place turret sfx
 		CP_Sound_PlayAdvanced(turret_place_sfx, sfx_volume*0.5f, 1.0f, FALSE, CP_SOUND_GROUP_0);
@@ -211,7 +210,7 @@ void remove_turret(int index_x, int index_y)
 	turret[index].is_active = kFalse;
 }
 
-//sell them turrets
+//sell turrets
 void sell_turret(int t_index)
 {
 	int x = (int)((turret[t_index].data.x_origin - game.x_origin) / game.grid_width);
@@ -222,7 +221,7 @@ void sell_turret(int t_index)
 	remove_turret(x, y);
 }
 
-//upgrade system (for now using index will change depending on usage)
+//upgrade system
 void upgrade_turret(int t_index)
 {
 	//int x = (int)((turret[t_index].data.xOrigin - Game.xOrigin) / Game.gridWidth);
@@ -232,10 +231,13 @@ void upgrade_turret(int t_index)
 	if (turret[t_index].level >= turret_purchasing[kTPUpgradeMaxLevel][turret[t_index].type])
 		return;
 
+	// Setting price of turret's upgrade 
 	turret[t_index].total_price += turret[t_index].upgrade_price;
 	turret[t_index].sell_price = (int)((turret[t_index].total_price) * 0.7f);
-
+	// increase the level of turret
 	turret[t_index].level++;
+
+	// upgrading of respective turrets
 	switch (turret[t_index].type)
 	{
 	case kTBasic:
@@ -267,6 +269,7 @@ void upgrade_turret(int t_index)
 
 void render_turret(void)
 {
+	//render active turrets
 	for (int i = 0; i < kMaxTurret; ++i)
 	{
 		if (!turret[i].is_active)
@@ -298,6 +301,7 @@ void render_turret(void)
 		}
 	}
 
+	// render tower range if clicked on
 	if (turret_selected_to_upgrade != kNoTurretSelected)
 	{
 		CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255 / 2));
@@ -308,7 +312,7 @@ void render_turret(void)
 
 void update_turret(void)
 {
-	//highest wp, enemy index, enemy dist to turret
+	//highest wp, enemy index
 	int wp = -1, e_index = -1;
 	//dist check, targeted enemy direction
 	Vector2 v1, targeted_dir;
@@ -316,6 +320,7 @@ void update_turret(void)
 	v1.y = 0;
 	targeted_dir = v1;
 
+	// loop through turrets
 	for (int i = 0; i < kMaxTurret; ++i)
 	{
 		if (!turret[i].is_active)
@@ -332,7 +337,7 @@ void update_turret(void)
 			if (enemy[j].state == kEnemyDeath || enemy[j].state == kEnemyInactive)
 				continue;
 
-
+			// mine updates
 			if (turret[i].type == kTMine)
 			{
 				turret[i].mod.damage = (float)(10 + level.current_power_up_level.increased_mine_damage * 20);
@@ -350,14 +355,14 @@ void update_turret(void)
 					continue;
 			}
 
-			//find dist
+			//find dist of enemy to turret
 			v1.x = enemy[j].data.x_origin - turret[i].data.x_origin;
 			v1.y = enemy[j].data.y_origin - turret[i].data.y_origin;
 			//if in range of turret
 			//if (magnitude_sq(v1) <= turret[i].mod.range * turret[i].mod.range)
 			if (CollisionDetection(enemy[j].data, turret[i].data))
 			{
-				//target the enemy closest to end goal needs refinig
+				//target the enemy closest to end goal
 				if (enemy[j].current_way_point > wp)
 				{
 					//set the highest waypoint
@@ -377,7 +382,7 @@ void update_turret(void)
 		if (e_index >= 0)
 		{
 			turret[i].current_aim_state = kTurretShooting;
-			if (turret[i].anim_counter <= 2)
+			if (turret[i].anim_counter <= 2) //setting of turrets animation cycle
 			{
 				turret[i].anim_counter = 3;
 			}
@@ -406,7 +411,7 @@ void update_turret(void)
 					(int)((turret[i].data.y_origin - game.y_origin) / game.grid_height));
 				continue; //go to next in iter since mine update is done
 			}
-
+			// shooting base on animation
 			if (/*turret[i].mod.cooldown <= 0 &&*/ turret[i].turret_anim_timer >= turret[i].mod.shoot_rate && turret[i].anim_counter >= 5)
 			{
 				turret[i].mod.tracked_index = e_index;
@@ -418,7 +423,7 @@ void update_turret(void)
 			}
 		}
 		else
-		{
+		{	
 			turret[i].current_aim_state = kTurretInactive;
 		}
 
@@ -521,15 +526,14 @@ void update_projectile(void)
 				e_dir.x -= proj[i].data.x_origin;
 				e_dir.y -= proj[i].data.y_origin;
 				e_dir = normalise(e_dir);
-				//printf("%f\n", acosf(dot(e_dir, proj[i].dir)) * (180.f / PI));
+				
 				float turn_rate = 0.08f;
-				if (dot(e_dir, proj[i].dir) <= 0.2f)
+				if (dot(e_dir, proj[i].dir) <= 0.2f) //if angle is too steep increase turn rate
 					turn_rate = 1.5f;
 
-				proj[i].dir.x -= v.x * turn_rate * dt; //gradual change of dir, magic number is the rate of change
+				proj[i].dir.x -= v.x * turn_rate * dt; //gradual change of dir
 				proj[i].dir.y -= v.y * turn_rate * dt;
 				proj[i].dir = normalise(proj[i].dir);
-				//printf("x:%f y:%f\n", proj[i].dir.x, proj[i].dir.y);
 			}
 			else//update the projectile targeting
 			{
@@ -558,11 +562,10 @@ void update_projectile(void)
 			}
 		}
 
-
-		//projectile of mine dont move
+		//projectile of mine does not move so skip it
 		if (proj[i].type != kPMine)
 		{
-			//proj movement dir * speed * deltatime
+			//proj movement dir * speed * deltatime (movement of projectile)
 			proj[i].data.x_origin += proj[i].dir.x * proj[i].mod.speed * dt;
 			proj[i].data.y_origin += proj[i].dir.y * proj[i].mod.speed * dt;
 		}
@@ -616,7 +619,7 @@ void col_type_projectile(Projectile* p)
 			dif.x = enemy[i].data.x_origin - p->data.x_origin;
 			dif.y = enemy[i].data.y_origin - p->data.y_origin;
 			dist = magnitude_sq(dif);
-			if (dist <= SLOW_RANGE * SLOW_RANGE) // will change range to be able to be upgarded ltr
+			if (dist <= SLOW_RANGE * SLOW_RANGE) // aoe of slow to all in range
 			{
 				enemy[i].slow_amt = p->mod.slow_amt;
 				enemy[i].slow_timer = p->mod.slow_timer;
@@ -625,7 +628,7 @@ void col_type_projectile(Projectile* p)
 		}
 		break;
 	}
-	case kPMine: /* empty and no break is intended to flow to homing*/
+	case kPMine: /* empty by design and no break intended to flow to homing*/
 	case kPHoming:
 	{
 		for (int i = 0; i < kMaxEnemies; ++i)
@@ -639,7 +642,7 @@ void col_type_projectile(Projectile* p)
 			dif.x = enemy[i].data.x_origin - p->data.x_origin;
 			dif.y = enemy[i].data.y_origin - p->data.y_origin;
 			dist = magnitude_sq(dif);
-			if (dist <= EXPLOSION_RANGE * EXPLOSION_RANGE) // will change range to be able to be upgarded ltr
+			if (dist <= EXPLOSION_RANGE * EXPLOSION_RANGE) // aoe of explosive dmg to all in range
 			{
 				enemy[i].health -= p->mod.damage;
 				enemy[i].state = kEnemyHurt;
@@ -653,10 +656,11 @@ void col_type_projectile(Projectile* p)
 		break;
 	}
 
-	//test particles
+	//Spawning of particle on collision
 	int r_num = (CP_Random_GetInt() % (3)) + 3; //3 to 5 particle
 	Vector2 pos = { .x = p->data.x_origin, .y = p->data.y_origin };
 	Vector2 dir = { .x = CP_Random_GetFloat(), .y = 0.f };
+	//spawning of particles
 	for (int i = 0; i < r_num; ++i)
 	{
 		create_particle(pos, dir, 15.f, 1.5f, p->type);
@@ -669,6 +673,7 @@ void col_type_projectile(Projectile* p)
 	}
 }
 
+// turret animation updates
 void update_turretAnimation(Turret* t)
 {
 	if (t->type == kTMine)
@@ -732,6 +737,7 @@ void update_turretAnimation(Turret* t)
 
 }
 
+// creating of particles
 void create_particle(Vector2 pos, Vector2 dir, float size, float duration, ParticleType type)
 {
 	for (int i = 0; i < sizeof(particles) / sizeof(particles[0]); ++i)
@@ -739,6 +745,7 @@ void create_particle(Vector2 pos, Vector2 dir, float size, float duration, Parti
 		if (particles[i].is_active)
 			continue;
 
+		//setting of particles member data
 		particles[i].is_active = kTrue;
 		particles[i].pos = pos;
 		particles[i].dir = dir;
@@ -754,6 +761,7 @@ void create_particle(Vector2 pos, Vector2 dir, float size, float duration, Parti
 void update_particle()
 {
 	float dt = CP_System_GetDt();
+	//update active particles
 	for (int i = 0; i < sizeof(particles) / sizeof(particles[0]); ++i)
 	{
 		if (!particles[i].is_active)
@@ -761,14 +769,14 @@ void update_particle()
 
 		particles[i].timer += dt;
 		particles[i].alpha -= (int)(255 / particles[i].duration * dt); //(max alpha / duration) to get rate of change
-		if (particles[i].timer >= particles[i].duration)
+		if (particles[i].timer >= particles[i].duration) //check if over duration and set to inactive
 		{
 			particles[i].timer = 0.f;
 			particles[i].is_active = kFalse;
 			continue;
 		}
 
-
+		// particle movement 
 		particles[i].dir.y -= 1.5f * dt;
 		particles[i].dir.x -= particles[i].dir.x * (particles[i].timer / particles[i].duration) * dt;
 		particles[i].dir = normalise(particles[i].dir);
@@ -778,8 +786,10 @@ void update_particle()
 	}
 }
 
+//render of particles
 void render_particle()
 {
+	//render only active particles
 	for (int i = 0; i < sizeof(particles) / sizeof(particles[0]); ++i)
 	{
 		if (!particles[i].is_active)
