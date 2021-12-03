@@ -113,7 +113,7 @@ void game_update(void)
 		{
 			SetBuildingTime(0.0f);
 			MouseReset();
-			CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
+			CP_Sound_PlayAdvanced(button_click_sfx, sfx_volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
 		}
 
 		//do turret & projectile update next
@@ -155,7 +155,7 @@ void game_update(void)
 		{
 			current_game_state = kMainMenu;
 			CP_Sound_StopGroup(CP_SOUND_GROUP_1);
-			CP_Sound_PlayAdvanced(MainMenuBGM, BGM_Volume, 1.0f, TRUE, CP_SOUND_GROUP_1);
+			CP_Sound_PlayAdvanced(main_menu_bgm, bgm_volume, 1.0f, TRUE, CP_SOUND_GROUP_1);
 			MouseReset();
 		}
 		else if (BtnIsPressed(EndScreenButtons[1].buttonData))
@@ -184,14 +184,14 @@ void game_update(void)
 					= LevelButtons->isMoving = 1;
 			}
 			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
-				CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE,
+				CP_Sound_PlayAdvanced(button_click_sfx, sfx_volume, 1.0f, FALSE,
 					CP_SOUND_GROUP_0);
 			}
 		}
 		else if (BtnIsPressed(MainMenuButtons[QuitButton].buttonData))
 		{
 			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
-				CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE,
+				CP_Sound_PlayAdvanced(button_click_sfx, sfx_volume, 1.0f, FALSE,
 					CP_SOUND_GROUP_0);
 			}
 			exit_to_desktop();
@@ -203,7 +203,7 @@ void game_update(void)
 			{
 				CreditsBackButton.isMoving = 1;
 				if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
-					CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE,
+					CP_Sound_PlayAdvanced(button_click_sfx, sfx_volume, 1.0f, FALSE,
 						CP_SOUND_GROUP_0);
 				}
 			}
@@ -211,14 +211,14 @@ void game_update(void)
 		else if (BtnIsPressed(MainMenuButtons[OptionsButton].buttonData)) {
 			current_game_state = kOptions;
 			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
-				CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE,
+				CP_Sound_PlayAdvanced(button_click_sfx, sfx_volume, 1.0f, FALSE,
 					CP_SOUND_GROUP_0);
 			}
 		}
 		else if (BtnIsPressed(MainMenuButtons[HowToPlayButton].buttonData)) {
 			current_game_state = kHowToPlay;
 			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
-				CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE,
+				CP_Sound_PlayAdvanced(button_click_sfx, sfx_volume, 1.0f, FALSE,
 					CP_SOUND_GROUP_0);
 			}
 		}
@@ -268,35 +268,35 @@ void game_update(void)
 		{
 			InitLevel1();
 			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
-				CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE,
+				CP_Sound_PlayAdvanced(button_click_sfx, sfx_volume, 1.0f, FALSE,
 					CP_SOUND_GROUP_0);
 			}
 		}
 		else if (BtnIsPressed(LevelButtons[1].buttonData)) {
 			InitLevel2();
 			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
-				CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE,
+				CP_Sound_PlayAdvanced(button_click_sfx, sfx_volume, 1.0f, FALSE,
 					CP_SOUND_GROUP_0);
 			}
 		}
 		else if (BtnIsPressed(LevelButtons[2].buttonData)) {
 			InitLevel3();
 			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
-				CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE,
+				CP_Sound_PlayAdvanced(button_click_sfx, sfx_volume, 1.0f, FALSE,
 					CP_SOUND_GROUP_0);
 			}
 		}
 		else if (BtnIsPressed(LevelButtons[3].buttonData)) {
 			InitLevel4();
 			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
-				CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE,
+				CP_Sound_PlayAdvanced(button_click_sfx, sfx_volume, 1.0f, FALSE,
 					CP_SOUND_GROUP_0);
 			}
 		}
 		else if (BtnIsPressed(LevelButtons[4].buttonData)) {
 			InitLevel5();
 			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
-				CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE,
+				CP_Sound_PlayAdvanced(button_click_sfx, sfx_volume, 1.0f, FALSE,
 					CP_SOUND_GROUP_0);
 			}
 		}
@@ -307,7 +307,7 @@ void game_update(void)
 				= LevelButtons->isMoving = 1;
 
 			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
-				CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE,
+				CP_Sound_PlayAdvanced(button_click_sfx, sfx_volume, 1.0f, FALSE,
 					CP_SOUND_GROUP_0);
 			}
 			MouseReset();
@@ -348,7 +348,7 @@ void game_update(void)
 			}
 			MouseReset();
 			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
-				CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE,
+				CP_Sound_PlayAdvanced(button_click_sfx, sfx_volume, 1.0f, FALSE,
 					CP_SOUND_GROUP_0);
 			}
 		}
@@ -356,7 +356,7 @@ void game_update(void)
 		{
 			current_game_state = (building_time) ? kBuilding : kWave;
 			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
-				CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE,
+				CP_Sound_PlayAdvanced(button_click_sfx, sfx_volume, 1.0f, FALSE,
 					CP_SOUND_GROUP_0);
 			}
 		}
@@ -375,9 +375,9 @@ void game_update(void)
 
 			current_game_state = kLevelSelect;
 			CP_Sound_StopGroup(CP_SOUND_GROUP_1);
-			CP_Sound_PlayAdvanced(MainMenuBGM, BGM_Volume, 1.0f, TRUE, CP_SOUND_GROUP_1);
+			CP_Sound_PlayAdvanced(main_menu_bgm, bgm_volume, 1.0f, TRUE, CP_SOUND_GROUP_1);
 			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
-				CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE,
+				CP_Sound_PlayAdvanced(button_click_sfx, sfx_volume, 1.0f, FALSE,
 					CP_SOUND_GROUP_0);
 			}
 		}
@@ -389,7 +389,7 @@ void game_update(void)
 		{
 			CreditsBackButton.isMoving = 1;
 			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
-				CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE,
+				CP_Sound_PlayAdvanced(button_click_sfx, sfx_volume, 1.0f, FALSE,
 					CP_SOUND_GROUP_0);
 			}
 		}
@@ -416,7 +416,7 @@ void game_update(void)
 		{
 			current_game_state = kMainMenu;
 			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
-				CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE,
+				CP_Sound_PlayAdvanced(button_click_sfx, sfx_volume, 1.0f, FALSE,
 					CP_SOUND_GROUP_0);
 			}
 		}
@@ -426,7 +426,7 @@ void game_update(void)
 			bgmAudioPaused = !bgmAudioPaused;
 			MouseReset();
 			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
-				CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE,
+				CP_Sound_PlayAdvanced(button_click_sfx, sfx_volume, 1.0f, FALSE,
 					CP_SOUND_GROUP_0);
 			}
 		}
@@ -436,7 +436,7 @@ void game_update(void)
 			allAudioPaused = !allAudioPaused;
 			MouseReset();
 			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
-				CP_Sound_PlayAdvanced(ButtonClickSFX, SFX_Volume, 1.0f, FALSE,
+				CP_Sound_PlayAdvanced(button_click_sfx, sfx_volume, 1.0f, FALSE,
 					CP_SOUND_GROUP_0);
 			}
 		}
@@ -496,18 +496,18 @@ void game_exit(void)
 	CP_Image_Free(&non_grid_environment_objects_spritesheet);
 
 
-	CP_Sound_Free(&ShootSFX);
-	CP_Sound_Free(&SpawnxExitSFX);
-	CP_Sound_Free(&ButtonClickSFX);
-	CP_Sound_Free(&TurretPlaceSFX);
-	CP_Sound_Free(&MineExplosionSFX);
-	CP_Sound_Free(&WinSFX);
-	CP_Sound_Free(&LoseSFX);
-	CP_Sound_Free(&HitSFX);
-	CP_Sound_Free(&MainMenuBGM);
-	CP_Sound_Free(&BuildingBGM);
-	CP_Sound_Free(&WaveBGM);
-	CP_Sound_Free(&MainMenuMusic);
+	CP_Sound_Free(&shoot_sfx);
+	CP_Sound_Free(&spawn_exit_sfx);
+	CP_Sound_Free(&button_click_sfx);
+	CP_Sound_Free(&turret_place_sfx);
+	CP_Sound_Free(&mine_explosion_sfx);
+	CP_Sound_Free(&win_sfx);
+	CP_Sound_Free(&lose_sfx);
+	CP_Sound_Free(&hit_sfx);
+	CP_Sound_Free(&main_menu_bgm);
+	CP_Sound_Free(&building_bgm);
+	CP_Sound_Free(&wave_bgm);
+	CP_Sound_Free(&main_menu_music);
 
 #if _DEBUG
 	// MEM LEAK CHECK

@@ -276,7 +276,7 @@ void EnemyDeath(Enemy* r) {  //function updates and checks for collision or deat
 						r->health -= proj[i].mod.damage;
 						r->state = kEnemyHurt;
 						r->timer = 0;
-						CP_Sound_PlayAdvanced(HitSFX, SFX_Volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
+						CP_Sound_PlayAdvanced(hit_sfx, sfx_volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
 					}
 
 					InsertNewNodeBulletRadius(&bullet_radius_head_node, r->data.x_origin, r->data.y_origin, proj[i].type);
@@ -851,21 +851,21 @@ void Power_Up_check(Enemy* r) {
 }
 
 void Music_init(void) {
-	ButtonClickSFX = CP_Sound_Load("./Assets/sfx/btn.wav");
-	TurretPlaceSFX = CP_Sound_Load("./Assets/sfx/place-turret.mp3");
-	MineExplosionSFX = CP_Sound_Load("./Assets/sfx/Explosion.wav");
-	WinSFX = CP_Sound_Load("./Assets/sfx/WinSFX.wav");
-	LoseSFX = CP_Sound_Load("./Assets/sfx/LoseSFX.wav");
-	SpawnxExitSFX = CP_Sound_Load("./Assets/sfx/Zap.wav");
-	ShootSFX = CP_Sound_Load("./Assets/sfx/shoot.mp3");
-	HitSFX = CP_Sound_Load("./Assets/sfx/HitSFX.wav");
-	SFX_Volume = 0.3f;
+	button_click_sfx = CP_Sound_Load("./Assets/sfx/btn.wav");
+	turret_place_sfx = CP_Sound_Load("./Assets/sfx/place-turret.mp3");
+	mine_explosion_sfx = CP_Sound_Load("./Assets/sfx/Explosion.wav");
+	win_sfx = CP_Sound_Load("./Assets/sfx/WinSFX.wav");
+	lose_sfx = CP_Sound_Load("./Assets/sfx/LoseSFX.wav");
+	spawn_exit_sfx = CP_Sound_Load("./Assets/sfx/Zap.wav");
+	shoot_sfx = CP_Sound_Load("./Assets/sfx/shoot.mp3");
+	hit_sfx = CP_Sound_Load("./Assets/sfx/HitSFX.wav");
+	sfx_volume = 0.3f;
 
-	WaveBGM = CP_Sound_Load("./Assets/sfx/SPHERES & STARS - NewAge MSCNEW1_17.wav");
-	BuildingBGM = CP_Sound_Load("./Assets/sfx/INPUT - NewAge MSCNEW2_01.wav");
-	MainMenuBGM = CP_Sound_Load("./Assets/sfx/THE NINTH HOUR - Jazz MSCJAZ1_46.wav");
-	BGM_Volume = 0.5f;
-	MainMenuMusic = CP_Sound_LoadMusic("./Assets/sfx/THE NINTH HOUR - Jazz MSCJAZ1_46.wav");
+	wave_bgm = CP_Sound_Load("./Assets/sfx/SPHERES & STARS - NewAge MSCNEW1_17.wav");
+	building_bgm = CP_Sound_Load("./Assets/sfx/INPUT - NewAge MSCNEW2_01.wav");
+	main_menu_bgm = CP_Sound_Load("./Assets/sfx/THE NINTH HOUR - Jazz MSCJAZ1_46.wav");
+	bgm_volume = 0.5f;
+	main_menu_music = CP_Sound_LoadMusic("./Assets/sfx/THE NINTH HOUR - Jazz MSCJAZ1_46.wav");
 }
 
 /*void movement_redone(enemy* r) {

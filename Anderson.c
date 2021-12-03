@@ -433,7 +433,7 @@ void show_logos(void)
 					CP_Settings_TextSize(FONT_SIZE); // set font size back to normal.
 					current_game_state = kMainMenu;
 					CP_Sound_StopGroup(CP_SOUND_GROUP_1);
-					CP_Sound_PlayAdvanced(MainMenuMusic, BGM_Volume, 1.0f, TRUE, CP_SOUND_GROUP_1);
+					CP_Sound_PlayAdvanced(main_menu_music, bgm_volume, 1.0f, TRUE, CP_SOUND_GROUP_1);
 
 					// if there was clicking during the logo displays, this is meant to prevent accidental triggering of buttons.
 					MouseReset();
@@ -708,7 +708,7 @@ void reduce_building_phase_time()
 		}
 		StartBattleFieldEffectTimer(level.current_effect);
 		CP_Sound_StopGroup(CP_SOUND_GROUP_1);
-		CP_Sound_PlayAdvanced(WaveBGM, BGM_Volume, 1.0f, TRUE, CP_SOUND_GROUP_1);
+		CP_Sound_PlayAdvanced(wave_bgm, bgm_volume, 1.0f, TRUE, CP_SOUND_GROUP_1);
 	}
 	else
 	{
@@ -784,7 +784,7 @@ void game_win_lose_check(void)
 
 		// game lost
 		current_game_state = kLose;
-		CP_Sound_PlayAdvanced(LoseSFX, SFX_Volume, 1.0, FALSE, CP_SOUND_GROUP_0);
+		CP_Sound_PlayAdvanced(lose_sfx, sfx_volume, 1.0, FALSE, CP_SOUND_GROUP_0);
 	}
 	else if (enemies_left == 0)
 	{
@@ -802,14 +802,14 @@ void game_win_lose_check(void)
 			free(turret_on_grid);
 			current_game_state = kWin;
 			//Win SFX
-			CP_Sound_PlayAdvanced(WinSFX, SFX_Volume, 1.0, FALSE, CP_SOUND_GROUP_0);
+			CP_Sound_PlayAdvanced(win_sfx, sfx_volume, 1.0, FALSE, CP_SOUND_GROUP_0);
 		}
 		else // if still in the midst of the current level
 		{
 			SetBuildingTime(kFullBuildingPhaseTime);
 			current_game_state = kBuilding;
 			CP_Sound_StopGroup(CP_SOUND_GROUP_1);
-			CP_Sound_PlayAdvanced(BuildingBGM, BGM_Volume, 1.0f, TRUE, CP_SOUND_GROUP_1);
+			CP_Sound_PlayAdvanced(building_bgm, bgm_volume, 1.0f, TRUE, CP_SOUND_GROUP_1);
 			level.current_wave += 1;
 		}
 	}

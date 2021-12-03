@@ -192,7 +192,7 @@ void place_turret(TurretType type, int index_x, int index_y)
 		//where u place u block
 		turret[i].level = 1;
 		//Place turret sfx
-		CP_Sound_PlayAdvanced(TurretPlaceSFX, SFX_Volume*0.5f, 1.0f, FALSE, CP_SOUND_GROUP_0);
+		CP_Sound_PlayAdvanced(turret_place_sfx, sfx_volume*0.5f, 1.0f, FALSE, CP_SOUND_GROUP_0);
 		//escape from loop once done
 		break;
 	}
@@ -343,7 +343,7 @@ void update_turret(void)
 					//set the index of enemy to target
 					e_index = j;
 					//Mine Explosion SFX
-					CP_Sound_PlayAdvanced(MineExplosionSFX, SFX_Volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
+					CP_Sound_PlayAdvanced(mine_explosion_sfx, sfx_volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
 					break;
 				}
 				else
@@ -414,7 +414,7 @@ void update_turret(void)
 				shoot(turret[i].data.x_origin, turret[i].data.y_origin, turret[i].mod, turret[i].type, turret[i].dir);
 				//turret[i].mod.cooldown = 2.f;
 				//Turret Shoot SFX
-				CP_Sound_PlayAdvanced(ShootSFX, SFX_Volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
+				CP_Sound_PlayAdvanced(shoot_sfx, sfx_volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
 			}
 		}
 		else
