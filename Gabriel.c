@@ -6,7 +6,13 @@ All content © 2021 DigiPen Institute of Technology Singapore, all rights reserve
 @section    C
 @date       28/11/2021
 @brief    	Contains functions that are related to rendering, animation and effects. Comments for functions
-			are in the .h file
+			are in the .h file. All functions are done by Chiok Wei Wen Gabriel
+			The list of functions are: InitAllImages, InitVariablesForSpriteFunctions, InitSpritesheetArray
+			SpritesheetCalculation,RenderImageFromSpriteSheetWithAlpha, InsertNewNodeBulletRadius
+			InsertNewNodePortalEffect, DeleteNode, IsLinkedListEmpty, RenderAndUpdateBulletCircles
+			RenderAndUpdateSinglePortalEffect, RenderAllPortalEffects,RenderPortalSprite
+			UpdatePortalAnimation, RenderLevelEnvironment, BattlefieldEffectLinearLerp
+			RenderBattlefieldEffectText
 *//*__________________________________________________________________________*/
 
 
