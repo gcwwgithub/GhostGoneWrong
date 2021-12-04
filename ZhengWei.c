@@ -31,6 +31,7 @@
 #include "Gabriel.h"
 
 #include "cprocessing.h"
+#include <stdio.h>
 
 /*!
 @author     Ng Zheng Wei(zhengwei.ng@digipen.edu)
@@ -2138,7 +2139,6 @@ void RenderTurretMenuObjects
 		CP_Font_DrawText(temp, menu_object_to_print.x_origin
 			+ menu_object_to_print.width / 2,
 			menu_object_to_print.y_origin + menu_object_to_print.height / 5);
-		printf("%d", level.current_effect);
 		RenderImageFromSpriteSheet(battlefield_effect_spritesheet,
 			battlefield_effect_spritesheet_array[level.current_effect],
 			menu_object_to_print.x_origin + menu_object_to_print.width / 2,
