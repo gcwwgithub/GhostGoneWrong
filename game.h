@@ -12,7 +12,6 @@
 @brief    	Contains function and variables that are commmonly used by everyone
 *//*__________________________________________________________________________*/
 #include "cprocessing.h"
-#include <stdio.h>
 #include "vector.h"
 
 // FOR MEM LEAK CHECK
@@ -240,7 +239,7 @@ void Enemies_init(void);
 @param		- void
 @return		- void
 *//*_____________________________________________________________*/
-void exit_to_desktop(void);
+void ExitToDesktop(void);
 /*!
 @author     Wong Zhi Hao Samuel (w.zhihaosamuel@digipen.edu)
 @co-author

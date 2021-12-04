@@ -22,6 +22,8 @@ All content © 2021 DigiPen Institute of Technology Singapore, all rights reserv
 #include "game.h"
 #include "Anderson.h"
 
+#include <stdio.h>
+
 #pragma region UI
 
 #pragma region Initialisations

@@ -13,7 +13,6 @@ void game_init(void)
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
 
-	//CP_System_ShowConsole(); //pls dont delete this cause scrub me uses printf to debug -gabriel
 	//CP_System_Fullscreen();
 	CP_System_SetWindowTitle("Ghost Gone Wrong");
 	int gameWindowWidth = 1280;

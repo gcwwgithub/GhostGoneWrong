@@ -12,7 +12,6 @@
 *//*__________________________________________________________________________*/
 
 #if _DEBUG
-#include <stdio.h>
 #endif
 #include <math.h>
 #include "cprocessing.h"
@@ -415,7 +414,6 @@ void update_turret(void)
 			if (/*turret[i].mod.cooldown <= 0 &&*/ turret[i].turret_anim_timer >= turret[i].mod.shoot_rate && turret[i].anim_counter >= 5)
 			{
 				turret[i].mod.tracked_index = e_index;
-				//printf("index: %d\n", e_index);
 				shoot(turret[i].data.x_origin, turret[i].data.y_origin, turret[i].mod, turret[i].type, turret[i].dir);
 				//turret[i].mod.cooldown = 2.f;
 				//Turret Shoot SFX

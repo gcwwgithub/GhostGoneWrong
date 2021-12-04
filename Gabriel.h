@@ -19,7 +19,6 @@ All content © 2021 DigiPen Institute of Technology Singapore, all rights reserve
 #pragma once
 #include "cprocessing.h"
 #include <stdlib.h>
-#include <stdio.h>
 
 
 #pragma region Struct Declarations
