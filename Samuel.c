@@ -160,7 +160,7 @@ void PlaceTurret(TurretType type, int index_x, int index_y)
 		case kTMine:
 			if (level.grid[index_y][index_x].type != kPath)
 				return;
-			turret[i].mod.range = game.grid_width * 0.7f;
+			turret[i].mod.range = game.grid_width * 0.2f;
 			turret[i].mod.damage = (float)(10 + level.current_power_up_level.increased_mine_damage * 20);
 			turret[i].anim_counter = 0;
 			turret[i].turret_anim_timer = 0;

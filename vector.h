@@ -22,6 +22,7 @@ typedef struct Vector2
 
 
 /*!
+@author     Wong Zhi Hao Samuel (w.zhihaosamuel@digipen.edu)
 @brief This function
 @param word - 
 @return 
@@ -29,6 +30,7 @@ typedef struct Vector2
 Vector2 addition(Vector2 v1, Vector2 v2);
 
 /*!
+@author     Wong Zhi Hao Samuel (w.zhihaosamuel@digipen.edu)
 @brief This function
 @param word -
 @return
@@ -36,6 +38,7 @@ Vector2 addition(Vector2 v1, Vector2 v2);
 Vector2 subtraction(Vector2 v1, Vector2 v2);
 
 /*!
+@author     Wong Zhi Hao Samuel (w.zhihaosamuel@digipen.edu)
 @brief This function
 @param word -
 @return
@@ -43,6 +46,7 @@ Vector2 subtraction(Vector2 v1, Vector2 v2);
 float magnitude(Vector2 v1);
 
 /*!
+@author     Wong Zhi Hao Samuel (w.zhihaosamuel@digipen.edu)
 @brief This function
 @param word -
 @return
@@ -50,6 +54,7 @@ float magnitude(Vector2 v1);
 float magnitude_sq(Vector2 v1);
 
 /*!
+@author     Wong Zhi Hao Samuel (w.zhihaosamuel@digipen.edu)
 @brief This function
 @param word -
 @return
@@ -57,6 +62,7 @@ float magnitude_sq(Vector2 v1);
 Vector2 normalise(Vector2 v1);
 
 /*!
+@author     Wong Zhi Hao Samuel (w.zhihaosamuel@digipen.edu)
 @brief This function
 @param word -
 @return
@@ -64,6 +70,7 @@ Vector2 normalise(Vector2 v1);
 float dot(Vector2 v1, Vector2 v2);
 
 /*!
+@author     Wong Zhi Hao Samuel (w.zhihaosamuel@digipen.edu)
 @brief This function
 @param word -
 @return
