@@ -42,7 +42,7 @@ All content © 2021 DigiPen Institute of Technology Singapore, all rights reserve
 @param word - int index_x, int index_y
 @return		- void
 *//*_____________________________________________________________*/
-void remove_turret(int index_x, int index_y);
+void RemoveTurret(int index_x, int index_y);
 
 /*!
 @author     Wong Zhi Hao Samuel (w.zhihaosamuel@digipen.edu)
@@ -53,7 +53,7 @@ void remove_turret(int index_x, int index_y);
 @param word - void
 @return		- void
 *//*_____________________________________________________________*/
-void render_turret(void);
+void RenderTurret(void);
 
 /*!
 @author     Wong Zhi Hao Samuel (w.zhihaosamuel@digipen.edu)
@@ -64,7 +64,7 @@ void render_turret(void);
 @param word - void
 @return		- void
 *//*_____________________________________________________________*/
-void update_turret(void);
+void UpdateTurret(void);
 
 /*!
 @author     Wong Zhi Hao Samuel (w.zhihaosamuel@digipen.edu)
@@ -83,7 +83,7 @@ void update_turret(void);
 			  ProjectileType type, Vector2 dir
 @return		- void
 *//*_____________________________________________________________*/
-void shoot(float x, float y, Modifiers mod, ProjectileType type, Vector2 dir);
+void Shoot(float x, float y, Modifiers mod, ProjectileType type, Vector2 dir);
 
 /*!
 @author     Wong Zhi Hao Samuel (w.zhihaosamuel@digipen.edu)
@@ -93,7 +93,7 @@ void shoot(float x, float y, Modifiers mod, ProjectileType type, Vector2 dir);
 @param word - void
 @return		- void
 *//*_____________________________________________________________*/
-void update_projectile(void);
+void UpdateProjectile(void);
 
 /*!
 @author     Wong Zhi Hao Samuel (w.zhihaosamuel@digipen.edu)
@@ -103,7 +103,7 @@ void update_projectile(void);
 @param word - void
 @return		- void
 *//*_____________________________________________________________*/
-void render_projectile(void);
+void RenderProjectile(void);
 
 
 /*!
@@ -113,7 +113,7 @@ void render_projectile(void);
 @param word - Turret* t
 @return		- void
 *//*_____________________________________________________________*/
-void update_turretAnimation(Turret* t);
+void UpdateTurretAnimation(Turret* t);
 
 /*!
 @author     Wong Zhi Hao Samuel (w.zhihaosamuel@digipen.edu)
@@ -177,7 +177,7 @@ Particle particles[250];
 			float duration, ParticleType type
 @return		void
 *//*_____________________________________________________________*/
-void create_particle(Vector2 pos, Vector2 dir, float size, float duration, ParticleType type);
+void CreateParticle(Vector2 pos, Vector2 dir, float size, float duration, ParticleType type);
 
 /*!
 @author     Wong Zhi Hao Samuel (w.zhihaosamuel@digipen.edu)
@@ -188,7 +188,7 @@ void create_particle(Vector2 pos, Vector2 dir, float size, float duration, Parti
 @param word - void
 @return		- void
 *//*_____________________________________________________________*/
-void update_particle(void);
+void UpdateParticle(void);
 
 /*!
 @author     Wong Zhi Hao Samuel (w.zhihaosamuel@digipen.edu)
@@ -198,6 +198,6 @@ void update_particle(void);
 @param word - void
 @return		- void
 *//*_____________________________________________________________*/
-void render_particle(void);
+void RenderParticle(void);
 
 #endif

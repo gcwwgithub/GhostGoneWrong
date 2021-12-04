@@ -8,6 +8,11 @@ All content © 2021 DigiPen Institute of Technology Singapore, all rights reserve
 @brief    	This header file contains the declarations for the main menu UI,
 			the transitions between the building & wave phases, as well as the
 			checking for win or lose conditions. Further comments are found below.
+			All functions written by Anderson.
+
+			Functions:
+			InitGameFont, InitSplashLogos, RenderLogos, ...
+
 *//*__________________________________________________________________________*/
 #pragma once
 #include "game.h"
@@ -25,6 +30,7 @@ All content © 2021 DigiPen Institute of Technology Singapore, all rights reserve
 #define LOGO_DISPLAY_TIME 4.0f
 #define FADE_OUT_TIME 1.0f
 
+// Button object
 typedef struct Button {
 	Coordinates buttonData;
 	float textPositionX;
@@ -33,7 +39,7 @@ typedef struct Button {
 
 	int isMoving;
 
-	char const * textString[24];
+	char textString[24];
 }Button;
 
 enum CreditText {
@@ -69,9 +75,9 @@ enum CreditText {
 };
 
 enum OptionText {
-	Options,
 	BackgroundSFX,
-	MuteAll
+	SFX,
+	Options
 };
 
 enum MainMenuButtonNames {
@@ -81,7 +87,7 @@ enum MainMenuButtonNames {
 
 typedef struct Line
 {
-	const char const * text;
+	const char* text;
 	Coordinates mainMenuPos;
 	Coordinates currentPos; // text will be at this position in MainMenu
 	Coordinates endingPos;
@@ -119,54 +125,54 @@ Button EndScreenButtons[3];
 int enemiesInLevel;
 
 // Audio
-int bgmAudioPaused;
-int allAudioPaused;
+int bgmSFXEnabled;
+int sfxEnabled;
 
 // Logo Splash
-void init_game_font(void);
-void init_splash_logos(void);
-void render_logos(void);
+void InitGameFont(void);
+void InitSplashLogos(void);
+void RenderLogos(void);
 
 // UI initialisations
-Button init_text_button(Button button, float buttonPosX, float buttonPosY, float buttonWidth, float buttonHeight, float textPosX, float textPosY, char string[]);
-void init_main_menu(void);
-void init_level_select_buttons(void);
-void init_pause_screen(void);
-void init_credits_screen(void);
-void init_options_screen(void);
+Button InitTextButton(Button button, float buttonPosX, float buttonPosY, float buttonWidth, float buttonHeight, float textPosX, float textPosY, char string[]);
+void InitMainMenu(void);
+void InitLevelSelectButtons(void);
+void InitPauseScreen(void);
+void InitCreditsScreen(void);
+void InitOptionsScreen(void);
 
 // UI Rendering
-void render_ui_button(Button button);
-void render_title_screen(void);
-void render_main_menu(void);
-void render_level_select_buttons(void);
-void render_pause_screen(void);
-void render_credits_screen(void);
-void render_options_screen(void);
+void RenderUIButton(Button button);
+void RenderTitleScreen(void);
+void RenderMainMenu(void);
+void RenderLevelSelectButtons(void);
+void RenderPauseScreen(void);
+void RenderCreditsScreen(void);
+void RenderOptionsScreen(void);
 
 // UI Movement
-float linear(float start, float end, float value);
-Button ui_button_movement(Button button, float destPosX, float destPosY);
-int button_has_finished_moving(Button button, float destPosX, float destPosY);
+float Linear(float start, float end, float value);
+Button UIButtonMovement(Button button, float destPosX, float destPosY);
+int ButtonHasFinishedMoving(Button button, float destPosX, float destPosY);
 
 // Movement of Level Select, Main Menu , Credits UI
-void move_level_select(void);
-int level_select_finished_moving(void);
+void MoveLevelSelect(void);
+int LevelSelectFinishedMoving(void);
 
-void move_main_menu(void);
-int main_menu_finished_moving(void);
+void MoveMainMenu(void);
+int MainMenuFinishedMoving(void);
 
-void move_credits_screen(void);
+void MoveCreditsScreen(void);
 
 // Building / Wave Phase
-void render_wave_timer(void);
-void reduce_building_phase_time(void);
-void init_skip_wave_button(void);
+void RenderWaveTimer(void);
+void ReduceBuildingPhaseTime(void);
+void InitSkipWaveButton(void);
 
 // Win / Lose
-void game_win_lose_check(void);
-void init_end_screen(void);
-void render_end_screen(void);
-void init_next_level(int nextGameLevel);
+void GameWinLoseCheck(void);
+void InitEndScreen(void);
+void RenderEndScreen(void);
+void InitNextLevel(int nextGameLevel);
 
-void exit_to_desktop(void);
+void ExitToDesktop(void);

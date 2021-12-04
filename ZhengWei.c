@@ -31,6 +31,7 @@
 #include "Gabriel.h"
 
 #include "cprocessing.h"
+#include <stdio.h>
 
 /*!
 @author     Ng Zheng Wei(zhengwei.ng@digipen.edu)
@@ -912,11 +913,11 @@ void InitLevel1(void) {
 			level.grid[i] = (struct Grids*)
 				calloc(level_grid_cols, sizeof(struct Grids));
 			if (level.grid[i] == NULL) {
-				exit_to_desktop();
+				ExitToDesktop();
 			}
 		}
 		else {
-			exit_to_desktop();
+			ExitToDesktop();
 		}
 	}
 	level.spawn_row = 0;
@@ -1000,11 +1001,11 @@ void InitLevel2(void) {
 			level.grid[i] = (struct Grids*)
 				calloc(level_grid_cols, sizeof(struct Grids));
 			if (level.grid[i] == NULL) {
-				exit_to_desktop();
+				ExitToDesktop();
 			}
 		}
 		else {
-			exit_to_desktop();
+			ExitToDesktop();
 		}
 	}
 	level.spawn_row = 0;
@@ -1087,11 +1088,11 @@ void InitLevel3(void) {
 			level.grid[i] = (struct Grids*)
 				calloc(level_grid_cols, sizeof(struct Grids));
 			if (level.grid[i] == NULL) {
-				exit_to_desktop();
+				ExitToDesktop();
 			}
 		}
 		else {
-			exit_to_desktop();
+			ExitToDesktop();
 		}
 	}
 	level.spawn_row = level_grid_rows - 1;
@@ -1174,11 +1175,11 @@ void InitLevel4(void) {
 			level.grid[i] = (struct Grids*)
 				calloc(level_grid_cols, sizeof(struct Grids));
 			if (level.grid[i] == NULL) {
-				exit_to_desktop();
+				ExitToDesktop();
 			}
 		}
 		else {
-			exit_to_desktop();
+			ExitToDesktop();
 		}
 	}
 	level.spawn_row = 0;
@@ -1261,11 +1262,11 @@ void InitLevel5(void) {
 			level.grid[i] = (struct Grids*)
 				calloc(level_grid_cols, sizeof(struct Grids));
 			if (level.grid[i] == NULL) {
-				exit_to_desktop();
+				ExitToDesktop();
 			}
 		}
 		else {
-			exit_to_desktop();
+			ExitToDesktop();
 		}
 	}
 	level.spawn_row = 0;
@@ -2138,7 +2139,6 @@ void RenderTurretMenuObjects
 		CP_Font_DrawText(temp, menu_object_to_print.x_origin
 			+ menu_object_to_print.width / 2,
 			menu_object_to_print.y_origin + menu_object_to_print.height / 5);
-		printf("%d", level.current_effect);
 		RenderImageFromSpriteSheet(battlefield_effect_spritesheet,
 			battlefield_effect_spritesheet_array[level.current_effect],
 			menu_object_to_print.x_origin + menu_object_to_print.width / 2,

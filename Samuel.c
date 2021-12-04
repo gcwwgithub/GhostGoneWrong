@@ -12,7 +12,6 @@
 *//*__________________________________________________________________________*/
 
 #if _DEBUG
-#include <stdio.h>
 #endif
 #include <math.h>
 #include "cprocessing.h"
@@ -32,11 +31,11 @@ void turret_init(void)
 		if (turret_on_grid != NULL) {
 			turret_on_grid[i] = (int*)calloc(level_grid_rows, sizeof(int));
 			if (turret_on_grid[i] == NULL) {
-				exit_to_desktop();// calling anderson exit in case calloc fail
+				ExitToDesktop();// calling anderson exit in case calloc fail
 			}
 		}
 		else {
-			exit_to_desktop();// calling anderson exit in case calloc fail
+			ExitToDesktop();// calling anderson exit in case calloc fail
 		}
 	}
 	//Array turret_on_grid[gameGridCols][gameGridRows]
@@ -197,7 +196,7 @@ void place_turret(TurretType type, int index_x, int index_y)
 	}
 }
 
-void remove_turret(int index_x, int index_y)
+void RemoveTurret(int index_x, int index_y)
 {
 	if (turret_on_grid == NULL)
 		return;
@@ -218,7 +217,7 @@ void sell_turret(int t_index)
 	float sell_price;
 	sell_price = (turret[t_index].total_price * 0.7f);
 	level.phantom_quartz += (int)sell_price;
-	remove_turret(x, y);
+	RemoveTurret(x, y);
 }
 
 //upgrade system
@@ -267,7 +266,7 @@ void upgrade_turret(int t_index)
 
 }
 
-void render_turret(void)
+void RenderTurret(void)
 {
 	//render active turrets
 	for (int i = 0; i < kMaxTurret; ++i)
@@ -276,7 +275,7 @@ void render_turret(void)
 			continue;
 
 		//draw type of turrets
-		update_turretAnimation(&turret[i]);
+		UpdateTurretAnimation(&turret[i]);
 		turret[i].turret_anim_timer += CP_System_GetDt();
 		switch (turret[i].type)
 		{
@@ -310,7 +309,7 @@ void render_turret(void)
 	}
 }
 
-void update_turret(void)
+void UpdateTurret(void)
 {
 	//highest wp, enemy index
 	int wp = -1, e_index = -1;
@@ -405,9 +404,9 @@ void update_turret(void)
 				turret[i].mod.damage += level.current_power_up_level.increased_mine_damage;
 				turret[i].mod.tracked_index = e_index;
 				//fake shoot for mine, just spawn a proj on it
-				shoot(turret[i].data.x_origin, turret[i].data.y_origin, turret[i].mod, turret[i].type, turret[i].dir);
+				Shoot(turret[i].data.x_origin, turret[i].data.y_origin, turret[i].mod, turret[i].type, turret[i].dir);
 				//sync the remove with animation later
-				remove_turret((int)((turret[i].data.x_origin - game.x_origin) / game.grid_width),
+				RemoveTurret((int)((turret[i].data.x_origin - game.x_origin) / game.grid_width),
 					(int)((turret[i].data.y_origin - game.y_origin) / game.grid_height));
 				continue; //go to next in iter since mine update is done
 			}
@@ -415,8 +414,7 @@ void update_turret(void)
 			if (/*turret[i].mod.cooldown <= 0 &&*/ turret[i].turret_anim_timer >= turret[i].mod.shoot_rate && turret[i].anim_counter >= 5)
 			{
 				turret[i].mod.tracked_index = e_index;
-				//printf("index: %d\n", e_index);
-				shoot(turret[i].data.x_origin, turret[i].data.y_origin, turret[i].mod, turret[i].type, turret[i].dir);
+				Shoot(turret[i].data.x_origin, turret[i].data.y_origin, turret[i].mod, turret[i].type, turret[i].dir);
 				//turret[i].mod.cooldown = 2.f;
 				//Turret Shoot SFX
 				CP_Sound_PlayAdvanced(shoot_sfx, sfx_volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
@@ -430,7 +428,7 @@ void update_turret(void)
 	}// end of turret loop
 }
 
-void shoot(float x, float y, Modifiers mod, ProjectileType type, Vector2 dir)
+void Shoot(float x, float y, Modifiers mod, ProjectileType type, Vector2 dir)
 {
 	//takes the pos of turret and dir turret facing
 	//loop to find unactive projectile
@@ -483,7 +481,7 @@ void shoot(float x, float y, Modifiers mod, ProjectileType type, Vector2 dir)
 
 }
 
-void update_projectile(void)
+void UpdateProjectile(void)
 {
 	float dt = CP_System_GetDt();
 	for (int i = 0; i < kMaxProjectile; ++i)
@@ -573,7 +571,7 @@ void update_projectile(void)
 	}
 }
 
-void render_projectile(void)
+void RenderProjectile(void)
 {
 	for (int i = 0; i < kMaxProjectile; ++i)
 	{
@@ -663,18 +661,18 @@ void col_type_projectile(Projectile* p)
 	//spawning of particles
 	for (int i = 0; i < r_num; ++i)
 	{
-		create_particle(pos, dir, 15.f, 1.5f, p->type);
+		CreateParticle(pos, dir, 15.f, 1.5f, p->type);
 		dir.x = -CP_Random_GetFloat();
 		dir.y = CP_Random_GetFloat();
-		create_particle(pos, dir, 15.f, 1.5f, p->type);
+		CreateParticle(pos, dir, 15.f, 1.5f, p->type);
 		dir.x = CP_Random_GetFloat();
 		dir.y = CP_Random_GetFloat();
-		create_particle(pos, dir, 15.f, 1.5f, p->type);
+		CreateParticle(pos, dir, 15.f, 1.5f, p->type);
 	}
 }
 
 // turret animation updates
-void update_turretAnimation(Turret* t)
+void UpdateTurretAnimation(Turret* t)
 {
 	if (t->type == kTMine)
 	{
@@ -738,7 +736,7 @@ void update_turretAnimation(Turret* t)
 }
 
 // creating of particles
-void create_particle(Vector2 pos, Vector2 dir, float size, float duration, ParticleType type)
+void CreateParticle(Vector2 pos, Vector2 dir, float size, float duration, ParticleType type)
 {
 	for (int i = 0; i < sizeof(particles) / sizeof(particles[0]); ++i)
 	{
@@ -758,7 +756,7 @@ void create_particle(Vector2 pos, Vector2 dir, float size, float duration, Parti
 	}
 }
 
-void update_particle()
+void UpdateParticle()
 {
 	float dt = CP_System_GetDt();
 	//update active particles
@@ -787,7 +785,7 @@ void update_particle()
 }
 
 //render of particles
-void render_particle()
+void RenderParticle()
 {
 	//render only active particles
 	for (int i = 0; i < sizeof(particles) / sizeof(particles[0]); ++i)

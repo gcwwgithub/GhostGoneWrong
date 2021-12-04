@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include "cprocessing.h"
 
 void game_init(void);

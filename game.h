@@ -12,7 +12,6 @@
 @brief    	Contains function and variables that are commmonly used by everyone
 *//*__________________________________________________________________________*/
 #include "cprocessing.h"
-#include <stdio.h>
 #include "vector.h"
 
 // FOR MEM LEAK CHECK
@@ -240,7 +239,7 @@ void Enemies_init(void);
 @param		- void
 @return		- void
 *//*_____________________________________________________________*/
-void exit_to_desktop(void);
+void ExitToDesktop(void);
 /*!
 @author     Wong Zhi Hao Samuel (w.zhihaosamuel@digipen.edu)
 @co-author
@@ -265,6 +264,16 @@ void turret_init(void);
 @return		int - t_index - The index of the turret to sell
 *//*_____________________________________________________________*/
 void sell_turret(int t_index);
+/*!
+@author     Chiok Wei Wen Gabriel (chiok.w@digipen.edu)
+@co-author
+@brief		Timer for the flash of what battlefield effect is
+			currently in effect
+@param		int effect - The current battlefield effect of the
+			current wave.
+@return		- void
+*//*_____________________________________________________________*/
+void StartBattleFieldEffectTimer(int effect);
 /*!
 @author     Chiok Wei Wen Gabriel (chiok.w@digipen.edu)
 			Lim Jing Rui John (l.jingruijohn@digipen.edu)
