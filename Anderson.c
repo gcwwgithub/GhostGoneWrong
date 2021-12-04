@@ -204,22 +204,22 @@ void InitOptionsScreen(void)
 	// init options screen for main menu - the lines and the two Coordinates-type 'buttons'.
 	InitOptionLine(Options, "Options", CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.35f);
 	InitOptionLine(BackgroundSFX, "Background SFX", CP_System_GetWindowWidth() * 0.25f, CP_System_GetWindowHeight() * 0.5f);
-	InitOptionLine(MuteAll, "Mute All", CP_System_GetWindowWidth() * 0.25f, CP_System_GetWindowHeight() * 0.65f);
+	InitOptionLine(SFX, "SFX", CP_System_GetWindowWidth() * 0.25f, CP_System_GetWindowHeight() * 0.65f);
 	OptionsBackButton = InitTextButton(OptionsBackButton, CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 0.9f - BUTTON_HEIGHT * 0.5f,
 		BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Back");
 
-	OptionButtons[0].x_origin = CP_System_GetWindowWidth() * 0.5f;
-	OptionButtons[0].y_origin = CP_System_GetWindowHeight() * 0.475f;
-	OptionButtons[0].width = 37.5f;
-	OptionButtons[0].height = 37.5f;
-	OptionButtons[0].object_type = kObjectRectangle;
+	OptionButtons[BackgroundSFX].x_origin = CP_System_GetWindowWidth() * 0.5f;
+	OptionButtons[BackgroundSFX].y_origin = CP_System_GetWindowHeight() * 0.475f;
+	OptionButtons[BackgroundSFX].width = 37.5f;
+	OptionButtons[BackgroundSFX].height = 37.5f;
+	OptionButtons[BackgroundSFX].object_type = kObjectRectangle;
 	// Image left unspecified
 
-	OptionButtons[1].x_origin = CP_System_GetWindowWidth() * 0.5f;
-	OptionButtons[1].y_origin = CP_System_GetWindowHeight() * 0.625f;
-	OptionButtons[1].width = 37.5f;
-	OptionButtons[1].height = 37.5f;
-	OptionButtons[1].object_type = kObjectRectangle;
+	OptionButtons[SFX].x_origin = CP_System_GetWindowWidth() * 0.5f;
+	OptionButtons[SFX].y_origin = CP_System_GetWindowHeight() * 0.625f;
+	OptionButtons[SFX].width = 37.5f;
+	OptionButtons[SFX].height = 37.5f;
+	OptionButtons[SFX].object_type = kObjectRectangle;
 	// Image left unspecified
 }
 
@@ -341,7 +341,6 @@ void RenderCreditsScreen(void)
 
 void RenderOptionsScreen(void)
 {
-	// render options
 	CP_Settings_Fill(COLOR_BLACK);
 	CP_Graphics_DrawRect(CP_System_GetWindowWidth() * 0.1f, CP_System_GetWindowHeight() * 0.3f, CP_System_GetWindowWidth() * 0.8f, CP_System_GetWindowHeight() * 0.55f);
 	CP_Settings_Fill(COLOR_WHITE);
@@ -349,19 +348,19 @@ void RenderOptionsScreen(void)
 	CP_Settings_TextSize(FONT_SIZE);
 	RenderTextLine(OptionTexts[Options]);
 	RenderTextLine(OptionTexts[BackgroundSFX]);
-	RenderTextLine(OptionTexts[MuteAll]);
+	RenderTextLine(OptionTexts[SFX]);
 
-	CP_Graphics_DrawRect(OptionButtons[0].x_origin, OptionButtons[0].y_origin, OptionButtons[0].width, OptionButtons[0].height);
-	CP_Graphics_DrawRect(OptionButtons[1].x_origin, OptionButtons[1].y_origin, OptionButtons[1].width, OptionButtons[1].height);
+	CP_Graphics_DrawRect(OptionButtons[BackgroundSFX].x_origin, OptionButtons[BackgroundSFX].y_origin, OptionButtons[BackgroundSFX].width, OptionButtons[0].height);
+	CP_Graphics_DrawRect(OptionButtons[SFX].x_origin, OptionButtons[SFX].y_origin, OptionButtons[SFX].width, OptionButtons[SFX].height);
 
 	CP_Settings_Fill(COLOR_BLACK);
-	if (!bgmAudioPaused)
+	if (!bgmSFXEnabled)
 	{
-		CP_Graphics_DrawRect(OptionButtons[0].x_origin + 12.5f, OptionButtons[0].y_origin + 12.5f, 15.0f, 15.0f);
+		CP_Graphics_DrawRect(OptionButtons[BackgroundSFX].x_origin + 12.5f, OptionButtons[BackgroundSFX].y_origin + 12.5f, 15.0f, 15.0f);
 	}
-	if (allAudioPaused)
+	if (!sfxEnabled)
 	{
-		CP_Graphics_DrawRect(OptionButtons[1].x_origin + 12.5f, OptionButtons[1].y_origin + 12.5f, 15.0f, 15.0f);
+		CP_Graphics_DrawRect(OptionButtons[SFX].x_origin + 12.5f, OptionButtons[SFX].y_origin + 12.5f, 15.0f, 15.0f);
 	}
 	RenderUIButton(OptionsBackButton);
 }
@@ -717,7 +716,6 @@ void RenderEndScreen(void)
 		}
 	}
 }
-
 
 /*!
 @author     Phua Tai Dah Anderson (a.phua@digipen.edu)
