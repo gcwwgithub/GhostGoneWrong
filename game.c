@@ -69,6 +69,7 @@ void game_update(void)
 	if (current_game_state == kWave)
 	{
 		//do enemy update first
+		EnvironmentEffCheck();
 		UpdateEnemies();
 
 		//do turret & projectile update next

@@ -215,6 +215,106 @@ void GrimReaperInit(Enemy* r) {
 
 /*!
 @author     Lim Jing Rui John (l.jingruijohn@digipen.edu)
+@co-author
+@brief		This functions initialises a enemy variable with 0
+@param		Pointer to enemy struct
+@return		void
+*//*_____________________________________________________________*/
+void EmptyEnemyInit(Enemy* r) {
+	r->health = 0;
+	r->max_health = 0;
+	r->speed = 0;
+	r->current_way_point = 0;
+	r->data.x_origin = 0;
+	r->data.y_origin = 0;
+	r->enemy_width = game.grid_width;
+	r->enemy_height = game.grid_height;
+	r->angle = 0;
+	r->type = kBasic;
+	r->alpha = 255;
+	r->data.object_type = kObjectCircle;
+	r->data.width = game.grid_width;
+	r->data.height = game.grid_width;
+	r->state = kEnemyInactive;
+	r->timer = 0;
+	r->points = 0;
+	//for the freeze turret & enemy interaction
+	r->slow_amt = 0;
+	r->slow_timer = 0;
+	r->current_aim_state = 0;
+	r->charges = kUsed;
+	r->env_eff = kApplying;
+	r->wave_pow_up_is_active = 0;
+	r->is_token = 0;
+	for (int i = 0; i < 50; i++) {
+		r->enemy_path_x[i] = 0;
+		r->enemy_path_y[i] = 0;
+	}
+	for (int j = 0; j < 3; j++) {
+		r->enemy_pow_up[j] = 0;
+	}
+}
+
+/*!
+@author     Lim Jing Rui John (l.jingruijohn@digipen.edu)
+@co-author
+@brief		This functions initialises all enemies during building phase and prepares all variables
+@param		Pointer to enemy struct
+@return		void
+*//*_____________________________________________________________*/
+void EnemyInitforWaves(int basic_ghost_count, int fast_ghost_count, int fat_ghost_count, int grim_reaper_count, LevelData e_level) {
+	enemy_timer = 0;
+	Enemy_node = NULL;
+	wave_timer = 0;
+	global_enemy_path_X_array[0] = (float)(game.x_origin + game.grid_width * (0.5 + e_level.spawn_col));
+	global_enemy_path_Y_array[0] = (float)(game.y_origin + game.grid_height * (0.5 + e_level.spawn_row));
+
+	for (int i = 0; i < kMaxEnemies; i++) {
+		EmptyEnemyInit(&enemy[i]);
+	}
+	int a = basic_ghost_count + fast_ghost_count;
+	int b = a + fat_ghost_count;
+	int c = b + grim_reaper_count;
+	global_enemy_path_X_array[0] = (float)(game.x_origin + game.grid_width * (0.5 + e_level.spawn_col));
+	global_enemy_path_Y_array[0] = (float)(game.y_origin + game.grid_height * (0.5 + e_level.spawn_row));
+	for (int i = 0; i < basic_ghost_count; i++) {
+		BasicGhostInit(&enemy[i]);
+	}
+	for (int i = basic_ghost_count; i < a && i < MAX_SPAWNING_ENEMIES; i++) {
+		FastGhostInit(&enemy[i]);
+	}
+	for (int i = a; i < b && i < MAX_SPAWNING_ENEMIES; i++) {
+		FatGhostInit(&enemy[i]);
+	}
+	for (int i = b; i < MAX_SPAWNING_ENEMIES && i < c; i++) {
+		GrimReaperInit(&enemy[i]);
+	}
+}
+
+/*!
+@author     Lim Jing Rui John (l.jingruijohn@digipen.edu)
+@co-author
+@brief		This functions checks the level wave for required enemies and initialises them
+@param		Pointer to enemy struct
+@return		void
+*//*_____________________________________________________________*/
+void ResetEnemyInit(void) {
+	if (current_game_state == kBuilding) {
+		UpdateEnemyPathWaypointArray();
+		if (building_time > 0.05f && level.current_wave < kMaxNumberOfWave) {
+			int BasicCount = level.wave_enemies[level.current_wave][kBasic];
+			int FastCount = level.wave_enemies[level.current_wave][kFastGhost];
+			int FatCount = level.wave_enemies[level.current_wave][kFatGhost];
+			int ReaperCount = level.wave_enemies[level.current_wave][kGrimReaper];
+			EnemyInitforWaves(BasicCount, FastCount, FatCount, ReaperCount, level);
+			enemies_left = BasicCount + FastCount + FatCount + ReaperCount;
+		}
+	}
+}
+
+
+/*!
+@author     Lim Jing Rui John (l.jingruijohn@digipen.edu)
 @co-author	Chiok Wei Wen Gabriel (chiok.w@digipen.edu)
 @brief		This functions renders all enemies according to their state and type from the array of enemy structs as long as they are active
 @param		void
@@ -523,7 +623,13 @@ void EnemyDeath(Enemy* r) {  //function updates and checks for collision or deat
 	}
 }
 
-
+/*!
+@author     Lim Jing Rui John (l.jingruijohn@digipen.edu)
+@co-author	
+@brief		This functions activates the reaper summons when its health is 50%
+@param		Pointer to enemy struct
+@return		void
+*//*_____________________________________________________________*/
 void ReaperAbility(Enemy* r) {
 	if (r->type == kGrimReaper) {
 		if (r->health <= 0.5 * r->max_health) {
@@ -534,93 +640,13 @@ void ReaperAbility(Enemy* r) {
 	}
 }
 
-void EmptyEnemyInit(Enemy* r) {
-	r->health = 0;
-	r->max_health = 0;
-	r->speed = 0;
-	r->current_way_point = 0;
-	r->data.x_origin = 0;
-	r->data.y_origin = 0;
-	r->enemy_width = game.grid_width;
-	r->enemy_height = game.grid_height;
-	r->angle = 0;
-	r->type = kBasic;
-	r->alpha = 255;
-	r->data.object_type = kObjectCircle;
-	r->data.width = game.grid_width;
-	r->data.height = game.grid_width;
-	r->state = kEnemyInactive;
-	r->timer = 0;
-	r->points = 0;
-	//for the freeze turret & enemy interaction
-	r->slow_amt = 0;
-	r->slow_timer = 0;
-	r->current_aim_state = 0;
-	r->charges = kUsed;
-	r->env_eff = kApplying;
-	//r->Enemy_pow_up.Less_HP = 0;
-	//r->Enemy_pow_up.More_Points = 0;
-	//r->Enemy_pow_up.SpeedDown = 0;
-	r->wave_pow_up_is_active = 0;
-	r->is_token = 0;
-	//int pathPoints;
-	//float slowed_distance;
-	for (int i = 0; i < 50; i++) {
-		r->enemy_path_x[i] = 0;
-		r->enemy_path_y[i] = 0;
-	}
-	for (int j = 0; j < 3; j++) {
-		r->enemy_pow_up[j] = 0;
-	}
-}
-
-
-
-
-void EnemyInitforWaves(int basic_ghost_count, int fast_ghost_count, int fat_ghost_count, int grim_reaper_count, LevelData e_level) {
-	enemy_timer = 0;
-	Enemy_node = NULL;
-	wave_timer = 0;
-	global_enemy_path_X_array[0] = (float)(game.x_origin + game.grid_width * (0.5 + e_level.spawn_col));
-	global_enemy_path_Y_array[0] = (float)(game.y_origin + game.grid_height * (0.5 + e_level.spawn_row));
-
-	for (int i = 0; i < kMaxEnemies; i++) {
-		EmptyEnemyInit(&enemy[i]);
-	}
-	int a = basic_ghost_count + fast_ghost_count;
-	int b = a + fat_ghost_count;
-	int c = b + grim_reaper_count;
-	global_enemy_path_X_array[0] = (float)(game.x_origin + game.grid_width * (0.5 + e_level.spawn_col));
-	global_enemy_path_Y_array[0] = (float)(game.y_origin + game.grid_height * (0.5 + e_level.spawn_row));
-	for (int i = 0; i < basic_ghost_count; i++) {
-		BasicGhostInit(&enemy[i]);
-	}
-	for (int i = basic_ghost_count; i < a && i < MAX_SPAWNING_ENEMIES; i++) {
-		FastGhostInit(&enemy[i]);
-	}
-	for (int i = a; i < b && i < MAX_SPAWNING_ENEMIES; i++) {
-		FatGhostInit(&enemy[i]);
-	}
-	for (int i = b; i < MAX_SPAWNING_ENEMIES && i < c; i++) {
-		GrimReaperInit(&enemy[i]);
-	}
-}
-
-void ResetEnemyInit(void) {
-	if (current_game_state == kBuilding) {
-		UpdateEnemyPathWaypointArray();
-		if (building_time > 0.05f && level.current_wave < kMaxNumberOfWave) {
-			int BasicCount = level.wave_enemies[level.current_wave][kBasic];
-			int FastCount = level.wave_enemies[level.current_wave][kFastGhost];
-			int FatCount = level.wave_enemies[level.current_wave][kFatGhost];
-			int ReaperCount = level.wave_enemies[level.current_wave][kGrimReaper];
-			EnemyInitforWaves(BasicCount, FastCount, FatCount, ReaperCount, level);
-			enemies_left = BasicCount + FastCount + FatCount + ReaperCount;
-		}
-	}
-}
-
-
+/*!
+@author     Lim Jing Rui John (l.jingruijohn@digipen.edu)
+@co-author
+@brief		This functions checks if the enemy path no longer fits to global path and changes enemy to adjust towards the closest waypoint
+@param		Pointer to enemy struct
+@return		void
+*//*_____________________________________________________________*/
 void CheckEnemyPathAdjustment(Enemy* r) {
 	int XorY = 0;
 	int check = 0;
@@ -678,6 +704,13 @@ void CheckEnemyPathAdjustment(Enemy* r) {
 	}
 }
 
+/*!
+@author     Lim Jing Rui John (l.jingruijohn@digipen.edu)
+@co-author
+@brief		This functions resets the path for enemy when they have finished adjusting back to the global path
+@param		Pointer to enemy struct
+@return		void
+*//*_____________________________________________________________*/
 void ResetEnemyPathWaypoints(Enemy* r) {
 	for (int i = 0; i < 50; i++) {
 		r->enemy_path_x[i] = global_enemy_path_X_array[i];
@@ -686,7 +719,13 @@ void ResetEnemyPathWaypoints(Enemy* r) {
 }
 
 
-
+/*!
+@author     Lim Jing Rui John (l.jingruijohn@digipen.edu)
+@co-author
+@brief		This functions increases the turret damage by 20% when the env eff is active
+@param		void
+@return		void
+*//*_____________________________________________________________*/
 void EnvEffIncreasedTurretDamage(void) {
 	static float damage_increase[kMaxTurret];
 	static int level_check[kMaxTurret];
@@ -714,6 +753,13 @@ void EnvEffIncreasedTurretDamage(void) {
 	}
 }
 
+/*!
+@author     Lim Jing Rui John (l.jingruijohn@digipen.edu)
+@co-author
+@brief		This functions decreases the turret damage by 20% when the env eff is active
+@param		void
+@return		void
+*//*_____________________________________________________________*/
 void EnvEffDecreasedTurretDamage(void) {
 	static float damage_decrease[kMaxTurret];
 	static int level_check[kMaxTurret];
@@ -747,6 +793,13 @@ void EnvEffDecreasedTurretDamage(void) {
 	}
 }
 
+/*!
+@author     Lim Jing Rui John (l.jingruijohn@digipen.edu)
+@co-author
+@brief		This functions increases the turret attack speed by 20% when the env eff is active
+@param		void
+@return		void
+*//*_____________________________________________________________*/
 void EnvEffIncreasedTurretAttackSpeed(void) {
 	static float atk_spd_increase[kMaxTurret];
 	static int level_check[kMaxTurret];
@@ -772,6 +825,13 @@ void EnvEffIncreasedTurretAttackSpeed(void) {
 	}
 }
 
+/*!
+@author     Lim Jing Rui John (l.jingruijohn@digipen.edu)
+@co-author
+@brief		This functions decreases the turret attack speed by 20% when the env eff is active
+@param		void
+@return		void
+*//*_____________________________________________________________*/
 void EnvEffDecreasedTurretAttackSpeed(void) {
 	static float atk_spd_decrease[kMaxTurret];
 	static float level_check[kMaxTurret];
@@ -797,6 +857,13 @@ void EnvEffDecreasedTurretAttackSpeed(void) {
 	}
 }
 
+/*!
+@author     Lim Jing Rui John (l.jingruijohn@digipen.edu)
+@co-author
+@brief		This functions increases enemy health by 30% when the env eff is active
+@param		void
+@return		void
+*//*_____________________________________________________________*/
 void EnvEffMoreHP(void) {
 	for (int i = 0; i < kMaxEnemies; i++) {
 		if (enemy[i].env_eff == kApplying && enemy[i].health > 1) {
@@ -808,6 +875,13 @@ void EnvEffMoreHP(void) {
 	}
 }
 
+/*!
+@author     Lim Jing Rui John (l.jingruijohn@digipen.edu)
+@co-author
+@brief		This functions decreases enemy health by 20% when the env eff is active
+@param		void
+@return		void
+*//*_____________________________________________________________*/
 void EnvEffLessHP(void) {
 	for (int i = 0; i < kMaxEnemies; i++) {
 		if (enemy[i].env_eff == kApplying && enemy[i].health > 1) {
@@ -819,6 +893,13 @@ void EnvEffLessHP(void) {
 	}
 }
 
+/*!
+@author     Lim Jing Rui John (l.jingruijohn@digipen.edu)
+@co-author
+@brief		This functions increases enemy speed by 20% when the env eff is active
+@param		void
+@return		void
+*//*_____________________________________________________________*/
 void EnvEffFasterEnemies(void) {
 	for (int i = 0; i < kMaxEnemies; i++) {
 		if (enemy[i].env_eff == kApplying && enemy[i].health > 1) {
@@ -828,6 +909,13 @@ void EnvEffFasterEnemies(void) {
 	}
 }
 
+/*!
+@author     Lim Jing Rui John (l.jingruijohn@digipen.edu)
+@co-author
+@brief		This functions decreases enemy speed by 20% when the env eff is active
+@param		void
+@return		void
+*//*_____________________________________________________________*/
 void EnvEffSlowerEnemies(void) {
 	for (int i = 0; i < kMaxEnemies; i++) {
 		if (enemy[i].env_eff == kApplying && enemy[i].health > 1) {
@@ -837,6 +925,13 @@ void EnvEffSlowerEnemies(void) {
 	}
 }
 
+/*!
+@author     Lim Jing Rui John (l.jingruijohn@digipen.edu)
+@co-author
+@brief		This functions increases enemy points by 20% given when the env eff is active
+@param		void
+@return		void
+*//*_____________________________________________________________*/
 void EnvEffIncreasedPhantomQuartz(void) {
 	for (int i = 0; i < kMaxEnemies; i++) {
 		if (enemy[i].env_eff == kApplying && enemy[i].health > 1) {
@@ -846,6 +941,13 @@ void EnvEffIncreasedPhantomQuartz(void) {
 	}
 }
 
+/*!
+@author     Lim Jing Rui John (l.jingruijohn@digipen.edu)
+@co-author
+@brief		This functions decreases enemy points by 20% given when the env eff is active
+@param		void
+@return		void
+*//*_____________________________________________________________*/
 void EnvEffDecreasedPhantomQuartz(void) {
 	for (int i = 0; i < kMaxEnemies; i++) {
 		if (enemy[i].env_eff == kApplying && enemy[i].health > 1) {
@@ -854,6 +956,14 @@ void EnvEffDecreasedPhantomQuartz(void) {
 		}
 	}
 }
+
+/*!
+@author     Lim Jing Rui John (l.jingruijohn@digipen.edu)
+@co-author
+@brief		This functions decreases enemy points to 0 given when the env eff is active
+@param		void
+@return		void
+*//*_____________________________________________________________*/
 void EnvEffNoPhantomQuartz(void) {
 	for (int i = 0; i < kMaxEnemies; i++) {
 		if (enemy[i].env_eff == kApplying && enemy[i].health > 1) {
@@ -863,6 +973,13 @@ void EnvEffNoPhantomQuartz(void) {
 	}
 }
 
+/*!
+@author     Lim Jing Rui John (l.jingruijohn@digipen.edu)
+@co-author
+@brief		This functions applies the correct env eff when it is active
+@param		void
+@return		void
+*//*_____________________________________________________________*/
 void EnvironmentEffCheck(void) {
 	EnvEffIncreasedTurretAttackSpeed();
 	EnvEffDecreasedTurretAttackSpeed();
@@ -906,6 +1023,13 @@ void EnvironmentEffCheck(void) {
 	}
 }
 
+/*!
+@author     Lim Jing Rui John (l.jingruijohn@digipen.edu)
+@co-author
+@brief		This functions powers up the enemies the more waves you have survived
+@param		Pointer to Enemy struct
+@return		void
+*//*_____________________________________________________________*/
 void EnemyWavePowUp(Enemy* r) {
 	if (r->wave_pow_up_is_active == 0) {
 		int a = level.current_wave;
@@ -916,6 +1040,13 @@ void EnemyWavePowUp(Enemy* r) {
 	}
 }
 
+/*!
+@author     Lim Jing Rui John (l.jingruijohn@digipen.edu)
+@co-author
+@brief		This functions reduces enemy pow based on power ups bought
+@param		Pointer to enemy struct
+@return		void
+*//*_____________________________________________________________*/
 void EnemyVariableChangeforPowUps(Enemy* r) {
 	if (r->enemy_pow_up[0] == 0) {
 		r->health *= (1 - (level.current_power_up_level.reduce_enemy_health * 0.05f));
@@ -978,13 +1109,18 @@ void UpdateEnemies(void) {
 		EnemyMovement(&enemy[i], enemy[i].enemy_path_x, enemy[i].enemy_path_y, number_of_points);
 		EnemyDeath(&enemy[i]);
 		ReaperAbility(&enemy[i]);
-		EnvironmentEffCheck();
 		EnemyWavePowUp(&enemy[i]);
 		EnemyVariableChangeforPowUps(&enemy[i]);
 	}
 }
 
-
+/*!
+@author     Lim Jing Rui John (l.jingruijohn@digipen.edu)
+@co-author
+@brief		This functions initialises all sounds used in the game
+@param		void
+@return		void
+*//*_____________________________________________________________*/
 void MusicInit(void) {
 	button_click_sfx = CP_Sound_Load("./Assets/sfx/btn.wav");
 	turret_place_sfx = CP_Sound_Load("./Assets/sfx/place-turret.mp3");
@@ -1002,53 +1138,3 @@ void MusicInit(void) {
 	bgm_volume = 0.5f;
 	main_menu_music = CP_Sound_LoadMusic("./Assets/sfx/THE NINTH HOUR - Jazz MSCJAZ1_46.wav");
 }
-
-
-/*void movement_redone(enemy* r) {
-	r->movement_timer += CP_System_GetDt();
-	int fake_distance_covered = r->speed * timer;
-	int distance_covered = fake_distance_covered - r->slowed_distance;
-	int distance_between_start_and_end = fabs((double)(r->EnemyPathX[0] - r->EnemyPathX[r->pathPoints-1]) + (r->EnemyPathY[0] - r->EnemyPathY[r->pathPoints-1]));
-	int Waypoint = 0;
-	for (int i = 0; i < r->pathPoints; i++) {
-		int distance_between_points = fabs((double)(r->EnemyPathX[i] - r->EnemyPathX[i + 1])) + fabs((double)(r->EnemyPathY[i] - r->EnemyPathY[i + 1]));
-		if (distance_covered >= distance_between_points) {
-			Waypoint++;
-			distance_covered -= distance_between_points;
-		}
-	}
-	if (Waypoint >= r->pathPoints) {
-		r->CurrentWaypoint = Waypoint;
-		r->data.xOrigin = r->EnemyPathX[r->pathPoints - 1];
-		r->data.yOrigin = r->EnemyPathY[r->pathPoints - 1];
-		return;
-	}
-	r->CurrentWaypoint = Waypoint;
-	r->data.xOrigin = r->EnemyPathX[Waypoint];
-	r->data.xOrigin = r->EnemyPathY[Waypoint];
-	Direction enemy_dir = direction_to_next_point(r->EnemyPathX, r->EnemyPathY, r);
-	Move_enemy(enemy_dir, r, distance_covered);
-}
-
-void Move_enemy(Direction enemy_dir, enemy* r,float distance_covered) {
-	switch (enemy_dir) {
-	case Up:
-		r->data.yOrigin -= distance_covered;
-		break;
-	case Down:
-		r->data.yOrigin += distance_covered;
-		break;
-	case Left:
-		r->data.xOrigin -= distance_covered;
-		break;
-	case Right:
-		r->data.xOrigin += distance_covered;
-		break;
-	}
-}
-
-void Update_slow_distance(enemy* r) {
-	if (r->slow_amt < 1.0f) {
-		r->slowed_distance += (1 - r->slow_amt) * r->speed * CP_System_GetDt();
-	}
-}*/
