@@ -805,23 +805,25 @@ void EnvEffIncreasedTurretAttackSpeed(void) {
 	static float atk_spd_increase[kMaxTurret];
 	static int level_check[kMaxTurret];
 	for (int i = 0; i < kMaxTurret; i++) {
-		if (level.current_effect == kIncreasedTurretAttackSpeed && turret[i].env_effects == kTEnvironmentNoEffect) {
-			atk_spd_increase[i] = turret[i].mod.shoot_rate * 0.2f;
-			turret[i].mod.shoot_rate -= atk_spd_increase[i];
-			level_check[i] = turret[i].level;
-			turret[i].env_effects = kTEnvironmentIncreasedAttackSpeed;
-		}
-		else if (level.current_effect == kIncreasedTurretAttackSpeed && turret[i].env_effects == kTEnvironmentIncreasedAttackSpeed) {
-			if (turret[i].level != level_check[i]) {
+		if (turret[i].is_active) {
+			if (level.current_effect == kIncreasedTurretAttackSpeed && turret[i].env_effects == kTEnvironmentNoEffect) {
+				atk_spd_increase[i] = turret[i].mod.shoot_rate * 0.2f;
+				turret[i].mod.shoot_rate -= atk_spd_increase[i];
+				level_check[i] = turret[i].level;
+				turret[i].env_effects = kTEnvironmentIncreasedAttackSpeed;
+			}
+			else if (level.current_effect == kIncreasedTurretAttackSpeed && turret[i].env_effects == kTEnvironmentIncreasedAttackSpeed) {
+				if (turret[i].level != level_check[i]) {
+					turret[i].mod.shoot_rate += atk_spd_increase[i];
+					atk_spd_increase[i] = 0;
+					turret[i].env_effects = kTEnvironmentNoEffect;
+				}
+			}
+			else if (level.current_effect != kIncreasedTurretAttackSpeed && turret[i].env_effects == kTEnvironmentIncreasedAttackSpeed) {
 				turret[i].mod.shoot_rate += atk_spd_increase[i];
 				atk_spd_increase[i] = 0;
 				turret[i].env_effects = kTEnvironmentNoEffect;
 			}
-		}
-		else if (level.current_effect != kIncreasedTurretAttackSpeed && turret[i].env_effects == kTEnvironmentIncreasedAttackSpeed) {
-			turret[i].mod.shoot_rate += atk_spd_increase[i];
-			atk_spd_increase[i] = 0;
-			turret[i].env_effects = kTEnvironmentNoEffect;
 		}
 	}
 }
@@ -837,23 +839,25 @@ void EnvEffDecreasedTurretAttackSpeed(void) {
 	static float atk_spd_decrease[kMaxTurret];
 	static float level_check[kMaxTurret];
 	for (int i = 0; i < kMaxTurret; i++) {
-		if (level.current_effect == kDecreasedTurretAttackSpeed && turret[i].env_effects == kTEnvironmentNoEffect) {
-			atk_spd_decrease[i] = turret[i].mod.shoot_rate * 0.2f;
-			turret[i].mod.shoot_rate += atk_spd_decrease[i];
-			level_check[i] = (float)turret[i].level;
-			turret[i].env_effects = kTEnvironmnetDecreasedAttackSpeed;
-		}
-		else if (level.current_effect == kDecreasedTurretAttackSpeed && turret[i].env_effects == kTEnvironmnetDecreasedAttackSpeed) {
-			if (turret[i].level != level_check[i]) {
+		if (turret[i].is_active) {
+			if (level.current_effect == kDecreasedTurretAttackSpeed && turret[i].env_effects == kTEnvironmentNoEffect) {
+				atk_spd_decrease[i] = turret[i].mod.shoot_rate * 0.2f;
+				turret[i].mod.shoot_rate += atk_spd_decrease[i];
+				level_check[i] = (float)turret[i].level;
+				turret[i].env_effects = kTEnvironmnetDecreasedAttackSpeed;
+			}
+			else if (level.current_effect == kDecreasedTurretAttackSpeed && turret[i].env_effects == kTEnvironmnetDecreasedAttackSpeed) {
+				if (turret[i].level != level_check[i]) {
+					turret[i].mod.shoot_rate -= atk_spd_decrease[i];
+					atk_spd_decrease[i] = 0;
+					turret[i].env_effects = kTEnvironmentNoEffect;
+				}
+			}
+			else if (level.current_effect != kDecreasedTurretAttackSpeed && turret[i].env_effects == kTEnvironmnetDecreasedAttackSpeed) {
 				turret[i].mod.shoot_rate -= atk_spd_decrease[i];
 				atk_spd_decrease[i] = 0;
 				turret[i].env_effects = kTEnvironmentNoEffect;
 			}
-		}
-		else if (level.current_effect != kDecreasedTurretAttackSpeed && turret[i].env_effects == kTEnvironmnetDecreasedAttackSpeed) {
-			turret[i].mod.shoot_rate -= atk_spd_decrease[i];
-			atk_spd_decrease[i] = 0;
-			turret[i].env_effects = kTEnvironmentNoEffect;
 		}
 	}
 }
