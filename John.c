@@ -8,8 +8,8 @@ void BasicGhostInit(Enemy* r) { // setup variable for basic ghost enemy
 	r->max_health = 4;
 	r->speed = 30*scaling_factor;
 	r->current_way_point = 0;
-	r->data.x_origin = GlobalEnemyPathXArray[0];
-	r->data.y_origin = GlobalEnemyPathYArray[0];
+	r->data.x_origin = global_enemy_path_X_array[0];
+	r->data.y_origin = global_enemy_path_Y_array[0];
 	r->enemy_width = game.grid_width;
 	r->enemy_height = game.grid_height;
 	r->angle = 0;
@@ -33,8 +33,8 @@ void FastGhostInit(Enemy* r) { // setup variable for fast ghost enemy
 	r->max_health = 2;
 	r->speed = 60 * scaling_factor;
 	r->current_way_point = 0;
-	r->data.x_origin = GlobalEnemyPathXArray[0];
-	r->data.y_origin = GlobalEnemyPathYArray[0];
+	r->data.x_origin = global_enemy_path_X_array[0];
+	r->data.y_origin = global_enemy_path_Y_array[0];
 	r->enemy_width = game.grid_width;
 	r->enemy_height = game.grid_height;
 	r->angle = 0;
@@ -58,8 +58,8 @@ void FatGhostInit(Enemy* r) {
 	r->max_health = 30;
 	r->speed = 25 * scaling_factor;
 	r->current_way_point = 0;
-	r->data.x_origin = GlobalEnemyPathXArray[0];
-	r->data.y_origin = GlobalEnemyPathYArray[0];
+	r->data.x_origin = global_enemy_path_X_array[0];
+	r->data.y_origin = global_enemy_path_Y_array[0];
 	r->enemy_width = game.grid_width;
 	r->enemy_height = game.grid_height;
 	r->angle = 0;
@@ -84,8 +84,8 @@ void ReaperMinionInit(Enemy* r) {
 		if (a == 0) {
 			if (enemy[i].state == kEnemyInactive) {
 				FastGhostInit(&enemy[i]);
-				enemy[i].data.x_origin = GlobalEnemyPathXArray[r->current_way_point];
-				enemy[i].data.y_origin = GlobalEnemyPathYArray[r->current_way_point];
+				enemy[i].data.x_origin = global_enemy_path_X_array[r->current_way_point];
+				enemy[i].data.y_origin = global_enemy_path_Y_array[r->current_way_point];
 				enemy[i].current_way_point = r->current_way_point;
 				enemy[i].state = kEnemyMoving;
 				enemies_left++;
@@ -96,8 +96,8 @@ void ReaperMinionInit(Enemy* r) {
 		else if (a == 1) {
 			if (enemy[i].state == kEnemyInactive) {
 				FastGhostInit(&enemy[i]);
-				enemy[i].data.x_origin = GlobalEnemyPathXArray[r->current_way_point + 1];
-				enemy[i].data.y_origin = GlobalEnemyPathYArray[r->current_way_point + 1];
+				enemy[i].data.x_origin = global_enemy_path_X_array[r->current_way_point + 1];
+				enemy[i].data.y_origin = global_enemy_path_Y_array[r->current_way_point + 1];
 				enemy[i].current_way_point = r->current_way_point + 1;
 				enemy[i].state = kEnemyMoving;
 				enemies_left++;
@@ -117,8 +117,8 @@ void GrimReaperInit(Enemy* r) {
 	r->max_health = 50;
 	r->speed = 40 * scaling_factor;
 	r->current_way_point = 0;
-	r->data.x_origin = GlobalEnemyPathXArray[0];
-	r->data.y_origin = GlobalEnemyPathYArray[0];
+	r->data.x_origin = global_enemy_path_X_array[0];
+	r->data.y_origin = global_enemy_path_Y_array[0];
 	r->enemy_width = game.grid_width;
 	r->enemy_height = game.grid_height;
 	r->angle = 0;
@@ -177,9 +177,9 @@ int CheckEnemyState(Enemy* r) {
 	return 0;
 }
 
-void EnemyMovement(Enemy* r, float Enemy_PathpointsX[], float Enemy_PathpointsY[], int number_of_points) { //Enemy movement
+void EnemyMovement(Enemy* r, float enemy_pathpoints_X[], float enemy_pathpoints_Y[], int number_of_points) { //Enemy movement
 	float Speed = (r->speed) * r->slow_amt * CP_System_GetDt();
-	UpdateEnemyCurrentWaypoint(Enemy_PathpointsX, Enemy_PathpointsY, r);
+	UpdateEnemyCurrentWaypoint(enemy_pathpoints_X, enemy_pathpoints_Y, r);
 	if (r->current_way_point >= 2 && r->state == kEnemyAdjusting) {
 		r->state = kEnemyMoving;
 		ResetEnemyPathWaypoints(r);
@@ -197,7 +197,7 @@ void EnemyMovement(Enemy* r, float Enemy_PathpointsX[], float Enemy_PathpointsY[
 		r->state = kEnemyReached;
 	}
 
-	Direction direction_now = DirectionToNextPoint(Enemy_PathpointsX, Enemy_PathpointsY, r);
+	Direction direction_now = DirectionToNextPoint(enemy_pathpoints_X, enemy_pathpoints_Y, r);
 	switch (direction_now) {
 	case kUp:
 		r->data.y_origin -= Speed;
@@ -218,9 +218,9 @@ void EnemyMovement(Enemy* r, float Enemy_PathpointsX[], float Enemy_PathpointsY[
 }
 
 
-Direction DirectionToNextPoint(float Enemy_PathpointsX[], float Enemy_PathpointsY[], Enemy* r) {   //Which direction to move depending on points
-	float Xdistance_between_points = (Enemy_PathpointsX[r->current_way_point + 1] - Enemy_PathpointsX[r->current_way_point]);
-	float Ydistance_between_points = (Enemy_PathpointsY[r->current_way_point + 1] - Enemy_PathpointsY[r->current_way_point]);
+Direction DirectionToNextPoint(float enemy_Pathpoints_X[], float enemy_pathpoints_Y[], Enemy* r) {   //Which direction to move depending on points
+	float Xdistance_between_points = (enemy_Pathpoints_X[r->current_way_point + 1] - enemy_Pathpoints_X[r->current_way_point]);
+	float Ydistance_between_points = (enemy_pathpoints_Y[r->current_way_point + 1] - enemy_pathpoints_Y[r->current_way_point]);
 	if (r->state == kEnemyDeath || r->state == kEnemyReached) {
 		return kNoMove;
 	}
@@ -243,11 +243,11 @@ Direction DirectionToNextPoint(float Enemy_PathpointsX[], float Enemy_Pathpoints
 	return 0;
 }
 
-int UpdateEnemyCurrentWaypoint(float Enemy_PathpointsX[], float Enemy_PathpointsY[], Enemy* r) { //Update position to move towards next point 
-	float covered_distanceX = (float)fabs((double)r->data.x_origin - (Enemy_PathpointsX[r->current_way_point]));
-	float distance_between_pointsX = (float)fabs((double)Enemy_PathpointsX[r->current_way_point + 1] - (Enemy_PathpointsX[r->current_way_point]));
-	float covered_distanceY = (float)fabs((double)r->data.y_origin - (Enemy_PathpointsY[r->current_way_point]));
-	float distance_between_pointsY = (float)fabs((double)Enemy_PathpointsY[r->current_way_point + 1] - (Enemy_PathpointsY[r->current_way_point]));
+int UpdateEnemyCurrentWaypoint(float enemy_pathpoints_X[], float enemy_pathpoints_Y[], Enemy* r) { //Update position to move towards next point 
+	float covered_distanceX = (float)fabs((double)r->data.x_origin - (enemy_pathpoints_X[r->current_way_point]));
+	float distance_between_pointsX = (float)fabs((double)enemy_pathpoints_X[r->current_way_point + 1] - (enemy_pathpoints_X[r->current_way_point]));
+	float covered_distanceY = (float)fabs((double)r->data.y_origin - (enemy_pathpoints_Y[r->current_way_point]));
+	float distance_between_pointsY = (float)fabs((double)enemy_pathpoints_Y[r->current_way_point + 1] - (enemy_pathpoints_Y[r->current_way_point]));
 
 	if (distance_between_pointsX <= covered_distanceX) {
 		if (distance_between_pointsY <= covered_distanceY) {
@@ -306,13 +306,13 @@ void EnemyDeath(Enemy* r) {  //function updates and checks for collision or deat
 			switch (r->type)
 			{
 			case kBasic:
-				basicEnemyNum--;
+				basic_enemy_count--;
 				break;
 			case kFastGhost:
-				fastEnemyNum--;
+				fast_enemy_count--;
 				break;
 			case kFatGhost:
-				fatEnemyNum--;
+				fat_enemy_count--;
 				break;
 			}
 		}
@@ -321,11 +321,11 @@ void EnemyDeath(Enemy* r) {  //function updates and checks for collision or deat
 }
 
 void Enemies_init(void) {
-	Enemy_timer = 0;
+	enemy_timer = 0;
 	Enemy_node = NULL;
 	wave_timer = 0;
-	Array_counter = 1;
-	Number_of_points = 0;
+	array_counter = 1;
+	number_of_points = 0;
 
 	//test path
 	for (int i = 0; i < kMaxEnemies; i++) {
@@ -334,12 +334,12 @@ void Enemies_init(void) {
 }
 
 void UpdateEnemies(void) {
-	Enemy_timer += CP_System_GetDt();
+	enemy_timer += CP_System_GetDt();
 	for (int i = 0; i < kMaxEnemies; i++) {
 		int spawn_timer = 2;
-		if ((enemy[i].state == kEnemyInactive) && (enemy[i].health > 0) && ((int)Enemy_timer / spawn_timer <= kMaxEnemies)) {
+		if ((enemy[i].state == kEnemyInactive) && (enemy[i].health > 0) && ((int)enemy_timer / spawn_timer <= kMaxEnemies)) {
 			int state_check = 0;
-			int b = (int)Enemy_timer;
+			int b = (int)enemy_timer;
 			for (int j = 0; j < kMaxEnemies; j++) {
 				if (enemy[j].state == kEnemyInactive) {
 					state_check++;
@@ -350,7 +350,7 @@ void UpdateEnemies(void) {
 			}
 			if (b - wave_timer >= spawn_timer) {
 				enemy[i].state = kEnemyMoving;
-				wave_timer = (int)Enemy_timer;
+				wave_timer = (int)enemy_timer;
 				InsertNewNodePortalEffect(&portal_spawn_head_node, enemy[i].data.x_origin,
 					enemy[i].data.y_origin, 0);
 				//CP_Sound_PlayAdvanced(SpawnxExitSFX, SFX_Volume*0.2f, 1.0, FALSE, CP_SOUND_GROUP_0);
@@ -370,7 +370,7 @@ void UpdateEnemies(void) {
 
 		UpdateEnemyPathWaypointArray(level.current_game_level);
 		CheckEnemyPathAdjustment(&enemy[i]);
-		EnemyMovement(&enemy[i], enemy[i].enemy_path_x, enemy[i].enemy_path_y, Number_of_points, level.current_game_level);
+		EnemyMovement(&enemy[i], enemy[i].enemy_path_x, enemy[i].enemy_path_y, number_of_points, level.current_game_level);
 		EnemyDeath(&enemy[i], level.current_game_level);
 		ReaperAbility(&enemy[i]);
 		EnvironmentEffCheck(level.current_game_level);
@@ -444,12 +444,12 @@ void UpdateEnemyPathWaypointArray(void) {
 				}
 			}
 		}
-		GlobalEnemyPathXArray[Array_counter] = (float)(game.x_origin + game.grid_width * (0.5 + nextPathCol));
-		GlobalEnemyPathYArray[Array_counter] = (float)(game.y_origin + game.grid_height * (0.5 + nextPathRow));
-		Array_counter++;
+		global_enemy_path_X_array[array_counter] = (float)(game.x_origin + game.grid_width * (0.5 + nextPathCol));
+		global_enemy_path_Y_array[array_counter] = (float)(game.y_origin + game.grid_height * (0.5 + nextPathRow));
+		array_counter++;
 	}
-	Number_of_points = Array_counter;
-	Array_counter = 1;
+	number_of_points = array_counter;
+	array_counter = 1;
 }
 
 
@@ -506,25 +506,25 @@ void EmptyEnemyInit(Enemy* r) {
 
 
 
-void EnemyInitforWaves(int Basic_Ghost_count, int Fast_Ghost_count, int Fat_Ghost_count, int Grim_Reaper_count, LevelData E_Level) {
-	Enemy_timer = 0;
+void EnemyInitforWaves(int basic_ghost_count, int fast_ghost_count, int fat_ghost_count, int grim_reaper_count, LevelData e_level) {
+	enemy_timer = 0;
 	Enemy_node = NULL;
 	wave_timer = 0;
-	GlobalEnemyPathXArray[0] = (float)(game.x_origin + game.grid_width * (0.5 + E_Level.spawn_col));
-	GlobalEnemyPathYArray[0] = (float)(game.y_origin + game.grid_height * (0.5 + E_Level.spawn_row));
+	global_enemy_path_X_array[0] = (float)(game.x_origin + game.grid_width * (0.5 + e_level.spawn_col));
+	global_enemy_path_Y_array[0] = (float)(game.y_origin + game.grid_height * (0.5 + e_level.spawn_row));
 
 	for (int i = 0; i < kMaxEnemies; i++) {
 		EmptyEnemyInit(&enemy[i]);
 	}
-	int a = Basic_Ghost_count + Fast_Ghost_count;
-	int b = a + Fat_Ghost_count;
-	int c = b + Grim_Reaper_count;
-	GlobalEnemyPathXArray[0] = (float)(game.x_origin + game.grid_width * (0.5 + E_Level.spawn_col));
-	GlobalEnemyPathYArray[0] = (float)(game.y_origin + game.grid_height * (0.5 + E_Level.spawn_row));
-	for (int i = 0; i < Basic_Ghost_count; i++) {
+	int a = basic_ghost_count + fast_ghost_count;
+	int b = a + fat_ghost_count;
+	int c = b + grim_reaper_count;
+	global_enemy_path_X_array[0] = (float)(game.x_origin + game.grid_width * (0.5 + e_level.spawn_col));
+	global_enemy_path_Y_array[0] = (float)(game.y_origin + game.grid_height * (0.5 + e_level.spawn_row));
+	for (int i = 0; i < basic_ghost_count; i++) {
 		BasicGhostInit(&enemy[i]);
 	}
-	for (int i = Basic_Ghost_count; i < a && i < MAX_SPAWNING_ENEMIES; i++) {
+	for (int i = basic_ghost_count; i < a && i < MAX_SPAWNING_ENEMIES; i++) {
 		FastGhostInit(&enemy[i]);
 	}
 	for (int i = a; i < b && i < MAX_SPAWNING_ENEMIES; i++) {
@@ -554,12 +554,12 @@ void CheckEnemyPathAdjustment(Enemy* r) {
 	int XorY = 0;
 	int check = 0;
 	if (r->state != kEnemyInactive && r->state != kEnemyDeath && r->state != kEnemyReached) {
-		for (int j = 0; j < Number_of_points; j++) {
-			if (r->state != kEnemyAdjusting && (r->enemy_path_x[r->current_way_point + 1] == GlobalEnemyPathXArray[j] && r->enemy_path_y[r->current_way_point + 1] == GlobalEnemyPathYArray[j])) {
+		for (int j = 0; j < number_of_points; j++) {
+			if (r->state != kEnemyAdjusting && (r->enemy_path_x[r->current_way_point + 1] == global_enemy_path_X_array[j] && r->enemy_path_y[r->current_way_point + 1] == global_enemy_path_Y_array[j])) {
 				check++;
 			}
 			else if (r->state == kEnemyAdjusting) {
-				if (r->enemy_path_x[2] == GlobalEnemyPathXArray[j] && r->enemy_path_y[2] == GlobalEnemyPathYArray[j]) {
+				if (r->enemy_path_x[2] == global_enemy_path_X_array[j] && r->enemy_path_y[2] == global_enemy_path_Y_array[j]) {
 					check++;
 				}
 			}
@@ -567,9 +567,9 @@ void CheckEnemyPathAdjustment(Enemy* r) {
 		if (check < 1) {
 			int ClosestWaypoint = 0;
 			float d = 10000;
-			for (int i = 0; i < Number_of_points; i++) {
-				float a = (float)fabs((double)r->data.x_origin - GlobalEnemyPathXArray[i]);
-				float b = (float)fabs((double)r->data.y_origin - GlobalEnemyPathYArray[i]);
+			for (int i = 0; i < number_of_points; i++) {
+				float a = (float)fabs((double)r->data.x_origin - global_enemy_path_X_array[i]);
+				float b = (float)fabs((double)r->data.y_origin - global_enemy_path_Y_array[i]);
 				float c = a + b;
 				if (c < d) {
 					d = c;
@@ -586,19 +586,19 @@ void CheckEnemyPathAdjustment(Enemy* r) {
 			if (XorY == 1) {
 				r->enemy_path_x[0] = r->data.x_origin;
 				r->enemy_path_y[0] = r->data.y_origin;
-				r->enemy_path_x[1] = GlobalEnemyPathXArray[ClosestWaypoint];
+				r->enemy_path_x[1] = global_enemy_path_X_array[ClosestWaypoint];
 				r->enemy_path_y[1] = r->data.y_origin;
-				r->enemy_path_x[2] = GlobalEnemyPathXArray[ClosestWaypoint];
-				r->enemy_path_y[2] = GlobalEnemyPathYArray[ClosestWaypoint];
+				r->enemy_path_x[2] = global_enemy_path_X_array[ClosestWaypoint];
+				r->enemy_path_y[2] = global_enemy_path_Y_array[ClosestWaypoint];
 				r->current_way_point = 0;
 			}
 			else if (XorY == 2) {
 				r->enemy_path_x[0] = r->data.x_origin;
 				r->enemy_path_y[0] = r->data.y_origin;
 				r->enemy_path_x[1] = r->data.x_origin;
-				r->enemy_path_y[1] = GlobalEnemyPathYArray[ClosestWaypoint];
-				r->enemy_path_x[2] = GlobalEnemyPathXArray[ClosestWaypoint];
-				r->enemy_path_y[2] = GlobalEnemyPathYArray[ClosestWaypoint];
+				r->enemy_path_y[1] = global_enemy_path_Y_array[ClosestWaypoint];
+				r->enemy_path_x[2] = global_enemy_path_X_array[ClosestWaypoint];
+				r->enemy_path_y[2] = global_enemy_path_Y_array[ClosestWaypoint];
 
 				r->current_way_point = 0;
 			}
@@ -609,8 +609,8 @@ void CheckEnemyPathAdjustment(Enemy* r) {
 
 void ResetEnemyPathWaypoints(Enemy* r) {
 	for (int i = 0; i < 50; i++) {
-		r->enemy_path_x[i] = GlobalEnemyPathXArray[i];
-		r->enemy_path_y[i] = GlobalEnemyPathYArray[i];
+		r->enemy_path_x[i] = global_enemy_path_X_array[i];
+		r->enemy_path_y[i] = global_enemy_path_Y_array[i];
 	}
 }
 

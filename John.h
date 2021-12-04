@@ -38,7 +38,7 @@ void EnemyWavePowUp(Enemy* r);
 void EnemyVariableChangeforPowUps(Enemy* r);
 
 //Enemy variable setup and intialising
-void EnemyInitforWaves(int Basic_Ghost_count, int Fast_Ghost_count, int Fat_Ghost_count, int Grim_Reaper_count, LevelData Level);
+void EnemyInitforWaves(int basic_ghost_count, int fast_ghost_count, int fat_ghost_count, int grim_reaper_count, LevelData level);
 void BasicGhostInit(Enemy* r);
 void FastGhostInit(Enemy* r);
 void FatGhostInit(Enemy* r);
@@ -47,31 +47,31 @@ void ReaperMinionInit(Enemy* r);
 void EmptyEnemyInit(Enemy* r);
 
 //Enemy Movement functions
-void EnemyMovement(Enemy* r, float Enemy_PathpointsX[], float Enemy_PathpointsY[], int number_of_points);
+void EnemyMovement(Enemy* r, float enemy_pathpoints_X[], float enemy_pathpoints_Y[], int number_of_points);
 void UpdateEnemyPathWaypointArray(void);
 void CheckEnemyPathAdjustment(Enemy* r);
 void ResetEnemyPathWaypoints(Enemy* r);
-int DirectionToNextPoint(float enemy_pathpointsX[], float enemy_pathpointsY[], Enemy* r);
-int UpdateEnemyCurrentWaypoint(float enemy_pathpointsX[], float enemy_pathpointsY[], Enemy* r);
+int DirectionToNextPoint(float enemy_pathpoints_X[], float enemy_pathpoints_Y[], Enemy* r);
+int UpdateEnemyCurrentWaypoint(float enemy_pathpoints_X[], float enemy_pathpoints_Y[], Enemy* r);
 
 
 struct LinkedListNode* Enemy_node;
 
 //global path for enemy path setup
-float GlobalEnemyPathXArray[50];
-float GlobalEnemyPathYArray[50];
-int Array_counter;
-int Number_of_points;
+float global_enemy_path_X_array[50];
+float global_enemy_path_Y_array[50];
+int array_counter;
+int number_of_points;
 
 //Enemy spawn timing
-float Enemy_timer;
+float enemy_timer;
 int wave_timer;
 
 
 //No of Enemies
-int basicEnemyNum;
-int fastEnemyNum;
-int fatEnemyNum;
+int basic_enemy_count;
+int fast_enemy_count;
+int fat_enemy_count;
 
 
 
