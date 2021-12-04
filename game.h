@@ -266,6 +266,16 @@ void turret_init(void);
 void sell_turret(int t_index);
 /*!
 @author     Chiok Wei Wen Gabriel (chiok.w@digipen.edu)
+@co-author
+@brief		Timer for the flash of what battlefield effect is
+			currently in effect
+@param		int effect - The current battlefield effect of the
+			current wave.
+@return		- void
+*//*_____________________________________________________________*/
+void StartBattleFieldEffectTimer(int effect);
+/*!
+@author     Chiok Wei Wen Gabriel (chiok.w@digipen.edu)
 			Lim Jing Rui John (l.jingruijohn@digipen.edu)
 			Phua Tai Dah Anderson (a.phua@digipen.edu)
 			Ng Zheng Wei (zhengwei.ng@digipen.edu)

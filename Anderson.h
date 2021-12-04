@@ -39,7 +39,7 @@ typedef struct Button {
 
 	int isMoving;
 
-	char const * textString[24];
+	char textString[24];
 }Button;
 
 enum CreditText {
@@ -87,7 +87,7 @@ enum MainMenuButtonNames {
 
 typedef struct Line
 {
-	const char const * text;
+	const char* text;
 	Coordinates mainMenuPos;
 	Coordinates currentPos; // text will be at this position in MainMenu
 	Coordinates endingPos;
