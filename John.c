@@ -79,9 +79,9 @@ void FatGhostInit(Enemy* r) {
 }
 
 void ReaperMinionInit(Enemy* r) {
-	int a = 0;
+	int which_minion_init = 0;
 	for (int i = MAX_SPAWNING_ENEMIES; i < kMaxEnemies; i++) {
-		if (a == 0) {
+		if (which_minion_init == 0) {
 			if (enemy[i].state == kEnemyInactive) {
 				FastGhostInit(&enemy[i]);
 				enemy[i].data.x_origin = global_enemy_path_X_array[r->current_way_point];
@@ -90,10 +90,10 @@ void ReaperMinionInit(Enemy* r) {
 				enemy[i].state = kEnemyMoving;
 				enemies_left++;
 				enemy[i].points = 0;
-				a++;
+				which_minion_init++;
 			}
 		}
-		else if (a == 1) {
+		else if (which_minion_init == 1) {
 			if (enemy[i].state == kEnemyInactive) {
 				FastGhostInit(&enemy[i]);
 				enemy[i].data.x_origin = global_enemy_path_X_array[r->current_way_point + 1];
@@ -102,10 +102,10 @@ void ReaperMinionInit(Enemy* r) {
 				enemy[i].state = kEnemyMoving;
 				enemies_left++;
 				enemy[i].points = 0;
-				a++;
+				which_minion_init++;
 			}
 		}
-		else if (a == 2) {
+		else if (which_minion_init == 2) {
 			r->charges = kUsed;
 			return;
 		}
@@ -138,29 +138,49 @@ void GrimReaperInit(Enemy* r) {
 	ResetEnemyPathWaypoints(r);
 }
 
-void RenderEnemy(Enemy* r) { //Draws the enemy
-	EnemyAnimationState(r);
-	switch (r->type) {
-	case kBasic:
-		CP_Image_DrawAdvanced(r->render_enemy, r->data.x_origin, r->data.y_origin, r->enemy_width, r->enemy_height, r->alpha, r->angle);
-		r->timer += CP_System_GetDt();
-		break;
-	case kFastGhost:
-		CP_Image_DrawAdvanced(r->render_enemy, r->data.x_origin, r->data.y_origin, r->enemy_width, r->enemy_height, r->alpha, r->angle);
-		r->timer += CP_System_GetDt();
-		break;
+void RenderAllEnemies(void) {
+	for (int i = 0; i < kMaxEnemies; i++) {
+		if (enemy[i].state == kEnemyInactive) {
+			continue;
+		}
+		EnemyAnimationState(&enemy[i]);
+		switch (enemy[i].type) {
+		case kBasic:
+			RenderImageFromSpriteSheetWithAlpha(basic_ghost_spritesheet, basic_ghost_spritesheet_array[enemy[i].current_aim_state],
+				enemy[i].data.x_origin, enemy[i].data.y_origin, enemy[i].enemy_width, enemy[i].enemy_height, enemy[i].alpha);
+
+			enemy[i].timer += CP_System_GetDt();
+			break;
+		case kFastGhost:
+			RenderImageFromSpriteSheetWithAlpha(fast_ghost_spritesheet, fast_ghost_spritesheet_array[enemy[i].current_aim_state],
+				enemy[i].data.x_origin, enemy[i].data.y_origin, enemy[i].enemy_width, enemy[i].enemy_height, enemy[i].alpha);
+			enemy[i].timer += CP_System_GetDt();
+			break;
+		case kFatGhost:
+			RenderImageFromSpriteSheetWithAlpha(fat_ghost_spritesheet, fat_ghost_spritesheet_array[enemy[i].current_aim_state],
+				enemy[i].data.x_origin, enemy[i].data.y_origin, enemy[i].enemy_width, enemy[i].enemy_height, enemy[i].alpha);
+			enemy[i].timer += CP_System_GetDt();
+			break;
+		case kGrimReaper:
+			RenderImageFromSpriteSheetWithAlpha(grim_reaper_spritesheet, grim_reaper_spritesheet_array[enemy[i].current_aim_state],
+				enemy[i].data.x_origin, enemy[i].data.y_origin, enemy[i].enemy_width, enemy[i].enemy_height, enemy[i].alpha);
+			enemy[i].timer += CP_System_GetDt();
+			break;
+		}
+		RenderEnemyHealth(&enemy[i]);
+
 	}
 }
 
 void EnemyAnimationState(Enemy* r)
 {
-	int i = CheckEnemyState(r);
-	if (i == 1) {
+	int EnemyState = CheckEnemyState(r);
+	if (EnemyState == 1) {
 		if (r->timer >= 0.25) {
 			r->state = kEnemyMoving;
 		}
 	}
-	r->current_aim_state = i;
+	r->current_aim_state = EnemyState;
 
 }
 int CheckEnemyState(Enemy* r) {
@@ -378,39 +398,7 @@ void UpdateEnemies(void) {
 		EnemyVariableChangeforPowUps(&enemy[i]);
 	}
 }
-void RenderAllEnemies(void) {
-	for (int i = 0; i < kMaxEnemies; i++) {
-		if (enemy[i].state == kEnemyInactive) {
-			continue;
-		}
-		EnemyAnimationState(&enemy[i]);
-		switch (enemy[i].type) {
-		case kBasic:
-			RenderImageFromSpriteSheetWithAlpha(basic_ghost_spritesheet, basic_ghost_spritesheet_array[enemy[i].current_aim_state],
-				enemy[i].data.x_origin, enemy[i].data.y_origin, enemy[i].enemy_width, enemy[i].enemy_height, enemy[i].alpha);
 
-			enemy[i].timer += CP_System_GetDt();
-			break;
-		case kFastGhost:
-			RenderImageFromSpriteSheetWithAlpha(fast_ghost_spritesheet, fast_ghost_spritesheet_array[enemy[i].current_aim_state],
-				enemy[i].data.x_origin, enemy[i].data.y_origin, enemy[i].enemy_width, enemy[i].enemy_height, enemy[i].alpha);
-			enemy[i].timer += CP_System_GetDt();
-			break;
-		case kFatGhost:
-			RenderImageFromSpriteSheetWithAlpha(fat_ghost_spritesheet, fat_ghost_spritesheet_array[enemy[i].current_aim_state],
-				enemy[i].data.x_origin, enemy[i].data.y_origin, enemy[i].enemy_width, enemy[i].enemy_height, enemy[i].alpha);
-			enemy[i].timer += CP_System_GetDt();
-			break;
-		case kGrimReaper:
-			RenderImageFromSpriteSheetWithAlpha(grim_reaper_spritesheet, grim_reaper_spritesheet_array[enemy[i].current_aim_state],
-				enemy[i].data.x_origin, enemy[i].data.y_origin, enemy[i].enemy_width, enemy[i].enemy_height, enemy[i].alpha);
-			enemy[i].timer += CP_System_GetDt();
-			break;
-		}
-		RenderEnemyHealth(&enemy[i]);
-
-	}
-}
 
 void RenderEnemyHealth(Enemy* r)
 {

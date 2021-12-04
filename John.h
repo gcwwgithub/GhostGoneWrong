@@ -28,7 +28,6 @@ void EnemyDeath(Enemy* r);
 
 
 //Enemy Render
-void RenderEnemy(Enemy* r);
 void RenderAllEnemies(void);
 void RenderEnemyHealth(Enemy* r);
 
