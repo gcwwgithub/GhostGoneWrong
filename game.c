@@ -365,13 +365,17 @@ void game_update(void)
 			//free memory
 			for (int i = 0; i < level_grid_rows; i++) {
 				free(level.grid[i]);
+				level.grid[i] = NULL;
 			}
 			free(level.grid);
+			level.grid = NULL;
 			//Free memory for turret_on_grid
 			for (int i = 0; i < level_grid_cols; i++) {
 				free(turret_on_grid[i]);
+				turret_on_grid[i] = NULL;
 			}
 			free(turret_on_grid);
+			turret_on_grid = NULL;
 
 			current_game_state = kLevelSelect;
 			CP_Sound_StopGroup(CP_SOUND_GROUP_1);
@@ -527,7 +531,8 @@ void game_exit(void)
 	if (level.grid != NULL)
 	{
 		for (i = 0; i < level_grid_rows; i++) {
-			free(level.grid[i]);
+			if(level.grid[i] != NULL)
+				free(level.grid[i]);
 		}
 		free(level.grid);
 	}

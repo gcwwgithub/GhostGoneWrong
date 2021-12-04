@@ -737,14 +737,17 @@ void GameWinLoseCheck(void)
 		// free memory
 		for (int i = 0; i < level_grid_rows; i++) {
 			free(level.grid[i]);
+			level.grid[i] = NULL;
 		}
 		free(level.grid);
+		level.grid = NULL;
 		//Free memory for turret_on_grid
 		for (int i = 0; i < level_grid_cols; i++) {
 			free(turret_on_grid[i]);
+			turret_on_grid[i] = NULL;
 		}
 		free(turret_on_grid);
-
+		turret_on_grid = NULL;
 		// game lost
 		current_game_state = kLose;
 		CP_Sound_PlayAdvanced(lose_sfx, sfx_volume, 1.0, FALSE, CP_SOUND_GROUP_0);
@@ -756,13 +759,17 @@ void GameWinLoseCheck(void)
 			// free memory
 			for (int i = 0; i < level_grid_rows; i++) {
 				free(level.grid[i]);
+				level.grid[i] = NULL;
 			}
 			free(level.grid);
+			level.grid = NULL;
 			//Free memory for turret_on_grid
 			for (int i = 0; i < level_grid_cols; i++) {
 				free(turret_on_grid[i]);
+				turret_on_grid[i] = NULL;
 			}
 			free(turret_on_grid);
+			turret_on_grid = NULL;
 			current_game_state = kWin;
 			//Win SFX
 			CP_Sound_PlayAdvanced(win_sfx, sfx_volume, 1.0, FALSE, CP_SOUND_GROUP_0);
