@@ -67,4 +67,7 @@
   <ItemGroup>
     <Image Include="Assets\DownNout-1.png_3.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="Read_Me.txt" />
+  </ItemGroup>
 </Project>
