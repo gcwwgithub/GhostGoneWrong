@@ -29,7 +29,7 @@ void game_init(void)
 	building_time = kFullBuildingPhaseTime;
 	dpLogoDisplayTime = teamLogoDisplayTime = LOGO_DISPLAY_TIME;
 	dpLogoFadeTime = teamLogoFadeTime = FADE_OUT_TIME;
-	bgmAudioPaused = allAudioPaused = 0;
+	bgmSFXEnabled = sfxEnabled = 0;
 	current_how_to_play_page = 0;
 	InitHowToPlayButtons();
 
@@ -71,9 +71,9 @@ void game_update(void)
 		UpdateEnemies();
 
 		//do turret & projectile update next
-		update_turret();
-		update_projectile();
-		update_particle();
+		UpdateTurret();
+		UpdateProjectile();
+		UpdateParticle();
 
 		//render all the stuff
 		RenderLevelEnvironment(level.current_game_level);
@@ -84,9 +84,9 @@ void game_update(void)
 
 		RenderAllEnemies();
 		RenderAllPortalEffects();
-		render_turret();
-		render_projectile();
-		render_particle();
+		RenderTurret();
+		RenderProjectile();
+		RenderParticle();
 		RenderAndUpdateBulletCircles();
 
 		if (!turret[turret_selected_to_upgrade].is_active) { // Close mine menu when it explodes
@@ -116,18 +116,18 @@ void game_update(void)
 		}
 
 		//do turret & projectile update next
-		update_turret();
-		update_projectile();
-		update_particle();
+		UpdateTurret();
+		UpdateProjectile();
+		UpdateParticle();
 		//render all the stuff
 		RenderLevelEnvironment(level.current_game_level);
 		RenderGameGrid();
 		RenderEnemyPath();
 		UpdatePortalAnimation();
 		RenderEnvironment();
-		render_turret();
-		render_projectile();
-		render_particle();
+		RenderTurret();
+		RenderProjectile();
+		RenderParticle();
 		RenderAndUpdateBulletCircles();
 
 		UpdateGameButtonPressed();
@@ -178,8 +178,8 @@ void game_update(void)
 			// To prevent clicking buttons while transitioning to LevelSelect
 			if (!CreditsBackButton.isMoving)
 			{
-				MainMenuButtons[StartButton].isMoving = MainMenuButtons[CreditsButton].isMoving 
-				= MainMenuButtons[QuitButton].isMoving = MainMenuButtons[HowToPlayButton].isMoving 
+				MainMenuButtons[StartButton].isMoving = MainMenuButtons[CreditsButton].isMoving
+					= MainMenuButtons[QuitButton].isMoving = MainMenuButtons[HowToPlayButton].isMoving
 					= LevelButtons->isMoving = 1;
 			}
 			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
@@ -419,22 +419,36 @@ void game_update(void)
 					CP_SOUND_GROUP_0);
 			}
 		}
-		else if (BtnIsPressed(OptionButtons[0]))
+		else if (BtnIsPressed(OptionButtons[BackgroundSFX])) // bgm music
 		{
-			(bgmAudioPaused) ? CP_Sound_ResumeGroup(CP_SOUND_GROUP_1) : CP_Sound_PauseGroup(CP_SOUND_GROUP_1);
-			bgmAudioPaused = !bgmAudioPaused;
+			(bgmSFXEnabled) ? CP_Sound_ResumeGroup(CP_SOUND_GROUP_1) : CP_Sound_PauseGroup(CP_SOUND_GROUP_1);
+			bgmSFXEnabled = !bgmSFXEnabled;
 			MouseReset();
-			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
+			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) 
+			{
 				CP_Sound_PlayAdvanced(button_click_sfx, sfx_volume, 1.0f, FALSE,
 					CP_SOUND_GROUP_0);
 			}
 		}
-		else if (BtnIsPressed(OptionButtons[1]))
+		else if (BtnIsPressed(OptionButtons[SFX])) // resume all music
 		{
-			(allAudioPaused) ? CP_Sound_ResumeAll() : CP_Sound_PauseAll();
-			allAudioPaused = !allAudioPaused;
+			if (sfxEnabled)
+			{
+				CP_Sound_ResumeAll();
+				if (bgmSFXEnabled)
+				{
+					CP_Sound_PauseGroup(CP_SOUND_GROUP_1);
+				}
+			}
+			else
+			{
+						CP_Sound_PauseAll();
+			}
+
+			sfxEnabled = !sfxEnabled;
 			MouseReset();
-			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
+			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) 
+			{
 				CP_Sound_PlayAdvanced(button_click_sfx, sfx_volume, 1.0f, FALSE,
 					CP_SOUND_GROUP_0);
 			}
@@ -507,6 +521,44 @@ void game_exit(void)
 	CP_Sound_Free(&building_bgm);
 	CP_Sound_Free(&wave_bgm);
 	CP_Sound_Free(&main_menu_music);
+
+	// Final check to free for all malloc
+	if (level.grid != NULL)
+	{
+		for (int i = 0; i < level_grid_rows; i++) {
+			free(level.grid[i]);
+		}
+		free(level.grid);
+	}
+
+	if (turret_on_grid != NULL)
+	{
+		for (int i = 0; i < level_grid_cols; i++) {
+			free(turret_on_grid[i]);
+		}
+		free(turret_on_grid);
+	}
+
+	if (portal_enter_head_node != NULL)
+	{
+		free(portal_enter_head_node);
+	}
+	if (portal_spawn_head_node != NULL)
+	{
+		free(portal_spawn_head_node);
+	}
+
+	//free linkedlist
+	if (bullet_radius_head_node != NULL)
+	{
+		while (bullet_radius_head_node->next_node != NULL)
+		{
+			struct LinkedListNode* node = bullet_radius_head_node;
+			bullet_radius_head_node = bullet_radius_head_node->next_node;
+			free(node);
+		}
+	}
+
 
 #if _DEBUG
 	// MEM LEAK CHECK
