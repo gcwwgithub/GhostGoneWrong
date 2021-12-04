@@ -18,6 +18,7 @@ All content © 2021 DigiPen Institute of Technology Singapore, all rights reserve
 
 #include "Gabriel.h"
 #include "game.h"
+#include <stdio.h>
 
 void InitAllImages(void)
 {
@@ -874,10 +875,10 @@ void RenderBattlefieldEffectText(const int effect)
 			sizeTimer = duration;
 			if (timer >= duration + stayOnScreenDuration)
 			{
-				float temp = 0;
-				temp = battlefield_effect_text_max_word_size;
+				float temp_size = 0;
+				temp_size = battlefield_effect_text_max_word_size;
 				battlefield_effect_text_max_word_size = battlefield_effect_text_min_word_size;
-				battlefield_effect_text_min_word_size = temp;
+				battlefield_effect_text_min_word_size = temp_size;
 				timer = 0;
 			}
 		}

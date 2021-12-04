@@ -75,9 +75,9 @@ enum CreditText {
 };
 
 enum OptionText {
-	Options,
 	BackgroundSFX,
-	MuteAll
+	SFX,
+	Options
 };
 
 enum MainMenuButtonNames {
@@ -125,8 +125,8 @@ Button EndScreenButtons[3];
 int enemiesInLevel;
 
 // Audio
-int bgmAudioPaused;
-int allAudioPaused;
+int bgmSFXEnabled;
+int sfxEnabled;
 
 // Logo Splash
 void InitGameFont(void);
