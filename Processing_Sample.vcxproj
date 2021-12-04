@@ -208,9 +208,16 @@ xcopy "$(ProjectDir)Assets\*" "$(OutDir)Assets\" /s /r /y /q</Command>
     <ClInclude Include="Gabriel.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="John.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Samuel.h" />
     <ClInclude Include="vector.h" />
     <ClInclude Include="zhengwei.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Processing_Sample.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\DownNout-1.png_3.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
