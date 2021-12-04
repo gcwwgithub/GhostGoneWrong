@@ -3,16 +3,16 @@
 #define MAX_SPAWNING_ENEMIES kMaxEnemies-10
 
 typedef enum Direction {
-	NoMove,
-	Up,
-	Down,
-	Left,
-	Right
+	kNoMove,
+	kUp,
+	kDown,
+	kLeft,
+	kRight
 }Direction;
 
 typedef enum EnvironmentEffectEnemy {
-	Effected,
-	Applying
+	kEffected,
+	kApplying
 }EnvironmentEffectEnemy;
 
 //Combined function for all enemy effects for game.c

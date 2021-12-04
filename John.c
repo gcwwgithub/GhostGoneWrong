@@ -199,19 +199,19 @@ void EnemyMovement(Enemy* r, float Enemy_PathpointsX[], float Enemy_PathpointsY[
 
 	Direction direction_now = DirectionToNextPoint(Enemy_PathpointsX, Enemy_PathpointsY, r);
 	switch (direction_now) {
-	case Up:
+	case kUp:
 		r->data.y_origin -= Speed;
 		break;
-	case Down:
+	case kDown:
 		r->data.y_origin += Speed;
 		break;
-	case Left:
+	case kLeft:
 		r->data.x_origin -= Speed;
 		break;
-	case Right:
+	case kRight:
 		r->data.x_origin += Speed;
 		break;
-	case NoMove:
+	case kNoMove:
 		break;
 	}
 
@@ -222,22 +222,22 @@ Direction DirectionToNextPoint(float Enemy_PathpointsX[], float Enemy_Pathpoints
 	float Xdistance_between_points = (Enemy_PathpointsX[r->current_way_point + 1] - Enemy_PathpointsX[r->current_way_point]);
 	float Ydistance_between_points = (Enemy_PathpointsY[r->current_way_point + 1] - Enemy_PathpointsY[r->current_way_point]);
 	if (r->state == kEnemyDeath || r->state == kEnemyReached) {
-		return NoMove;
+		return kNoMove;
 	}
 	if (Xdistance_between_points == 0) {
 		if (Ydistance_between_points < 0) {
-			return Up; //Upwards movement
+			return kUp; //Upwards movement
 		}
 		else {
-			return Down; //Downwards movement
+			return kDown; //Downwards movement
 		}
 	}
 	else if (Ydistance_between_points == 0) {
 		if (Xdistance_between_points < 0) {
-			return Left; //Left movement
+			return kLeft; //Left movement
 		}
 		else {
-			return Right; //Right movement
+			return kRight; //Right movement
 		}
 	}
 	return 0;
@@ -486,7 +486,7 @@ void EmptyEnemyInit(Enemy* r) {
 	r->slow_timer = 0;
 	r->current_aim_state = 0;
 	r->charges = kUsed;
-	r->env_eff = Applying;
+	r->env_eff = kApplying;
 	//r->Enemy_pow_up.Less_HP = 0;
 	//r->Enemy_pow_up.More_Points = 0;
 	//r->Enemy_pow_up.SpeedDown = 0;
@@ -728,66 +728,66 @@ void EnvEffDecreasedTurretAttackSpeed(void) {
 
 void EnvEffMoreHP(void) {
 	for (int i = 0; i < kMaxEnemies; i++) {
-		if (enemy[i].env_eff == Applying && enemy[i].health > 1) {
+		if (enemy[i].env_eff == kApplying && enemy[i].health > 1) {
 			int increase_hp = (int)(enemy[i].max_health * 0.3);
 			enemy[i].max_health += increase_hp;
 			enemy[i].health += increase_hp;
-			enemy[i].env_eff = Effected;
+			enemy[i].env_eff = kEffected;
 		}
 	}
 }
 
 void EnvEffLessHP(void) {
 	for (int i = 0; i < kMaxEnemies; i++) {
-		if (enemy[i].env_eff == Applying && enemy[i].health > 1) {
+		if (enemy[i].env_eff == kApplying && enemy[i].health > 1) {
 			int decrease_hp = (int)(enemy[i].max_health * 0.2);
 			enemy[i].max_health -= decrease_hp;
 			enemy[i].health -= decrease_hp;
-			enemy[i].env_eff = Effected;
+			enemy[i].env_eff = kEffected;
 		}
 	}
 }
 
 void EnvEffFasterEnemies(void) {
 	for (int i = 0; i < kMaxEnemies; i++) {
-		if (enemy[i].env_eff == Applying && enemy[i].health > 1) {
+		if (enemy[i].env_eff == kApplying && enemy[i].health > 1) {
 			enemy[i].speed *= 1.2f;
-			enemy[i].env_eff = Effected;
+			enemy[i].env_eff = kEffected;
 		}
 	}
 }
 
 void EnvEffSlowerEnemies(void) {
 	for (int i = 0; i < kMaxEnemies; i++) {
-		if (enemy[i].env_eff == Applying && enemy[i].health > 1) {
+		if (enemy[i].env_eff == kApplying && enemy[i].health > 1) {
 			enemy[i].speed /= 1.2f;
-			enemy[i].env_eff = Effected;
+			enemy[i].env_eff = kEffected;
 		}
 	}
 }
 
 void EnvEffIncreasedPhantomQuartz(void) {
 	for (int i = 0; i < kMaxEnemies; i++) {
-		if (enemy[i].env_eff == Applying && enemy[i].health > 1) {
+		if (enemy[i].env_eff == kApplying && enemy[i].health > 1) {
 			enemy[i].points = (int)(enemy[i].points*1.2);
-			enemy[i].env_eff = Effected;
+			enemy[i].env_eff = kEffected;
 		}
 	}
 }
 
 void EnvEffDecreasedPhantomQuartz(void) {
 	for (int i = 0; i < kMaxEnemies; i++) {
-		if (enemy[i].env_eff == Applying && enemy[i].health > 1) {
+		if (enemy[i].env_eff == kApplying && enemy[i].health > 1) {
 			enemy[i].points /= (int)(enemy[i].points / 1.2);
-			enemy[i].env_eff = Effected;
+			enemy[i].env_eff = kEffected;
 		}
 	}
 }
 void EnvEffNoPhantomQuartz(void) {
 	for (int i = 0; i < kMaxEnemies; i++) {
-		if (enemy[i].env_eff == Applying && enemy[i].health > 1) {
+		if (enemy[i].env_eff == kApplying && enemy[i].health > 1) {
 			enemy[i].points = 0;
-			enemy[i].env_eff = Effected;
+			enemy[i].env_eff = kEffected;
 		}
 	}
 }
