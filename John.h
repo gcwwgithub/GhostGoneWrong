@@ -16,6 +16,8 @@ EnvEffDecreasedPhantomQuartz, EnvEffNoPhantomQuartz, EnvEffIncreasedTurretDamage
 
 Also Contains enum for Direction and EnvironmentEffectEnemy
 *//*__________________________________________________________________________*/
+#ifndef GhostGoneWrong_CURRENTHEADERFILES_JOHN_H
+#define GhostGoneWrong_CURRENTHEADERFILES_JOHN_H
 
 #include"cprocessing.h"
 #include"game.h"
@@ -111,3 +113,4 @@ void EnvEffIncreasedTurretAttackSpeed(void);
 
 //Initialise all sounds
 void MusicInit(void);
+#endif

@@ -20,6 +20,7 @@ EnvEffDecreasedPhantomQuartz, EnvEffNoPhantomQuartz, EnvEffIncreasedTurretDamage
 *//*__________________________________________________________________________*/
 
 #include <math.h>
+#include "game.h"
 #include "John.h"
 #include "Gabriel.h"
 
@@ -1135,6 +1136,6 @@ void MusicInit(void) {
 	wave_bgm = CP_Sound_Load("./Assets/sfx/SPHERES & STARS - NewAge MSCNEW1_17.wav");
 	building_bgm = CP_Sound_Load("./Assets/sfx/INPUT - NewAge MSCNEW2_01.wav");
 	main_menu_bgm = CP_Sound_Load("./Assets/sfx/THE NINTH HOUR - Jazz MSCJAZ1_46.wav");
-	bgm_volume = 0.5f;
 	main_menu_music = CP_Sound_LoadMusic("./Assets/sfx/THE NINTH HOUR - Jazz MSCJAZ1_46.wav");
+	bgm_volume = 0.5f;
 }
