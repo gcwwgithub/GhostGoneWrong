@@ -52,7 +52,7 @@ void game_init(void)
 	InitPowerUpPrice();
 
 	//Initialise all sounds
-	Music_init();
+	MusicInit();
 }
 
 
@@ -69,7 +69,7 @@ void game_update(void)
 	if (current_game_state == kWave)
 	{
 		//do enemy update first
-		update_enemy();
+		UpdateEnemies();
 
 		//do turret & projectile update next
 		update_turret();
@@ -83,7 +83,7 @@ void game_update(void)
 
 		UpdatePortalAnimation();
 
-		draw_multiple_enemies();
+		RenderAllEnemies();
 		RenderAllPortalEffects();
 		render_turret();
 		render_projectile();
@@ -145,7 +145,7 @@ void game_update(void)
 
 
 		//setting enemies
-		Reset_enemies();
+		ResetEnemyInit();
 
 
 	}

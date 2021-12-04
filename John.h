@@ -16,51 +16,51 @@ typedef enum EnvironmentEffectEnemy {
 }EnvironmentEffectEnemy;
 
 //Combined function for all enemy effects for game.c
-void update_enemy(void);
+void UpdateEnemies(void);
 
 
 //Enemy updates for animation and collision
 void EnemyAnimationState(Enemy* r);
-int Check_state(Enemy* r);
-void Reaper_ability(Enemy* r);
+int CheckEnemyState(Enemy* r);
+void ReaperAbility(Enemy* r);
 void EnemyDeath(Enemy* r);
 
 
 
 //Enemy Render
-void Draw_enemy(Enemy* r);
-void draw_multiple_enemies(void);
-void update_enemy_health_bar(Enemy* r);
+void RenderEnemy(Enemy* r);
+void RenderAllEnemies(void);
+void RenderEnemyHealth(Enemy* r);
 
 //void Level0_waveEnemies_init(void);
-void Reset_enemies(void);
-void Current_wave_check(Enemy* r);
-void Power_Up_check(Enemy* r);
+void ResetEnemyInit(void);
+void EnemyWavePowUp(Enemy* r);
+void EnemyVariableChangeforPowUps(Enemy* r);
 
 //Enemy variable setup and intialising
-void wave_enemy_init(int Basic_Ghost_count, int Fast_Ghost_count, int Fat_Ghost_count, int Grim_Reaper_count, LevelData Level);
-void Basic_Ghost(Enemy* r);
-void Fast_Ghost_init(Enemy* r);
-void Fat_Ghost_init(Enemy* r);
-void grimReaper_init(Enemy* r);
-void Reaper_minion_init(Enemy* r);
-void empty_enemy_init(Enemy* r);
+void EnemyInitforWaves(int Basic_Ghost_count, int Fast_Ghost_count, int Fat_Ghost_count, int Grim_Reaper_count, LevelData Level);
+void BasicGhostInit(Enemy* r);
+void FastGhostInit(Enemy* r);
+void FatGhostInit(Enemy* r);
+void GrimReaperInit(Enemy* r);
+void ReaperMinionInit(Enemy* r);
+void EmptyEnemyInit(Enemy* r);
 
 //Enemy Movement functions
-void enemy_move(Enemy* r, float Enemy_PathpointsX[], float Enemy_PathpointsY[], int number_of_points);
-void Update_Path_Array(void);
-void Check_pathAdjustment(Enemy* r);
-void reset_enemy_path(Enemy* r);
-int direction_to_next_point(float enemy_pathpointsX[], float enemy_pathpointsY[], Enemy* r);
-int update_point_num(float enemy_pathpointsX[], float enemy_pathpointsY[], Enemy* r);
+void EnemyMovement(Enemy* r, float Enemy_PathpointsX[], float Enemy_PathpointsY[], int number_of_points);
+void UpdateEnemyPathWaypointArray(void);
+void CheckEnemyPathAdjustment(Enemy* r);
+void ResetEnemyPathWaypoints(Enemy* r);
+int DirectionToNextPoint(float enemy_pathpointsX[], float enemy_pathpointsY[], Enemy* r);
+int UpdateEnemyCurrentWaypoint(float enemy_pathpointsX[], float enemy_pathpointsY[], Enemy* r);
 
 
 struct LinkedListNode* Enemy_node;
 
 //global path for enemy path setup
-float Xarray[50];
-float Yarray[50];
-int Array_count;
+float GlobalEnemyPathXArray[50];
+float GlobalEnemyPathYArray[50];
+int Array_counter;
 int Number_of_points;
 
 //Enemy spawn timing
@@ -77,19 +77,19 @@ int fatEnemyNum;
 
 
 //Environmental effects
-void Environment_check(void);
-void Env_eff_More_HP(void);
-void Env_eff_Less_HP(void);
-void Env_eff_Faster_Enemies(void);
-void Env_eff_Slower_Enemies(void);
-void Env_eff_Increased_Phantom_quartz(void);
-void Env_eff_Decreased_Phantom_quartz(void);
-void Env_eff_No_Phantom_quartz(void);
-void Env_eff_IncreasedTurretDamage(void);
-void Env_eff_DecreasedTurretDamage(void);
-void Env_eff_DecreasedTurretAttackSpeed(void);
-void Env_eff_IncreasedTurretAttackSpeed(void);
+void EnvironmentEffCheck(void);
+void EnvEffMoreHP(void);
+void EnvEffLessHP(void);
+void EnvEffFasterEnemies(void);
+void EnvEffSlowerEnemies(void);
+void EnvEffIncreasedPhantomQuartz(void);
+void EnvEffDecreasedPhantomQuartz(void);
+void EnvEffNoPhantomQuartz(void);
+void EnvEffIncreasedTurretDamage(void);
+void EnvEffDecreasedTurretDamage(void);
+void EnvEffDecreasedTurretAttackSpeed(void);
+void EnvEffIncreasedTurretAttackSpeed(void);
 
 
 
-void Music_init(void);
+void MusicInit(void);
