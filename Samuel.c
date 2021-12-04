@@ -32,11 +32,11 @@ void turret_init(void)
 		if (turret_on_grid != NULL) {
 			turret_on_grid[i] = (int*)calloc(level_grid_rows, sizeof(int));
 			if (turret_on_grid[i] == NULL) {
-				exit_to_desktop();// calling anderson exit in case calloc fail
+				ExitToDesktop();// calling anderson exit in case calloc fail
 			}
 		}
 		else {
-			exit_to_desktop();// calling anderson exit in case calloc fail
+			ExitToDesktop();// calling anderson exit in case calloc fail
 		}
 	}
 	//Array turret_on_grid[gameGridCols][gameGridRows]

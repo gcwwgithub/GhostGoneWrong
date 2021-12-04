@@ -912,11 +912,11 @@ void InitLevel1(void) {
 			level.grid[i] = (struct Grids*)
 				calloc(level_grid_cols, sizeof(struct Grids));
 			if (level.grid[i] == NULL) {
-				exit_to_desktop();
+				ExitToDesktop();
 			}
 		}
 		else {
-			exit_to_desktop();
+			ExitToDesktop();
 		}
 	}
 	level.spawn_row = 0;
@@ -1000,11 +1000,11 @@ void InitLevel2(void) {
 			level.grid[i] = (struct Grids*)
 				calloc(level_grid_cols, sizeof(struct Grids));
 			if (level.grid[i] == NULL) {
-				exit_to_desktop();
+				ExitToDesktop();
 			}
 		}
 		else {
-			exit_to_desktop();
+			ExitToDesktop();
 		}
 	}
 	level.spawn_row = 0;
@@ -1087,11 +1087,11 @@ void InitLevel3(void) {
 			level.grid[i] = (struct Grids*)
 				calloc(level_grid_cols, sizeof(struct Grids));
 			if (level.grid[i] == NULL) {
-				exit_to_desktop();
+				ExitToDesktop();
 			}
 		}
 		else {
-			exit_to_desktop();
+			ExitToDesktop();
 		}
 	}
 	level.spawn_row = level_grid_rows - 1;
@@ -1174,11 +1174,11 @@ void InitLevel4(void) {
 			level.grid[i] = (struct Grids*)
 				calloc(level_grid_cols, sizeof(struct Grids));
 			if (level.grid[i] == NULL) {
-				exit_to_desktop();
+				ExitToDesktop();
 			}
 		}
 		else {
-			exit_to_desktop();
+			ExitToDesktop();
 		}
 	}
 	level.spawn_row = 0;
@@ -1261,11 +1261,11 @@ void InitLevel5(void) {
 			level.grid[i] = (struct Grids*)
 				calloc(level_grid_cols, sizeof(struct Grids));
 			if (level.grid[i] == NULL) {
-				exit_to_desktop();
+				ExitToDesktop();
 			}
 		}
 		else {
-			exit_to_desktop();
+			ExitToDesktop();
 		}
 	}
 	level.spawn_row = 0;

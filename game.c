@@ -24,8 +24,8 @@ void game_init(void)
 	InitAllImages();
 	InitSpritesheetArray();
 	InitVariablesForSpriteFunctions();
-	init_game_font();
-	init_splash_logos();
+	InitGameFont();
+	InitSplashLogos();
 	current_game_state = kLogoSplash;
 	building_time = kFullBuildingPhaseTime;
 	dpLogoDisplayTime = teamLogoDisplayTime = LOGO_DISPLAY_TIME;
@@ -36,13 +36,13 @@ void game_init(void)
 
 	//Main menu, level select
 
-	init_main_menu();
-	init_level_select_buttons();
-	init_options_screen();
-	init_credits_screen();
-	init_pause_screen();
-	init_end_screen();
-	init_skip_wave_button();
+	InitMainMenu();
+	InitLevelSelectButtons();
+	InitOptionsScreen();
+	InitCreditsScreen();
+	InitPauseScreen();
+	InitEndScreen();
+	InitSkipWaveButton();
 
 	//Initialize Objects
 	InitMouse();
@@ -103,12 +103,12 @@ void game_update(void)
 		for (int i = 0; i < kButtonMax - 3; i++) {// Last object will double render game grid. Second and third last object is rendered seperately
 			RenderTurretMenuObjects(game_menu_object[i], i);
 		}
-		game_win_lose_check();
+		GameWinLoseCheck();
 
 	}
 	else if (current_game_state == kBuilding)
 	{
-		reduce_building_phase_time();
+		ReduceBuildingPhaseTime();
 		if (BtnIsPressed(SkipWaveButton.buttonData))
 		{
 			SetBuildingTime(0.0f);
@@ -134,8 +134,8 @@ void game_update(void)
 		UpdateGameButtonPressed();
 
 		CP_Settings_NoTint();
-		render_wave_timer();
-		render_ui_button(SkipWaveButton);
+		RenderWaveTimer();
+		RenderUIButton(SkipWaveButton);
 
 		RenderTurretDetailsDisplay(); //render turret description when hovered
 		RenderTurretMenuObjects(game_menu_object[kButtonMax - 2], kButtonMax - 2);// Render Upgrade menu first
@@ -160,15 +160,15 @@ void game_update(void)
 		}
 		else if (BtnIsPressed(EndScreenButtons[1].buttonData))
 		{
-			init_next_level(level.current_game_level);
+			InitNextLevel(level.current_game_level);
 			current_game_state = kBuilding;
 		}
 		else if (BtnIsPressed(EndScreenButtons[2].buttonData))
 		{
-			init_next_level(level.current_game_level + 1);
+			InitNextLevel(level.current_game_level + 1);
 		}
 
-		render_end_screen(); // this should pause the game?
+		RenderEndScreen(); // this should pause the game?
 
 	}
 	else if (current_game_state == kMainMenu)
@@ -194,7 +194,7 @@ void game_update(void)
 				CP_Sound_PlayAdvanced(button_click_sfx, sfx_volume, 1.0f, FALSE,
 					CP_SOUND_GROUP_0);
 			}
-			exit_to_desktop();
+			ExitToDesktop();
 		}
 		else if (BtnIsPressed(MainMenuButtons[CreditsButton].buttonData))
 		{
@@ -225,25 +225,25 @@ void game_update(void)
 		// All these buttons move altogether.
 		if (MainMenuButtons[StartButton].isMoving || MainMenuButtons[CreditsButton].isMoving || MainMenuButtons[QuitButton].isMoving || MainMenuButtons[HowToPlayButton].isMoving)
 		{
-			move_main_menu();
+			MoveMainMenu();
 		}
 		if (CreditsBackButton.isMoving)
 		{
-			move_credits_screen();
+			MoveCreditsScreen();
 		}
 		if (LevelButtons->isMoving)
 		{
-			move_level_select();
+			MoveLevelSelect();
 		}
 
 		// Clicked on Play, and checking if the Play,Quit buttons have left and Level Select buttons have come
-		if (main_menu_finished_moving() && level_select_finished_moving())
+		if (MainMenuFinishedMoving() && LevelSelectFinishedMoving())
 		{
 			current_game_state = kLevelSelect;
 		}
 
 		// Transition to Credits check
-		if (button_has_finished_moving(CreditsBackButton, CreditsBackButton.buttonData.x_origin, CP_System_GetWindowHeight() * 0.93f))
+		if (ButtonHasFinishedMoving(CreditsBackButton, CreditsBackButton.buttonData.x_origin, CP_System_GetWindowHeight() * 0.93f))
 		{
 			CreditsBackButton.isMoving = 0;
 			CreditsBackButton.movementTime = creditTextMoveTime = 0.0f;
@@ -252,10 +252,10 @@ void game_update(void)
 
 
 		CP_Graphics_ClearBackground(COLOR_GREY);
-		render_title_screen();
-		render_main_menu();
-		render_level_select_buttons();
-		render_credits_screen();
+		RenderTitleScreen();
+		RenderMainMenu();
+		RenderLevelSelectButtons();
+		RenderCreditsScreen();
 	}
 	else if (current_game_state == kHowToPlay) {
 		RenderHowToPlayPages();
@@ -316,23 +316,23 @@ void game_update(void)
 		// All these buttons move altogether.
 		if (MainMenuButtons[StartButton].isMoving || MainMenuButtons[CreditsButton].isMoving || MainMenuButtons[QuitButton].isMoving || MainMenuButtons[HowToPlayButton].isMoving)
 		{
-			move_main_menu();
+			MoveMainMenu();
 		}
 
 		if (LevelButtons->isMoving)
 		{
-			move_level_select();
+			MoveLevelSelect();
 		}
 
-		if (main_menu_finished_moving() && level_select_finished_moving())
+		if (MainMenuFinishedMoving() && LevelSelectFinishedMoving())
 		{
 			current_game_state = kMainMenu;
 		}
 
 		CP_Graphics_ClearBackground(COLOR_GREY);
-		render_title_screen();
-		render_main_menu();
-		render_level_select_buttons();
+		RenderTitleScreen();
+		RenderMainMenu();
+		RenderLevelSelectButtons();
 	}
 	else if (current_game_state == kPause)
 	{
@@ -381,7 +381,7 @@ void game_update(void)
 					CP_SOUND_GROUP_0);
 			}
 		}
-		render_pause_screen();
+		RenderPauseScreen();
 	}
 	else if (current_game_state == kCredits)
 	{
@@ -395,9 +395,9 @@ void game_update(void)
 		}
 		if (CreditsBackButton.isMoving)
 		{
-			move_credits_screen();
+			MoveCreditsScreen();
 		}
-		if (button_has_finished_moving(CreditsBackButton, CreditsBackButton.buttonData.x_origin, CP_System_GetWindowHeight() * 2.0f))
+		if (ButtonHasFinishedMoving(CreditsBackButton, CreditsBackButton.buttonData.x_origin, CP_System_GetWindowHeight() * 2.0f))
 		{
 			CreditsBackButton.isMoving = 0;
 			CreditsBackButton.movementTime = creditTextMoveTime = 0.0f;
@@ -406,9 +406,9 @@ void game_update(void)
 
 
 		CP_Graphics_ClearBackground(COLOR_GREY);
-		render_title_screen();
-		render_main_menu();
-		render_credits_screen();
+		RenderTitleScreen();
+		RenderMainMenu();
+		RenderCreditsScreen();
 	}
 	else if (current_game_state == kOptions)
 	{
@@ -442,12 +442,12 @@ void game_update(void)
 		}
 
 		CP_Graphics_ClearBackground(COLOR_GREY);
-		render_title_screen();
-		render_options_screen();
+		RenderTitleScreen();
+		RenderOptionsScreen();
 	}
 	else if (current_game_state == kLogoSplash)
 	{
-		show_logos();
+		RenderLogos();
 	}
 }
 
