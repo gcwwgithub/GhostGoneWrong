@@ -988,8 +988,6 @@ void EnvironmentEffCheck(void) {
 	EnvEffDecreasedTurretDamage();
 
 	switch (level.current_effect) {
-	case kNoEnvironmentalEffects:
-		break;
 	case kIncreasedPhantomQuartz:
 		EnvEffIncreasedPhantomQuartz();
 		break;
@@ -1002,19 +1000,11 @@ void EnvironmentEffCheck(void) {
 	case kSlowerEnemies:
 		EnvEffSlowerEnemies();
 		break;
-	case kIncreasedTurretDamage:
-		break;
-	case kDecreasedTurretDamage:
-		break;
 	case kMoreHP:
 		EnvEffMoreHP();
 		break;
 	case kLessHP:
 		EnvEffLessHP();
-		break;
-	case kIncreasedTurretAttackSpeed:
-		break;
-	case kDecreasedTurretAttackSpeed:
 		break;
 	case kNoPhantomQuartz:
 		EnvEffNoPhantomQuartz();

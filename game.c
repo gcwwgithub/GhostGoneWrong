@@ -526,7 +526,7 @@ void game_exit(void)
 	// Final check to free for all malloc
 	if (level.grid != NULL)
 	{
-		for (int i = 0; i < level_grid_rows; i++) {
+		for (i = 0; i < level_grid_rows; i++) {
 			free(level.grid[i]);
 		}
 		free(level.grid);
@@ -534,7 +534,7 @@ void game_exit(void)
 
 	if (turret_on_grid != NULL)
 	{
-		for (int i = 0; i < level_grid_cols; i++) {
+		for (i = 0; i < level_grid_cols; i++) {
 			free(turret_on_grid[i]);
 		}
 		free(turret_on_grid);
@@ -552,11 +552,12 @@ void game_exit(void)
 	//free linkedlist
 	if (bullet_radius_head_node != NULL)
 	{
-		while (bullet_radius_head_node->next_node != NULL)
+		while (1)
 		{
 			struct LinkedListNode* node = bullet_radius_head_node;
-			bullet_radius_head_node = bullet_radius_head_node->next_node;
-			free(node);
+			if (node == NULL)
+				break;
+			bullet_radius_head_node = DeleteNode(node, node->key);
 		}
 	}
 

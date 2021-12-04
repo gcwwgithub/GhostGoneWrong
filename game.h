@@ -37,7 +37,7 @@ typedef enum Boolean {
 @brief		enum to check which environmental effect is currently
 			active.
 *//*_____________________________________________________________*/
-enum Environmentaleffects {
+enum EnvironmentalEffects {
 	kNoEnvironmentalEffects,
 	kIncreasedPhantomQuartz,
 	kDecreasedPhantomQuartz,
