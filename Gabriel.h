@@ -5,7 +5,15 @@ All content © 2021 DigiPen Institute of Technology Singapore, all rights reserve
 @course     CSD 1400
 @section    C
 @date       28/11/2021
-@brief    	Contains functions that are related to rendering, animation and effects
+@brief    	Contains functions protoypes that are related to rendering, animation and effects
+			All functions are done by Chiok Wei Wen Gabriel
+			The list of functions are: InitAllImages, InitVariablesForSpriteFunctions, InitSpritesheetArray
+			SpritesheetCalculation,RenderImageFromSpriteSheetWithAlpha, InsertNewNodeBulletRadius
+			InsertNewNodePortalEffect, DeleteNode, IsLinkedListEmpty, RenderAndUpdateBulletCircles
+			RenderAndUpdateSinglePortalEffect, RenderAllPortalEffects,RenderPortalSprite
+			UpdatePortalAnimation, RenderLevelEnvironment, BattlefieldEffectLinearLerp
+			RenderBattlefieldEffectText
+			
 *//*__________________________________________________________________________*/
 
 #pragma once
@@ -78,6 +86,7 @@ CP_Image turret_stats_spritesheet;
 CP_Image non_grid_environment_objects_spritesheet;
 #pragma endregion
 
+//the array of Spritesheet structs
 #pragma region The arrays of SpriteSheetImage structs
 struct SpriteSheetImage basic_ghost_spritesheet_array[3];
 struct SpriteSheetImage fast_ghost_spritesheet_array[3];
@@ -127,18 +136,18 @@ float battlefield_text_timer;
 void InitAllImages(void); //Loads all images into the game
 void InitVariablesForSpriteFunctions(void); //initialises some variables for the functions
 
-//Creates the array of all the Spritesheet sructs
+//Creates the array of all the Spritesheet structs
 void InitSpritesheetArray(void);
 
-//Calcuates the pixel position of each image to Draw Sub Image from
+//Calcuates the  4 pixel positions of an image to use CP_DrawSubImage from
 void SpritesheetCalculation(struct SpriteSheetImage* s, CP_Image image, int pixelWidth, 
 	int pixelHeight, int stopPoint);
 
-//Render the image based from Draw Sub Image
+//Render an image based from CP_DrawSubImage
 void RenderImageFromSpriteSheet(CP_Image image, struct SpriteSheetImage s, 
 	float xPos, float yPos, float sizeOfImageX, float sizeOfImageY);
 
-//Render the image based from Draw Sub Image with alpha values
+//Render an image based from CP_DrawSubImage with alpha values
 void RenderImageFromSpriteSheetWithAlpha(CP_Image image, struct SpriteSheetImage s, 
 	float xPos, float yPos, float sizeOfImageX, float sizeOfImageY, int alphaValue);
 
@@ -175,7 +184,7 @@ void RenderLevelEnvironment(const int currentLevel);
 //used for UI tweening for battlefield effect 
 float BattlefieldEffectLinearLerp(float start, float end, float value);
 
-//Renders battlefield effecd text
+//Renders battlefield effect text
 void RenderBattlefieldEffectText(const int effect);
 
 #pragma endregion
