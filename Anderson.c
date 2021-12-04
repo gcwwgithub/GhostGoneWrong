@@ -11,7 +11,7 @@ All content © 2021 DigiPen Institute of Technology Singapore, all rights reserv
 @brief    	This source file contains the definitions for the main menu UI,
 			the transitions between the building & wave phases, as well as the
 			checking for win or lose conditions.
-			Functions:InitGameFont, InitSplashLogos, InitTextButton, InitMainMenu, InitLevelSelectButtons, 
+			Functions:InitGameFont, InitSplashLogos, InitTextButton, InitMainMenu, InitLevelSelectButtons,
 			InitPauseScreen, InitEndScreen, InitCreditLine, InitOptionLine, InitCreditsScreen, InitOptionsScreen.
 			CursorOverButton,RenderTitleScreen, RenderMainMenu, RenderLevelSelectButtons, RenderPauseScreen,
 			RenderTextLine, RenderCreditsScreen, RenderOptionsScreen, RenderLogos,
@@ -59,7 +59,7 @@ void InitSplashLogos(void)
 @author     Phua Tai Dah Anderson (a.phua@digipen.edu)
 @brief		Initialises a text button, its dimensions, position, its
 			text to be written, and text position. All buttons are
-			set to be rectangles. Text position is center-aligned 
+			set to be rectangles. Text position is center-aligned
 			and anchored from the button rectangle's top left corner.
 @param		Button button - the button to be initialised.
 			float buttonPosX,buttonPosY - Position of the button.
@@ -116,11 +116,9 @@ void InitLevelSelectButtons(void)
 	{
 		c = snprintf(levelNumberText, 8, "Level %d", i + 1);
 		strcpy_s(LevelButtons[i].textString, sizeof(LevelButtons[i].textString), levelNumberText);
-		{
-			LevelButtons[i] = InitTextButton(LevelButtons[i],
-				CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() + i * (BUTTON_HEIGHT + 25.0f),
-				BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, levelNumberText);
-		}
+		LevelButtons[i] = InitTextButton(LevelButtons[i],
+			CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() + i * (BUTTON_HEIGHT + 25.0f),
+			BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, levelNumberText);
 	}
 
 	// Back button initialised seperately.
@@ -215,7 +213,7 @@ void InitOptionLine(int num, char* line, float x, float y)
 
 /*!
 @author     Phua Tai Dah Anderson (a.phua@digipen.edu)
-@brief		Initialises the credit screen background, as well as 
+@brief		Initialises the credit screen background, as well as
 			all the individual credits, line-by-line.
 @param		void
 @return		void
@@ -787,7 +785,7 @@ int MainMenuFinishedMoving(void)
 @brief		Checks if a button has moved to a new position.
 @param		Button button - the button to be checked.
 			float destPosX,destPosY - the position that the button
-									  is moving to.						
+									  is moving to.
 @return		1 if position reached, 0 otherwise.
 *//*_____________________________________________________________*/
 int ButtonHasFinishedMoving(Button button, float destPosX, float destPosY)
