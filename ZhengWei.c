@@ -416,7 +416,7 @@ static void UpdateGameGridPress(void) {
 			}
 			else {
 				//Else place turret
-				place_turret(is_placing_turret, draw_x, draw_y);
+				PlaceTurret(is_placing_turret, draw_x, draw_y);
 				level.phantom_quartz -=
 					turret_purchasing[kTPPrice][is_placing_turret];
 				is_placing_turret = kTMax;
@@ -964,7 +964,7 @@ void InitLevel1(void) {
 	InitUpgradeMenuDisplay();
 	InitUpgradeButton();
 	InitSellButton();
-	turret_init();
+	TurretInit();
 	Enemies_init();
 	ResetPathFinding();
 	CalculatePathFindingCost();
@@ -1052,7 +1052,7 @@ void InitLevel2(void) {
 	InitUpgradeMenuDisplay();
 	InitUpgradeButton();
 	InitSellButton();
-	turret_init();
+	TurretInit();
 	Enemies_init();
 	ResetPathFinding();
 	CalculatePathFindingCost();
@@ -1139,7 +1139,7 @@ void InitLevel3(void) {
 	InitUpgradeMenuDisplay();
 	InitUpgradeButton();
 	InitSellButton();
-	turret_init();
+	TurretInit();
 	Enemies_init();
 	ResetPathFinding();
 	CalculatePathFindingCost();
@@ -1226,7 +1226,7 @@ void InitLevel4(void) {
 	InitUpgradeMenuDisplay();
 	InitUpgradeButton();
 	InitSellButton();
-	turret_init();
+	TurretInit();
 	Enemies_init();
 	ResetPathFinding();
 	CalculatePathFindingCost();
@@ -1313,7 +1313,7 @@ void InitLevel5(void) {
 	power_up_menu = kFalse;
 	InitPathFinding();
 	InitEnvironment();
-	turret_init();
+	TurretInit();
 	Enemies_init();
 	ResetPathFinding();
 	CalculatePathFindingCost();
@@ -1556,7 +1556,7 @@ void UpdateGameButtonPressed(void) {
 					{
 						level.phantom_quartz -=
 							turret[turret_selected_to_upgrade].upgrade_price;
-						upgrade_turret(turret_selected_to_upgrade);
+						UpgradeTurret(turret_selected_to_upgrade);
 						//Button SFX
 						if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
 							CP_Sound_PlayAdvanced(button_click_sfx, sfx_volume, 1.0f, FALSE, CP_SOUND_GROUP_0);
@@ -1581,7 +1581,7 @@ void UpdateGameButtonPressed(void) {
 				- game.x_origin) / game.grid_width);
 			draw_y = (int)((turret[turret_selected_to_upgrade].data.y_origin
 				- game.y_origin) / game.grid_height);
-			sell_turret(turret_selected_to_upgrade);
+			SellTurret(turret_selected_to_upgrade);
 			level.grid[draw_y][draw_x].type = kClear;
 			ResetPathFinding();
 			CalculatePathFindingCost();

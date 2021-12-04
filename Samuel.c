@@ -20,7 +20,7 @@
 #include "Gabriel.h"
 
 
-void turret_init(void)
+void TurretInit(void)
 {
 	Vector2 v;
 
@@ -114,7 +114,7 @@ void turret_init(void)
 }
 
 //call this function to place turret (pass in the grid index)
-void place_turret(TurretType type, int index_x, int index_y)
+void PlaceTurret(TurretType type, int index_x, int index_y)
 {
 	for (int i = 0; i < kMaxTurret; ++i)
 	{
@@ -210,7 +210,7 @@ void RemoveTurret(int index_x, int index_y)
 }
 
 //sell turrets
-void sell_turret(int t_index)
+void SellTurret(int t_index)
 {
 	int x = (int)((turret[t_index].data.x_origin - game.x_origin) / game.grid_width);
 	int y = (int)((turret[t_index].data.y_origin - game.y_origin) / game.grid_height);
@@ -221,7 +221,7 @@ void sell_turret(int t_index)
 }
 
 //upgrade system
-void upgrade_turret(int t_index)
+void UpgradeTurret(int t_index)
 {
 	//int x = (int)((turret[t_index].data.xOrigin - Game.xOrigin) / Game.gridWidth);
 	//int y = (int)((turret[t_index].data.yOrigin - Game.yOrigin) / Game.gridHeight);
@@ -600,7 +600,7 @@ void RenderProjectile(void)
 	}
 }
 
-void col_type_projectile(Projectile* p)
+void ColTypeProjectile(Projectile* p)
 {
 	float dist;
 	Vector2 dif;

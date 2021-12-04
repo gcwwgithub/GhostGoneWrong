@@ -247,7 +247,7 @@ void ExitToDesktop(void);
 @param		- void
 @return		- void
 *//*_____________________________________________________________*/
-void upgrade_turret(int t_index);
+void UpgradeTurret(int t_index);
 /*!
 @author     Wong Zhi Hao Samuel (w.zhihaosamuel@digipen.edu)
 @co-author
@@ -255,7 +255,7 @@ void upgrade_turret(int t_index);
 @param		- void
 @return		int - t_index - The index of the turret to upgrade
 *//*_____________________________________________________________*/
-void turret_init(void);
+void TurretInit(void);
 /*!
 @author     Wong Zhi Hao Samuel (w.zhihaosamuel@digipen.edu)
 @co-author
@@ -263,7 +263,7 @@ void turret_init(void);
 @param		- void
 @return		int - t_index - The index of the turret to sell
 *//*_____________________________________________________________*/
-void sell_turret(int t_index);
+void SellTurret(int t_index);
 /*!
 @author     Chiok Wei Wen Gabriel (chiok.w@digipen.edu)
 @co-author
@@ -522,7 +522,7 @@ enum {
 			int index_y - y index of the location.
 @return		- void
 *//*_____________________________________________________________*/
-void place_turret(TurretType type, int index_x, int index_y);
+void PlaceTurret(TurretType type, int index_x, int index_y);
 //Projectiles
 /*!
 @author     Wong Zhi Hao Samuel (w.zhihaosamuel@digipen.edu)
@@ -560,7 +560,7 @@ Projectile proj[kMaxProjectile];
 			struct to check.
 @return		- void
 *//*_____________________________________________________________*/
-void col_type_projectile(Projectile* p);
+void ColTypeProjectile(Projectile* p);
 //Level
 /*!
 @author     Ng Zheng Wei (zhengwei.ng@digipen.edu)

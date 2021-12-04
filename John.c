@@ -572,7 +572,7 @@ void EnemyDeath(Enemy* r) {  //function updates and checks for collision or deat
 			a.height *= 1;
 			if (CollisionDetection(a, proj[i].data) == 1) {
 				proj[i].is_active = 0;
-				col_type_projectile(&proj[i]);
+				ColTypeProjectile(&proj[i]);
 				if (r->state != kEnemyDeath)
 				{
 					if (proj[i].type != kTSlow)

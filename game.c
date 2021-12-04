@@ -557,7 +557,7 @@ void game_exit(void)
 	//free linkedlist
 	if (bullet_radius_head_node != NULL)
 	{
-		while (1)
+		while (TRUE)
 		{
 			struct LinkedListNode* node = bullet_radius_head_node;
 			if (node == NULL)
