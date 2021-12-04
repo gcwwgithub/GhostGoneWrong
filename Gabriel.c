@@ -92,7 +92,7 @@ void InsertNewNodeBulletRadius(struct LinkedListNode** list, float xPosInput, fl
 		newNode->node_x_coordinate = xPosInput;
 		newNode->node_y_coordinate = yPosInput;
 
-		switch (typeOfBullet)
+		switch (typeOfBullet) //sets type of bullet radius here
 		{
 		case kPMine:
 			newNode->node_counter = 3;
@@ -122,7 +122,7 @@ void InsertNewNodePortalEffect(struct LinkedListNode** list, float xPosInput, fl
 	newNode = malloc(sizeof(struct LinkedListNode));
 	if (newNode != NULL)
 	{
-		switch (portalEffect)
+		switch (portalEffect)//sets type of portal effect here
 		{
 		case 0:
 			newNode->key = portal_spawn_node_key_number;
@@ -213,7 +213,7 @@ void SpritesheetCalculation(struct SpriteSheetImage* s, CP_Image image, int pixe
 	int counter = 0;
 	for (int j = 0; j < height / pixelHeight; j++)
 	{
-
+		//this calculates the 4 pixel values based on the size of the pixel declared
 		for (int i = 0; i < width / pixelWidth; i++)
 		{
 			if (!(j == height / pixelHeight- 1 && i > width / pixelWidth - stopPoint - 1))
@@ -263,8 +263,8 @@ void RenderAndUpdateBulletCircles(void)
 			{
 				RenderImageFromSpriteSheetWithAlpha(turret_bullet_radius_spritesheet, turret_bullet_radius_spritesheet_array[current->node_counter], current->node_x_coordinate, current->node_y_coordinate,
 					100.0f, 100.0f,current->node_image_alpha);
-				current->node_image_alpha -= 50;
-				if (current->node_image_alpha < 0)
+				current->node_image_alpha -= 50; //slowly fades the bullet radius away
+				if (current->node_image_alpha < 0) 
 				{
 					bullet_radius_head_node = DeleteNode(current, current->key);
 					break;
@@ -321,7 +321,7 @@ void RenderAndUpdateSinglePortalEffect(struct LinkedListNode* nodeToChange, int 
 					current->node_timer = 0;
 					if (current->node_counter >= 3)
 					{
-						
+						//makes the portal effect disappear after finish all its animation
 						switch (portalEffect)
 						{
 						case 0:
@@ -335,7 +335,7 @@ void RenderAndUpdateSinglePortalEffect(struct LinkedListNode* nodeToChange, int 
 					}
 					else
 					{
-						current->node_counter++;
+						current->node_counter++; //animation changes here
 					}
 					
 					
