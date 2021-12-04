@@ -7,12 +7,16 @@ All content © 2021 DigiPen Institute of Technology Singapore, all rights reserve
 @date       03/12/2021
 @brief    	This header file contains the declarations for the main menu UI,
 			the transitions between the building & wave phases, as well as the
-			checking for win or lose conditions. Further comments are found below.
-			All functions written by Anderson.
-
+			checking for win or lose conditions.
 			Functions:
-			InitGameFont, InitSplashLogos, RenderLogos, ...
-
+			InitGameFont, InitSplashLogos, RenderLogos, InitTextButton,InitMainMenu,
+			InitLevelSelectButtons,InitPauseScreen,InitCreditsScreen,InitOptionsScreen,
+			RenderUIButton,RenderTitleScreen,RenderMainMenu, RenderLevelSelectButtons,
+			RenderPauseScreen,RenderCreditsScreen,RenderOptionsScreen,Linear,UIButtonMovement,
+			ButtonHasFinishedMoving,MoveLevelSelect,LevelSelectFinishedMoving, MoveMainMenu,
+			MainMenuFinishedMoving,MoveCreditsScreen, RenderWaveTimer,ReduceBuildingPhaseTime,
+			InitSkipWaveButton, GameWinLoseCheck,InitEndScreen, RenderEndScreen,
+			InitNextLevel,ExitToDesktop.
 *//*__________________________________________________________________________*/
 #pragma once
 #include "game.h"

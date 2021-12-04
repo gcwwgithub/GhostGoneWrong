@@ -4,19 +4,21 @@ All content © 2021 DigiPen Institute of Technology Singapore, all rights reserv
 @author     Phua Tai Dah Anderson (a.phua@digipen.edu)
 @coauthor   Ng Zheng Wei (zhengwei.ng@digipen.edu)
 			Lim Jing Rui John (l.jingruijohn@digipen.edu)
+			Chiok Wei Wen Gabriel (chiok.w@digipen.edu)
 @course     CSD 1400
 @section    C
 @date       03/12/2021
 @brief    	This source file contains the definitions for the main menu UI,
 			the transitions between the building & wave phases, as well as the
 			checking for win or lose conditions.
-
-			Functions:
-			InitGameFont, InitSplashLogos, RenderLogos,
-			InitTextButton, InitMainMenu, InitLevelSelectButtons, InitPauseScreen,
-			InitCreditsScreen, InitOptionsScreen,
-
-
+			Functions:InitGameFont, InitSplashLogos, InitTextButton, InitMainMenu, InitLevelSelectButtons, 
+			InitPauseScreen, InitEndScreen, InitCreditLine, InitOptionLine, InitCreditsScreen, InitOptionsScreen.
+			CursorOverButton,RenderTitleScreen, RenderMainMenu, RenderLevelSelectButtons, RenderPauseScreen,
+			RenderTextLine, RenderCreditsScreen, RenderOptionsScreen, RenderLogos,
+			UIButtonMovement,CoordinateMovement,CoordinateMovement,MoveCreditsScreen,
+			MoveLevelSelect,LevelSelectFinishedMoving,MoveMainMenu,MainMenuFinishedMoving,ButtonHasFinishedMoving, ExitToDesktop.
+			InitSkipWaveButton,RenderWaveTimerBar,RenderWaveTimer,ReduceBuildingPhaseTime,SetBuildingTime,
+			RenderEndScreen,GameWinLoseCheck,InitNextLevel.
 *//*__________________________________________________________________________*/
 #include "cprocessing.h"
 #include "game.h"
@@ -28,7 +30,12 @@ All content © 2021 DigiPen Institute of Technology Singapore, all rights reserv
 
 #pragma region Initialisations
 
-// Sets the game font to pixelFont (i.e. VT323-Regular)
+/*!
+@author     Phua Tai Dah Anderson (a.phua@digipen.edu)
+@brief		Sets the game font to pixelFont (i.e. VT323-Regular)
+@param		void
+@return		void
+*//*_____________________________________________________________*/
 void InitGameFont(void)
 {
 	pixelFont = GAME_FONT;
@@ -36,14 +43,31 @@ void InitGameFont(void)
 	CP_Settings_TextSize(FONT_SIZE);
 }
 
-// Loads in the DP logo and the team logo from the Assets folder.
+/*!
+@author     Phua Tai Dah Anderson (a.phua@digipen.edu)
+@brief		Loads in the DP logo and the team logo from the Assets folder.
+@param		void
+@return		void
+*//*_____________________________________________________________*/
 void InitSplashLogos(void)
 {
 	digipen_logo = CP_Image_Load("./Assets/DigipenLogo.png");
 	down_n_out_logo = CP_Image_Load("./Assets/DownNOut.png");
 }
 
-// Assuming all buttons are rectangles. Text position is center-aligned and anchored from the button graphic's position.
+/*!
+@author     Phua Tai Dah Anderson (a.phua@digipen.edu)
+@brief		Initialises a text button, its dimensions, position, its
+			text to be written, and text position. All buttons are
+			set to be rectangles. Text position is center-aligned 
+			and anchored from the button rectangle's top left corner.
+@param		Button button - the button to be initialised.
+			float buttonPosX,buttonPosY - Position of the button.
+			float buttonWidth,buttonHeight - Dimensions of the button.
+			float textPosX, textPosY - Position of the button's text.
+			char string[] - the text to be entered.
+@return		Button button - the initialised button.
+*//*_____________________________________________________________*/
 Button InitTextButton(Button button, float buttonPosX, float buttonPosY, float buttonWidth, float buttonHeight, float textPosX, float textPosY, char string[])
 {
 	button.buttonData.x_origin = buttonPosX;
@@ -59,7 +83,12 @@ Button InitTextButton(Button button, float buttonPosX, float buttonPosY, float b
 	return button;
 }
 
-// Initialises title screen buttons.
+/*!
+@author     Phua Tai Dah Anderson (a.phua@digipen.edu)
+@brief		Initialises the title screen buttons.
+@param		void
+@return		void
+*//*_____________________________________________________________*/
 void InitMainMenu(void)
 {
 	MainMenuButtons[StartButton] = InitTextButton(MainMenuButtons[StartButton], CP_System_GetWindowWidth() * 0.25f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 0.5f,
@@ -74,25 +103,23 @@ void InitMainMenu(void)
 		BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Options");
 }
 
-// Initialises the level buttons in a column.
+/*!
+@author     Phua Tai Dah Anderson (a.phua@digipen.edu)
+@brief		Initialises the level buttons in a column.
+@param		void
+@return		void
+*//*_____________________________________________________________*/
 void InitLevelSelectButtons(void)
 {
 	int c = 0; char levelNumberText[8];
 	for (int i = 0; i < kMaxNumberOfLevel; i++)
 	{
-		c = snprintf(levelNumberText, 8, "Level %d", i);
+		c = snprintf(levelNumberText, 8, "Level %d", i + 1);
 		strcpy_s(LevelButtons[i].textString, sizeof(LevelButtons[i].textString), levelNumberText);
-		if (i > 0)
 		{
 			LevelButtons[i] = InitTextButton(LevelButtons[i],
 				CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() + i * (BUTTON_HEIGHT + 25.0f),
 				BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, levelNumberText);
-		}
-		else // the first level was meant to be kind of a tutorial
-		{
-			LevelButtons[i] = InitTextButton(LevelButtons[i],
-				CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() + i * (BUTTON_HEIGHT + 25.0f),
-				BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Tutorial");
 		}
 	}
 
@@ -101,6 +128,12 @@ void InitLevelSelectButtons(void)
 		BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Back");
 }
 
+/*!
+@author     Phua Tai Dah Anderson (a.phua@digipen.edu)
+@brief		Initialises the pause screen.
+@param		void
+@return		void
+*//*_____________________________________________________________*/
 void InitPauseScreen(void)
 {
 	// Resume
@@ -113,7 +146,12 @@ void InitPauseScreen(void)
 		BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Exit Level");
 }
 
-// Initialises the end screen buttons in a column.
+/*!
+@author     Phua Tai Dah Anderson (a.phua@digipen.edu)
+@brief		Initialises the end screen.
+@param		void
+@return		void
+*//*_____________________________________________________________*/
 void InitEndScreen(void)
 {
 	// Back to Main Menu
@@ -132,6 +170,14 @@ void InitEndScreen(void)
 		BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Next");
 }
 
+/*!
+@author     Phua Tai Dah Anderson (a.phua@digipen.edu)
+@brief		Initialise a line for the credits screen.
+@param		int num - position on CreditTexts array.
+			char* line - text to be filled.
+			float x,y - position values for the line.
+@return		void
+*//*_____________________________________________________________*/
 void InitCreditLine(int num, char* line, float x, float y)
 {
 	CreditTexts[num].text = line;
@@ -146,6 +192,14 @@ void InitCreditLine(int num, char* line, float x, float y)
 	CreditTexts[num].currentPos.y_origin = y + CP_System_GetWindowHeight();
 }
 
+/*!
+@author     Phua Tai Dah Anderson (a.phua@digipen.edu)
+@brief		Initialise a line for the options screen.
+@param		int num - position on OptionTexts array.
+			char* line - text to be filled.
+			float x,y - position values for the line.
+@return		void
+*//*_____________________________________________________________*/
 void InitOptionLine(int num, char* line, float x, float y)
 {
 	OptionTexts[num].text = line;
@@ -159,7 +213,13 @@ void InitOptionLine(int num, char* line, float x, float y)
 	OptionTexts[num].currentPos.y_origin = y;
 }
 
-// Initialises the credit screen background, as well as all the individual credits, line-by-line.
+/*!
+@author     Phua Tai Dah Anderson (a.phua@digipen.edu)
+@brief		Initialises the credit screen background, as well as 
+			all the individual credits, line-by-line.
+@param		void
+@return		void
+*//*_____________________________________________________________*/
 void InitCreditsScreen(void)
 {
 	creditRectCoords.x_origin = CP_System_GetWindowWidth() * 0.05f; creditRectCoords.y_origin = CP_System_GetWindowHeight() * 1.3f;
@@ -201,6 +261,12 @@ void InitCreditsScreen(void)
 		BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Back");
 }
 
+/*!
+@author     Phua Tai Dah Anderson (a.phua@digipen.edu)
+@brief		Initialises the options screen.
+@param		void
+@return		void
+*//*_____________________________________________________________*/
 void InitOptionsScreen(void)
 {
 	// init options screen for main menu - the lines and the two Coordinates-type 'buttons'.
@@ -229,19 +295,38 @@ void InitOptionsScreen(void)
 
 #pragma region Rendering
 
+/*!
+@author     Phua Tai Dah Anderson (a.phua@digipen.edu)
+@brief		Checks if cursor is over a button.
+@param		Coordinates buttonCoord - the coordinates of the button.
+@return		1 if cursor is over the button, 0 otherwise.
+*//*_____________________________________________________________*/
 int CursorOverButton(Coordinates buttonCoord)
 {
 	return ((CP_Input_GetMouseX() > buttonCoord.x_origin) && (CP_Input_GetMouseX() < buttonCoord.x_origin + buttonCoord.width)
 		&& (CP_Input_GetMouseY() > buttonCoord.y_origin) && (CP_Input_GetMouseY() < buttonCoord.y_origin + buttonCoord.height));
 }
 
-// Draws a background image, background is drawn with code, rest with pixel art
+/*!
+@author     Phua Tai Dah Anderson (a.phua@digipen.edu)
+@coauthor	Chiok Wei Wen Gabriel (chiok.w@digipen.edu)
+@brief		Draws the background image of the title screen.
+@param		Coordinates buttonCoord - the coordinates of the button.
+@return		void
+*//*_____________________________________________________________*/
 void RenderTitleScreen(void)
 {
 	RenderImageFromSpriteSheetWithAlpha(background_spritesheet, background_spritesheet_array[0], CP_System_GetWindowWidth() * 0.5f, (float)CP_System_GetWindowHeight() * 0.5f, (float)CP_System_GetWindowWidth(), (float)CP_System_GetWindowHeight(), 150);
 	CP_Image_Draw(game_title_image, CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.2f, 256 * scaling_factor, 256 * scaling_factor, 255);
 }
 
+/*!
+@author     Phua Tai Dah Anderson (a.phua@digipen.edu)
+@brief		Renders a button. If moused over, the button is enlarged
+			before being rendered.
+@param		Button button - the button to render.
+@return		void
+*//*_____________________________________________________________*/
 void RenderUIButton(Button button)
 {
 	CP_Settings_Fill(COLOR_BLACK);
@@ -259,6 +344,12 @@ void RenderUIButton(Button button)
 	CP_Font_DrawText(button.textString, button.textPositionX, button.textPositionY);
 }
 
+/*!
+@author     Phua Tai Dah Anderson (a.phua@digipen.edu)
+@brief		Renders all main menu UI buttons.
+@param		void
+@return		void
+*//*_____________________________________________________________*/
 void RenderMainMenu(void)
 {
 	for (int i = 0; i < 5; i++)
@@ -267,10 +358,15 @@ void RenderMainMenu(void)
 	}
 }
 
+/*!
+@author     Phua Tai Dah Anderson (a.phua@digipen.edu)
+@brief		Renders all level select UI buttons.
+@param		void
+@return		void
+*//*_____________________________________________________________*/
 void RenderLevelSelectButtons(void)
 {
 	CP_Settings_TextSize(FONT_SIZE);
-	// render the 5 level buttons
 	for (int i = 0; i < 5; i++)
 	{
 		RenderUIButton(LevelButtons[i]);
@@ -278,6 +374,12 @@ void RenderLevelSelectButtons(void)
 	RenderUIButton(LevelSelectBackButton);
 }
 
+/*!
+@author     Phua Tai Dah Anderson (a.phua@digipen.edu)
+@brief		Renders pause screen.
+@param		void
+@return		void
+*//*_____________________________________________________________*/
 void RenderPauseScreen(void)
 {
 	CP_Settings_Fill(COLOR_GREY);
@@ -286,11 +388,23 @@ void RenderPauseScreen(void)
 	RenderUIButton(PauseScreenButtons[1]);
 }
 
+/*!
+@author     Phua Tai Dah Anderson (a.phua@digipen.edu)
+@brief		Renders a text line at its set position.
+@param		Line line - the text line to render.
+@return		void
+*//*_____________________________________________________________*/
 void RenderTextLine(Line line)
 {
 	CP_Font_DrawText(line.text, line.currentPos.x_origin, line.currentPos.y_origin);
 }
 
+/*!
+@author     Phua Tai Dah Anderson (a.phua@digipen.edu)
+@brief		Renders credits screen.
+@param		void
+@return		void
+*//*_____________________________________________________________*/
 void RenderCreditsScreen(void)
 {
 	// Rendered from top to bottom, left to right order.
@@ -341,6 +455,12 @@ void RenderCreditsScreen(void)
 	RenderUIButton(CreditsBackButton);
 }
 
+/*!
+@author     Phua Tai Dah Anderson (a.phua@digipen.edu)
+@brief		Renders options screen.
+@param		void
+@return		void
+*//*_____________________________________________________________*/
 void RenderOptionsScreen(void)
 {
 	CP_Settings_Fill(COLOR_BLACK);
@@ -367,6 +487,12 @@ void RenderOptionsScreen(void)
 	RenderUIButton(OptionsBackButton);
 }
 
+/*!
+@author     Phua Tai Dah Anderson (a.phua@digipen.edu)
+@brief		Renders the Digipen and team logos in the logo splash screen.
+@param		void
+@return		void
+*//*_____________________________________________________________*/
 void RenderLogos(void)
 {
 	CP_Graphics_ClearBackground(COLOR_BLACK);
@@ -413,23 +539,31 @@ void RenderLogos(void)
 	}
 }
 
-// Terminates game.
-void ExitToDesktop(void)
-{
-	CP_Engine_Terminate();
-}
-
 #pragma endregion
 
 #pragma region UI Movement
 
+/*!
+@author     Phua Tai Dah Anderson (a.phua@digipen.edu)
+@brief		Formula used for interpolating UI button movement.
+			Adapted from code by Prof. Gerald.
+@param		float start - the starting value.
+			float end - the end value.
+			float value - percentage between start and end.
+@return		float - the resulting value for next frame.
+*//*_____________________________________________________________*/
 float Linear(float start, float end, float value)
 {
-	// taken from easing.h, credit goes to prof gerald
 	return (1.f - value) * start + value * end;
 }
 
-// Updates a moving button's coordinates with regards to time.
+/*!
+@author     Phua Tai Dah Anderson (a.phua@digipen.edu)
+@brief		Updates a moving button's coordinates with regards to time.
+@param		Button button - the button being moved.
+			float destPosX,destPosY - the new position values.
+@return		Button button - with the next frame's position values.
+*//*_____________________________________________________________*/
 Button UIButtonMovement(Button button, float destPosX, float destPosY)
 {
 	if (button.movementTime <= MOVE_DURATION)
@@ -448,7 +582,13 @@ Button UIButtonMovement(Button button, float destPosX, float destPosY)
 	return button;
 }
 
-// Similar to ui_btn_movement, but meant for grpahic rectangles (e.g. the credit screen background)
+/*!
+@author     Phua Tai Dah Anderson (a.phua@digipen.edu)
+@brief		Moves non-button object positions to new ones.
+@param		Coordinates coord - coordinates of the object.
+			float destPosX,destPosY - the new position values.
+@return		Coordinates coord - the position values for next frame.
+*//*_____________________________________________________________*/
 Coordinates CoordinateMovement(Coordinates coord, float destPosX, float destPosY)
 {
 	if (creditTextMoveTime <= MOVE_DURATION)
@@ -459,13 +599,18 @@ Coordinates CoordinateMovement(Coordinates coord, float destPosX, float destPosY
 	}
 	else
 	{
-		// May be good to try basing this on something else instead like distance.
 		creditTextMoveTime = 0.0f;
 	}
 	return coord;
 }
 
-// Moving stops when the credit screen's back button has finished moving.
+/*!
+@author     Phua Tai Dah Anderson (a.phua@digipen.edu)
+@brief		Moves the credits buttons to new positions. Moving stops
+			when the credit screen's back button has finished moving.
+@param		void
+@return		void
+*//*_____________________________________________________________*/
 void MoveCreditsScreen(void)
 {
 	for (int i = 0; i < sizeof(CreditTexts) / sizeof(CreditLine); i++)
@@ -494,6 +639,12 @@ void MoveCreditsScreen(void)
 	}
 }
 
+/*!
+@author     Phua Tai Dah Anderson (a.phua@digipen.edu)
+@brief		Moves the level select buttons to new positions.
+@param		void
+@return		void
+*//*_____________________________________________________________*/
 void MoveLevelSelect(void)
 {
 	for (int i = 0; i < kMaxNumberOfLevel; i++)
@@ -521,6 +672,12 @@ void MoveLevelSelect(void)
 	}
 }
 
+/*!
+@author     Phua Tai Dah Anderson (a.phua@digipen.edu)
+@brief		Checks if all level select UI has moved to its new positions.
+@param		void
+@return		1 if position reached, 0 otherwise.
+*//*_____________________________________________________________*/
 int LevelSelectFinishedMoving(void)
 {
 	if (current_game_state == kLevelSelect)
@@ -553,6 +710,12 @@ int LevelSelectFinishedMoving(void)
 	return 0;
 }
 
+/*!
+@author     Phua Tai Dah Anderson (a.phua@digipen.edu)
+@brief		Moves the main menu buttons to new positions.
+@param		void
+@return		void
+*//*_____________________________________________________________*/
 void MoveMainMenu(void)
 {
 	// The Play, Credits && Quit buttons should move to and from the left,bottom && right of the screen respectively. 
@@ -575,6 +738,12 @@ void MoveMainMenu(void)
 	}
 }
 
+/*!
+@author     Phua Tai Dah Anderson (a.phua@digipen.edu)
+@brief		Checks if all main menu UI has moved to its new positions.
+@param		void
+@return		1 if position reached, 0 otherwise.
+*//*_____________________________________________________________*/
 int MainMenuFinishedMoving(void)
 {
 	if (current_game_state == kMainMenu)
@@ -613,6 +782,14 @@ int MainMenuFinishedMoving(void)
 	return 0;
 }
 
+/*!
+@author     Phua Tai Dah Anderson (a.phua@digipen.edu)
+@brief		Checks if a button has moved to a new position.
+@param		Button button - the button to be checked.
+			float destPosX,destPosY - the position that the button
+									  is moving to.						
+@return		1 if position reached, 0 otherwise.
+*//*_____________________________________________________________*/
 int ButtonHasFinishedMoving(Button button, float destPosX, float destPosY)
 {
 	return (button.buttonData.x_origin == destPosX && button.buttonData.y_origin == destPosY);
@@ -620,11 +797,27 @@ int ButtonHasFinishedMoving(Button button, float destPosX, float destPosY)
 
 #pragma endregion
 
+/*!
+@author     Phua Tai Dah Anderson (a.phua@digipen.edu)
+@brief		Ends the program.
+@param		void
+@return		void
+*//*_____________________________________________________________*/
+void ExitToDesktop(void)
+{
+	CP_Engine_Terminate();
+}
+
 #pragma endregion
 
 #pragma region Building / Wave Phase
 
-// Skip Wave button, located directly below the green-red bar.
+/*!
+@author     Phua Tai Dah Anderson (a.phua@digipen.edu)
+@brief		Initialises the skip Wave button,to be below the timer bar.
+@param		void
+@return		void
+*//*_____________________________________________________________*/
 void InitSkipWaveButton(void)
 {
 	// Init skip wave button's position.
@@ -632,18 +825,33 @@ void InitSkipWaveButton(void)
 		BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Skip");
 }
 
-// Draws a green to red bar representing the amount of time left in buildingPhase.
+/*!
+@author     Phua Tai Dah Anderson (a.phua@digipen.edu)
+@brief		Draws a green to red bar representing the amount of time
+			left in the building phase of a wave, the length of the
+			green portion is dependent on time left.
+@param		float timeLeft - time left in the building phase
+			float maxTime - the amount of time given during the
+							building phase.
+			float barWidth,barHeight - the dimensions of the timer
+									   bar
+@return		void
+*//*_____________________________________________________________*/
 void RenderWaveTimerBar(float timeLeft, float maxTime, float barWidth, float barHeight)
 {
 	float percentage = timeLeft / maxTime;
-	// draw red, then green
 	CP_Settings_Fill(COLOR_RED);
 	CP_Graphics_DrawRect(CP_System_GetWindowWidth() * 0.5f - barWidth * 0.5f, 0.0f, barWidth, barHeight);
 	CP_Settings_Fill(COLOR_GREEN);
 	CP_Graphics_DrawRect(CP_System_GetWindowWidth() * 0.5f - barWidth * 0.5f, 0.0f, barWidth * percentage, barHeight);
 }
 
-// Display the bar and time text, but not the skip button.
+/*!
+@author     Phua Tai Dah Anderson (a.phua@digipen.edu)
+@brief		Displays the timer bar and time text.
+@param		void
+@return		void
+*//*_____________________________________________________________*/
 void RenderWaveTimer(void)
 {
 	CP_Settings_TextSize(FONT_SIZE);
@@ -654,8 +862,16 @@ void RenderWaveTimer(void)
 	CP_Font_DrawText(buffer, CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.05f);
 }
 
-// Controlling the building time left till next wave.
-void ReduceBuildingPhaseTime()
+/*!
+@author     Phua Tai Dah Anderson (a.phua@digipen.edu)
+@coauthor	Lim Jing Rui John (l.jingruijohn@digipen.edu)
+			Chiok Wei Wen Gabriel (chiok.w@digipen.edu)
+@brief		Reduces the building time left till next wave. If no time
+			is left, changes game state to kWave, sets effects and music.
+@param		void
+@return		void
+*//*_____________________________________________________________*/
+void ReduceBuildingPhaseTime(void)
 {
 	if (building_time < 0.05f)
 	{
@@ -680,7 +896,12 @@ void ReduceBuildingPhaseTime()
 	}
 }
 
-// Set building time left.
+/*!
+@author     Phua Tai Dah Anderson (a.phua@digipen.edu)
+@brief		Sets building time left.
+@param		void
+@return		void
+*//*_____________________________________________________________*/
 void SetBuildingTime(float newBuildingTime)
 {
 	building_time = newBuildingTime;
@@ -690,6 +911,12 @@ void SetBuildingTime(float newBuildingTime)
 
 #pragma region Win / Lose Conditions
 
+/*!
+@author     Phua Tai Dah Anderson (a.phua@digipen.edu)
+@brief		Renders the end screen when the player wins/loses,
+@param		void
+@return		void
+*//*_____________________________________________________________*/
 void RenderEndScreen(void)
 {
 	CP_Settings_RectMode(CP_POSITION_CENTER);
@@ -785,6 +1012,12 @@ void GameWinLoseCheck(void)
 	}
 }
 
+/*!
+@author     Phua Tai Dah Anderson (a.phua@digipen.edu)
+@brief		Initialises the nest level in the game.
+@param		int nextGameLevel - the next level of the game.
+@return		void
+*//*_____________________________________________________________*/
 void InitNextLevel(int nextGameLevel)
 {
 	switch (nextGameLevel)
