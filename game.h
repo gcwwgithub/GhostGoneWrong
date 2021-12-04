@@ -674,7 +674,7 @@ float scaling_factor;
 
 /*!
 @author    Lim Jing Rui John (l.jingruijohn@digipen.edu)
-@brief		Decleration of sounds used in the game.
+@brief		Declaration of sounds used in the game.
 *//*_____________________________________________________________*/
 CP_Sound shoot_sfx;
 CP_Sound spawn_exit_sfx;

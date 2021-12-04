@@ -34,7 +34,7 @@ typedef enum EnvironmentEffectEnemy {
 	kApplying
 }EnvironmentEffectEnemy;
 
-//Combined function for all enemy effects for game.c
+//Combined function for all enemy effects except render for game.c
 void UpdateEnemies(void);
 
 
@@ -70,7 +70,7 @@ void UpdateEnemyPathWaypointArray(void);
 void CheckEnemyPathAdjustment(Enemy* r);
 void ResetEnemyPathWaypoints(Enemy* r);
 int DirectionToNextPoint(float enemy_pathpoints_X[], float enemy_pathpoints_Y[], Enemy* r);
-int UpdateEnemyCurrentWaypoint(float enemy_pathpoints_X[], float enemy_pathpoints_Y[], Enemy* r);
+void UpdateEnemyCurrentWaypoint(float enemy_pathpoints_X[], float enemy_pathpoints_Y[], Enemy* r);
 
 
 struct LinkedListNode* Enemy_node;
