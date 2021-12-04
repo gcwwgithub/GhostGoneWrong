@@ -71,9 +71,9 @@ void game_update(void)
 		UpdateEnemies();
 
 		//do turret & projectile update next
-		update_turret();
-		update_projectile();
-		update_particle();
+		UpdateTurret();
+		UpdateProjectile();
+		UpdateParticle();
 
 		//render all the stuff
 		RenderLevelEnvironment(level.current_game_level);
@@ -84,9 +84,9 @@ void game_update(void)
 
 		RenderAllEnemies();
 		RenderAllPortalEffects();
-		render_turret();
-		render_projectile();
-		render_particle();
+		RenderTurret();
+		RenderProjectile();
+		RenderParticle();
 		RenderAndUpdateBulletCircles();
 
 		if (!turret[turret_selected_to_upgrade].is_active) { // Close mine menu when it explodes
@@ -116,18 +116,18 @@ void game_update(void)
 		}
 
 		//do turret & projectile update next
-		update_turret();
-		update_projectile();
-		update_particle();
+		UpdateTurret();
+		UpdateProjectile();
+		UpdateParticle();
 		//render all the stuff
 		RenderLevelEnvironment(level.current_game_level);
 		RenderGameGrid();
 		RenderEnemyPath();
 		UpdatePortalAnimation();
 		RenderEnvironment();
-		render_turret();
-		render_projectile();
-		render_particle();
+		RenderTurret();
+		RenderProjectile();
+		RenderParticle();
 		RenderAndUpdateBulletCircles();
 
 		UpdateGameButtonPressed();
@@ -507,6 +507,44 @@ void game_exit(void)
 	CP_Sound_Free(&building_bgm);
 	CP_Sound_Free(&wave_bgm);
 	CP_Sound_Free(&main_menu_music);
+
+	// Final check to free for all malloc
+	if (level.grid != NULL)
+	{
+		for (int i = 0; i < level_grid_rows; i++) {
+			free(level.grid[i]);
+		}
+		free(level.grid);
+	}
+
+	if (turret_on_grid != NULL)
+	{
+		for (int i = 0; i < level_grid_cols; i++) {
+			free(turret_on_grid[i]);
+		}
+		free(turret_on_grid);
+	}
+
+	if (portal_enter_head_node != NULL)
+	{
+		free(portal_enter_head_node);
+	}
+	if (portal_spawn_head_node != NULL)
+	{
+		free(portal_spawn_head_node);
+	}
+
+	//free linkedlist
+	if (bullet_radius_head_node != NULL)
+	{
+		while (bullet_radius_head_node->next_node != NULL)
+		{
+			struct LinkedListNode* node = bullet_radius_head_node;
+			bullet_radius_head_node = bullet_radius_head_node->next_node;
+			free(node);
+		}
+	}
+
 
 #if _DEBUG
 	// MEM LEAK CHECK
