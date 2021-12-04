@@ -437,19 +437,7 @@ void game_update(void)
 		}
 		else if (BtnIsPressed(OptionButtons[SFX])) // resume all music
 		{
-			if (sfxEnabled)
-			{
-				CP_Sound_ResumeAll();
-				if (bgmSFXEnabled)
-				{
-					CP_Sound_PauseGroup(CP_SOUND_GROUP_1);
-				}
-			}
-			else
-			{
-						CP_Sound_PauseAll();
-			}
-
+			sfxEnabled ? CP_Sound_ResumeGroup(CP_SOUND_GROUP_0) : CP_Sound_PauseGroup(CP_SOUND_GROUP_0);
 			sfxEnabled = !sfxEnabled;
 			MouseReset();
 			if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) 
