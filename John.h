@@ -1,3 +1,22 @@
+/*!
+@file       John.h
+@author     Lim Jing Rui John (l.jingruijohn@digipen.edu)
+@co-author  Chiok Wei Wen Gabriel (chiok.w@digipen.edu)
+@course     CSD 1400
+@section    C
+@date       4/12/2021
+@brief    	Contains function declaration for
+EnemyAnimationState, CheckEnemyState, ReaperAbility, EnemyDeath,
+RenderAllEnemies, RenderEnemyHealth 
+ResetEnemyInit, EnemyWavePowUp, EnemyVariableChangeforPowUps,
+EnemyInitforWaves, BasicGhostInit, FastGhostInit, FatGhostInit, GrimReaperInit, ReaperMinionInit, EmptyEnemyInit,
+EnemyMovement, UpdateEnemyPathWaypointArray, CheckEnemyPathAdjustment, ResetEnemyPathWaypoints, DirectionToNextPoint, UpdateEnemyCurrentWaypoint,
+EnvironmentEffCheck, EnvEffMoreHP, EnvEffLessHP, EnvEffFasterEnemies, EnvEffSlowerEnemies, EnvEffIncreasedPhantomQuartz,
+EnvEffDecreasedPhantomQuartz, EnvEffNoPhantomQuartz, EnvEffIncreasedTurretDamage, EnvEffDecreasedTurretDamage, EnvEffDecreasedTurretAttackSpeed, EnvEffIncreasedTurretAttackSpeed.
+
+Also Contains enum for Direction and EnvironmentEffectEnemy
+*//*__________________________________________________________________________*/
+
 #include"cprocessing.h"
 #include"game.h"
 #define MAX_SPAWNING_ENEMIES kMaxEnemies-10
@@ -31,7 +50,7 @@ void EnemyDeath(Enemy* r);
 void RenderAllEnemies(void);
 void RenderEnemyHealth(Enemy* r);
 
-//void Level0_waveEnemies_init(void);
+//Setting up enemies for wave
 void ResetEnemyInit(void);
 void EnemyWavePowUp(Enemy* r);
 void EnemyVariableChangeforPowUps(Enemy* r);
@@ -90,5 +109,5 @@ void EnvEffDecreasedTurretAttackSpeed(void);
 void EnvEffIncreasedTurretAttackSpeed(void);
 
 
-
+//Initialise all sounds
 void MusicInit(void);

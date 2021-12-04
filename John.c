@@ -1,4 +1,24 @@
-#include "cprocessing.h"
+/*!
+@file       John.c
+@author     Lim Jing Rui John (l.jingruijohn@digipen.edu)
+@co-author  Gabriel
+@course     CSD 1400
+@section    C
+@date       4/12/2021
+@brief    	Contains function definition for
+EnemyAnimationState, CheckEnemyState, ReaperAbility, EnemyDeath,
+
+RenderAllEnemies, RenderEnemyHealth
+
+ResetEnemyInit, EnemyWavePowUp, EnemyVariableChangeforPowUps,
+EnemyInitforWaves, BasicGhostInit, FastGhostInit, FatGhostInit, GrimReaperInit, ReaperMinionInit, EmptyEnemyInit
+
+EnemyMovement, UpdateEnemyPathWaypointArray, CheckEnemyPathAdjustment, ResetEnemyPathWaypoints, DirectionToNextPoint, UpdateEnemyCurrentWaypoint
+
+EnvironmentEffCheck, EnvEffMoreHP, EnvEffLessHP, EnvEffFasterEnemies, EnvEffSlowerEnemies, EnvEffIncreasedPhantomQuartz,
+EnvEffDecreasedPhantomQuartz, EnvEffNoPhantomQuartz, EnvEffIncreasedTurretDamage, EnvEffDecreasedTurretDamage, EnvEffDecreasedTurretAttackSpeed, EnvEffIncreasedTurretAttackSpeed
+*//*__________________________________________________________________________*/
+
 #include <math.h>
 #include "John.h"
 #include "Gabriel.h"
