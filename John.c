@@ -920,7 +920,7 @@ void EnvEffFasterEnemies(void) {
 void EnvEffSlowerEnemies(void) {
 	for (int i = 0; i < kMaxEnemies; i++) {
 		if (enemy[i].env_eff == kApplying && enemy[i].health > 1) {
-			enemy[i].speed /= 1.2f;
+			enemy[i].speed = (enemy[i].speed/5)*4;
 			enemy[i].env_eff = kEffected;
 		}
 	}
@@ -952,7 +952,7 @@ void EnvEffIncreasedPhantomQuartz(void) {
 void EnvEffDecreasedPhantomQuartz(void) {
 	for (int i = 0; i < kMaxEnemies; i++) {
 		if (enemy[i].env_eff == kApplying && enemy[i].health > 1) {
-			enemy[i].points /= (int)(enemy[i].points / 1.2);
+			enemy[i].points = (int)((enemy[i].points/5)*4);
 			enemy[i].env_eff = kEffected;
 		}
 	}
