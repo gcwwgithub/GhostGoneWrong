@@ -3,93 +3,93 @@
 #define MAX_SPAWNING_ENEMIES kMaxEnemies-10
 
 typedef enum Direction {
-	NoMove,
-	Up,
-	Down,
-	Left,
-	Right
+	kNoMove,
+	kUp,
+	kDown,
+	kLeft,
+	kRight
 }Direction;
 
 typedef enum EnvironmentEffectEnemy {
-	Effected,
-	Applying
+	kEffected,
+	kApplying
 }EnvironmentEffectEnemy;
 
 //Combined function for all enemy effects for game.c
-void update_enemy(void);
+void UpdateEnemies(void);
 
 
 //Enemy updates for animation and collision
 void EnemyAnimationState(Enemy* r);
-int Check_state(Enemy* r);
-void Reaper_ability(Enemy* r);
+int CheckEnemyState(Enemy* r);
+void ReaperAbility(Enemy* r);
 void EnemyDeath(Enemy* r);
 
 
 
 //Enemy Render
-void Draw_enemy(Enemy* r);
-void draw_multiple_enemies(void);
-void update_enemy_health_bar(Enemy* r);
+void RenderEnemy(Enemy* r);
+void RenderAllEnemies(void);
+void RenderEnemyHealth(Enemy* r);
 
 //void Level0_waveEnemies_init(void);
-void Reset_enemies(void);
-void Current_wave_check(Enemy* r);
-void Power_Up_check(Enemy* r);
+void ResetEnemyInit(void);
+void EnemyWavePowUp(Enemy* r);
+void EnemyVariableChangeforPowUps(Enemy* r);
 
 //Enemy variable setup and intialising
-void wave_enemy_init(int Basic_Ghost_count, int Fast_Ghost_count, int Fat_Ghost_count, int Grim_Reaper_count, LevelData Level);
-void Basic_Ghost(Enemy* r);
-void Fast_Ghost_init(Enemy* r);
-void Fat_Ghost_init(Enemy* r);
-void grimReaper_init(Enemy* r);
-void Reaper_minion_init(Enemy* r);
-void empty_enemy_init(Enemy* r);
+void EnemyInitforWaves(int basic_ghost_count, int fast_ghost_count, int fat_ghost_count, int grim_reaper_count, LevelData level);
+void BasicGhostInit(Enemy* r);
+void FastGhostInit(Enemy* r);
+void FatGhostInit(Enemy* r);
+void GrimReaperInit(Enemy* r);
+void ReaperMinionInit(Enemy* r);
+void EmptyEnemyInit(Enemy* r);
 
 //Enemy Movement functions
-void enemy_move(Enemy* r, float Enemy_PathpointsX[], float Enemy_PathpointsY[], int number_of_points);
-void Update_Path_Array(void);
-void Check_pathAdjustment(Enemy* r);
-void reset_enemy_path(Enemy* r);
-int direction_to_next_point(float enemy_pathpointsX[], float enemy_pathpointsY[], Enemy* r);
-int update_point_num(float enemy_pathpointsX[], float enemy_pathpointsY[], Enemy* r);
+void EnemyMovement(Enemy* r, float enemy_pathpoints_X[], float enemy_pathpoints_Y[], int number_of_points);
+void UpdateEnemyPathWaypointArray(void);
+void CheckEnemyPathAdjustment(Enemy* r);
+void ResetEnemyPathWaypoints(Enemy* r);
+int DirectionToNextPoint(float enemy_pathpoints_X[], float enemy_pathpoints_Y[], Enemy* r);
+int UpdateEnemyCurrentWaypoint(float enemy_pathpoints_X[], float enemy_pathpoints_Y[], Enemy* r);
 
 
 struct LinkedListNode* Enemy_node;
 
 //global path for enemy path setup
-float Xarray[50];
-float Yarray[50];
-int Array_count;
-int Number_of_points;
+float global_enemy_path_X_array[50];
+float global_enemy_path_Y_array[50];
+int array_counter;
+int number_of_points;
 
 //Enemy spawn timing
-float Enemy_timer;
+float enemy_timer;
 int wave_timer;
 
 
 //No of Enemies
-int basicEnemyNum;
-int fastEnemyNum;
-int fatEnemyNum;
+int basic_enemy_count;
+int fast_enemy_count;
+int fat_enemy_count;
 
 
 
 
 //Environmental effects
-void Environment_check(void);
-void Env_eff_More_HP(void);
-void Env_eff_Less_HP(void);
-void Env_eff_Faster_Enemies(void);
-void Env_eff_Slower_Enemies(void);
-void Env_eff_Increased_Phantom_quartz(void);
-void Env_eff_Decreased_Phantom_quartz(void);
-void Env_eff_No_Phantom_quartz(void);
-void Env_eff_IncreasedTurretDamage(void);
-void Env_eff_DecreasedTurretDamage(void);
-void Env_eff_DecreasedTurretAttackSpeed(void);
-void Env_eff_IncreasedTurretAttackSpeed(void);
+void EnvironmentEffCheck(void);
+void EnvEffMoreHP(void);
+void EnvEffLessHP(void);
+void EnvEffFasterEnemies(void);
+void EnvEffSlowerEnemies(void);
+void EnvEffIncreasedPhantomQuartz(void);
+void EnvEffDecreasedPhantomQuartz(void);
+void EnvEffNoPhantomQuartz(void);
+void EnvEffIncreasedTurretDamage(void);
+void EnvEffDecreasedTurretDamage(void);
+void EnvEffDecreasedTurretAttackSpeed(void);
+void EnvEffIncreasedTurretAttackSpeed(void);
 
 
 
-void Music_init(void);
+void MusicInit(void);

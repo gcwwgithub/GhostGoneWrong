@@ -3,13 +3,13 @@
 #include "John.h"
 #include "Gabriel.h"
 
-void Basic_Ghost(Enemy* r) { // setup variable for basic ghost enemy
+void BasicGhostInit(Enemy* r) { // setup variable for basic ghost enemy
 	r->health = 4;
 	r->max_health = 4;
 	r->speed = 30*scaling_factor;
 	r->current_way_point = 0;
-	r->data.x_origin = Xarray[0];
-	r->data.y_origin = Yarray[0];
+	r->data.x_origin = global_enemy_path_X_array[0];
+	r->data.y_origin = global_enemy_path_Y_array[0];
 	r->enemy_width = game.grid_width;
 	r->enemy_height = game.grid_height;
 	r->angle = 0;
@@ -25,16 +25,16 @@ void Basic_Ghost(Enemy* r) { // setup variable for basic ghost enemy
 	r->slow_amt = 1;
 	r->slow_timer = 0;
 	r->current_aim_state = 0;
-	reset_enemy_path(r);
+	ResetEnemyPathWaypoints(r);
 }
 
-void Fast_Ghost_init(Enemy* r) { // setup variable for fast ghost enemy
+void FastGhostInit(Enemy* r) { // setup variable for fast ghost enemy
 	r->health = 2;
 	r->max_health = 2;
 	r->speed = 60 * scaling_factor;
 	r->current_way_point = 0;
-	r->data.x_origin = Xarray[0];
-	r->data.y_origin = Yarray[0];
+	r->data.x_origin = global_enemy_path_X_array[0];
+	r->data.y_origin = global_enemy_path_Y_array[0];
 	r->enemy_width = game.grid_width;
 	r->enemy_height = game.grid_height;
 	r->angle = 0;
@@ -50,16 +50,16 @@ void Fast_Ghost_init(Enemy* r) { // setup variable for fast ghost enemy
 	r->slow_amt = 1;
 	r->slow_timer = 0;
 	r->current_aim_state = 0;
-	reset_enemy_path(r);
+	ResetEnemyPathWaypoints(r);
 }
 
-void Fat_Ghost_init(Enemy* r) {
+void FatGhostInit(Enemy* r) {
 	r->health = 30;
 	r->max_health = 30;
 	r->speed = 25 * scaling_factor;
 	r->current_way_point = 0;
-	r->data.x_origin = Xarray[0];
-	r->data.y_origin = Yarray[0];
+	r->data.x_origin = global_enemy_path_X_array[0];
+	r->data.y_origin = global_enemy_path_Y_array[0];
 	r->enemy_width = game.grid_width;
 	r->enemy_height = game.grid_height;
 	r->angle = 0;
@@ -75,17 +75,17 @@ void Fat_Ghost_init(Enemy* r) {
 	r->slow_amt = 1;
 	r->slow_timer = 0;
 	r->current_aim_state = 0;
-	reset_enemy_path(r);
+	ResetEnemyPathWaypoints(r);
 }
 
-void Reaper_minion_init(Enemy* r) {
+void ReaperMinionInit(Enemy* r) {
 	int a = 0;
 	for (int i = MAX_SPAWNING_ENEMIES; i < kMaxEnemies; i++) {
 		if (a == 0) {
 			if (enemy[i].state == kEnemyInactive) {
-				Fast_Ghost_init(&enemy[i]);
-				enemy[i].data.x_origin = Xarray[r->current_way_point];
-				enemy[i].data.y_origin = Yarray[r->current_way_point];
+				FastGhostInit(&enemy[i]);
+				enemy[i].data.x_origin = global_enemy_path_X_array[r->current_way_point];
+				enemy[i].data.y_origin = global_enemy_path_Y_array[r->current_way_point];
 				enemy[i].current_way_point = r->current_way_point;
 				enemy[i].state = kEnemyMoving;
 				enemies_left++;
@@ -95,9 +95,9 @@ void Reaper_minion_init(Enemy* r) {
 		}
 		else if (a == 1) {
 			if (enemy[i].state == kEnemyInactive) {
-				Fast_Ghost_init(&enemy[i]);
-				enemy[i].data.x_origin = Xarray[r->current_way_point + 1];
-				enemy[i].data.y_origin = Yarray[r->current_way_point + 1];
+				FastGhostInit(&enemy[i]);
+				enemy[i].data.x_origin = global_enemy_path_X_array[r->current_way_point + 1];
+				enemy[i].data.y_origin = global_enemy_path_Y_array[r->current_way_point + 1];
 				enemy[i].current_way_point = r->current_way_point + 1;
 				enemy[i].state = kEnemyMoving;
 				enemies_left++;
@@ -112,13 +112,13 @@ void Reaper_minion_init(Enemy* r) {
 	}
 }
 
-void grimReaper_init(Enemy* r) {
+void GrimReaperInit(Enemy* r) {
 	r->health = 50;
 	r->max_health = 50;
 	r->speed = 40 * scaling_factor;
 	r->current_way_point = 0;
-	r->data.x_origin = Xarray[0];
-	r->data.y_origin = Yarray[0];
+	r->data.x_origin = global_enemy_path_X_array[0];
+	r->data.y_origin = global_enemy_path_Y_array[0];
 	r->enemy_width = game.grid_width;
 	r->enemy_height = game.grid_height;
 	r->angle = 0;
@@ -135,10 +135,10 @@ void grimReaper_init(Enemy* r) {
 	r->slow_timer = 0;
 	r->current_aim_state = 0;
 	r->charges = kCharges1;
-	reset_enemy_path(r);
+	ResetEnemyPathWaypoints(r);
 }
 
-void Draw_enemy(Enemy* r) { //Draws the enemy
+void RenderEnemy(Enemy* r) { //Draws the enemy
 	EnemyAnimationState(r);
 	switch (r->type) {
 	case kBasic:
@@ -154,7 +154,7 @@ void Draw_enemy(Enemy* r) { //Draws the enemy
 
 void EnemyAnimationState(Enemy* r)
 {
-	int i = Check_state(r);
+	int i = CheckEnemyState(r);
 	if (i == 1) {
 		if (r->timer >= 0.25) {
 			r->state = kEnemyMoving;
@@ -163,7 +163,7 @@ void EnemyAnimationState(Enemy* r)
 	r->current_aim_state = i;
 
 }
-int Check_state(Enemy* r) {
+int CheckEnemyState(Enemy* r) {
 	switch (r->state) {
 	case kEnemyMoving:
 		return 0;
@@ -177,12 +177,12 @@ int Check_state(Enemy* r) {
 	return 0;
 }
 
-void enemy_move(Enemy* r, float Enemy_PathpointsX[], float Enemy_PathpointsY[], int number_of_points) { //Enemy movement
+void EnemyMovement(Enemy* r, float enemy_pathpoints_X[], float enemy_pathpoints_Y[], int number_of_points) { //Enemy movement
 	float Speed = (r->speed) * r->slow_amt * CP_System_GetDt();
-	update_point_num(Enemy_PathpointsX, Enemy_PathpointsY, r);
+	UpdateEnemyCurrentWaypoint(enemy_pathpoints_X, enemy_pathpoints_Y, r);
 	if (r->current_way_point >= 2 && r->state == kEnemyAdjusting) {
 		r->state = kEnemyMoving;
-		reset_enemy_path(r);
+		ResetEnemyPathWaypoints(r);
 		r->current_way_point = r->adjusting_waypoint;
 	}
 	if (r->current_way_point + 1 == number_of_points && r->state != kEnemyAdjusting) {
@@ -197,57 +197,57 @@ void enemy_move(Enemy* r, float Enemy_PathpointsX[], float Enemy_PathpointsY[], 
 		r->state = kEnemyReached;
 	}
 
-	Direction direction_now = direction_to_next_point(Enemy_PathpointsX, Enemy_PathpointsY, r);
+	Direction direction_now = DirectionToNextPoint(enemy_pathpoints_X, enemy_pathpoints_Y, r);
 	switch (direction_now) {
-	case Up:
+	case kUp:
 		r->data.y_origin -= Speed;
 		break;
-	case Down:
+	case kDown:
 		r->data.y_origin += Speed;
 		break;
-	case Left:
+	case kLeft:
 		r->data.x_origin -= Speed;
 		break;
-	case Right:
+	case kRight:
 		r->data.x_origin += Speed;
 		break;
-	case NoMove:
+	case kNoMove:
 		break;
 	}
 
 }
 
 
-Direction direction_to_next_point(float Enemy_PathpointsX[], float Enemy_PathpointsY[], Enemy* r) {   //Which direction to move depending on points
-	float Xdistance_between_points = (Enemy_PathpointsX[r->current_way_point + 1] - Enemy_PathpointsX[r->current_way_point]);
-	float Ydistance_between_points = (Enemy_PathpointsY[r->current_way_point + 1] - Enemy_PathpointsY[r->current_way_point]);
+Direction DirectionToNextPoint(float enemy_Pathpoints_X[], float enemy_pathpoints_Y[], Enemy* r) {   //Which direction to move depending on points
+	float Xdistance_between_points = (enemy_Pathpoints_X[r->current_way_point + 1] - enemy_Pathpoints_X[r->current_way_point]);
+	float Ydistance_between_points = (enemy_pathpoints_Y[r->current_way_point + 1] - enemy_pathpoints_Y[r->current_way_point]);
 	if (r->state == kEnemyDeath || r->state == kEnemyReached) {
-		return NoMove;
+		return kNoMove;
 	}
 	if (Xdistance_between_points == 0) {
 		if (Ydistance_between_points < 0) {
-			return Up; //Upwards movement
+			return kUp; //Upwards movement
 		}
 		else {
-			return Down; //Downwards movement
+			return kDown; //Downwards movement
 		}
 	}
 	else if (Ydistance_between_points == 0) {
 		if (Xdistance_between_points < 0) {
-			return Left; //Left movement
+			return kLeft; //Left movement
 		}
 		else {
-			return Right; //Right movement
+			return kRight; //Right movement
 		}
 	}
 	return 0;
 }
 
-int update_point_num(float Enemy_PathpointsX[], float Enemy_PathpointsY[], Enemy* r) { //Update position to move towards next point 
-	float covered_distanceX = (float)fabs((double)r->data.x_origin - (Enemy_PathpointsX[r->current_way_point]));
-	float distance_between_pointsX = (float)fabs((double)Enemy_PathpointsX[r->current_way_point + 1] - (Enemy_PathpointsX[r->current_way_point]));
-	float covered_distanceY = (float)fabs((double)r->data.y_origin - (Enemy_PathpointsY[r->current_way_point]));
-	float distance_between_pointsY = (float)fabs((double)Enemy_PathpointsY[r->current_way_point + 1] - (Enemy_PathpointsY[r->current_way_point]));
+int UpdateEnemyCurrentWaypoint(float enemy_pathpoints_X[], float enemy_pathpoints_Y[], Enemy* r) { //Update position to move towards next point 
+	float covered_distanceX = (float)fabs((double)r->data.x_origin - (enemy_pathpoints_X[r->current_way_point]));
+	float distance_between_pointsX = (float)fabs((double)enemy_pathpoints_X[r->current_way_point + 1] - (enemy_pathpoints_X[r->current_way_point]));
+	float covered_distanceY = (float)fabs((double)r->data.y_origin - (enemy_pathpoints_Y[r->current_way_point]));
+	float distance_between_pointsY = (float)fabs((double)enemy_pathpoints_Y[r->current_way_point + 1] - (enemy_pathpoints_Y[r->current_way_point]));
 
 	if (distance_between_pointsX <= covered_distanceX) {
 		if (distance_between_pointsY <= covered_distanceY) {
@@ -306,13 +306,13 @@ void EnemyDeath(Enemy* r) {  //function updates and checks for collision or deat
 			switch (r->type)
 			{
 			case kBasic:
-				basicEnemyNum--;
+				basic_enemy_count--;
 				break;
 			case kFastGhost:
-				fastEnemyNum--;
+				fast_enemy_count--;
 				break;
 			case kFatGhost:
-				fatEnemyNum--;
+				fat_enemy_count--;
 				break;
 			}
 		}
@@ -321,25 +321,25 @@ void EnemyDeath(Enemy* r) {  //function updates and checks for collision or deat
 }
 
 void Enemies_init(void) {
-	Enemy_timer = 0;
+	enemy_timer = 0;
 	Enemy_node = NULL;
 	wave_timer = 0;
-	Array_count = 1;
-	Number_of_points = 0;
+	array_counter = 1;
+	number_of_points = 0;
 
 	//test path
 	for (int i = 0; i < kMaxEnemies; i++) {
-		empty_enemy_init(&enemy[i]);
+		EmptyEnemyInit(&enemy[i]);
 	}
 }
 
-void update_enemy(void) {
-	Enemy_timer += CP_System_GetDt();
+void UpdateEnemies(void) {
+	enemy_timer += CP_System_GetDt();
 	for (int i = 0; i < kMaxEnemies; i++) {
 		int spawn_timer = 2;
-		if ((enemy[i].state == kEnemyInactive) && (enemy[i].health > 0) && ((int)Enemy_timer / spawn_timer <= kMaxEnemies)) {
+		if ((enemy[i].state == kEnemyInactive) && (enemy[i].health > 0) && ((int)enemy_timer / spawn_timer <= kMaxEnemies)) {
 			int state_check = 0;
-			int b = (int)Enemy_timer;
+			int b = (int)enemy_timer;
 			for (int j = 0; j < kMaxEnemies; j++) {
 				if (enemy[j].state == kEnemyInactive) {
 					state_check++;
@@ -350,7 +350,7 @@ void update_enemy(void) {
 			}
 			if (b - wave_timer >= spawn_timer) {
 				enemy[i].state = kEnemyMoving;
-				wave_timer = (int)Enemy_timer;
+				wave_timer = (int)enemy_timer;
 				InsertNewNodePortalEffect(&portal_spawn_head_node, enemy[i].data.x_origin,
 					enemy[i].data.y_origin, 0);
 				//CP_Sound_PlayAdvanced(SpawnxExitSFX, SFX_Volume*0.2f, 1.0, FALSE, CP_SOUND_GROUP_0);
@@ -368,17 +368,17 @@ void update_enemy(void) {
 				enemy[i].slow_amt = 1.f;
 		}
 
-		Update_Path_Array(level.current_game_level);
-		Check_pathAdjustment(&enemy[i]);
-		enemy_move(&enemy[i], enemy[i].enemy_path_x, enemy[i].enemy_path_y, Number_of_points, level.current_game_level);
+		UpdateEnemyPathWaypointArray(level.current_game_level);
+		CheckEnemyPathAdjustment(&enemy[i]);
+		EnemyMovement(&enemy[i], enemy[i].enemy_path_x, enemy[i].enemy_path_y, number_of_points, level.current_game_level);
 		EnemyDeath(&enemy[i], level.current_game_level);
-		Reaper_ability(&enemy[i]);
-		Environment_check(level.current_game_level);
-		Current_wave_check(&enemy[i]);
-		Power_Up_check(&enemy[i]);
+		ReaperAbility(&enemy[i]);
+		EnvironmentEffCheck(level.current_game_level);
+		EnemyWavePowUp(&enemy[i]);
+		EnemyVariableChangeforPowUps(&enemy[i]);
 	}
 }
-void draw_multiple_enemies(void) {
+void RenderAllEnemies(void) {
 	for (int i = 0; i < kMaxEnemies; i++) {
 		if (enemy[i].state == kEnemyInactive) {
 			continue;
@@ -407,12 +407,12 @@ void draw_multiple_enemies(void) {
 			enemy[i].timer += CP_System_GetDt();
 			break;
 		}
-		update_enemy_health_bar(&enemy[i]);
+		RenderEnemyHealth(&enemy[i]);
 
 	}
 }
 
-void update_enemy_health_bar(Enemy* r)
+void RenderEnemyHealth(Enemy* r)
 {
 	if (r->health > 0)
 	{
@@ -432,7 +432,7 @@ void update_enemy_health_bar(Enemy* r)
 
 }
 
-void Update_Path_Array(void) {
+void UpdateEnemyPathWaypointArray(void) {
 	int nextPathRow = 1, nextPathCol = 1;
 	for (int currentCost = 1; currentCost <= level.grid[level.exit_row][level.exit_col].cost; currentCost++) {
 		for (int currentRow = 0; currentRow < level_grid_rows; currentRow++) {
@@ -444,26 +444,26 @@ void Update_Path_Array(void) {
 				}
 			}
 		}
-		Xarray[Array_count] = (float)(game.x_origin + game.grid_width * (0.5 + nextPathCol));
-		Yarray[Array_count] = (float)(game.y_origin + game.grid_height * (0.5 + nextPathRow));
-		Array_count++;
+		global_enemy_path_X_array[array_counter] = (float)(game.x_origin + game.grid_width * (0.5 + nextPathCol));
+		global_enemy_path_Y_array[array_counter] = (float)(game.y_origin + game.grid_height * (0.5 + nextPathRow));
+		array_counter++;
 	}
-	Number_of_points = Array_count;
-	Array_count = 1;
+	number_of_points = array_counter;
+	array_counter = 1;
 }
 
 
-void Reaper_ability(Enemy* r) {
+void ReaperAbility(Enemy* r) {
 	if (r->type == kGrimReaper) {
 		if (r->health <= 0.5 * r->max_health) {
 			if (r->charges == kCharges1) {
-				Reaper_minion_init(r);
+				ReaperMinionInit(r);
 			}
 		}
 	}
 }
 
-void empty_enemy_init(Enemy* r) {
+void EmptyEnemyInit(Enemy* r) {
 	r->health = 0;
 	r->max_health = 0;
 	r->speed = 0;
@@ -486,7 +486,7 @@ void empty_enemy_init(Enemy* r) {
 	r->slow_timer = 0;
 	r->current_aim_state = 0;
 	r->charges = kUsed;
-	r->env_eff = Applying;
+	r->env_eff = kApplying;
 	//r->Enemy_pow_up.Less_HP = 0;
 	//r->Enemy_pow_up.More_Points = 0;
 	//r->Enemy_pow_up.SpeedDown = 0;
@@ -506,60 +506,60 @@ void empty_enemy_init(Enemy* r) {
 
 
 
-void wave_enemy_init(int Basic_Ghost_count, int Fast_Ghost_count, int Fat_Ghost_count, int Grim_Reaper_count, LevelData E_Level) {
-	Enemy_timer = 0;
+void EnemyInitforWaves(int basic_ghost_count, int fast_ghost_count, int fat_ghost_count, int grim_reaper_count, LevelData e_level) {
+	enemy_timer = 0;
 	Enemy_node = NULL;
 	wave_timer = 0;
-	Xarray[0] = (float)(game.x_origin + game.grid_width * (0.5 + E_Level.spawn_col));
-	Yarray[0] = (float)(game.y_origin + game.grid_height * (0.5 + E_Level.spawn_row));
+	global_enemy_path_X_array[0] = (float)(game.x_origin + game.grid_width * (0.5 + e_level.spawn_col));
+	global_enemy_path_Y_array[0] = (float)(game.y_origin + game.grid_height * (0.5 + e_level.spawn_row));
 
 	for (int i = 0; i < kMaxEnemies; i++) {
-		empty_enemy_init(&enemy[i]);
+		EmptyEnemyInit(&enemy[i]);
 	}
-	int a = Basic_Ghost_count + Fast_Ghost_count;
-	int b = a + Fat_Ghost_count;
-	int c = b + Grim_Reaper_count;
-	Xarray[0] = (float)(game.x_origin + game.grid_width * (0.5 + E_Level.spawn_col));
-	Yarray[0] = (float)(game.y_origin + game.grid_height * (0.5 + E_Level.spawn_row));
-	for (int i = 0; i < Basic_Ghost_count; i++) {
-		Basic_Ghost(&enemy[i]);
+	int a = basic_ghost_count + fast_ghost_count;
+	int b = a + fat_ghost_count;
+	int c = b + grim_reaper_count;
+	global_enemy_path_X_array[0] = (float)(game.x_origin + game.grid_width * (0.5 + e_level.spawn_col));
+	global_enemy_path_Y_array[0] = (float)(game.y_origin + game.grid_height * (0.5 + e_level.spawn_row));
+	for (int i = 0; i < basic_ghost_count; i++) {
+		BasicGhostInit(&enemy[i]);
 	}
-	for (int i = Basic_Ghost_count; i < a && i < MAX_SPAWNING_ENEMIES; i++) {
-		Fast_Ghost_init(&enemy[i]);
+	for (int i = basic_ghost_count; i < a && i < MAX_SPAWNING_ENEMIES; i++) {
+		FastGhostInit(&enemy[i]);
 	}
 	for (int i = a; i < b && i < MAX_SPAWNING_ENEMIES; i++) {
-		Fat_Ghost_init(&enemy[i]);
+		FatGhostInit(&enemy[i]);
 	}
 	for (int i = b; i < MAX_SPAWNING_ENEMIES && i < c; i++) {
-		grimReaper_init(&enemy[i]);
+		GrimReaperInit(&enemy[i]);
 	}
 }
 
-void Reset_enemies(void) {
+void ResetEnemyInit(void) {
 	if (current_game_state == kBuilding) {
-		Update_Path_Array(level.current_game_level);
+		UpdateEnemyPathWaypointArray(level.current_game_level);
 		if (building_time > 0.05f && level.current_wave < kMaxNumberOfWave) {
 			int BasicCount = level.wave_enemies[level.current_wave][kBasic];
 			int FastCount = level.wave_enemies[level.current_wave][kFastGhost];
 			int FatCount = level.wave_enemies[level.current_wave][kFatGhost];
 			int ReaperCount = level.wave_enemies[level.current_wave][kGrimReaper];
-			wave_enemy_init(BasicCount, FastCount, FatCount, ReaperCount, level);
+			EnemyInitforWaves(BasicCount, FastCount, FatCount, ReaperCount, level);
 			enemies_left = BasicCount + FastCount + FatCount + ReaperCount;
 		}
 	}
 }
 
 
-void Check_pathAdjustment(Enemy* r) {
+void CheckEnemyPathAdjustment(Enemy* r) {
 	int XorY = 0;
 	int check = 0;
 	if (r->state != kEnemyInactive && r->state != kEnemyDeath && r->state != kEnemyReached) {
-		for (int j = 0; j < Number_of_points; j++) {
-			if (r->state != kEnemyAdjusting && (r->enemy_path_x[r->current_way_point + 1] == Xarray[j] && r->enemy_path_y[r->current_way_point + 1] == Yarray[j])) {
+		for (int j = 0; j < number_of_points; j++) {
+			if (r->state != kEnemyAdjusting && (r->enemy_path_x[r->current_way_point + 1] == global_enemy_path_X_array[j] && r->enemy_path_y[r->current_way_point + 1] == global_enemy_path_Y_array[j])) {
 				check++;
 			}
 			else if (r->state == kEnemyAdjusting) {
-				if (r->enemy_path_x[2] == Xarray[j] && r->enemy_path_y[2] == Yarray[j]) {
+				if (r->enemy_path_x[2] == global_enemy_path_X_array[j] && r->enemy_path_y[2] == global_enemy_path_Y_array[j]) {
 					check++;
 				}
 			}
@@ -567,9 +567,9 @@ void Check_pathAdjustment(Enemy* r) {
 		if (check < 1) {
 			int ClosestWaypoint = 0;
 			float d = 10000;
-			for (int i = 0; i < Number_of_points; i++) {
-				float a = (float)fabs((double)r->data.x_origin - Xarray[i]);
-				float b = (float)fabs((double)r->data.y_origin - Yarray[i]);
+			for (int i = 0; i < number_of_points; i++) {
+				float a = (float)fabs((double)r->data.x_origin - global_enemy_path_X_array[i]);
+				float b = (float)fabs((double)r->data.y_origin - global_enemy_path_Y_array[i]);
 				float c = a + b;
 				if (c < d) {
 					d = c;
@@ -586,19 +586,19 @@ void Check_pathAdjustment(Enemy* r) {
 			if (XorY == 1) {
 				r->enemy_path_x[0] = r->data.x_origin;
 				r->enemy_path_y[0] = r->data.y_origin;
-				r->enemy_path_x[1] = Xarray[ClosestWaypoint];
+				r->enemy_path_x[1] = global_enemy_path_X_array[ClosestWaypoint];
 				r->enemy_path_y[1] = r->data.y_origin;
-				r->enemy_path_x[2] = Xarray[ClosestWaypoint];
-				r->enemy_path_y[2] = Yarray[ClosestWaypoint];
+				r->enemy_path_x[2] = global_enemy_path_X_array[ClosestWaypoint];
+				r->enemy_path_y[2] = global_enemy_path_Y_array[ClosestWaypoint];
 				r->current_way_point = 0;
 			}
 			else if (XorY == 2) {
 				r->enemy_path_x[0] = r->data.x_origin;
 				r->enemy_path_y[0] = r->data.y_origin;
 				r->enemy_path_x[1] = r->data.x_origin;
-				r->enemy_path_y[1] = Yarray[ClosestWaypoint];
-				r->enemy_path_x[2] = Xarray[ClosestWaypoint];
-				r->enemy_path_y[2] = Yarray[ClosestWaypoint];
+				r->enemy_path_y[1] = global_enemy_path_Y_array[ClosestWaypoint];
+				r->enemy_path_x[2] = global_enemy_path_X_array[ClosestWaypoint];
+				r->enemy_path_y[2] = global_enemy_path_Y_array[ClosestWaypoint];
 
 				r->current_way_point = 0;
 			}
@@ -607,16 +607,16 @@ void Check_pathAdjustment(Enemy* r) {
 	}
 }
 
-void reset_enemy_path(Enemy* r) {
+void ResetEnemyPathWaypoints(Enemy* r) {
 	for (int i = 0; i < 50; i++) {
-		r->enemy_path_x[i] = Xarray[i];
-		r->enemy_path_y[i] = Yarray[i];
+		r->enemy_path_x[i] = global_enemy_path_X_array[i];
+		r->enemy_path_y[i] = global_enemy_path_Y_array[i];
 	}
 }
 
 
 
-void Env_eff_IncreasedTurretDamage(void) {
+void EnvEffIncreasedTurretDamage(void) {
 	static float damage_increase[kMaxTurret];
 	static int level_check[kMaxTurret];
 	for (int i = 0; i < kMaxTurret; i++) {
@@ -643,7 +643,7 @@ void Env_eff_IncreasedTurretDamage(void) {
 	}
 }
 
-void Env_eff_DecreasedTurretDamage(void) {
+void EnvEffDecreasedTurretDamage(void) {
 	static float damage_decrease[kMaxTurret];
 	static int level_check[kMaxTurret];
 	for (int i = 0; i < kMaxTurret; i++) {
@@ -676,7 +676,7 @@ void Env_eff_DecreasedTurretDamage(void) {
 	}
 }
 
-void Env_eff_IncreasedTurretAttackSpeed(void) {
+void EnvEffIncreasedTurretAttackSpeed(void) {
 	static float atk_spd_increase[kMaxTurret];
 	static int level_check[kMaxTurret];
 	for (int i = 0; i < kMaxTurret; i++) {
@@ -701,7 +701,7 @@ void Env_eff_IncreasedTurretAttackSpeed(void) {
 	}
 }
 
-void Env_eff_DecreasedTurretAttackSpeed(void) {
+void EnvEffDecreasedTurretAttackSpeed(void) {
 	static float atk_spd_decrease[kMaxTurret];
 	static float level_check[kMaxTurret];
 	for (int i = 0; i < kMaxTurret; i++) {
@@ -726,106 +726,106 @@ void Env_eff_DecreasedTurretAttackSpeed(void) {
 	}
 }
 
-void Env_eff_More_HP(void) {
+void EnvEffMoreHP(void) {
 	for (int i = 0; i < kMaxEnemies; i++) {
-		if (enemy[i].env_eff == Applying && enemy[i].health > 1) {
+		if (enemy[i].env_eff == kApplying && enemy[i].health > 1) {
 			int increase_hp = (int)(enemy[i].max_health * 0.3);
 			enemy[i].max_health += increase_hp;
 			enemy[i].health += increase_hp;
-			enemy[i].env_eff = Effected;
+			enemy[i].env_eff = kEffected;
 		}
 	}
 }
 
-void Env_eff_Less_HP(void) {
+void EnvEffLessHP(void) {
 	for (int i = 0; i < kMaxEnemies; i++) {
-		if (enemy[i].env_eff == Applying && enemy[i].health > 1) {
+		if (enemy[i].env_eff == kApplying && enemy[i].health > 1) {
 			int decrease_hp = (int)(enemy[i].max_health * 0.2);
 			enemy[i].max_health -= decrease_hp;
 			enemy[i].health -= decrease_hp;
-			enemy[i].env_eff = Effected;
+			enemy[i].env_eff = kEffected;
 		}
 	}
 }
 
-void Env_eff_Faster_Enemies(void) {
+void EnvEffFasterEnemies(void) {
 	for (int i = 0; i < kMaxEnemies; i++) {
-		if (enemy[i].env_eff == Applying && enemy[i].health > 1) {
+		if (enemy[i].env_eff == kApplying && enemy[i].health > 1) {
 			enemy[i].speed *= 1.2f;
-			enemy[i].env_eff = Effected;
+			enemy[i].env_eff = kEffected;
 		}
 	}
 }
 
-void Env_eff_Slower_Enemies(void) {
+void EnvEffSlowerEnemies(void) {
 	for (int i = 0; i < kMaxEnemies; i++) {
-		if (enemy[i].env_eff == Applying && enemy[i].health > 1) {
+		if (enemy[i].env_eff == kApplying && enemy[i].health > 1) {
 			enemy[i].speed /= 1.2f;
-			enemy[i].env_eff = Effected;
+			enemy[i].env_eff = kEffected;
 		}
 	}
 }
 
-void Env_eff_Increased_Phantom_quartz(void) {
+void EnvEffIncreasedPhantomQuartz(void) {
 	for (int i = 0; i < kMaxEnemies; i++) {
-		if (enemy[i].env_eff == Applying && enemy[i].health > 1) {
+		if (enemy[i].env_eff == kApplying && enemy[i].health > 1) {
 			enemy[i].points = (int)(enemy[i].points*1.2);
-			enemy[i].env_eff = Effected;
+			enemy[i].env_eff = kEffected;
 		}
 	}
 }
 
-void Env_eff_Decreased_Phantom_quartz(void) {
+void EnvEffDecreasedPhantomQuartz(void) {
 	for (int i = 0; i < kMaxEnemies; i++) {
-		if (enemy[i].env_eff == Applying && enemy[i].health > 1) {
+		if (enemy[i].env_eff == kApplying && enemy[i].health > 1) {
 			enemy[i].points /= (int)(enemy[i].points / 1.2);
-			enemy[i].env_eff = Effected;
+			enemy[i].env_eff = kEffected;
 		}
 	}
 }
-void Env_eff_No_Phantom_quartz(void) {
+void EnvEffNoPhantomQuartz(void) {
 	for (int i = 0; i < kMaxEnemies; i++) {
-		if (enemy[i].env_eff == Applying && enemy[i].health > 1) {
+		if (enemy[i].env_eff == kApplying && enemy[i].health > 1) {
 			enemy[i].points = 0;
-			enemy[i].env_eff = Effected;
+			enemy[i].env_eff = kEffected;
 		}
 	}
 }
 
-void Environment_check(void) {
-	Env_eff_IncreasedTurretAttackSpeed();
-	Env_eff_DecreasedTurretAttackSpeed();
-	Env_eff_IncreasedTurretDamage();
-	Env_eff_DecreasedTurretDamage();
+void EnvironmentEffCheck(void) {
+	EnvEffIncreasedTurretAttackSpeed();
+	EnvEffDecreasedTurretAttackSpeed();
+	EnvEffIncreasedTurretDamage();
+	EnvEffDecreasedTurretDamage();
 
 	switch (level.current_effect) {
 	case kNoEnvironmentalEffects:
 		break;
 	case kIncreasedPhantomQuartz:
-		Env_eff_Increased_Phantom_quartz();
+		EnvEffIncreasedPhantomQuartz();
 		break;
 	case kDecreasedPhantomQuartz:
-		Env_eff_Decreased_Phantom_quartz();
+		EnvEffDecreasedPhantomQuartz();
 		break;
 	case kFasterEnemies:
-		Env_eff_Faster_Enemies();
+		EnvEffFasterEnemies();
 		break;
 	case kSlowerEnemies:
-		Env_eff_Slower_Enemies();
+		EnvEffSlowerEnemies();
 		break;
 	case kMoreHP:
-		Env_eff_More_HP();
+		EnvEffMoreHP();
 		break;
 	case kLessHP:
-		Env_eff_Less_HP();
+		EnvEffLessHP();
 		break;
 	case kNoPhantomQuartz:
-		Env_eff_No_Phantom_quartz();
+		EnvEffNoPhantomQuartz();
 		break;
 	}
 }
 
-void Current_wave_check(Enemy* r) {
+void EnemyWavePowUp(Enemy* r) {
 	if (r->wave_pow_up_is_active == 0) {
 		int a = level.current_wave;
 		r->max_health = (float)(r->max_health * (1 + (0.2 * a)));
@@ -835,7 +835,7 @@ void Current_wave_check(Enemy* r) {
 	}
 }
 
-void Power_Up_check(Enemy* r) {
+void EnemyVariableChangeforPowUps(Enemy* r) {
 	if (r->enemy_pow_up[0] == 0) {
 		r->health *= (1 - (level.current_power_up_level.reduce_enemy_health * 0.05f));
 		r->enemy_pow_up[0] = 1;
@@ -850,7 +850,7 @@ void Power_Up_check(Enemy* r) {
 	}
 }
 
-void Music_init(void) {
+void MusicInit(void) {
 	button_click_sfx = CP_Sound_Load("./Assets/sfx/btn.wav");
 	turret_place_sfx = CP_Sound_Load("./Assets/sfx/place-turret.mp3");
 	mine_explosion_sfx = CP_Sound_Load("./Assets/sfx/Explosion.wav");
