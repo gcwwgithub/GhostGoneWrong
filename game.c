@@ -1,3 +1,17 @@
+/*!
+All content © 2021 DigiPen Institute of Technology Singapore, all rights reserved
+@file       game.c
+@author     Ng Zheng Wei (zhengwei.ng@digipen.edu)
+			Chiok Wei Wen Gabriel (chiok.w@digipen.edu)
+			Lim Jing Rui John (l.jingruijohn@digipen.edu)
+			Phua Tai Dah Anderson (a.phua@digipen.edu)
+			Wong Zhi Hao Samuel (w.zhihaosamuel@digipen.edu)
+@co-author
+@course     CSD 1400
+@section    C
+@date       01/12/2021
+@brief    	Contains function and variables that are commmonly used by everyone
+*//*__________________________________________________________________________*/
 #include"game.h"
 #include "Samuel.h"
 #include "John.h"

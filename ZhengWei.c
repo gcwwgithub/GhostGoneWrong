@@ -1,4 +1,5 @@
 /*!
+All content © 2021 DigiPen Institute of Technology Singapore, all rights reserved
 @file       zhengwei.c
 @author     Ng Zheng Wei (zhengwei.ng@digipen.edu)
 @co-author	Chiok Wei Wen Gabriel (chiok.w@digipen.edu)

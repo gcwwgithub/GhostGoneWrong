@@ -1,5 +1,6 @@
 /*!
-@file       zhengwei.c
+All content © 2021 DigiPen Institute of Technology Singapore, all rights reserved
+@file       game.h
 @author     Ng Zheng Wei (zhengwei.ng@digipen.edu)
 			Chiok Wei Wen Gabriel (chiok.w@digipen.edu)
 			Lim Jing Rui John (l.jingruijohn@digipen.edu)
