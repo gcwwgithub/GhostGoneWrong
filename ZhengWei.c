@@ -926,7 +926,7 @@ void InitLevel1(void) {
 	level.exit_row = level_grid_rows - 1;
 	level.exit_col = level_grid_cols - 1;
 	level.health = 100;
-	level.phantom_quartz = 50000;
+	level.phantom_quartz = 300;
 	level.gold_quartz = 0;
 	level.current_wave = 0;
 	level.current_effect = kNoEnvironmentalEffects;
