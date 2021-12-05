@@ -10,7 +10,7 @@ All content © 2021 DigiPen Institute of Technology Singapore, all rights reserve
 @course     CSD 1400
 @section    C
 @date       01/12/2021
-@brief    	Contains function and variables that are commmonly used by everyone
+@brief    	Runs the game.
 *//*__________________________________________________________________________*/
 #include"game.h"
 #include "Samuel.h"
