@@ -140,8 +140,8 @@ void InitPauseScreen(void)
 		BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Resume Game");
 	// Exit Level
 	PauseScreenButtons[1] = InitTextButton(PauseScreenButtons[1],
-		CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 0.3f - BUTTON_HEIGHT * 0.5f,
-		BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Exit Level");
+		CP_System_GetWindowWidth() * 0.45f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 0.3f - BUTTON_HEIGHT * 0.5f,
+		BUTTON_WIDTH * 1.7f, BUTTON_HEIGHT, BUTTON_WIDTH * 0.85f, BUTTON_HEIGHT * 0.5f, "Return to Main Menu");
 }
 
 /*!
@@ -154,13 +154,13 @@ void InitEndScreen(void)
 {
 	// Back to Main Menu
 	EndScreenButtons[0] = InitTextButton(EndScreenButtons[0],
-		CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 0.5f - BUTTON_HEIGHT * 0.5f,
-		BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Back");
+		CP_System_GetWindowWidth() * 0.45f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 0.5f - BUTTON_HEIGHT * 0.5f,
+		BUTTON_WIDTH * 1.7f, BUTTON_HEIGHT, BUTTON_WIDTH * 0.85f, BUTTON_HEIGHT * 0.5f, "Return to Main Menu");
 
 	// Restart
 	EndScreenButtons[1] = InitTextButton(EndScreenButtons[1],
-		CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 0.6f - BUTTON_HEIGHT * 0.5f,
-		BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, "Restart");
+		CP_System_GetWindowWidth() * 0.49f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() * 0.6f - BUTTON_HEIGHT * 0.5f,
+		BUTTON_WIDTH * 1.1f, BUTTON_HEIGHT, BUTTON_WIDTH * 0.55f, BUTTON_HEIGHT * 0.5f, "Restart Game");
 
 	// Next Level
 	EndScreenButtons[2] = InitTextButton(EndScreenButtons[2],
@@ -919,7 +919,8 @@ void RenderEndScreen(void)
 {
 	CP_Settings_RectMode(CP_POSITION_CENTER);
 	CP_Settings_Fill(COLOR_GREY);
-	CP_Graphics_DrawRect(CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.5f, CP_System_GetWindowWidth() * 0.2f, CP_System_GetWindowHeight() * 0.5f);
+	CP_Graphics_DrawRect(CP_System_GetWindowWidth() * 0.5f, CP_System_GetWindowHeight() * 0.5f, 
+		CP_System_GetWindowWidth() * 0.3f, CP_System_GetWindowHeight() * 0.5f);
 
 	CP_Settings_Fill(COLOR_BLACK);
 	if (current_game_state == kLose)
@@ -934,14 +935,14 @@ void RenderEndScreen(void)
 
 	RenderUIButton(EndScreenButtons[0]);
 	RenderUIButton(EndScreenButtons[1]);
-
 	if (current_game_state == kWin)
 	{
 		if (level.current_game_level < 4)
 		{
 			RenderUIButton(EndScreenButtons[2]); // Next
 		}
-	}
+	}	
+	CP_Settings_TextSize(FONT_SIZE); // stops the win/lose text from being bigger from hovering over last btn
 }
 
 /*!
