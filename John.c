@@ -636,7 +636,7 @@ void EnemyDeath(Enemy* r) {  //function updates and checks for collision or deat
 *//*_____________________________________________________________*/
 void ReaperAbility(Enemy* r) {
 	if (r->type == kGrimReaper) {
-		if (r->health <= 0.5 * r->max_health) {
+		if ((r->health <= 0.5 * r->max_health)&&(r->health>0)) {
 			if (r->charges == kCharges1) {
 				ReaperMinionInit(r);
 			}
