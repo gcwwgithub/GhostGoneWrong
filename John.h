@@ -1,4 +1,5 @@
 /*!
+All content © 2021 DigiPen Institute of Technology Singapore, all rights reserved.
 @file       John.h
 @author     Lim Jing Rui John (l.jingruijohn@digipen.edu)
 @co-author  Chiok Wei Wen Gabriel (chiok.w@digipen.edu)

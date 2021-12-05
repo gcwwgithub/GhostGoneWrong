@@ -1,7 +1,8 @@
 /*!
-@file       John.c
+All content © 2021 DigiPen Institute of Technology Singapore, all rights reserved.
+@file       John.h
 @author     Lim Jing Rui John (l.jingruijohn@digipen.edu)
-@co-author  Chiok Wei Wen Gabriel (chiok.w@digipen.edu)
+@co-author  Chiok Wei Wen Gabriel (chiok.w@digipen.edu) Did all animation functions
 @course     CSD 1400
 @section    C
 @date       4/12/2021
