@@ -1,14 +1,19 @@
 /*!
+All content © 2021 DigiPen Institute of Technology Singapore, all rights reserved.
 @file       Samuel.c
-@author     Wong Zhi Hao Samuel (w.zhihaosamuel@digipen.edu)\
-@co-author
+@author     Wong Zhi Hao Samuel (w.zhihaosamuel@digipen.edu)
+@co-author	Chiok Wei Wen Gabriel (chiok.w@digipen.edu)
 @course     CSD 1400
 @section    C
 @date       28/11/2021
-@brief    	Contains function definition remove_turret, render_turret,
-			update_turret, shoot, update_projectile, render_projectile,
-			update_turretAnimation, create_particle, update_particle and
-			render_particle.
+@brief    	Functions by Wong Zhi Hao Samuel 
+			Contains function definition TurretInit, PlaceTurret,
+			RemoveTurret, SellTurret, UpgradeTurret, RenderTurret,
+			UpdateTurret, Shoot, UpdateProjectile, ColTypeProjectile
+			RenderProjectile, CreateParticle, UpdateParticle, RenderParticle
+			
+			Functions by Chiok Wei Wen Gabriel 
+			UpdateTurretAnimation
 *//*__________________________________________________________________________*/
 
 #if _DEBUG
@@ -671,7 +676,7 @@ void ColTypeProjectile(Projectile* p)
 	}
 }
 
-// turret animation updates
+// turret animation updates (Done by Chiok Wei Wen Gabriel)
 void UpdateTurretAnimation(Turret* t)
 {
 	if (t->type == kTMine)
