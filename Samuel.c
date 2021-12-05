@@ -15,9 +15,6 @@ All content © 2021 DigiPen Institute of Technology Singapore, all rights reserve
 			Functions by Chiok Wei Wen Gabriel 
 			UpdateTurretAnimation
 *//*__________________________________________________________________________*/
-
-#if _DEBUG
-#endif
 #include <math.h>
 #include "cprocessing.h"
 #include "game.h"
