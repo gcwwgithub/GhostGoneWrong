@@ -3,6 +3,8 @@ All content © 2021 DigiPen Institute of Technology Singapore, all rights reserve
 @file       John.h
 @author     Lim Jing Rui John (l.jingruijohn@digipen.edu)
 @co-author  Chiok Wei Wen Gabriel (chiok.w@digipen.edu) Did all animation functions
+			Ng Zheng Wei (zhengwei.ng@digipen.edu) Helped with pathfinding
+			Wong Zhi Hao Samuel (w.zhihaosamuel@digipen.edu) Helped adjust functions for turret and projectile variables
 @course     CSD 1400
 @section    C
 @date       4/12/2021
