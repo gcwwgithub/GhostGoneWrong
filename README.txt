@@ -15,6 +15,8 @@ By DownNOut & Digipen Singapore
                             
 ##############################
 
+Class CSD 1400 Section C
+
 -- Team DownNOut --
 
 Chiok Wei Wen Gabriel 	- chiok.w@digipen.edu
