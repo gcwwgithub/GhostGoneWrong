@@ -1,4 +1,5 @@
 /*!
+All content © 2021 DigiPen Institute of Technology Singapore, all rights reserved.
 @file       vector.h
 @author     Wong Zhi Hao Samuel (w.zhihaosamuel@digipen.edu)
 @co-author
