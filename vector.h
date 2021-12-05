@@ -23,15 +23,15 @@ typedef struct Vector2
 
 /*!
 @author     Wong Zhi Hao Samuel (w.zhihaosamuel@digipen.edu)
-@brief This function
-@param word - 
-@return 
+@brief		Vector addition
+@param word - Vector2 v1, Vector2 v2
+@return Vector2
 *//*_____________________________________________________________*/
 Vector2 addition(Vector2 v1, Vector2 v2);
 
 /*!
 @author     Wong Zhi Hao Samuel (w.zhihaosamuel@digipen.edu)
-@brief This function
+@brief		Vector subtraction
 @param word -
 @return
 *//*_____________________________________________________________*/
@@ -39,48 +39,48 @@ Vector2 subtraction(Vector2 v1, Vector2 v2);
 
 /*!
 @author     Wong Zhi Hao Samuel (w.zhihaosamuel@digipen.edu)
-@brief This function
-@param word -
-@return
+@brief	finds magnitude of vector
+@param word - Vector2 v1
+@return float
 *//*_____________________________________________________________*/
 float magnitude(Vector2 v1);
 
 /*!
 @author     Wong Zhi Hao Samuel (w.zhihaosamuel@digipen.edu)
-@brief This function
-@param word -
-@return
+@brief		magnitude sq of a vector
+@param word - Vector2 v1
+@return float
 *//*_____________________________________________________________*/
 float magnitude_sq(Vector2 v1);
 
 /*!
 @author     Wong Zhi Hao Samuel (w.zhihaosamuel@digipen.edu)
-@brief This function
-@param word -
-@return
+@brief		Normalise vector
+@param word - Vector2 v1
+@return Vector2
 *//*_____________________________________________________________*/
 Vector2 normalise(Vector2 v1);
 
 /*!
 @author     Wong Zhi Hao Samuel (w.zhihaosamuel@digipen.edu)
-@brief This function
-@param word -
-@return
+@brief		Dot product of vector
+@param word - Vector2 v1, Vector2 v2
+@return float
 *//*_____________________________________________________________*/
 float dot(Vector2 v1, Vector2 v2);
 
 /*!
 @author     Wong Zhi Hao Samuel (w.zhihaosamuel@digipen.edu)
-@brief This function
-@param word -
-@return
+@brief		Rotation about origin 
+@param word - Vector2 v1, double angle
+@return Vector2
 *//*_____________________________________________________________*/
 Vector2 rotation(Vector2 v1, double angle);
 
 /*!
-@brief This function
-@param word -
-@return
+@brief projection of vector v onto flr
+@param word - Vector2 flr, Vector2 v 
+@return Vector2
 *//*_____________________________________________________________*/
 Vector2 projection(Vector2 flr, Vector2 v);
 

@@ -117,7 +117,7 @@ void InitLevelSelectButtons(void)
 		c = snprintf(levelNumberText, 8, "Level %d", i + 1);
 		strcpy_s(LevelButtons[i].textString, sizeof(LevelButtons[i].textString), levelNumberText);
 		LevelButtons[i] = InitTextButton(LevelButtons[i],
-			CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() + i * (BUTTON_HEIGHT + 25.0f),
+			CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f, CP_System_GetWindowHeight() + i * (BUTTON_HEIGHT + 25.0f) + 5.0f,
 			BUTTON_WIDTH, BUTTON_HEIGHT, BUTTON_WIDTH * 0.5f, BUTTON_HEIGHT * 0.5f, levelNumberText);
 	}
 
@@ -650,7 +650,7 @@ void MoveLevelSelect(void)
 		if (current_game_state == kLevelSelect) // going to main menu
 		{
 			LevelButtons[i] = UIButtonMovement(LevelButtons[i], CP_System_GetWindowWidth() * 0.5f - BUTTON_WIDTH * 0.5f,
-				CP_System_GetWindowHeight() + i * (BUTTON_HEIGHT + 25.0f)); // from level select back to main menu
+				CP_System_GetWindowHeight() + i * (BUTTON_HEIGHT + 25.0f) + 5.0f); // from level select back to main menu
 		}
 		else if (current_game_state == kMainMenu)
 		{
@@ -680,7 +680,7 @@ int LevelSelectFinishedMoving(void)
 {
 	if (current_game_state == kLevelSelect)
 	{
-		if (ButtonHasFinishedMoving(*LevelButtons, LevelButtons->buttonData.x_origin, (float)CP_System_GetWindowHeight()))
+		if (ButtonHasFinishedMoving(*LevelButtons, LevelButtons->buttonData.x_origin, (float)CP_System_GetWindowHeight() + 5.0f))
 		{
 			for (Button* b = LevelButtons; b < LevelButtons + kMaxNumberOfLevel; b++)
 			{
@@ -720,11 +720,11 @@ void MoveMainMenu(void)
 	// HowToPlay moves to the bottom. Options moves to the left.
 	if (current_game_state == kMainMenu) // Going to Level Select
 	{
-		MainMenuButtons[StartButton] = UIButtonMovement(MainMenuButtons[StartButton], -BUTTON_WIDTH, MainMenuButtons[StartButton].buttonData.y_origin);
-		MainMenuButtons[QuitButton] = UIButtonMovement(MainMenuButtons[QuitButton], (float)CP_System_GetWindowWidth(), MainMenuButtons[QuitButton].buttonData.y_origin);
-		MainMenuButtons[CreditsButton] = UIButtonMovement(MainMenuButtons[CreditsButton], MainMenuButtons[CreditsButton].buttonData.x_origin, (float)CP_System_GetWindowHeight());
-		MainMenuButtons[HowToPlayButton] = UIButtonMovement(MainMenuButtons[HowToPlayButton], MainMenuButtons[HowToPlayButton].buttonData.x_origin, CP_System_GetWindowHeight() * 1.25f);
-		MainMenuButtons[OptionsButton] = UIButtonMovement(MainMenuButtons[OptionsButton], -BUTTON_WIDTH, MainMenuButtons[OptionsButton].buttonData.y_origin);
+		MainMenuButtons[StartButton] = UIButtonMovement(MainMenuButtons[StartButton], -2*BUTTON_WIDTH, MainMenuButtons[StartButton].buttonData.y_origin);
+		MainMenuButtons[QuitButton] = UIButtonMovement(MainMenuButtons[QuitButton], (float)CP_System_GetWindowWidth() * 1.25f, MainMenuButtons[QuitButton].buttonData.y_origin);
+		MainMenuButtons[CreditsButton] = UIButtonMovement(MainMenuButtons[CreditsButton], MainMenuButtons[CreditsButton].buttonData.x_origin, (float)CP_System_GetWindowHeight() * 1.25f);
+		MainMenuButtons[HowToPlayButton] = UIButtonMovement(MainMenuButtons[HowToPlayButton], MainMenuButtons[HowToPlayButton].buttonData.x_origin, CP_System_GetWindowHeight() * 1.5f);
+		MainMenuButtons[OptionsButton] = UIButtonMovement(MainMenuButtons[OptionsButton], -2*BUTTON_WIDTH, MainMenuButtons[OptionsButton].buttonData.y_origin);
 	}
 	else if (current_game_state == kLevelSelect) // Going to Main Menu
 	{
@@ -746,11 +746,11 @@ int MainMenuFinishedMoving(void)
 {
 	if (current_game_state == kMainMenu)
 	{
-		if (ButtonHasFinishedMoving(MainMenuButtons[StartButton], -BUTTON_WIDTH, MainMenuButtons[StartButton].buttonData.y_origin) &&
-			ButtonHasFinishedMoving(MainMenuButtons[QuitButton], (float)CP_System_GetWindowWidth(), MainMenuButtons[QuitButton].buttonData.y_origin) &&
-			ButtonHasFinishedMoving(MainMenuButtons[CreditsButton], MainMenuButtons[CreditsButton].buttonData.x_origin, (float)CP_System_GetWindowHeight()) &&
-			ButtonHasFinishedMoving(MainMenuButtons[HowToPlayButton], MainMenuButtons[HowToPlayButton].buttonData.x_origin, (float)CP_System_GetWindowHeight() * 1.25f) &&
-			ButtonHasFinishedMoving(MainMenuButtons[OptionsButton], -BUTTON_WIDTH, MainMenuButtons[OptionsButton].buttonData.y_origin))
+		if (ButtonHasFinishedMoving(MainMenuButtons[StartButton], -2*BUTTON_WIDTH, MainMenuButtons[StartButton].buttonData.y_origin) &&
+			ButtonHasFinishedMoving(MainMenuButtons[QuitButton], (float)CP_System_GetWindowWidth() * 1.25f, MainMenuButtons[QuitButton].buttonData.y_origin) &&
+			ButtonHasFinishedMoving(MainMenuButtons[CreditsButton], MainMenuButtons[CreditsButton].buttonData.x_origin, (float)CP_System_GetWindowHeight() * 1.25f) &&
+			ButtonHasFinishedMoving(MainMenuButtons[HowToPlayButton], MainMenuButtons[HowToPlayButton].buttonData.x_origin, (float)CP_System_GetWindowHeight() * 1.5f) &&
+			ButtonHasFinishedMoving(MainMenuButtons[OptionsButton], -2*BUTTON_WIDTH, MainMenuButtons[OptionsButton].buttonData.y_origin))
 		{
 			for (int i = 0; i < 5; i++)
 			{

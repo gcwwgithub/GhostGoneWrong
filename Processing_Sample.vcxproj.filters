@@ -59,5 +59,15 @@
     <ClInclude Include="vector.h">
       <Filter>Vector</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Processing_Sample.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\DownNout-1.png_3.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="README.txt" />
   </ItemGroup>
 </Project>
